@@ -63,6 +63,8 @@
             return depth;
         }
 
+        public double GetEAD(int time) => ((GetPN2(time) / 0.79) - 1) * 10;
+
         private void BreakdownByEachSecond()
         {
             _profileByTime.Clear();

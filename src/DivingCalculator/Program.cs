@@ -16,7 +16,7 @@ namespace DivingCalculator
             var ean35 = new BreathingGas(0.35, 0.65, 0);
             var ean50 = new BreathingGas(0.50, 0.50, 0);
             var ean66 = new BreathingGas(0.66, 0.34, 0);
-            var ean88 = new BreathingGas(0.88, 0.12, 0);
+            var ean84 = new BreathingGas(0.84, 0.16, 0);
             var oxygen = new BreathingGas(1.0, 0, 0);
 
             var profile = new DiveProfile(air);
@@ -71,7 +71,7 @@ namespace DivingCalculator
             profile.SetDepth(14, 18180);
 
             profile.SetDepth(9, 18240);
-            profile.SetGas(ean88, 18240);
+            profile.SetGas(ean84, 18240);
             profile.SetDepth(9, 21840);
 
             profile.SetDepth(6, 21900);
@@ -103,10 +103,14 @@ namespace DivingCalculator
                 newRow["Ceiling"] = algo.GetCeiling(t);
                 newRow["GasPO2"] = profile.GetPO2(t);
                 newRow["GasPN2"] = profile.GetPN2(t);
+                newRow["GasPHe"] = profile.GetPHe(t);
+                newRow["EAD"] = profile.GetEAD(t);
 
                 foreach (var tissue in algo.Tissues)
                 {
                     newRow[$"Tissue{tissue.Number:00}PN2"] = tissue.GetPN2(t);
+                    newRow[$"Tissue{tissue.Number:00}PHe"] = tissue.GetPHe(t);
+                    newRow[$"Tissue{tissue.Number:00}PTotal"] = tissue.GetPTotal(t);
                     newRow[$"Tissue{tissue.Number:00}MValue"] = tissue.GetMValue(t);
                     newRow[$"Tissue{tissue.Number:00}Ceiling"] = tissue.GetCeiling(t);
                 }
@@ -145,52 +149,86 @@ namespace DivingCalculator
             table.Columns.Add("Ceiling", typeof(double));
             table.Columns.Add("GasPO2", typeof(double));
             table.Columns.Add("GasPN2", typeof(double));
+            table.Columns.Add("GasPHe", typeof(double));
+            table.Columns.Add("EAD", typeof(double));
             table.Columns.Add("Tissue01PN2", typeof(double));
+            table.Columns.Add("Tissue01PHe", typeof(double));
+            table.Columns.Add("Tissue01PTotal", typeof(double));
             table.Columns.Add("Tissue01MValue", typeof(double));
             table.Columns.Add("Tissue01Ceiling", typeof(double));
             table.Columns.Add("Tissue02PN2", typeof(double));
+            table.Columns.Add("Tissue02PHe", typeof(double));
+            table.Columns.Add("Tissue02PTotal", typeof(double));
             table.Columns.Add("Tissue02MValue", typeof(double));
             table.Columns.Add("Tissue02Ceiling", typeof(double));
             table.Columns.Add("Tissue03PN2", typeof(double));
+            table.Columns.Add("Tissue03PHe", typeof(double));
+            table.Columns.Add("Tissue03PTotal", typeof(double));
             table.Columns.Add("Tissue03MValue", typeof(double));
             table.Columns.Add("Tissue03Ceiling", typeof(double));
             table.Columns.Add("Tissue04PN2", typeof(double));
+            table.Columns.Add("Tissue04PHe", typeof(double));
+            table.Columns.Add("Tissue04PTotal", typeof(double));
             table.Columns.Add("Tissue04MValue", typeof(double));
             table.Columns.Add("Tissue04Ceiling", typeof(double));
             table.Columns.Add("Tissue05PN2", typeof(double));
+            table.Columns.Add("Tissue05PHe", typeof(double));
+            table.Columns.Add("Tissue05PTotal", typeof(double));
             table.Columns.Add("Tissue05MValue", typeof(double));
             table.Columns.Add("Tissue05Ceiling", typeof(double));
             table.Columns.Add("Tissue06PN2", typeof(double));
+            table.Columns.Add("Tissue06PHe", typeof(double));
+            table.Columns.Add("Tissue06PTotal", typeof(double));
             table.Columns.Add("Tissue06MValue", typeof(double));
             table.Columns.Add("Tissue06Ceiling", typeof(double));
             table.Columns.Add("Tissue07PN2", typeof(double));
+            table.Columns.Add("Tissue07PHe", typeof(double));
+            table.Columns.Add("Tissue07PTotal", typeof(double));
             table.Columns.Add("Tissue07MValue", typeof(double));
             table.Columns.Add("Tissue07Ceiling", typeof(double));
             table.Columns.Add("Tissue08PN2", typeof(double));
+            table.Columns.Add("Tissue08PHe", typeof(double));
+            table.Columns.Add("Tissue08PTotal", typeof(double));
             table.Columns.Add("Tissue08MValue", typeof(double));
             table.Columns.Add("Tissue08Ceiling", typeof(double));
             table.Columns.Add("Tissue09PN2", typeof(double));
+            table.Columns.Add("Tissue09PHe", typeof(double));
+            table.Columns.Add("Tissue09PTotal", typeof(double));
             table.Columns.Add("Tissue09MValue", typeof(double));
             table.Columns.Add("Tissue09Ceiling", typeof(double));
             table.Columns.Add("Tissue10PN2", typeof(double));
+            table.Columns.Add("Tissue10PHe", typeof(double));
+            table.Columns.Add("Tissue10PTotal", typeof(double));
             table.Columns.Add("Tissue10MValue", typeof(double));
             table.Columns.Add("Tissue10Ceiling", typeof(double));
             table.Columns.Add("Tissue11PN2", typeof(double));
+            table.Columns.Add("Tissue11PHe", typeof(double));
+            table.Columns.Add("Tissue11PTotal", typeof(double));
             table.Columns.Add("Tissue11MValue", typeof(double));
             table.Columns.Add("Tissue11Ceiling", typeof(double));
             table.Columns.Add("Tissue12PN2", typeof(double));
+            table.Columns.Add("Tissue12PHe", typeof(double));
+            table.Columns.Add("Tissue12PTotal", typeof(double));
             table.Columns.Add("Tissue12MValue", typeof(double));
             table.Columns.Add("Tissue12Ceiling", typeof(double));
             table.Columns.Add("Tissue13PN2", typeof(double));
+            table.Columns.Add("Tissue13PHe", typeof(double));
+            table.Columns.Add("Tissue13PTotal", typeof(double));
             table.Columns.Add("Tissue13MValue", typeof(double));
             table.Columns.Add("Tissue13Ceiling", typeof(double));
             table.Columns.Add("Tissue14PN2", typeof(double));
+            table.Columns.Add("Tissue14PHe", typeof(double));
+            table.Columns.Add("Tissue14PTotal", typeof(double));
             table.Columns.Add("Tissue14MValue", typeof(double));
             table.Columns.Add("Tissue14Ceiling", typeof(double));
             table.Columns.Add("Tissue15PN2", typeof(double));
+            table.Columns.Add("Tissue15PHe", typeof(double));
+            table.Columns.Add("Tissue15PTotal", typeof(double));
             table.Columns.Add("Tissue15MValue", typeof(double));
             table.Columns.Add("Tissue15Ceiling", typeof(double));
             table.Columns.Add("Tissue16PN2", typeof(double));
+            table.Columns.Add("Tissue16PHe", typeof(double));
+            table.Columns.Add("Tissue16PTotal", typeof(double));
             table.Columns.Add("Tissue16MValue", typeof(double));
             table.Columns.Add("Tissue16Ceiling", typeof(double));
 
