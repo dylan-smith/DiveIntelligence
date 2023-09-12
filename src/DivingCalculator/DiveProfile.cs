@@ -55,6 +55,8 @@
         public BreathingGas GetGas(int time) => _gases.Where(x => x.Time <= time).WithMax(x => x.Time).Gas;
         public double GetDepth(int time)
         {
+            if (time <= 0) return 0;
+
             var beforeDepth = _depths.Where(x => x.Time < time).WithMax(x => x.Time);
             var afterDepth = _depths.Where(x => x.Time >= time).WithMin(x => x.Time);
 

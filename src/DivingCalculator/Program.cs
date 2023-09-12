@@ -35,11 +35,11 @@ namespace DivingCalculator
             var profile = new DiveProfile(air);
 
             // BENT + NARC'D
-            //profile.SetDepth(100, 240);
-            //profile.SetDepth(100, 3600);
-            //profile.SetDepth(6, 3840);
-            //profile.SetDepth(6, 4020);
-            //profile.SetDepth(0, 4026);
+            profile.SetDepth(100, 240);
+            profile.SetDepth(100, 3600);
+            profile.SetDepth(6, 3840);
+            profile.SetDepth(6, 4020);
+            profile.SetDepth(0, 4026);
 
             // DECO WITH AIR
             //profile.SetDepth(100, 240);
@@ -122,47 +122,46 @@ namespace DivingCalculator
 
 
             // SO MUCH HELIUM!!!
-            profile.SetGas(trimix_21_79, 1);
+            //profile = new DiveProfile(trimix_21_79);
 
-            profile.SetDepth(40, 120);
-            profile.SetGas(trimix_12_88, 120);
+            //profile.SetDepth(40, 120);
+            //profile.SetGas(trimix_12_88, 120);
 
-            profile.SetDepth(100, 240);
-            profile.SetDepth(100, 3600);
+            //profile.SetDepth(100, 240);
+            //profile.SetDepth(100, 3600);
 
-            profile.SetDepth(60, 3660);
-            profile.SetGas(new BreathingGas(0.22, 0, 0.78), 3660);
-            profile.SetDepth(60, 7260);
+            //profile.SetDepth(60, 3660);
+            //profile.SetGas(new BreathingGas(0.22, 0, 0.78), 3660);
+            //profile.SetDepth(60, 7260);
 
-            profile.SetDepth(40, 7320);
-            profile.SetGas(new BreathingGas(0.32, 0, 0.68), 7320);
-            profile.SetDepth(40, 10920);
+            //profile.SetDepth(40, 7320);
+            //profile.SetGas(new BreathingGas(0.32, 0, 0.68), 7320);
+            //profile.SetDepth(40, 10920);
 
-            profile.SetDepth(30, 10980);
-            profile.SetGas(new BreathingGas(0.4, 0, 0.6), 10980);
-            profile.SetDepth(30, 14580);
+            //profile.SetDepth(30, 10980);
+            //profile.SetGas(new BreathingGas(0.4, 0, 0.6), 10980);
+            //profile.SetDepth(30, 14580);
 
-            profile.SetDepth(20, 14640);
-            profile.SetGas(new BreathingGas(0.53, 0, 0.47), 14640);
-            profile.SetDepth(20, 18180);
+            //profile.SetDepth(20, 14640);
+            //profile.SetGas(new BreathingGas(0.53, 0, 0.47), 14640);
+            //profile.SetDepth(20, 18180);
 
-            profile.SetDepth(15, 18240);
-            profile.SetGas(new BreathingGas(0.64, 0, 0.36), 18240);
-            profile.SetDepth(15, 21840);
+            //profile.SetDepth(15, 18240);
+            //profile.SetGas(new BreathingGas(0.64, 0, 0.36), 18240);
+            //profile.SetDepth(15, 21840);
 
-            profile.SetDepth(10, 21900);
-            profile.SetGas(new BreathingGas(0.8, 0, 0.2), 21900);
-            profile.SetDepth(10, 25500);
+            //profile.SetDepth(10, 21900);
+            //profile.SetGas(new BreathingGas(0.8, 0, 0.2), 21900);
+            //profile.SetDepth(10, 25500);
 
-            profile.SetDepth(7, 25560);
-            profile.SetGas(new BreathingGas(0.94, 0, 0.06), 25560);
-            profile.SetDepth(7, 29160);
+            //profile.SetDepth(7, 25560);
+            //profile.SetGas(new BreathingGas(0.94, 0, 0.06), 25560);
+            //profile.SetDepth(7, 29160);
 
-            profile.SetDepth(6, 29220);
-            profile.SetGas(oxygen, 29220);
-            profile.SetDepth(6, 35500);
-
-            profile.SetDepth(0, 35520);
+            //profile.SetDepth(6, 29220);
+            //profile.SetGas(oxygen, 29220);
+            //profile.SetDepth(6, 35500);
+            //profile.SetDepth(0, 35520);
 
             var algo = new BuhlmannZHL16C(profile);
 
@@ -170,14 +169,14 @@ namespace DivingCalculator
             Console.WriteLine($"Average depth: {profile.AverageDepth}m");
             Console.WriteLine($"Total time: {profile.TotalTime}sec");
 
-            Console.WriteLine($"Deco Ceiling: {algo.Ceiling}");
-
-            foreach (var tissue in algo.Tissues)
-            {
-                Console.WriteLine($"Tissue {tissue.Number}: PN2 {tissue.PN2}, Ceiling: {tissue.GetCeiling(profile.TotalTime)}");
-            }
-
             var dbTable = InitializeDiveDataTable();
+
+            var ceilingViolation = 0.0;
+            var ceilingViolationTime = 0;
+            var ppO2Violation = 0.0;
+            var ppO2ViolationTime = 0;
+            var narcoticViolation = 0.0;
+            var narcoticViolationTime = 0;
 
             foreach (var t in profile.ProfileByTime.Keys)
             {
@@ -201,9 +200,67 @@ namespace DivingCalculator
                 }
 
                 dbTable.Rows.Add(newRow);
+
+                if (algo.GetCeiling(t) > profile.GetDepth(t))
+                {
+                    var violation = algo.GetCeiling(t) - profile.GetDepth(t);
+
+                    if (violation > ceilingViolation)
+                    {
+                        ceilingViolation = violation;
+                        ceilingViolationTime = t;
+                    }
+                }
+
+                if (profile.GetPO2(t) > 1.6)
+                {
+                    if (profile.GetPO2(t) > ppO2Violation)
+                    {
+                        ppO2Violation = profile.GetPO2(t);
+                        ppO2ViolationTime = t;
+                    }
+                }
+
+                if (profile.GetEAD(t) > 40)
+                {
+                    if (profile.GetEAD(t) > narcoticViolation)
+                    {
+                        narcoticViolation = profile.GetEAD(t);
+                        narcoticViolationTime = t;
+                    }
+                }
             }
 
             WriteToDatabase(dbTable);
+
+            if (ceilingViolation > 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"UNSAFE: Exceeded ceiling by {ceilingViolation:f1}m at {ceilingViolationTime} sec");
+                Console.ResetColor();
+            }
+
+            if (ppO2Violation > 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"UNSAFE: Max PO2 was {ppO2Violation:f2} at {ppO2ViolationTime} sec");
+                Console.ResetColor();
+            }
+
+            if (narcoticViolation > 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"UNSAFE: Max EAD was {narcoticViolation:f1}m at {narcoticViolationTime} sec");
+                Console.ResetColor();
+            }
+
+            if (ceilingViolation == 0 && ppO2Violation == 0 && narcoticViolation == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"SAFE DIVE!");
+                Console.ResetColor();
+            }
+
         }
 
         private static void WriteToDatabase(DataTable dbTable)

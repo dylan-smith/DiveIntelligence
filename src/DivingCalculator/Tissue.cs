@@ -32,7 +32,7 @@
         private void ApplyDiveProfile(DiveProfile profile)
         {
             _tissueByTime.Clear();
-            _tissueByTime.Add(0, (profile.ProfileByTime[0].gas.GetNitrogenPartialPressure(0), profile.ProfileByTime[0].gas.GetHeliumPartialPressure(0)));
+            _tissueByTime.Add(0, (PN2, PHe));
 
             for (var t = 1; t <= profile.TotalTime; t++)
             {
