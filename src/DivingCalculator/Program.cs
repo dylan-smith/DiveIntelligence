@@ -31,8 +31,8 @@ namespace DivingCalculator
             //profile.SetDepth(100, 240);
             //profile.SetDepth(100, 3600);
             //profile.SetDepth(6, 3840);
-            //profile.SetDepth(6, 4020);
-            //profile.SetDepth(0, 4026);
+            //profile.SetDepth(6, 7440);
+            //profile.SetDepth(0, 7460);
 
             // DECO WITH AIR
             //profile.SetDepth(100, 240);
@@ -86,75 +86,75 @@ namespace DivingCalculator
             //profile.SetDepth(0, 32720);
 
             // WITH HELIUM
-            //profile.SetDepth(40, 120);
-            //profile.SetGas(trimix_12_53, 120);
-
-            //profile.SetDepth(100, 240);
-            //profile.SetDepth(100, 3600);
-
-            //profile.SetDepth(55, 3660);
-            //profile.SetGas(trimix_24_16, 3660);
-            //profile.SetDepth(55, 7260);
-
-            //profile.SetDepth(30, 7320);
-            //profile.SetGas(ean40, 7320);
-            //profile.SetDepth(30, 10920);
-
-            //profile.SetDepth(15, 10980);
-            //profile.SetGas(ean64, 10980);
-            //profile.SetDepth(15, 14580);
-
-            //profile.SetDepth(9, 14640);
-            //profile.SetGas(ean84, 14640);
-            //profile.SetDepth(9, 18180);
-
-            //profile.SetDepth(6, 18240);
-            //profile.SetGas(oxygen, 18240);
-            //profile.SetDepth(6, 27000);
-            //profile.SetDepth(0, 27020);
-
-
-            // SO MUCH HELIUM!!!
-            profile = new DiveProfile(new BreathingGas(0.21, 0, 0.79));
-
             profile.SetDepth(40, 120);
-            profile.SetGas(new BreathingGas(0.12, 0, 0.88), 120);
+            profile.SetGas(trimix_12_53, 120);
 
             profile.SetDepth(100, 240);
             profile.SetDepth(100, 3600);
 
-            profile.SetDepth(60, 3660);
-            profile.SetGas(new BreathingGas(0.22, 0, 0.78), 3660);
-            profile.SetDepth(60, 7260);
+            profile.SetDepth(55, 3660);
+            profile.SetGas(trimix_24_16, 3660);
+            profile.SetDepth(55, 7260);
 
-            profile.SetDepth(40, 7320);
-            profile.SetGas(new BreathingGas(0.32, 0, 0.68), 7320);
-            profile.SetDepth(40, 10920);
+            profile.SetDepth(30, 7320);
+            profile.SetGas(ean40, 7320);
+            profile.SetDepth(30, 10920);
 
-            profile.SetDepth(30, 10980);
-            profile.SetGas(new BreathingGas(0.4, 0, 0.6), 10980);
-            profile.SetDepth(30, 14580);
+            profile.SetDepth(15, 10980);
+            profile.SetGas(ean64, 10980);
+            profile.SetDepth(15, 14580);
 
-            profile.SetDepth(20, 14640);
-            profile.SetGas(new BreathingGas(0.53, 0, 0.47), 14640);
-            profile.SetDepth(20, 18180);
+            profile.SetDepth(9, 14640);
+            profile.SetGas(ean84, 14640);
+            profile.SetDepth(9, 18180);
 
-            profile.SetDepth(15, 18240);
-            profile.SetGas(new BreathingGas(0.64, 0, 0.36), 18240);
-            profile.SetDepth(15, 21840);
+            profile.SetDepth(6, 18240);
+            profile.SetGas(oxygen, 18240);
+            profile.SetDepth(6, 27000);
+            profile.SetDepth(0, 27020);
 
-            profile.SetDepth(10, 21900);
-            profile.SetGas(new BreathingGas(0.8, 0, 0.2), 21900);
-            profile.SetDepth(10, 25500);
 
-            profile.SetDepth(7, 25560);
-            profile.SetGas(new BreathingGas(0.94, 0, 0.06), 25560);
-            profile.SetDepth(7, 29160);
+            // SO MUCH HELIUM!!!
+            //profile = new DiveProfile(new BreathingGas(0.21, 0, 0.79));
 
-            profile.SetDepth(6, 29220);
-            profile.SetGas(oxygen, 29220);
-            profile.SetDepth(6, 35500);
-            profile.SetDepth(0, 35520);
+            //profile.SetDepth(40, 120);
+            //profile.SetGas(new BreathingGas(0.12, 0, 0.88), 120);
+
+            //profile.SetDepth(100, 240);
+            //profile.SetDepth(100, 3600);
+
+            //profile.SetDepth(60, 3660);
+            //profile.SetGas(new BreathingGas(0.22, 0, 0.78), 3660);
+            //profile.SetDepth(60, 7260);
+
+            //profile.SetDepth(40, 7320);
+            //profile.SetGas(new BreathingGas(0.32, 0, 0.68), 7320);
+            //profile.SetDepth(40, 10920);
+
+            //profile.SetDepth(30, 10980);
+            //profile.SetGas(new BreathingGas(0.4, 0, 0.6), 10980);
+            //profile.SetDepth(30, 14580);
+
+            //profile.SetDepth(20, 14640);
+            //profile.SetGas(new BreathingGas(0.53, 0, 0.47), 14640);
+            //profile.SetDepth(20, 18180);
+
+            //profile.SetDepth(15, 18240);
+            //profile.SetGas(new BreathingGas(0.64, 0, 0.36), 18240);
+            //profile.SetDepth(15, 21840);
+
+            //profile.SetDepth(10, 21900);
+            //profile.SetGas(new BreathingGas(0.8, 0, 0.2), 21900);
+            //profile.SetDepth(10, 25500);
+
+            //profile.SetDepth(7, 25560);
+            //profile.SetGas(new BreathingGas(0.94, 0, 0.06), 25560);
+            //profile.SetDepth(7, 29160);
+
+            //profile.SetDepth(6, 29220);
+            //profile.SetGas(oxygen, 29220);
+            //profile.SetDepth(6, 35500);
+            //profile.SetDepth(0, 35520);
 
             var algo = new BuhlmannZHL16C(profile);
 
