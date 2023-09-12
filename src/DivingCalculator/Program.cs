@@ -5,10 +5,8 @@ namespace DivingCalculator
 {
     internal class Program
     {
-        // TODO: Nitrogen Narcosis
-        // TODO: P02 graphs
         // TODO: Tooltip shows all tissues
-        // TODO: Spit out PASS/FAIL message after analysis
+        // TODO: validate safe ascent rates
         static void Main()
         {
             var air = new BreathingGas(0.21, 0.79, 0);
