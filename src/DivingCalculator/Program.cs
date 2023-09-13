@@ -7,11 +7,17 @@ namespace DivingCalculator
     {
         // TODO: Tooltip shows all tissues
         // TODO: validate safe ascent rates
+        // TODO: CNS and OTU
+        // TODO: Repetitive dives
+        // TODO: Rename EAD to END (equivalent narcotic depth)
+        // TODO: Check for hypoxic mixes
+        // TODO: gas densities
         static void Main()
         {
             var air = new BreathingGas(0.21, 0.79, 0);
             var ean12 = new BreathingGas(0.12, 0.88, 0);
             var ean24 = new BreathingGas(0.24, 0.76, 0);
+            var ean32 = new BreathingGas(0.32, 0.68, 0);
             var ean35 = new BreathingGas(0.35, 0.65, 0);
             var ean40 = new BreathingGas(0.4, 0.6, 0);
             var ean50 = new BreathingGas(0.50, 0.50, 0);
@@ -110,6 +116,18 @@ namespace DivingCalculator
             profile.SetGas(oxygen, 18240);
             profile.SetDepth(6, 27000);
             profile.SetDepth(0, 27020);
+
+            // GUE Example
+            //profile = new DiveProfile(new BreathingGas(0.21, 0.44, 0.35));
+            //profile.SetDepth(45, 120);
+            //profile.SetDepth(45, 1920);
+            //profile.SetDepth(15, 1980);
+            ////profile.SetGas(ean32, 1980);
+            //profile.SetDepth(15, 2800);
+            //profile.SetDepth(6, 2820);
+            //profile.SetGas(oxygen, 2820);
+            //profile.SetDepth(6, 3920);
+            //profile.SetDepth(0, 3940);
 
 
             // SO MUCH HELIUM!!!
