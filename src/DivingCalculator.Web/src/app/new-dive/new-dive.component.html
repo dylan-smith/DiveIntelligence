@@ -1,0 +1,91 @@
+<main>
+  <header>
+    <h1 id="pick-starting-gas-heading">Select the starting gas for the dive</h1>
+  </header>
+  <mat-radio-group aria-labelledby="pick-starting-gas-heading">
+    <div class="standard-gas">
+      <div class="radio-button">
+        <mat-radio-button value="standard-gas" class="standard-gas-radio-button" checked>Standard gas</mat-radio-button>
+      </div>
+      <mat-selection-list [multiple]="false" hideSingleSelectionIndicator>
+        <mat-list-option selected>
+          <span matListItemTitle>Air</span>
+          <span matListItemLine>O<sub>2</sub>: 21%, He: 0%, N<sub>2</sub>: 79%</span>
+        </mat-list-option>
+        <mat-list-option>
+          <span matListItemTitle>Nitrox 32</span>
+          <span matListItemLine>O<sub>2</sub>: 21%, He: 0%, N<sub>2</sub>: 68%</span>
+        </mat-list-option>
+        <mat-list-option>
+          <span matListItemTitle>Oxygen</span>
+          <span matListItemLine>O<sub>2</sub>: 100%, He: 0%, N<sub>2</sub>: 0%</span>
+        </mat-list-option>
+        <mat-list-option>
+          <span matListItemTitle>Helitrox 25/25</span>
+          <span matListItemLine>O<sub>2</sub>: 25%, He: 25%, N<sub>2</sub>: 50%</span>
+        </mat-list-option>
+        <mat-list-option>
+          <span matListItemTitle>Helitrox 21/35</span>
+          <span matListItemLine>O<sub>2</sub>: 21%, He: 35%, N<sub>2</sub>: 44%</span>
+        </mat-list-option>
+        <mat-list-option>
+          <span matListItemTitle>Trimix 18/45</span>
+          <span matListItemLine>O<sub>2</sub>: 18%, He: 45%, N<sub>2</sub>: 37%</span>
+        </mat-list-option>
+        <mat-list-option>
+          <span matListItemTitle>Trimix 15/55</span>
+          <span matListItemLine>O<sub>2</sub>: 15%, He: 55%, N<sub>2</sub>: 30%</span>
+        </mat-list-option>
+        <mat-list-option>
+          <span matListItemTitle>Trimix 12/60</span>
+          <span matListItemLine>O<sub>2</sub>: 12%, He: 60%, N<sub>2</sub>: 28%</span>
+        </mat-list-option>
+        <mat-list-option>
+          <span matListItemTitle>Trimix 10/70</span>
+          <span matListItemLine>O<sub>2</sub>: 10%, He: 70%, N<sub>2</sub>: 20%</span>
+        </mat-list-option>
+        <mat-list-option>
+          <span matListItemTitle>Nitrox 50</span>
+          <span matListItemLine>O<sub>2</sub>: 50%, He: 0%, N<sub>2</sub>: 50%</span>
+        </mat-list-option>
+        <mat-list-option>
+          <span matListItemTitle>Helitrox 35/25</span>
+          <span matListItemLine>O<sub>2</sub>: 35%, He: 25%, N<sub>2</sub>: 40%</span>
+        </mat-list-option>
+      </mat-selection-list>
+    </div>
+    <div class="custom-gas">
+      <div class="radio-button">
+        <mat-radio-button value="custom-gas">Custom gas</mat-radio-button>
+      </div>
+      <div>
+        <mat-form-field class="custom-gas-input">
+          <mat-label>Oxygen</mat-label>
+          <input matInput type="text" value="21%">
+        </mat-form-field>
+        <mat-form-field class="custom-gas-input">
+          <mat-label>Helium</mat-label>
+          <input matInput type="text" value="0%">
+        </mat-form-field>
+        <mat-form-field class="custom-gas-input">
+          <mat-label>Nitrogen</mat-label>
+          <input matInput type="text" value="79%" disabled>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="summary-data">
+      <div class="gas-calculations">
+        <div>
+          Max Depth (PO<sub>2</sub>): <span class="calculated-data">56m (66m deco)</span>
+        </div>
+        <div>
+          Max Depth (END): <span class="calculated-data">40m</span>
+        </div>
+      </div>
+      <div class="save-section">
+        <button mat-flat-button color="primary">Save</button>
+      </div>
+    </div>
+
+  </mat-radio-group>
+</main>

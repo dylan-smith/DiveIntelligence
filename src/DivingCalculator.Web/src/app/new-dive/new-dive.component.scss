@@ -1,0 +1,52 @@
+mat-radio-group {
+  display: flex;
+  justify-content: center;
+}
+
+h1 {
+  display: flex;
+  justify-content: center;
+}
+
+mat-form-field.custom-gas-input {
+  width: 8rem;
+}
+
+mat-list-option[aria-selected="true"] {
+  background: rgba(0, 139, 139, 0.2);
+}
+
+.standard-gas, .custom-gas, .summary-data {
+  padding: 2rem;
+}
+
+.radio-button {
+  padding-bottom: 1rem;
+  padding-right: 1rem;
+}
+
+mat-selection-list {
+  background-color: white;
+  padding: 0px;
+}
+
+.gas-calculations {
+  background-color: white;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.save-section {
+  display: flex;
+  justify-content: right;
+}
+
+.calculated-data {
+  font-weight: bold;
+}
+
+.custom-gas, .standard-gas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

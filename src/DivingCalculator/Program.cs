@@ -90,32 +90,42 @@ namespace DivingCalculator
             //profile.SetDepth(0, 32720);
 
             // WITH HELIUM
+            //profile.SetDepth(40, 120);
+            //profile.SetGas(trimix_12_53, 120);
+
+            //profile.SetDepth(100, 240);
+            //profile.SetDepth(100, 3600);
+
+            //profile.SetDepth(55, 3660);
+            //profile.SetGas(trimix_24_16, 3660);
+            //profile.SetDepth(55, 7260);
+
+            //profile.SetDepth(30, 7320);
+            //profile.SetGas(ean40, 7320);
+            //profile.SetDepth(30, 10920);
+
+            //profile.SetDepth(15, 10980);
+            //profile.SetGas(ean64, 10980);
+            //profile.SetDepth(15, 14580);
+
+            //profile.SetDepth(9, 14640);
+            //profile.SetGas(ean84, 14640);
+            //profile.SetDepth(9, 18180);
+
+            //profile.SetDepth(6, 18240);
+            //profile.SetGas(oxygen, 18240);
+            //profile.SetDepth(6, 27000);
+            //profile.SetDepth(0, 27020);
+
             profile.SetDepth(40, 120);
             profile.SetGas(trimix_12_53, 120);
 
-            profile.SetDepth(100, 240);
-            profile.SetDepth(100, 3600);
-
-            profile.SetDepth(55, 3660);
-            profile.SetGas(trimix_24_16, 3660);
-            profile.SetDepth(55, 7260);
-
-            profile.SetDepth(30, 7320);
-            profile.SetGas(ean40, 7320);
-            profile.SetDepth(30, 10920);
-
-            profile.SetDepth(15, 10980);
-            profile.SetGas(ean64, 10980);
-            profile.SetDepth(15, 14580);
-
-            profile.SetDepth(9, 14640);
-            profile.SetGas(ean84, 14640);
-            profile.SetDepth(9, 18180);
-
-            profile.SetDepth(6, 18240);
-            profile.SetGas(oxygen, 18240);
-            profile.SetDepth(6, 27000);
-            profile.SetDepth(0, 27020);
+            profile.SetDepth(0, 360);
+            //profile.SetDepth(100, 300);
+            //profile.SetDepth(100, 3900);
+            //profile.SetDepth(55, 4140);
+            //profile.SetDepth(55, 7740);
+            //profile.SetDepth(0, 8070);
 
             // GUE Example
             //profile = new DiveProfile(new BreathingGas(0.21, 0.44, 0.35));
