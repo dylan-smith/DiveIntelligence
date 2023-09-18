@@ -27,8 +27,8 @@
           [matTooltip]="getGasTooltip(gas)">
           <span matListItemTitle>{{ gas.Name }}</span>
           <span matListItemLine>
-            O<sub>2</sub>: {{ gas.Oxygen }}%, He:
-            {{ gas.Helium }}%,N<sub>2</sub>: {{ gas.Nitrogen }}%
+            O<sub>2</sub>: {{ gas.Oxygen }}%, He: {{ gas.Helium }}%,
+            N<sub>2</sub>: {{ gas.Nitrogen }}%
           </span>
         </mat-list-option>
       </mat-selection-list>
@@ -91,12 +91,18 @@
           Max Depth (END):
           <strong>{{ getMaxENDDepth(getSelectedGas()) }}m</strong>
         </div>
-        <div
-          class="gas-calc"
-          matTooltip="Minimum depth this gas can be breathed at without going below an oxygen partial pressure of 0.18"
-          matTooltipPosition="right">
-          Min Depth (Hypoxia):
-          <strong>{{ getMinDepth(getSelectedGas()) }}m</strong>
+        <div class="gas-calc">
+          <span
+            matTooltip="Minimum depth this gas can be breathed at without going below an oxygen partial pressure of 0.18"
+            matTooltipPosition="below">
+            Min Depth (Hypoxia):
+            <strong>{{ getMinDepth(getSelectedGas()) }}m</strong>
+          </span>
+          <mat-icon
+            [class.hidden]="!isMinDepthError()"
+            matTooltip="This gas cannot be breathed at the surface due to the hypoxic oxygen content">
+            error
+          </mat-icon>
         </div>
       </div>
       <div class="save-section">
