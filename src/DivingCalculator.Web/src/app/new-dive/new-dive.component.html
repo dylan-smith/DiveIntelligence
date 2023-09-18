@@ -7,8 +7,8 @@
       <div class="radio-button">
         <mat-radio-button name="gasType" value="standard">Standard gas</mat-radio-button>
       </div>
-      <mat-selection-list [multiple]="false" hideSingleSelectionIndicator>
-        <mat-list-option *ngFor="let gas of standardGases" [value]="gas" [selected]="gas === selectedStandardGas" (click)="selectStandardGas(gas)" matTooltipClass="tooltip-multiline tooltip-wide" matTooltipPosition="left" [matTooltip]="getGasTooltip(gas)">
+      <mat-selection-list [multiple]="false" hideSingleSelectionIndicator (selectionChange)="onStandardGasChange($event)">
+        <mat-list-option *ngFor="let gas of standardGases" [value]="gas" [selected]="gas === selectedStandardGas" matTooltipClass="tooltip-multiline tooltip-wide" matTooltipPosition="left" [matTooltip]="getGasTooltip(gas)">
           <span matListItemTitle>{{ gas.name }}</span>
           <span matListItemLine>O<sub>2</sub>: {{ gas.oxygen }}%, He: {{ gas.helium }}%, N<sub>2</sub>: {{ gas.nitrogen }}%</span>
         </mat-list-option>

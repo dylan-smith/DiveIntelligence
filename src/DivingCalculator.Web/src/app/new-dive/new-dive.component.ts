@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatSelectionListChange } from '@angular/material/list';
 
 @Component({
   selector: 'dive-new-dive',
@@ -31,8 +32,8 @@ export class NewDiveComponent {
     }
   }
 
-  selectStandardGas(gas : any) {
-    this.selectedStandardGas = gas;
+  onStandardGasChange(event : MatSelectionListChange) {
+    this.selectedStandardGas = event.options[0].value;
   }
 
   getGasTooltip(gas : any) : string {
