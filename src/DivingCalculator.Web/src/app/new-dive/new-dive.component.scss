@@ -8,7 +8,7 @@ h1 {
   justify-content: center;
 }
 
-mat-form-field.custom-gas-input {
+mat-form-field {
   width: 8rem;
 }
 
@@ -41,12 +41,12 @@ mat-selection-list {
   justify-content: right;
 }
 
-.calculated-data {
-  font-weight: bold;
-}
-
 .custom-gas, .standard-gas {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+::ng-deep .tooltip-multiline {
+  white-space: pre-line;
 }

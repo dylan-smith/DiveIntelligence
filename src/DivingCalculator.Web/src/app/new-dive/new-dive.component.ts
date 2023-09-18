@@ -6,5 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./new-dive.component.scss']
 })
 export class NewDiveComponent {
-
+  getTooltipText() : string {
+    return 'Max Depth (PO2): 56m (66m deco)\nMax Depth (END): 40m';
+  }
 }
