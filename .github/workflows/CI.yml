@@ -18,6 +18,10 @@ jobs:
         node-version: 18.1.x
         cache: 'npm'
     - run: npm install ci
+      working-directory: src/DivingCalculator.Web
     - run: npm run lint
+      working-directory: src/DivingCalculator.Web
     - run: npm run build
+      working-directory: src/DivingCalculator.Web
     - run: npm run test
+      working-directory: src/DivingCalculator.Web
