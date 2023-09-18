@@ -8,7 +8,7 @@ describe('DivePlanComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [DivePlanComponent]
+      declarations: [DivePlanComponent],
     });
     fixture = TestBed.createComponent(DivePlanComponent);
     component = fixture.componentInstance;

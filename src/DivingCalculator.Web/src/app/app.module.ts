@@ -17,13 +17,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DivePlanComponent } from './dive-plan/dive-plan.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,
     NewDiveComponent,
     HomeComponent,
-    DivePlanComponent
+    DivePlanComponent,
   ],
   imports: [
     BrowserModule,
@@ -38,6 +37,6 @@ import { DivePlanComponent } from './dive-plan/dive-plan.component';
     MatTooltipModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

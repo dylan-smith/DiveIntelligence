@@ -8,11 +8,11 @@ import { DivePlanComponent } from './dive-plan/dive-plan.component';
 const routes: Routes = [
   { path: 'new-dive', component: NewDiveComponent },
   { path: 'dive-plan', component: DivePlanComponent },
-  { path: '**', component: HomeComponent}
+  { path: '**', component: HomeComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

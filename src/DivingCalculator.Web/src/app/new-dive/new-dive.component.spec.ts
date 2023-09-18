@@ -8,7 +8,7 @@ describe('NewDiveComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [NewDiveComponent]
+      declarations: [NewDiveComponent],
     });
     fixture = TestBed.createComponent(NewDiveComponent);
     component = fixture.componentInstance;
