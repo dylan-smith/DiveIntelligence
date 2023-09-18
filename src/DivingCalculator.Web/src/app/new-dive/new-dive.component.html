@@ -9,9 +9,9 @@
     [(ngModel)]="gasType">
     <div class="standard-gas">
       <div class="radio-button">
-        <mat-radio-button name="gasType" value="standard"
-          >Standard gas</mat-radio-button
-        >
+        <mat-radio-button name="gasType" value="standard">
+          Standard gas
+        </mat-radio-button>
       </div>
       <mat-selection-list
         [multiple]="false"
@@ -26,10 +26,10 @@
           matTooltipPosition="left"
           [matTooltip]="getGasTooltip(gas)">
           <span matListItemTitle>{{ gas.Name }}</span>
-          <span matListItemLine
-            >O<sub>2</sub>: {{ gas.Oxygen }}%, He: {{ gas.Helium }}%,
-            N<sub>2</sub>: {{ gas.Nitrogen }}%</span
-          >
+          <span matListItemLine>
+            O<sub>2</sub>: {{ gas.Oxygen }}%, He:
+            {{ gas.Helium }}%,N<sub>2</sub>: {{ gas.Nitrogen }}%
+          </span>
         </mat-list-option>
       </mat-selection-list>
     </div>
@@ -78,11 +78,11 @@
           matTooltip="Maximum depth this gas can be breathed at without going over an oxygen partial pressure of 1.4 (1.6 for deco stops)"
           matTooltipPosition="right">
           Max Depth (PO<sub>2</sub>):
-          <strong
-            >{{ getMaxPO2Depth(getSelectedGas()) }}m ({{
+          <strong>
+            {{ getMaxPO2Depth(getSelectedGas()) }}m ({{
               getMaxPO2DecoDepth(getSelectedGas())
-            }}m deco)</strong
-          >
+            }}m deco)
+          </strong>
         </div>
         <div
           class="gas-calc"
