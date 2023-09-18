@@ -33,6 +33,14 @@ export class NewDiveComponent {
     }
   }
 
+  getCustomGasDisabled() {
+    return this.gasType === 'standard';
+  }
+
+  getStandardGasDisabled() {
+    return this.gasType === 'custom';
+  }
+
   updateCustomGasNitrogen() {
     this.customGas.nitrogen = 100 - this.customGas.oxygen - this.customGas.helium;
   }
