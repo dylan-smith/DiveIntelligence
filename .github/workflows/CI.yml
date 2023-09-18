@@ -16,7 +16,6 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: 18.1.x
-        cache: 'npm'
     - run: npm install ci
       working-directory: src/DivingCalculator.Web
     - run: npm run lint
