@@ -34,6 +34,7 @@ mat-selection-list {
   background-color: white;
   padding: 1rem;
   margin-bottom: 1rem;
+  width: 15rem;
 }
 
 .save-section {
@@ -49,4 +50,9 @@ mat-selection-list {
 
 ::ng-deep .tooltip-multiline {
   white-space: pre-line;
+}
+
+.gas-calc {
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
 }

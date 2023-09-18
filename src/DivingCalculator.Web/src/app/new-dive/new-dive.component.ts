@@ -36,7 +36,7 @@ export class NewDiveComponent {
   }
 
   getGasTooltip(gas : any) : string {
-    return `Max Depth (PO2): ${this.getMaxPO2Depth(gas)}m (${this.getMaxPO2DecoDepth(gas)}m deco)\nMax Depth (END): ${this.getMaxENDDepth(gas)}m`;
+    return `Max Depth (PO2): ${this.getMaxPO2Depth(gas)}m (${this.getMaxPO2DecoDepth(gas)}m deco)\nMax Depth (END): ${this.getMaxENDDepth(gas)}m\nMin Depth (Hypoxia): ${this.getMinDepth(gas)}m`;
   }
 
   getMaxPO2Depth(gas : any) : number {
@@ -49,5 +49,9 @@ export class NewDiveComponent {
 
   getMaxENDDepth(gas : any) : number {
     return Math.floor(3950 / gas.nitrogen - 10);
+  }
+
+  getMinDepth(gas : any) : number {
+    return Math.max(0, Math.ceil(180 / gas.oxygen - 10));
   }
 }
