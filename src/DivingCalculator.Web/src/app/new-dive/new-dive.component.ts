@@ -23,13 +23,18 @@ export class NewDiveComponent {
 
   selectedStandardGas = this.standardGases[0];
   gasType = 'standard';
+  customGas = { name: 'Custom', oxygen: 21, helium: 0, nitrogen: 79 };
 
   getSelectedGas() {
     if (this.gasType === 'standard') {
       return this.selectedStandardGas;
     } else {
-      return { name: 'Custom', oxygen: 21, helium: 0, nitrogen: 79 };
+      return this.customGas;
     }
+  }
+
+  updateCustomGasNitrogen() {
+    this.customGas.nitrogen = 100 - this.customGas.oxygen - this.customGas.helium;
   }
 
   onStandardGasChange(event : MatSelectionListChange) {

@@ -21,15 +21,15 @@
       <div>
         <mat-form-field>
           <mat-label>Oxygen (%)</mat-label>
-          <input matInput type="number" value="21">
+          <input matInput type="number" min="0" max="100" [(ngModel)]="customGas.oxygen" (change)="updateCustomGasNitrogen()">
         </mat-form-field>
         <mat-form-field>
           <mat-label>Helium (%)</mat-label>
-          <input matInput type="number" value="0">
+          <input matInput type="number" min="0" max="100" [(ngModel)]="customGas.helium" (change)="updateCustomGasNitrogen()">
         </mat-form-field>
         <mat-form-field matTooltip="The nitrogen value will be automatically calculated when you input the values for oxygen and helium">
           <mat-label>Nitrogen (%)</mat-label>
-          <input matInput type="number" value="79" disabled>
+          <input matInput type="number" [(ngModel)]="customGas.nitrogen" disabled>
         </mat-form-field>
       </div>
     </div>
