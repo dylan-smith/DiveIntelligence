@@ -35,14 +35,6 @@ export class NewDiveComponent {
     this.selectedStandardGas = gas;
   }
 
-  isStandardGasSelected() : boolean {
-    return false;
-  }
-
-  isCustomGasSelected() : boolean {
-    return true;
-  }
-
   getGasTooltip(gas : any) : string {
     return `Max Depth (PO2): ${this.getMaxPO2Depth(gas)}m (${this.getMaxPO2DecoDepth(gas)}m deco)\nMax Depth (END): ${this.getMaxENDDepth(gas)}m`;
   }
