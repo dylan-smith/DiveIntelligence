@@ -2,61 +2,21 @@
   <header>
     <h1 id="select-starting-gas-heading">Select the starting gas for the dive</h1>
   </header>
-  <mat-radio-group aria-labelledby="select-starting-gas-heading">
+  <mat-radio-group aria-labelledby="select-starting-gas-heading" [(ngModel)]="gasType">
     <div class="standard-gas">
       <div class="radio-button">
-        <mat-radio-button value="standard-gas" checked>Standard gas</mat-radio-button>
+        <mat-radio-button name="gasType" value="standard">Standard gas</mat-radio-button>
       </div>
       <mat-selection-list [multiple]="false" hideSingleSelectionIndicator>
-        <mat-list-option selected [matTooltip]="getTooltipText()" matTooltipPosition="left" matTooltipClass="tooltip-multiline tooltip-wide">
-          <span matListItemTitle>Air</span>
-          <span matListItemLine>O<sub>2</sub>: 21%, He: 0%, N<sub>2</sub>: 79%</span>
-        </mat-list-option>
-        <mat-list-option [matTooltip]="getTooltipText()" matTooltipPosition="left" matTooltipClass="tooltip-multiline tooltip-wide">
-          <span matListItemTitle>Nitrox 32</span>
-          <span matListItemLine>O<sub>2</sub>: 21%, He: 0%, N<sub>2</sub>: 68%</span>
-        </mat-list-option>
-        <mat-list-option [matTooltip]="getTooltipText()" matTooltipPosition="left" matTooltipClass="tooltip-multiline tooltip-wide">
-          <span matListItemTitle>Oxygen</span>
-          <span matListItemLine>O<sub>2</sub>: 100%, He: 0%, N<sub>2</sub>: 0%</span>
-        </mat-list-option>
-        <mat-list-option [matTooltip]="getTooltipText()" matTooltipPosition="left" matTooltipClass="tooltip-multiline tooltip-wide">
-          <span matListItemTitle>Helitrox 25/25</span>
-          <span matListItemLine>O<sub>2</sub>: 25%, He: 25%, N<sub>2</sub>: 50%</span>
-        </mat-list-option>
-        <mat-list-option [matTooltip]="getTooltipText()" matTooltipPosition="left" matTooltipClass="tooltip-multiline tooltip-wide">
-          <span matListItemTitle>Helitrox 21/35</span>
-          <span matListItemLine>O<sub>2</sub>: 21%, He: 35%, N<sub>2</sub>: 44%</span>
-        </mat-list-option>
-        <mat-list-option [matTooltip]="getTooltipText()" matTooltipPosition="left" matTooltipClass="tooltip-multiline tooltip-wide">
-          <span matListItemTitle>Trimix 18/45</span>
-          <span matListItemLine>O<sub>2</sub>: 18%, He: 45%, N<sub>2</sub>: 37%</span>
-        </mat-list-option>
-        <mat-list-option [matTooltip]="getTooltipText()" matTooltipPosition="left" matTooltipClass="tooltip-multiline tooltip-wide">
-          <span matListItemTitle>Trimix 15/55</span>
-          <span matListItemLine>O<sub>2</sub>: 15%, He: 55%, N<sub>2</sub>: 30%</span>
-        </mat-list-option>
-        <mat-list-option [matTooltip]="getTooltipText()" matTooltipPosition="left" matTooltipClass="tooltip-multiline tooltip-wide">
-          <span matListItemTitle>Trimix 12/60</span>
-          <span matListItemLine>O<sub>2</sub>: 12%, He: 60%, N<sub>2</sub>: 28%</span>
-        </mat-list-option>
-        <mat-list-option [matTooltip]="getTooltipText()" matTooltipPosition="left" matTooltipClass="tooltip-multiline tooltip-wide">
-          <span matListItemTitle>Trimix 10/70</span>
-          <span matListItemLine>O<sub>2</sub>: 10%, He: 70%, N<sub>2</sub>: 20%</span>
-        </mat-list-option>
-        <mat-list-option [matTooltip]="getTooltipText()" matTooltipPosition="left" matTooltipClass="tooltip-multiline tooltip-wide">
-          <span matListItemTitle>Nitrox 50</span>
-          <span matListItemLine>O<sub>2</sub>: 50%, He: 0%, N<sub>2</sub>: 50%</span>
-        </mat-list-option>
-        <mat-list-option [matTooltip]="getTooltipText()" matTooltipPosition="left" matTooltipClass="tooltip-multiline tooltip-wide">
-          <span matListItemTitle>Helitrox 35/25</span>
-          <span matListItemLine>O<sub>2</sub>: 35%, He: 25%, N<sub>2</sub>: 40%</span>
+        <mat-list-option *ngFor="let gas of standardGases" [value]="gas" [selected]="gas === selectedStandardGas" (click)="selectStandardGas(gas)" matTooltipClass="tooltip-multiline tooltip-wide" matTooltipPosition="left" [matTooltip]="getGasTooltip(gas)">
+          <span matListItemTitle>{{ gas.name }}</span>
+          <span matListItemLine>O<sub>2</sub>: {{ gas.oxygen }}%, He: {{ gas.helium }}%, N<sub>2</sub>: {{ gas.nitrogen }}%</span>
         </mat-list-option>
       </mat-selection-list>
     </div>
     <div class="custom-gas">
       <div class="radio-button">
-        <mat-radio-button value="custom-gas">Custom gas</mat-radio-button>
+        <mat-radio-button value="custom">Custom gas</mat-radio-button>
       </div>
       <div>
         <mat-form-field>
