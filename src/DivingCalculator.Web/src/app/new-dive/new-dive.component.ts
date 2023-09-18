@@ -23,6 +23,14 @@ export class NewDiveComponent {
   selectedStandardGas = this.standardGases[0];
   gasType = 'standard';
 
+  getSelectedGas() {
+    if (this.gasType === 'standard') {
+      return this.selectedStandardGas;
+    } else {
+      return { name: 'Custom', oxygen: 21, helium: 0, nitrogen: 79 };
+    }
+  }
+
   selectStandardGas(gas : any) {
     this.selectedStandardGas = gas;
   }
@@ -36,10 +44,18 @@ export class NewDiveComponent {
   }
 
   getGasTooltip(gas : any) : string {
-    var maxDepthOxygen = 1400 / gas.oxygen - 10;
-    var maxDepthOxygenDeco = 1600 / gas.oxygen - 10;
-    var maxDepthEND = 3950 / gas.nitrogen - 10;
+    return `Max Depth (PO2): ${this.getMaxPO2Depth(gas)}m (${this.getMaxPO2DecoDepth(gas)}m deco)\nMax Depth (END): ${this.getMaxENDDepth(gas)}m`;
+  }
 
-    return `Max Depth (PO2): ${Math.floor(maxDepthOxygen)}m (${Math.floor(maxDepthOxygenDeco)}m deco)\nMax Depth (END): ${Math.floor(maxDepthEND)}m`;
+  getMaxPO2Depth(gas : any) : number {
+    return Math.floor(1400 / gas.oxygen - 10);
+  }
+
+  getMaxPO2DecoDepth(gas : any) : number {
+    return Math.floor(1600 / gas.oxygen - 10);
+  }
+
+  getMaxENDDepth(gas : any) : number {
+    return Math.floor(3950 / gas.nitrogen - 10);
   }
 }

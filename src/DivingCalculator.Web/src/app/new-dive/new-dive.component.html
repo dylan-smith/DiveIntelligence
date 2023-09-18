@@ -36,10 +36,10 @@
     <div class="summary-data">
       <div class="gas-calculations">
         <div matTooltip="Maximum depth this gas can be breathed at without going over an oxygen partial pressure of 1.4 (1.6 for deco stops)" matTooltipPosition="right">
-          Max Depth (PO<sub>2</sub>): <strong>56m (66m deco)</strong>
+          Max Depth (PO<sub>2</sub>): <strong>{{ getMaxPO2Depth(getSelectedGas()) }}m ({{ getMaxPO2DecoDepth(getSelectedGas()) }}m deco)</strong>
         </div>
         <div matTooltip="Maximum depth this gas can be breathed at before you experience nitrogen narcosis equivelant to 40m on air" matTooltipPosition="right">
-          Max Depth (END): <strong>40m</strong>
+          Max Depth (END): <strong>{{ getMaxENDDepth(getSelectedGas()) }}m</strong>
         </div>
       </div>
       <div class="save-section">
