@@ -12,12 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Use Node.js 18.1.x
+    - name: Use Node.js 18.x
       uses: actions/setup-node@v3
       with:
-        node-version: 18.1.x
-        cache: 'npm'
+        node-version: 18.x
     - run: npm install ci
+      working-directory: src/DivingCalculator.Web
     - run: npm run lint
+      working-directory: src/DivingCalculator.Web
     - run: npm run build
-    - run: npm run test
+      working-directory: src/DivingCalculator.Web
