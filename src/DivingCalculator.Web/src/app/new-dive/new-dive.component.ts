@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MatSelectionListChange } from '@angular/material/list';
+import { BreathingGas } from '../BreathingGas';
 
 @Component({
   selector: 'dive-new-dive',
@@ -7,23 +8,23 @@ import { MatSelectionListChange } from '@angular/material/list';
   styleUrls: ['./new-dive.component.scss']
 })
 export class NewDiveComponent {
-  standardGases = [
-    { name: 'Air', oxygen: 21, helium: 0, nitrogen: 79 },
-    { name: 'Nitrox 32', oxygen: 32, helium: 0, nitrogen: 68 },
-    { name: 'Oxygen', oxygen: 100, helium: 0, nitrogen: 0 },
-    { name: 'Helitrox 25/25', oxygen: 25, helium: 25, nitrogen: 50 },
-    { name: 'Helitrox 21/35', oxygen: 21, helium: 35, nitrogen: 44 },
-    { name: 'Trimix 18/45', oxygen: 18, helium: 45, nitrogen: 37 },
-    { name: 'Trimix 15/55', oxygen: 15, helium: 55, nitrogen: 30 },
-    { name: 'Trimix 12/60', oxygen: 12, helium: 60, nitrogen: 28 },
-    { name: 'Trimix 10/70', oxygen: 10, helium: 70, nitrogen: 20 },
-    { name: 'Nitrox 50', oxygen: 50, helium: 0, nitrogen: 50 },
-    { name: 'Helitrox 35/25', oxygen: 35, helium: 25, nitrogen: 40 },
+  standardGases : BreathingGas[] = [
+    new BreathingGas('Air', 21, 0, 79),
+    new BreathingGas('Nitrox 32', 32, 0, 68),
+    new BreathingGas('Oxygen', 100, 0, 0),
+    new BreathingGas('Helitrox 25/25', 25, 25, 50),
+    new BreathingGas('Helitrox 21/35', 21, 35, 44),
+    new BreathingGas('Trimix 18/45', 18, 45, 37),
+    new BreathingGas('Trimix 15/55', 15, 55, 30),
+    new BreathingGas('Trimix 12/60', 12, 60, 28),
+    new BreathingGas('Trimix 10/70', 10, 70, 20),
+    new BreathingGas('Nitrox 50', 50, 0, 50),
+    new BreathingGas('Helitrox 35/25', 35, 25, 40),
   ];
 
-  selectedStandardGas = this.standardGases[0];
+  selectedStandardGas : BreathingGas = this.standardGases[0];
   gasType = 'standard';
-  customGas = { name: 'Custom', oxygen: 21, helium: 0, nitrogen: 79 };
+  customGas : BreathingGas = new BreathingGas('Custom', 21, 0, 79);
 
   getSelectedGas() {
     if (this.gasType === 'standard') {
@@ -42,30 +43,30 @@ export class NewDiveComponent {
   }
 
   updateCustomGasNitrogen() {
-    this.customGas.nitrogen = 100 - this.customGas.oxygen - this.customGas.helium;
+    this.customGas.Nitrogen = 100 - this.customGas.Oxygen - this.customGas.Helium;
   }
 
   onStandardGasChange(event : MatSelectionListChange) {
     this.selectedStandardGas = event.options[0].value;
   }
 
-  getGasTooltip(gas : any) : string {
+  getGasTooltip(gas : BreathingGas) : string {
     return `Max Depth (PO2): ${this.getMaxPO2Depth(gas)}m (${this.getMaxPO2DecoDepth(gas)}m deco)\nMax Depth (END): ${this.getMaxENDDepth(gas)}m\nMin Depth (Hypoxia): ${this.getMinDepth(gas)}m`;
   }
 
-  getMaxPO2Depth(gas : any) : number {
-    return Math.floor(1400 / gas.oxygen - 10);
+  getMaxPO2Depth(gas : BreathingGas) : number {
+    return Math.floor(1400 / gas.Oxygen - 10);
   }
 
-  getMaxPO2DecoDepth(gas : any) : number {
-    return Math.floor(1600 / gas.oxygen - 10);
+  getMaxPO2DecoDepth(gas : BreathingGas) : number {
+    return Math.floor(1600 / gas.Oxygen - 10);
   }
 
-  getMaxENDDepth(gas : any) : number {
-    return Math.floor(3950 / gas.nitrogen - 10);
+  getMaxENDDepth(gas : BreathingGas) : number {
+    return Math.floor(3950 / gas.Nitrogen - 10);
   }
 
-  getMinDepth(gas : any) : number {
-    return Math.max(0, Math.ceil(180 / gas.oxygen - 10));
+  getMinDepth(gas : BreathingGas) : number {
+    return Math.max(0, Math.ceil(180 / gas.Oxygen - 10));
   }
 }

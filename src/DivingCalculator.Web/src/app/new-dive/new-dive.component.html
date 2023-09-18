@@ -9,8 +9,8 @@
       </div>
       <mat-selection-list [multiple]="false" hideSingleSelectionIndicator (selectionChange)="onStandardGasChange($event)" [disabled]="getStandardGasDisabled()">
         <mat-list-option *ngFor="let gas of standardGases" [value]="gas" [selected]="gas === selectedStandardGas" matTooltipClass="tooltip-multiline tooltip-wide" matTooltipPosition="left" [matTooltip]="getGasTooltip(gas)">
-          <span matListItemTitle>{{ gas.name }}</span>
-          <span matListItemLine>O<sub>2</sub>: {{ gas.oxygen }}%, He: {{ gas.helium }}%, N<sub>2</sub>: {{ gas.nitrogen }}%</span>
+          <span matListItemTitle>{{ gas.Name }}</span>
+          <span matListItemLine>O<sub>2</sub>: {{ gas.Oxygen }}%, He: {{ gas.Helium }}%, N<sub>2</sub>: {{ gas.Nitrogen }}%</span>
         </mat-list-option>
       </mat-selection-list>
     </div>
@@ -21,15 +21,15 @@
       <div>
         <mat-form-field>
           <mat-label>Oxygen (%)</mat-label>
-          <input matInput type="number" min="0" max="100" [(ngModel)]="customGas.oxygen" (change)="updateCustomGasNitrogen()" [disabled]="getCustomGasDisabled()">
+          <input matInput type="number" min="0" max="100" [(ngModel)]="customGas.Oxygen" (change)="updateCustomGasNitrogen()" [disabled]="getCustomGasDisabled()">
         </mat-form-field>
         <mat-form-field>
           <mat-label>Helium (%)</mat-label>
-          <input matInput type="number" min="0" max="100" [(ngModel)]="customGas.helium" (change)="updateCustomGasNitrogen()" [disabled]="getCustomGasDisabled()">
+          <input matInput type="number" min="0" max="100" [(ngModel)]="customGas.Helium" (change)="updateCustomGasNitrogen()" [disabled]="getCustomGasDisabled()">
         </mat-form-field>
         <mat-form-field matTooltip="The nitrogen value will be automatically calculated when you input the values for oxygen and helium">
           <mat-label>Nitrogen (%)</mat-label>
-          <input matInput type="number" [(ngModel)]="customGas.nitrogen" disabled>
+          <input matInput type="number" [(ngModel)]="customGas.Nitrogen" disabled>
         </mat-form-field>
       </div>
     </div>
