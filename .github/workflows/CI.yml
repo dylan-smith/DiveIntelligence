@@ -22,3 +22,5 @@ jobs:
       working-directory: src/DivingCalculator.Web
     - run: npm run build
       working-directory: src/DivingCalculator.Web
+    - run: npm run deploy -- --env production --deployment-token ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
+      working-directory: src/DivingCalculator.Web
