@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatSelectionListChange } from '@angular/material/list';
 import { BreathingGas } from '../BreathingGas';
 
@@ -21,6 +22,8 @@ export class NewDiveComponent {
     new BreathingGas('Nitrox 50', 50, 0, 50),
     new BreathingGas('Helitrox 35/25', 35, 25, 40),
   ];
+
+  constructor(private router: Router) {}
 
   selectedStandardGas: BreathingGas = this.standardGases[0];
   gasType = 'standard';
@@ -79,5 +82,9 @@ export class NewDiveComponent {
 
   getMinDepth(gas: BreathingGas): number {
     return Math.max(0, Math.ceil(180 / gas.Oxygen - 10));
+  }
+
+  onSave() {
+    this.router.navigate(['/dive-plan']);
   }
 }
