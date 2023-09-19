@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NewDiveComponent } from './new-dive/new-dive.component';
 import { HomeComponent } from './home/home.component';
 import { DivePlanComponent } from './dive-plan/dive-plan.component';
+import { HumanDurationPipe } from './pipes/human-duration.pipe';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatRadioModule } from '@angular/material/radio';
@@ -24,6 +25,7 @@ import { MatIconModule } from '@angular/material/icon';
     NewDiveComponent,
     HomeComponent,
     DivePlanComponent,
+    HumanDurationPipe,
   ],
   imports: [
     BrowserModule,
@@ -38,7 +40,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatTooltipModule,
     MatIconModule,
   ],
-  providers: [],
+  providers: [HumanDurationPipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
