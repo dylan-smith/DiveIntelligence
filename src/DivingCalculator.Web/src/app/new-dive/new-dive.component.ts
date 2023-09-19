@@ -41,8 +41,7 @@ export class NewDiveComponent {
   }
 
   updateCustomGasNitrogen() {
-    this.customGas.Nitrogen =
-      100 - this.customGas.Oxygen - this.customGas.Helium;
+    this.customGas.Nitrogen = 100 - this.customGas.Oxygen - this.customGas.Helium;
   }
 
   onStandardGasChange(event: MatSelectionListChange) {
@@ -50,11 +49,7 @@ export class NewDiveComponent {
   }
 
   getGasTooltip(gas: BreathingGas): string {
-    return `Max Depth (PO2): ${this.getMaxPO2Depth(
-      gas
-    )}m (${this.getMaxPO2DecoDepth(
-      gas
-    )}m deco)\nMax Depth (END): ${this.getMaxENDDepth(
+    return `Max Depth (PO2): ${this.getMaxPO2Depth(gas)}m (${this.getMaxPO2DecoDepth(gas)}m deco)\nMax Depth (END): ${this.getMaxENDDepth(
       gas
     )}m\nMin Depth (Hypoxia): ${this.getMinDepth(gas)}m`;
   }

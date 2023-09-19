@@ -1,23 +1,13 @@
 <main>
   <header>
-    <h1 id="select-starting-gas-heading">
-      Select the starting gas for the dive
-    </h1>
+    <h1 id="select-starting-gas-heading">Select the starting gas for the dive</h1>
   </header>
-  <mat-radio-group
-    aria-labelledby="select-starting-gas-heading"
-    [(ngModel)]="gasType">
+  <mat-radio-group aria-labelledby="select-starting-gas-heading" [(ngModel)]="gasType">
     <div class="standard-gas">
       <div class="radio-button">
-        <mat-radio-button name="gasType" value="standard">
-          Standard gas
-        </mat-radio-button>
+        <mat-radio-button name="gasType" value="standard">Standard gas</mat-radio-button>
       </div>
-      <mat-selection-list
-        [multiple]="false"
-        hideSingleSelectionIndicator
-        (selectionChange)="onStandardGasChange($event)"
-        [disabled]="getStandardGasDisabled()">
+      <mat-selection-list [multiple]="false" hideSingleSelectionIndicator (selectionChange)="onStandardGasChange($event)" [disabled]="getStandardGasDisabled()">
         <mat-list-option
           *ngFor="let gas of standardGases"
           [value]="gas"
@@ -27,8 +17,11 @@
           [matTooltip]="getGasTooltip(gas)">
           <span matListItemTitle>{{ gas.Name }}</span>
           <span matListItemLine>
-            O<sub>2</sub>: {{ gas.Oxygen }}%, He: {{ gas.Helium }}%,
-            N<sub>2</sub>: {{ gas.Nitrogen }}%
+            O
+            <sub>2</sub>
+            : {{ gas.Oxygen }}%, He: {{ gas.Helium }}%, N
+            <sub>2</sub>
+            : {{ gas.Nitrogen }}%
           </span>
         </mat-list-option>
       </mat-selection-list>
@@ -60,14 +53,9 @@
             (change)="updateCustomGasNitrogen()"
             [disabled]="getCustomGasDisabled()" />
         </mat-form-field>
-        <mat-form-field
-          matTooltip="The nitrogen value will be automatically calculated when you input the values for oxygen and helium">
+        <mat-form-field matTooltip="The nitrogen value will be automatically calculated when you input the values for oxygen and helium">
           <mat-label>Nitrogen (%)</mat-label>
-          <input
-            matInput
-            type="number"
-            [(ngModel)]="customGas.Nitrogen"
-            disabled />
+          <input matInput type="number" [(ngModel)]="customGas.Nitrogen" disabled />
         </mat-form-field>
       </div>
     </div>
@@ -77,12 +65,10 @@
           class="gas-calc"
           matTooltip="Maximum depth this gas can be breathed at without going over an oxygen partial pressure of 1.4 (1.6 for deco stops)"
           matTooltipPosition="right">
-          Max Depth (PO<sub>2</sub>):
-          <strong>
-            {{ getMaxPO2Depth(getSelectedGas()) }}m ({{
-              getMaxPO2DecoDepth(getSelectedGas())
-            }}m deco)
-          </strong>
+          Max Depth (PO
+          <sub>2</sub>
+          ):
+          <strong>{{ getMaxPO2Depth(getSelectedGas()) }}m ({{ getMaxPO2DecoDepth(getSelectedGas()) }}m deco)</strong>
         </div>
         <div
           class="gas-calc"
@@ -92,16 +78,11 @@
           <strong>{{ getMaxENDDepth(getSelectedGas()) }}m</strong>
         </div>
         <div class="gas-calc">
-          <span
-            matTooltip="Minimum depth this gas can be breathed at without going below an oxygen partial pressure of 0.18"
-            matTooltipPosition="below">
+          <span matTooltip="Minimum depth this gas can be breathed at without going below an oxygen partial pressure of 0.18" matTooltipPosition="below">
             Min Depth (Hypoxia):
             <strong>{{ getMinDepth(getSelectedGas()) }}m</strong>
           </span>
-          <mat-icon
-            [class.hidden]="!isMinDepthError()"
-            class="error"
-            matTooltip="This gas cannot be breathed at the surface due to the hypoxic oxygen content">
+          <mat-icon [class.hidden]="!isMinDepthError()" class="error" matTooltip="This gas cannot be breathed at the surface due to the hypoxic oxygen content">
             error
           </mat-icon>
         </div>

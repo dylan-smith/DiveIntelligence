@@ -20,13 +20,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NewDiveComponent,
-    HomeComponent,
-    DivePlanComponent,
-    HumanDurationPipe,
-  ],
+  declarations: [AppComponent, NewDiveComponent, HomeComponent, DivePlanComponent, HumanDurationPipe],
   imports: [
     BrowserModule,
     AppRoutingModule,
