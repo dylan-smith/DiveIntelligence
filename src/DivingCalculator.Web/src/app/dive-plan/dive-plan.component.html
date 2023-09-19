@@ -6,7 +6,7 @@
           <span matListItemTitle
             >{{ planEvent.Timestamp }} {{ planEvent.Title }}
           </span>
-          <span matListItemLine>{{ planEvent.Description }}</span>
+          <span matListItemLine [innerHTML]="planEvent.Description"></span>
         </mat-list-item>
       </mat-selection-list>
       <button

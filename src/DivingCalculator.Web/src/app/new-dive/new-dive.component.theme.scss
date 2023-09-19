@@ -12,7 +12,7 @@
     background-color: map-get($background, card);
   }
 
-  .mat-icon {
+  .mat-icon.error {
     color: map-get($warn, 500);
   }
 
