@@ -1,0 +1,25 @@
+@mixin new-dive-theme($theme) {
+  $color: map-get($theme, color);
+  $accent: map-get($color, accent);
+  $warn: map-get($color, warn);
+  $background: map-get($color, background);
+  $card: map-get($background, card);
+  $error: map-get($warn, 500);
+  $highlight: map-get($accent, 100);
+
+  mat-selection-list {
+    background-color: $card;
+  }
+
+  .gas-calculations {
+    background-color: $card;
+  }
+
+  .mat-icon {
+    color: $error;
+  }
+
+  mat-list-option[aria-selected="true"] {
+    background: $highlight !important;
+  }
+}
