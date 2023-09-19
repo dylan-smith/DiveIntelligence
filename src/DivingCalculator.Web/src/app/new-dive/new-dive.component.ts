@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSelectionListChange } from '@angular/material/list';
-import { BreathingGas } from '../BreathingGas';
+import { BreathingGas } from '../dive-planner-service/BreathingGas';
+import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
 
 @Component({
   selector: 'dive-new-dive',
@@ -9,22 +10,12 @@ import { BreathingGas } from '../BreathingGas';
   styleUrls: ['./new-dive.component.scss'],
 })
 export class NewDiveComponent {
-  standardGases: BreathingGas[] = [
-    new BreathingGas('Air', 21, 0, 79),
-    new BreathingGas('Nitrox 32', 32, 0, 68),
-    new BreathingGas('Oxygen', 100, 0, 0),
-    new BreathingGas('Helitrox 25/25', 25, 25, 50),
-    new BreathingGas('Helitrox 21/35', 21, 35, 44),
-    new BreathingGas('Trimix 18/45', 18, 45, 37),
-    new BreathingGas('Trimix 15/55', 15, 55, 30),
-    new BreathingGas('Trimix 12/60', 12, 60, 28),
-    new BreathingGas('Trimix 10/70', 10, 70, 20),
-    new BreathingGas('Nitrox 50', 50, 0, 50),
-    new BreathingGas('Helitrox 35/25', 35, 25, 40),
-  ];
+  constructor(
+    private router: Router,
+    private divePlanner: DivePlannerService
+  ) {}
 
-  constructor(private router: Router) {}
-
+  standardGases: BreathingGas[] = this.divePlanner.getStandardGases();
   selectedStandardGas: BreathingGas = this.standardGases[0];
   gasType = 'standard';
   customGas: BreathingGas = new BreathingGas('Custom', 21, 0, 79);
@@ -85,6 +76,7 @@ export class NewDiveComponent {
   }
 
   onSave() {
+    this.divePlanner.setStartGas(this.getSelectedGas());
     this.router.navigate(['/dive-plan']);
   }
 }
