@@ -7,7 +7,12 @@
       <div class="radio-button">
         <mat-radio-button name="gasType" value="standard">Standard gas</mat-radio-button>
       </div>
-      <mat-selection-list [multiple]="false" hideSingleSelectionIndicator (selectionChange)="onStandardGasChange($event)" [disabled]="getStandardGasDisabled()">
+      <mat-selection-list
+        [multiple]="false"
+        hideSingleSelectionIndicator
+        (selectionChange)="onStandardGasChange($event)"
+        [disabled]="getStandardGasDisabled()"
+        class="mat-elevation-z2">
         <mat-list-option
           *ngFor="let gas of standardGases"
           [value]="gas"
@@ -54,7 +59,7 @@
       </div>
     </div>
     <div class="summary-data">
-      <div class="gas-calculations">
+      <div class="gas-calculations mat-elevation-z2">
         <div
           class="gas-calc"
           matTooltip="Maximum depth this gas can be breathed at without going over an oxygen partial pressure of 1.4 (1.6 for deco stops)"
