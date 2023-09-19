@@ -9,6 +9,7 @@ import { NewDiveComponent } from './new-dive/new-dive.component';
 import { HomeComponent } from './home/home.component';
 import { DivePlanComponent } from './dive-plan/dive-plan.component';
 import { HumanDurationPipe } from './pipes/human-duration.pipe';
+import { ColonDurationPipe } from './pipes/colon-duration.pipe';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatRadioModule } from '@angular/material/radio';
@@ -20,7 +21,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
-  declarations: [AppComponent, NewDiveComponent, HomeComponent, DivePlanComponent, HumanDurationPipe],
+  declarations: [AppComponent, NewDiveComponent, HomeComponent, DivePlanComponent, HumanDurationPipe, ColonDurationPipe],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -34,7 +35,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatTooltipModule,
     MatIconModule,
   ],
-  providers: [HumanDurationPipe],
+  providers: [HumanDurationPipe, ColonDurationPipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

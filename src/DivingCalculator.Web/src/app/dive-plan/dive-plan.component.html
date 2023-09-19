@@ -3,7 +3,7 @@
     <div class="dive-plan-list-section">
       <mat-selection-list class="mat-elevation-z2">
         <mat-list-item *ngFor="let planEvent of planEvents">
-          <span matListItemTitle>{{ planEvent.Timestamp }} {{ planEvent.Title }}</span>
+          <span matListItemTitle>{{ planEvent.Timestamp | colonDuration }} {{ planEvent.Title }}</span>
           <span matListItemLine [innerHTML]="planEvent.Description"></span>
         </mat-list-item>
       </mat-selection-list>
