@@ -22,5 +22,6 @@ jobs:
       working-directory: src/DivingCalculator.Web
     - run: npm run build
       working-directory: src/DivingCalculator.Web
+    - run: cp src/DivingCalculator.Web/staticwebapp.config.json src/DivingCalculator.Web/dist/dive-intelligence/staticwebapp.config.json
     - run: npm run deploy -- --env production --deployment-token ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
       working-directory: src/DivingCalculator.Web
