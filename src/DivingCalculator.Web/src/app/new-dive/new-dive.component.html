@@ -64,9 +64,8 @@
           class="gas-calc"
           matTooltip="Maximum depth this gas can be breathed at without going over an oxygen partial pressure of 1.4 (1.6 for deco stops)"
           matTooltipPosition="right">
-          Max Depth (PO
-          <sub>2</sub>
-          ):
+          <!-- eslint-disable-next-line prettier/prettier -->
+          Max Depth (PO<sub>2</sub>):
           <strong>{{ getMaxPO2Depth(getSelectedGas()) }}m ({{ getMaxPO2DecoDepth(getSelectedGas()) }}m deco)</strong>
         </div>
         <div
