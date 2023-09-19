@@ -1,1 +1,46 @@
-<p>dive-plan works!</p>
+<main>
+  <div class="dive-plan-section">
+    <div class="dive-plan-list-section">
+      <mat-selection-list class="mat-elevation-z2">
+        <mat-list-item *ngFor="let planEvent of planEvents">
+          <span matListItemTitle
+            >{{ planEvent.Timestamp }} {{ planEvent.Title }}
+          </span>
+          <span matListItemLine>{{ planEvent.Description }}</span>
+        </mat-list-item>
+      </mat-selection-list>
+      <button
+        mat-fab
+        color="primary"
+        routerLink="/add-dive-segment"
+        class="add-segment-button"
+        (click)="onAddPlanEvent($event)">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+    <div class="dive-stats mat-elevation-z2">
+      <div class="dive-stat">Dive Duration: <strong>75m</strong></div>
+      <div class="dive-stat">Max Depth: <strong>30m</strong></div>
+      <div class="dive-stat">Average Depth: <strong>20m</strong></div>
+    </div>
+    <div class="errors">
+      <div class="plan-error">
+        <mat-icon>error</mat-icon>
+        <strong class="error-message">
+          Exceeded ceiling by up to 34.2m for 3 min 12 sec
+        </strong>
+      </div>
+    </div>
+  </div>
+  <div class="graphs">
+    <div class="graph mat-elevation-z2">
+      Create dive segements to populate graphs
+    </div>
+    <div class="graph mat-elevation-z2">
+      Create dive segements to populate graphs
+    </div>
+    <div class="graph mat-elevation-z2">
+      Create dive segements to populate graphs
+    </div>
+  </div>
+</main>

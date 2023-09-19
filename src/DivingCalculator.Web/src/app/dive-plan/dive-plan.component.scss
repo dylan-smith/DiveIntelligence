@@ -1,0 +1,73 @@
+main {
+  display: flex;
+  justify-content: center;
+}
+
+.dive-plan-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.graph {
+  height: 240px;
+  width: 640px;
+  margin: 1rem;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.add-segment-button {
+  align-self: flex-end;
+}
+
+.plan-error {
+  border-width: 2px;
+  border-style: solid;
+  padding: 0.3rem;
+}
+
+.errors {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.dive-stats{
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  width: fit-content;
+  padding: 1rem;
+}
+
+.add-segment-button {
+  margin-top: 0.3rem;
+  margin-bottom: 1rem;
+}
+
+.dive-plan-section {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.graphs {
+  margin-left: 3rem;
+}
+
+mat-list {
+  width: fit-content;
+}
+
+.dive-plan-list-section {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+}
+
+mat-selection-list {
+  padding: 0px;
+}
+
+.dive-stat {
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
+}

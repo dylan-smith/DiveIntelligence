@@ -1,0 +1,22 @@
+@mixin dive-plan-theme($theme) {
+  $color: map-get($theme, color);
+  $background: map-get($color, background);
+  $warn: map-get($color, warn);
+
+  mat-list {
+    background-color: map-get($background, card);
+  }
+
+  .graph {
+    background-color: map-get($background, card);
+  }
+
+  .dive-stats {
+    background-color: map-get($background, card);
+  }
+
+  .plan-error {
+    border-color: map-get($warn, 500);
+    color: map-get($warn, 500);
+  }
+}
