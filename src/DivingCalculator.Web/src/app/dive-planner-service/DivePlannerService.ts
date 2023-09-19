@@ -17,9 +17,11 @@ export class DivePlannerService {
     return StandardGases;
   }
 
-  setStartGas(gas: BreathingGas) {
-    this.startGas = gas;
-    this.diveSegments.push(this.diveSegmentFactory.createStartDiveSegment(gas));
+  startDive(startGas: BreathingGas) {
+    this.startGas = startGas;
+
+    this.diveSegments = [];
+    this.diveSegments.push(this.diveSegmentFactory.createStartDiveSegment(startGas));
     this.diveSegments.push(this.diveSegmentFactory.createEndDiveSegment(0));
   }
 
