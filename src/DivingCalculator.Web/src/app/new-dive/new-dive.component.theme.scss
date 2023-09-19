@@ -3,23 +3,20 @@
   $accent: map-get($color, accent);
   $warn: map-get($color, warn);
   $background: map-get($color, background);
-  $card: map-get($background, card);
-  $error: map-get($warn, 500);
-  $highlight: map-get($accent, 100);
 
   mat-selection-list {
-    background-color: $card;
+    background-color: map-get($background, card);
   }
 
   .gas-calculations {
-    background-color: $card;
+    background-color: map-get($background, card);
   }
 
   .mat-icon {
-    color: $error;
+    color: map-get($warn, 500);
   }
 
   mat-list-option[aria-selected="true"] {
-    background: $highlight !important;
+    background: map-get($accent, 100) !important;
   }
 }
