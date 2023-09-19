@@ -16,13 +16,7 @@
           matTooltipPosition="left"
           [matTooltip]="getGasTooltip(gas)">
           <span matListItemTitle>{{ gas.Name }}</span>
-          <span matListItemLine>
-            O
-            <sub>2</sub>
-            : {{ gas.Oxygen }}%, He: {{ gas.Helium }}%, N
-            <sub>2</sub>
-            : {{ gas.Nitrogen }}%
-          </span>
+          <span matListItemLine [innerHTML]="gas.getCompositionDescription()"></span>
         </mat-list-option>
       </mat-selection-list>
     </div>

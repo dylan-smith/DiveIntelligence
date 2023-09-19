@@ -12,6 +12,10 @@ export class BreathingGas {
   }
 
   getDescription(): string {
-    return `${this.Name} (O<sub>2</sub>: ${this.Oxygen}%, He: ${this.Helium}%, N<sub>2</sub>: ${this.Nitrogen}%)`;
+    return `${this.Name} (${this.getCompositionDescription()})`;
+  }
+
+  getCompositionDescription(): string {
+    return `O<sub>2</sub>: ${this.Oxygen}%, He: ${this.Helium}%, N<sub>2</sub>: ${this.Nitrogen}%`;
   }
 }
