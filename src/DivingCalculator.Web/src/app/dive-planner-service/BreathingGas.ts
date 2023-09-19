@@ -10,4 +10,8 @@ export class BreathingGas {
     this.Helium = helium;
     this.Nitrogen = nitrogen;
   }
+
+  getDescription(): string {
+    return `${this.Name} (O<sub>2</sub>: ${this.Oxygen}%, He: ${this.Helium}%, N<sub>2</sub>: ${this.Nitrogen}%)`;
+  }
 }
