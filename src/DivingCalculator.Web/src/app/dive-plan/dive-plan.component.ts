@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
-import { IDiveSegment } from '../dive-planner-service/IDiveSegment';
+import { DiveSegment } from '../dive-planner-service/DiveSegment';
 
 @Component({
   selector: 'dive-dive-plan',
@@ -8,9 +8,9 @@ import { IDiveSegment } from '../dive-planner-service/IDiveSegment';
   styleUrls: ['./dive-plan.component.scss'],
 })
 export class DivePlanComponent {
-  planEvents: IDiveSegment[];
+  planEvents: DiveSegment[];
 
-  constructor(private divePlanner: DivePlannerService) {
+  constructor(public divePlanner: DivePlannerService) {
     this.planEvents = divePlanner.getDiveSegments();
   }
 

@@ -3,7 +3,7 @@
     <div class="dive-plan-list-section">
       <mat-selection-list class="mat-elevation-z2">
         <mat-list-item *ngFor="let planEvent of planEvents">
-          <span matListItemTitle>{{ planEvent.Timestamp | colonDuration }} {{ planEvent.Title }}</span>
+          <span matListItemTitle>{{ planEvent.StartTimestamp | colonDuration }} {{ planEvent.Title }}</span>
           <span matListItemLine [innerHTML]="planEvent.Description"></span>
         </mat-list-item>
       </mat-selection-list>
@@ -14,15 +14,15 @@
     <div class="dive-stats mat-elevation-z2">
       <div class="dive-stat">
         Dive Duration:
-        <strong>75m</strong>
+        <strong>{{ divePlanner.getDiveDuration() }}m</strong>
       </div>
       <div class="dive-stat">
         Max Depth:
-        <strong>30m</strong>
+        <strong>{{ divePlanner.getMaxDepth() }}m</strong>
       </div>
       <div class="dive-stat">
         Average Depth:
-        <strong>20m</strong>
+        <strong>{{ divePlanner.getAverageDepth() }}m</strong>
       </div>
     </div>
     <div class="errors">
