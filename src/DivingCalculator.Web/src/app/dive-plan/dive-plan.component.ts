@@ -13,8 +13,4 @@ export class DivePlanComponent {
   constructor(public divePlanner: DivePlannerService) {
     this.planEvents = divePlanner.getDiveSegments();
   }
-
-  onAddPlanEvent() {
-    console.log('Add plan event');
-  }
 }
