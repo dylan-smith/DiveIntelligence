@@ -17,6 +17,7 @@ export class AddDiveSegmentComponent {
   newGasSelectedOption: string;
   standardGas: BreathingGas | undefined;
   customGas: BreathingGas = new BreathingGas('Custom', 21, 0, 79);
+  timeAtDepth = 0;
 
   private DESCENT_RATE = 3; // seconds per meter
   private ASCENT_RATE = 6; // seconds per meter
