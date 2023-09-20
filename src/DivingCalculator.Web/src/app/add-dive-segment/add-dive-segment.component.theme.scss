@@ -20,10 +20,10 @@
   }
 
   .warning-icon {
-    color: #FFC107;
+    color: map-get($warn, warning);
   }
 
   .error-icon {
-    color: map-get($warn, 500);
+    color: map-get($warn, error);
   }
 }
