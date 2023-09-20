@@ -43,26 +43,20 @@
         PO<sub>2</sub>:
         <strong>{{ getCurrentPO2() | number: '1.2-2' }}</strong>
       </span>
-      <mat-icon
-        *ngIf="isCurrentPO2Warning()"
-        class="warning-icon"
-        matTooltip="Oxygen partial pressure should only go above 1.4 during deco stops"
-        matTooltipPosition="right">
+      <mat-icon *ngIf="getCurrentPO2Warning() !== undefined" class="warning-icon" [matTooltip]="getCurrentPO2Warning()!" matTooltipPosition="right">
         warning
       </mat-icon>
-      <mat-icon *ngIf="isCurrentPO2Error()" class="error-icon" matTooltip="Oxygen partial pressure should never go above 1.6" matTooltipPosition="right">
-        error
-      </mat-icon>
+      <mat-icon *ngIf="getCurrentPO2Error() !== undefined" class="error-icon" [matTooltip]="getCurrentPO2Error()!" matTooltipPosition="right">error</mat-icon>
     </div>
     <div class="dive-stat">
       <span matTooltip="Equivalent narcotic depth of the current gas at the current depth" matTooltipPosition="above">
         END:
         <strong>{{ getCurrentEND() }}m</strong>
       </span>
-      <mat-icon *ngIf="isCurrentENDWarning()" class="warning-icon" matTooltip="Some divers (e.g. GUE) aim to keep END below 30m" matTooltipPosition="right">
+      <mat-icon *ngIf="getCurrentENDWarning() !== undefined" class="warning-icon" [matTooltip]="getCurrentENDWarning()!" matTooltipPosition="right">
         warning
       </mat-icon>
-      <mat-icon *ngIf="isCurrentENDError()" class="error-icon" matTooltip="Most divers aim to keep END below 40m" matTooltipPosition="right">error</mat-icon>
+      <mat-icon *ngIf="getCurrentENDError() !== undefined" class="error-icon" [matTooltip]="getCurrentENDError()!" matTooltipPosition="right">error</mat-icon>
     </div>
   </div>
   <h1>Select new depth</h1>
@@ -85,17 +79,13 @@
       <div class="dive-stat">
         <span matTooltip="Oxygen partial pressure of the current gas at the new depth" matTooltipPosition="above">
           <!-- eslint-disable-next-line prettier/prettier -->
-        PO<sub>2</sub>:
+          PO<sub>2</sub>:
           <strong>{{ getNewDepthPO2() | number: '1.2-2' }}</strong>
         </span>
-        <mat-icon
-          *ngIf="isNewDepthPO2Warning()"
-          class="warning-icon"
-          matTooltip="Oxygen partial pressure should only go above 1.4 during deco stops"
-          matTooltipPosition="right">
+        <mat-icon *ngIf="getNewDepthPO2Warning() !== undefined" class="warning-icon" [matTooltip]="getNewDepthPO2Warning()!" matTooltipPosition="right">
           warning
         </mat-icon>
-        <mat-icon *ngIf="isNewDepthPO2Error()" class="error-icon" matTooltip="Oxygen partial pressure should never go above 1.6" matTooltipPosition="right">
+        <mat-icon *ngIf="getNewDepthPO2Error() !== undefined" class="error-icon" [matTooltip]="getNewDepthPO2Error()!" matTooltipPosition="right">
           error
         </mat-icon>
       </div>
@@ -104,10 +94,12 @@
           END:
           <strong>{{ getNewDepthEND() }}m</strong>
         </span>
-        <mat-icon *ngIf="isNewDepthENDWarning()" class="warning-icon" matTooltip="Some divers (e.g. GUE) aim to keep END below 30m" matTooltipPosition="right">
+        <mat-icon *ngIf="getNewDepthENDWarning() !== undefined" class="warning-icon" [matTooltip]="getNewDepthENDWarning()!" matTooltipPosition="right">
           warning
         </mat-icon>
-        <mat-icon *ngIf="isNewDepthENDError()" class="error-icon" matTooltip="Most divers aim to keep END below 40m" matTooltipPosition="right">error</mat-icon>
+        <mat-icon *ngIf="getNewDepthENDError() !== undefined" class="error-icon" [matTooltip]="getNewDepthENDError()!" matTooltipPosition="right">
+          error
+        </mat-icon>
       </div>
     </div>
   </div>
