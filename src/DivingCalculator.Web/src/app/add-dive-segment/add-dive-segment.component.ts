@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
+import { BreathingGas } from '../dive-planner-service/BreathingGas';
 
 @Component({
   selector: 'dive-add-dive-segment',
@@ -12,6 +13,8 @@ export class AddDiveSegmentComponent {
   ascentTime: number | undefined;
   newDepthPO2!: number;
   newDepthEND!: number;
+  newGas!: BreathingGas;
+  newGasSelectedOption: string;
 
   private DESCENT_RATE = 3; // seconds per meter
   private ASCENT_RATE = 6; // seconds per meter
@@ -19,6 +22,8 @@ export class AddDiveSegmentComponent {
   constructor(public divePlanner: DivePlannerService) {
     this.newDepth = divePlanner.getCurrentDepth();
     this.calculateNewDepthData();
+    this.newGasSelectedOption = 'current';
+    this.calculateNewGas();
   }
 
   calculateNewDepthData(): void {
@@ -35,5 +40,11 @@ export class AddDiveSegmentComponent {
 
     this.newDepthPO2 = this.divePlanner.getCurrentGas().getPO2(this.newDepth);
     this.newDepthEND = this.divePlanner.getCurrentGas().getEND(this.newDepth);
+  }
+
+  calculateNewGas(): void {
+    if (this.newGasSelectedOption === 'current') {
+      this.newGas = this.divePlanner.getCurrentGas();
+    }
   }
 }

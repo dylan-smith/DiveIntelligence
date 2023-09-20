@@ -40,7 +40,7 @@
         <strong>{{ descentTime | humanDuration }} @ 20m/min</strong>
       </div>
       <div class="dive-stat" *ngIf="ascentTime !== undefined">
-        Descent Time:
+        Ascent Time:
         <strong>{{ ascentTime | humanDuration }} @ 10m/min</strong>
       </div>
       <div class="dive-stat">
@@ -55,17 +55,17 @@
     </div>
   </div>
   <h1>Select new gas</h1>
-  <mat-radio-group>
+  <mat-radio-group [(ngModel)]="newGasSelectedOption">
     <div class="new-gas-row input-section mat-elevation-z2">
       <div class="new-gas-col">
-        <mat-radio-button>
+        <mat-radio-button value="current">
           <div>Current Gas</div>
-          <div class="gas-description">Air (O2: 21%, He: 0%, N2: 79%)</div>
+          <div class="gas-description" [innerHTML]="divePlanner.getCurrentGas().getDescription()"></div>
         </mat-radio-button>
       </div>
       <div class="new-gas-col">
         <div>
-          <mat-radio-button>
+          <mat-radio-button value="standard">
             <div>Standard Gas</div>
           </mat-radio-button>
         </div>
@@ -100,7 +100,7 @@
         </div>
       </div>
       <div class="new-gas-col">
-        <mat-radio-button>
+        <mat-radio-button value="optimal">
           <div>Optimal Deco Gas</div>
           <div class="gas-description">Air (O2: 21%, He: 0%, N2: 79%)</div>
         </mat-radio-button>
