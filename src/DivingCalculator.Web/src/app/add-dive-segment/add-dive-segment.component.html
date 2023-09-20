@@ -37,6 +37,15 @@
       Min Depth (Hypoxia):
       <strong>{{ divePlanner.getCurrentGas().getMinDepth() }}m</strong>
     </div>
+    <div class="dive-stat" matTooltip="Oxygen partial pressure of the current gas at the current depth" matTooltipPosition="right">
+      <!-- eslint-disable-next-line prettier/prettier -->
+      PO<sub>2</sub>:
+      <strong>{{ divePlanner.getCurrentGas().getPO2(divePlanner.getCurrentDepth()) }}</strong>
+    </div>
+    <div class="dive-stat" matTooltip="Equivalent narcotic depth of the current gas at the current depth" matTooltipPosition="right">
+      END:
+      <strong>{{ newDepthEND }}m</strong>
+    </div>
   </div>
   <h1>Select new depth</h1>
   <div class="new-depth-row">
