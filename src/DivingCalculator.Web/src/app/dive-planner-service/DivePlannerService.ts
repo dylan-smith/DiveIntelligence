@@ -93,4 +93,20 @@ export class DivePlannerService {
 
     this.diveSegments.push(this.diveSegmentFactory.createEndDiveSegment(endTime, newDepth, newGas));
   }
+
+  getDescentDuration(newDepth: number): number | undefined {
+    if (newDepth > this.getCurrentDepth()) {
+      return (newDepth - this.getCurrentDepth()) * this.DESCENT_RATE;
+    }
+
+    return undefined;
+  }
+
+  getAscentDuration(newDepth: number): number | undefined {
+    if (newDepth < this.getCurrentDepth()) {
+      return (this.getCurrentDepth() - newDepth) * this.ASCENT_RATE;
+    }
+
+    return undefined;
+  }
 }

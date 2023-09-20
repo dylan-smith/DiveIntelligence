@@ -17,6 +17,7 @@ main {
 .dive-stat, .gas-stat {
   padding-top: 0.1rem;
   padding-bottom: 0.1rem;
+  line-height: 28px; // this is needed because mat-icons are 24x24 (not sure why it needs to be 28 instead of 24 though)
 }
 
 .gas-stat {

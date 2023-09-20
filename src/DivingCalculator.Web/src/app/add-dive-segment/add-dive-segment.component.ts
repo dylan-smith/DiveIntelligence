@@ -10,43 +10,18 @@ import { Router } from '@angular/router';
 })
 export class AddDiveSegmentComponent {
   newDepth: number;
-  descentTime: number | undefined;
-  ascentTime: number | undefined;
-  newDepthPO2!: number;
-  newDepthEND!: number;
-  newGas!: BreathingGas;
+  newGas: BreathingGas = this.divePlanner.getCurrentGas();
   newGasSelectedOption: string;
   standardGas: BreathingGas | undefined;
   customGas: BreathingGas = new BreathingGas('Custom', 21, 0, 79);
   timeAtDepth = 0;
-
-  private DESCENT_RATE = 3; // seconds per meter
-  private ASCENT_RATE = 6; // seconds per meter
 
   constructor(
     public divePlanner: DivePlannerService,
     private router: Router
   ) {
     this.newDepth = divePlanner.getCurrentDepth();
-    this.calculateNewDepthData();
     this.newGasSelectedOption = 'current';
-    this.calculateNewGas();
-  }
-
-  calculateNewDepthData(): void {
-    this.descentTime = undefined;
-    this.ascentTime = undefined;
-
-    if (this.newDepth > this.divePlanner.getCurrentDepth()) {
-      this.descentTime = (this.newDepth - this.divePlanner.getCurrentDepth()) * this.DESCENT_RATE;
-    }
-
-    if (this.newDepth < this.divePlanner.getCurrentDepth()) {
-      this.ascentTime = (this.divePlanner.getCurrentDepth() - this.newDepth) * this.ASCENT_RATE;
-    }
-
-    this.newDepthPO2 = this.divePlanner.getCurrentGas().getPO2(this.newDepth);
-    this.newDepthEND = this.divePlanner.getCurrentGas().getEND(this.newDepth);
   }
 
   calculateNewGas(): void {
@@ -102,5 +77,37 @@ export class AddDiveSegmentComponent {
 
   isCurrentENDError(): boolean {
     return this.getCurrentEND() > 40;
+  }
+
+  getNewDepthPO2(): number {
+    return this.divePlanner.getCurrentGas().getPO2(this.newDepth);
+  }
+
+  isNewDepthPO2Warning(): boolean {
+    return this.getNewDepthPO2() > 1.4 && this.getNewDepthPO2() <= 1.6;
+  }
+
+  isNewDepthPO2Error(): boolean {
+    return this.getNewDepthPO2() > 1.6;
+  }
+
+  getNewDepthEND(): number {
+    return this.divePlanner.getCurrentGas().getEND(this.newDepth);
+  }
+
+  isNewDepthENDWarning(): boolean {
+    return this.getNewDepthEND() > 30 && this.getNewDepthEND() <= 40;
+  }
+
+  isNewDepthENDError(): boolean {
+    return this.getNewDepthEND() > 40;
+  }
+
+  getDescentDuration(): number | undefined {
+    return this.divePlanner.getDescentDuration(this.newDepth);
+  }
+
+  getAscentDuration(): number | undefined {
+    return this.divePlanner.getAscentDuration(this.newDepth);
   }
 }

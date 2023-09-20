@@ -38,7 +38,7 @@
       </span>
     </div>
     <div class="dive-stat">
-      <span matTooltip="Oxygen partial pressure of the current gas at the current depth" matTooltipPosition="right">
+      <span matTooltip="Oxygen partial pressure of the current gas at the current depth" matTooltipPosition="above">
         <!-- eslint-disable-next-line prettier/prettier -->
         PO<sub>2</sub>:
         <strong>{{ getCurrentPO2() | number: '1.2-2' }}</strong>
@@ -55,7 +55,7 @@
       </mat-icon>
     </div>
     <div class="dive-stat">
-      <span matTooltip="Equivalent narcotic depth of the current gas at the current depth" matTooltipPosition="right">
+      <span matTooltip="Equivalent narcotic depth of the current gas at the current depth" matTooltipPosition="above">
         END:
         <strong>{{ getCurrentEND() }}m</strong>
       </span>
@@ -70,26 +70,44 @@
     <div class="input-section mat-elevation-z2">
       <mat-form-field class="depth-input">
         <mat-label>New Depth (m)</mat-label>
-        <input matInput type="number" min="0" [(ngModel)]="newDepth" (change)="calculateNewDepthData()" />
+        <input matInput type="number" min="0" [(ngModel)]="newDepth" />
       </mat-form-field>
     </div>
     <div class="calculation-section mat-elevation-z2">
-      <div class="dive-stat" *ngIf="descentTime !== undefined">
+      <div class="dive-stat" *ngIf="getDescentDuration() !== undefined">
         Descent Time:
-        <strong>{{ descentTime | humanDuration }} @ 20m/min</strong>
+        <strong>{{ getDescentDuration()! | humanDuration }} @ 20m/min</strong>
       </div>
-      <div class="dive-stat" *ngIf="ascentTime !== undefined">
+      <div class="dive-stat" *ngIf="getAscentDuration() !== undefined">
         Ascent Time:
-        <strong>{{ ascentTime | humanDuration }} @ 10m/min</strong>
+        <strong>{{ getAscentDuration()! | humanDuration }} @ 10m/min</strong>
       </div>
-      <div class="dive-stat" matTooltip="Oxygen partial pressure of the current gas at the new depth" matTooltipPosition="right">
-        <!-- eslint-disable-next-line prettier/prettier -->
+      <div class="dive-stat">
+        <span matTooltip="Oxygen partial pressure of the current gas at the new depth" matTooltipPosition="above">
+          <!-- eslint-disable-next-line prettier/prettier -->
         PO<sub>2</sub>:
-        <strong>{{ newDepthPO2 | number: '1.2-2' }}</strong>
+          <strong>{{ getNewDepthPO2() | number: '1.2-2' }}</strong>
+        </span>
+        <mat-icon
+          *ngIf="isNewDepthPO2Warning()"
+          class="warning-icon"
+          matTooltip="Oxygen partial pressure should only go above 1.4 during deco stops"
+          matTooltipPosition="right">
+          warning
+        </mat-icon>
+        <mat-icon *ngIf="isNewDepthPO2Error()" class="error-icon" matTooltip="Oxygen partial pressure should never go above 1.6" matTooltipPosition="right">
+          error
+        </mat-icon>
       </div>
-      <div class="dive-stat" matTooltip="Equivalent narcotic depth of the current gas at the new depth" matTooltipPosition="right">
-        END:
-        <strong>{{ newDepthEND }}m</strong>
+      <div class="dive-stat">
+        <span matTooltip="Equivalent narcotic depth of the current gas at the new depth" matTooltipPosition="above">
+          END:
+          <strong>{{ getNewDepthEND() }}m</strong>
+        </span>
+        <mat-icon *ngIf="isNewDepthENDWarning()" class="warning-icon" matTooltip="Some divers (e.g. GUE) aim to keep END below 30m" matTooltipPosition="right">
+          warning
+        </mat-icon>
+        <mat-icon *ngIf="isNewDepthENDError()" class="error-icon" matTooltip="Most divers aim to keep END below 40m" matTooltipPosition="right">error</mat-icon>
       </div>
     </div>
   </div>
@@ -135,6 +153,7 @@
               max="100"
               [(ngModel)]="customGas.Oxygen"
               (change)="updateCustomGasNitrogen()"
+              (input)="updateCustomGasNitrogen()"
               [disabled]="getCustomGasDisabled()" />
           </mat-form-field>
           <mat-form-field class="custom-gas-input">
@@ -146,6 +165,7 @@
               max="100"
               [(ngModel)]="customGas.Helium"
               (change)="updateCustomGasNitrogen()"
+              (input)="updateCustomGasNitrogen()"
               [disabled]="getCustomGasDisabled()" />
           </mat-form-field>
           <mat-form-field
