@@ -9,14 +9,14 @@ import { BreathingGas } from './BreathingGas';
 export class DiveSegmentFactoryService {
   constructor(private humanDurationPipe: HumanDurationPipe) {}
 
-  createEndDiveSegment(depth: number): DiveSegment {
+  createEndDiveSegment(depth: number, gas: BreathingGas): DiveSegment {
     const ascentTime = (depth / 10) * 60;
     const ascentTimeDuration = this.humanDurationPipe.transform(ascentTime);
 
-    return new DiveSegment(0, 0, 'Surface', `Ascent time: ${ascentTimeDuration} @ 10m/min`, 0, 0);
+    return new DiveSegment(0, 0, 'Surface', `Ascent time: ${ascentTimeDuration} @ 10m/min`, 0, 0, gas);
   }
 
   createStartDiveSegment(gas: BreathingGas): DiveSegment {
-    return new DiveSegment(0, 0, 'Start Dive', gas.getDescription(), 0, 0);
+    return new DiveSegment(0, 0, 'Start Dive', gas.getDescription(), 0, 0, gas);
   }
 }

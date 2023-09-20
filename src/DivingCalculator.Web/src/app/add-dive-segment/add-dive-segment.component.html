@@ -2,28 +2,28 @@
   <div class="calculation-section mat-elevation-z2">
     <div class="dive-stat">
       Current Depth:
-      <strong>0m</strong>
+      <strong>{{ divePlanner.getCurrentDepth() }}m</strong>
     </div>
     <div class="dive-stat">
       Current Ceiling:
-      <strong>0m</strong>
+      <strong>{{ divePlanner.getCurrentCeiling() }}m</strong>
     </div>
     <div class="dive-stat">
       Current Gas:
-      <strong>Air (O2: 21%, He: 0%, N2:35%)</strong>
+      <strong [innerHTML]="divePlanner.getCurrentGas().getDescription()"></strong>
     </div>
     <div class="gas-stat dive-stat">
       <!-- eslint-disable-next-line prettier/prettier -->
       Max Depth (PO<sub>2</sub>):
-      <strong>56m (66m deco)</strong>
+      <strong>{{ divePlanner.getCurrentGas().getMaxDepthPO2() }}m ({{ divePlanner.getCurrentGas().getMaxDepthPO2Deco() }}m deco)</strong>
     </div>
     <div class="gas-stat dive-stat">
       Max Depth (END):
-      <strong>40m</strong>
+      <strong>{{ divePlanner.getCurrentGas().getMaxDepthEND() }}m</strong>
     </div>
     <div class="gas-stat dive-stat">
       Min Depth (Hypoxia):
-      <strong>0m</strong>
+      <strong>{{ divePlanner.getCurrentGas().getMinDepth() }}m</strong>
     </div>
   </div>
   <h1>Select new depth</h1>

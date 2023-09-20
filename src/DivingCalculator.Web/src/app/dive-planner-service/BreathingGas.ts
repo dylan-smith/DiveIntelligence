@@ -18,4 +18,20 @@ export class BreathingGas {
   getCompositionDescription(): string {
     return `O<sub>2</sub>: ${this.Oxygen}%, He: ${this.Helium}%, N<sub>2</sub>: ${this.Nitrogen}%`;
   }
+
+  getMaxDepthPO2(): number {
+    return Math.floor(1400 / this.Oxygen - 10);
+  }
+
+  getMaxDepthPO2Deco(): number {
+    return Math.floor(1600 / this.Oxygen - 10);
+  }
+
+  getMaxDepthEND(): number {
+    return Math.floor(3950 / this.Nitrogen - 10);
+  }
+
+  getMinDepth(): number {
+    return Math.max(0, Math.ceil(180 / this.Oxygen - 10));
+  }
 }

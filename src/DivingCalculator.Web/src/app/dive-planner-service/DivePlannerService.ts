@@ -22,7 +22,7 @@ export class DivePlannerService {
 
     this.diveSegments = [];
     this.diveSegments.push(this.diveSegmentFactory.createStartDiveSegment(startGas));
-    this.diveSegments.push(this.diveSegmentFactory.createEndDiveSegment(0));
+    this.diveSegments.push(this.diveSegmentFactory.createEndDiveSegment(0, startGas));
   }
 
   getDiveSegments(): DiveSegment[] {
@@ -43,5 +43,17 @@ export class DivePlannerService {
     }
 
     return this.diveSegments.map(x => x.getAverageDepth() * x.getDuration()).reduce((sum, current) => sum + current, 0) / this.getDiveDuration();
+  }
+
+  getCurrentDepth(): number {
+    return this.diveSegments[this.diveSegments.length - 2].EndDepth;
+  }
+
+  getCurrentCeiling(): number {
+    return 0;
+  }
+
+  getCurrentGas(): BreathingGas {
+    return this.diveSegments[this.diveSegments.length - 2].Gas;
   }
 }

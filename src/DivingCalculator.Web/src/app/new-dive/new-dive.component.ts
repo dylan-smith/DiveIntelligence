@@ -21,7 +21,7 @@ export class NewDiveComponent {
   customGas: BreathingGas = new BreathingGas('Custom', 21, 0, 79);
 
   isMinDepthError(): boolean {
-    return this.getMinDepth(this.getSelectedGas()) > 0;
+    return this.getSelectedGas().getMinDepth() > 0;
   }
 
   getSelectedGas() {
@@ -49,25 +49,7 @@ export class NewDiveComponent {
   }
 
   getGasTooltip(gas: BreathingGas): string {
-    return `Max Depth (PO2): ${this.getMaxPO2Depth(gas)}m (${this.getMaxPO2DecoDepth(gas)}m deco)\nMax Depth (END): ${this.getMaxENDDepth(
-      gas
-    )}m\nMin Depth (Hypoxia): ${this.getMinDepth(gas)}m`;
-  }
-
-  getMaxPO2Depth(gas: BreathingGas): number {
-    return Math.floor(1400 / gas.Oxygen - 10);
-  }
-
-  getMaxPO2DecoDepth(gas: BreathingGas): number {
-    return Math.floor(1600 / gas.Oxygen - 10);
-  }
-
-  getMaxENDDepth(gas: BreathingGas): number {
-    return Math.floor(3950 / gas.Nitrogen - 10);
-  }
-
-  getMinDepth(gas: BreathingGas): number {
-    return Math.max(0, Math.ceil(180 / gas.Oxygen - 10));
+    return `Max Depth (PO2): ${gas.getMaxDepthPO2()}m (${gas.getMaxDepthPO2Deco()}m deco)\nMax Depth (END): ${gas.getMaxDepthEND()}m\nMin Depth (Hypoxia): ${gas.getMinDepth()}m`;
   }
 
   onSave() {

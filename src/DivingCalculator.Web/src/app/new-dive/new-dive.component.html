@@ -66,19 +66,19 @@
           matTooltipPosition="right">
           <!-- eslint-disable-next-line prettier/prettier -->
           Max Depth (PO<sub>2</sub>):
-          <strong>{{ getMaxPO2Depth(getSelectedGas()) }}m ({{ getMaxPO2DecoDepth(getSelectedGas()) }}m deco)</strong>
+          <strong>{{ getSelectedGas().getMaxDepthPO2() }}m ({{ getSelectedGas().getMaxDepthPO2Deco() }}m deco)</strong>
         </div>
         <div
           class="gas-calc"
           matTooltip="Maximum depth this gas can be breathed at before you experience nitrogen narcosis equivelant to 40m on air"
           matTooltipPosition="right">
           Max Depth (END):
-          <strong>{{ getMaxENDDepth(getSelectedGas()) }}m</strong>
+          <strong>{{ getSelectedGas().getMaxDepthEND() }}m</strong>
         </div>
         <div class="gas-calc">
           <span matTooltip="Minimum depth this gas can be breathed at without going below an oxygen partial pressure of 0.18" matTooltipPosition="below">
             Min Depth (Hypoxia):
-            <strong>{{ getMinDepth(getSelectedGas()) }}m</strong>
+            <strong>{{ getSelectedGas().getMinDepth() }}m</strong>
           </span>
           <mat-icon [class.hidden]="!isMinDepthError()" class="error" matTooltip="This gas cannot be breathed at the surface due to the hypoxic oxygen content">
             error
