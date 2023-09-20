@@ -16,6 +16,7 @@ export class AddDiveSegmentComponent {
   newGas!: BreathingGas;
   newGasSelectedOption: string;
   standardGas: BreathingGas | undefined;
+  customGas: BreathingGas = new BreathingGas('Custom', 21, 0, 79);
 
   private DESCENT_RATE = 3; // seconds per meter
   private ASCENT_RATE = 6; // seconds per meter
@@ -54,5 +55,14 @@ export class AddDiveSegmentComponent {
 
   getStandardGasDisabled(): boolean {
     return this.newGasSelectedOption !== 'standard';
+  }
+
+  getCustomGasDisabled(): boolean {
+    return this.newGasSelectedOption !== 'custom';
+  }
+
+  updateCustomGasNitrogen() {
+    this.customGas.Nitrogen = 100 - this.customGas.Oxygen - this.customGas.Helium;
+    this.calculateNewGas();
   }
 }

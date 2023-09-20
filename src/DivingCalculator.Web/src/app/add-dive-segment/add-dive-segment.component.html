@@ -89,25 +89,33 @@
         <div>
           <mat-form-field class="custom-gas-input">
             <mat-label>Oxygen (%)</mat-label>
-            <input matInput type="number" min="0" max="100" />
+            <input
+              matInput
+              type="number"
+              min="0"
+              max="100"
+              [(ngModel)]="customGas.Oxygen"
+              (change)="updateCustomGasNitrogen()"
+              [disabled]="getCustomGasDisabled()" />
           </mat-form-field>
           <mat-form-field class="custom-gas-input">
             <mat-label>Helium (%)</mat-label>
-            <input matInput type="number" min="0" max="100" />
+            <input
+              matInput
+              type="number"
+              min="0"
+              max="100"
+              [(ngModel)]="customGas.Helium"
+              (change)="updateCustomGasNitrogen()"
+              [disabled]="getCustomGasDisabled()" />
           </mat-form-field>
           <mat-form-field
             class="custom-gas-input"
             matTooltip="The nitrogen value will be automatically calculated when you input the values for oxygen and helium">
             <mat-label>Nitrogen (%)</mat-label>
-            <input matInput type="number" disabled />
+            <input matInput type="number" [ngModel]="customGas.Nitrogen" disabled />
           </mat-form-field>
         </div>
-      </div>
-      <div class="new-gas-col">
-        <mat-radio-button value="optimal">
-          <div>Optimal Deco Gas</div>
-          <div class="gas-description">Air (O2: 21%, He: 0%, N2: 79%)</div>
-        </mat-radio-button>
       </div>
     </div>
   </mat-radio-group>
