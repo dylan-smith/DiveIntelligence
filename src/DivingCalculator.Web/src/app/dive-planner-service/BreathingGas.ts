@@ -34,4 +34,20 @@ export class BreathingGas {
   getMinDepth(): number {
     return Math.max(0, Math.ceil(180 / this.Oxygen - 10));
   }
+
+  getPO2(depth: number): number {
+    return (depth / 10 + 1) * (this.Oxygen / 100);
+  }
+
+  getPHe(depth: number): number {
+    return (depth / 10 + 1) * (this.Helium / 100);
+  }
+
+  getPN2(depth: number): number {
+    return (depth / 10 + 1) * (this.Nitrogen / 100);
+  }
+
+  getEND(depth: number): number {
+    return Math.max(0, Math.ceil((this.getPN2(depth) / 0.79 - 1) * 10));
+  }
 }
