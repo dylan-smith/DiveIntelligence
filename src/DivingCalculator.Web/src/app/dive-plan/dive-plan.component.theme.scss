@@ -16,7 +16,7 @@
   }
 
   .plan-error {
-    border-color: map-get($warn, 500);
-    color: map-get($warn, 500);
+    border-color: map-get($warn, error);
+    color: map-get($warn, error);
   }
 }
