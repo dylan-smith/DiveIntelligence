@@ -1,0 +1,29 @@
+@mixin add-dive-segment-theme($theme) {
+  $color: map-get($theme, color);
+  $primary: map-get($color, primary);
+  $accent: map-get($color, accent);
+  $warn: map-get($color, warn);
+  $background: map-get($color, background);
+  $foreground: map-get($color, foreground);
+
+  .calculation-section {
+    background-color: map-get($background, card);
+  }
+
+  .input-section {
+    border-color: map-get($primary, A100);
+    background-color: map-get($background, card);
+  }
+
+  .gas-description {
+    color: map-get($foreground, secondary-text);
+  }
+
+  .warning-icon {
+    color: #FFC107;
+  }
+
+  .error-icon {
+    color: map-get($warn, 500);
+  }
+}

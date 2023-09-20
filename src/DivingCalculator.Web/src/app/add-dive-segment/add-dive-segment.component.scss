@@ -4,7 +4,6 @@
   margin-left: 1rem;
   width: fit-content;
   height: fit-content;
-  background-color: white;
 }
 
 main {
@@ -34,10 +33,8 @@ main {
   width: fit-content;
   border-style: solid;
   border-width: 4px;
-  border-color: #BB75C1;
   padding-left: 1rem;
   padding-right: 1rem;
-  background-color: white;
 }
 
 .depth-input {
@@ -66,7 +63,6 @@ h1 {
 }
 
 .gas-description {
-  color: rgba(0, 0, 0, 0.6);
   font-size: 0.8rem;
 }
 
@@ -100,13 +96,11 @@ mat-select {
 }
 
 .warning-icon {
-  color: #FFC107;
   font-size: 1.4rem;
   margin-left: 0.5rem;
 }
 
 .error-icon {
-  color: #F44336;
   font-size: 1.4rem;
   margin-left: 0.5rem;
 }
