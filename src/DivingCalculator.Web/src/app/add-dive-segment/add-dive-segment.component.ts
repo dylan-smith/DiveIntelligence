@@ -131,4 +131,28 @@ export class AddDiveSegmentComponent {
   getAscentDuration(): number | undefined {
     return this.divePlanner.getAscentDuration(this.newDepth);
   }
+
+  getNewGasPO2(): number {
+    return this.newGas.getPO2(this.newDepth);
+  }
+
+  getNewGasPO2Warning(): string | undefined {
+    return this.getPO2Warning(this.getNewGasPO2());
+  }
+
+  getNewGasPO2Error(): string | undefined {
+    return this.getPO2Error(this.getNewGasPO2());
+  }
+
+  getNewGasEND(): number {
+    return this.newGas.getEND(this.newDepth);
+  }
+
+  getNewGasENDWarning(): string | undefined {
+    return this.getENDWarning(this.getNewGasEND());
+  }
+
+  getNewGasENDError(): string | undefined {
+    return this.getENDError(this.getNewGasEND());
+  }
 }
