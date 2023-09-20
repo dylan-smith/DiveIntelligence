@@ -124,30 +124,30 @@
       <div class="dive-stat">
         <!-- eslint-disable-next-line prettier/prettier -->
         PO<sub>2</sub>:
-        <strong>0.6m</strong>
+        <strong>{{ newGas.getPO2(newDepth) | number: '1.2-2' }}m</strong>
       </div>
       <div class="dive-stat">
         END:
-        <strong>12m</strong>
+        <strong>{{ newGas.getEND(newDepth) }}m</strong>
       </div>
       <div class="dive-stat">
         No Deco Limit:
-        <strong>69m 22 sec</strong>
+        <strong>{{ divePlanner.getNoDecoLimit(newDepth, newGas) | humanDuration }}</strong>
       </div>
     </div>
     <div class="gas-calculation-chunk">
       <div class="dive-stat">
         <!-- eslint-disable-next-line prettier/prettier -->
         Max Depth (PO<sub>2</sub>):
-        <strong>106m (123m deco)</strong>
+        <strong>{{ newGas.getMaxDepthPO2() }}m ({{ newGas.getMaxDepthPO2Deco() }}m deco)</strong>
       </div>
       <div class="dive-stat">
         Max Depth (END):
-        <strong>40m</strong>
+        <strong>{{ newGas.getMaxDepthEND() }}m</strong>
       </div>
       <div class="dive-stat">
         Min Depth (Hypoxia):
-        <strong>0m</strong>
+        <strong>{{ newGas.getMinDepth() }}m</strong>
       </div>
     </div>
   </div>

@@ -51,6 +51,10 @@ export class AddDiveSegmentComponent {
     if (this.newGasSelectedOption === 'standard' && this.standardGas !== undefined) {
       this.newGas = this.standardGas;
     }
+
+    if (this.newGasSelectedOption === 'custom') {
+      this.newGas = this.customGas;
+    }
   }
 
   getStandardGasDisabled(): boolean {

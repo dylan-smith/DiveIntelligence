@@ -56,4 +56,8 @@ export class DivePlannerService {
   getCurrentGas(): BreathingGas {
     return this.diveSegments[this.diveSegments.length - 2].Gas;
   }
+
+  getNoDecoLimit(newDepth: number, newGas: BreathingGas): number {
+    return 632 + newDepth + newGas.Oxygen;
+  }
 }
