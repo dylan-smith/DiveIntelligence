@@ -76,7 +76,7 @@ export class AddDiveSegmentComponent {
   }
 
   onSave(): void {
-    this.divePlanner.addDiveSegment(this.newDepth, this.newGas, this.timeAtDepth);
+    this.divePlanner.addDiveSegment(this.newDepth, this.newGas, this.timeAtDepth * 60);
     this.router.navigate(['/dive-plan']);
   }
 }

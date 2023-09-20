@@ -13,6 +13,9 @@ export class DivePlannerService {
 
   constructor(private diveSegmentFactory: DiveSegmentFactoryService) {}
 
+  private DESCENT_RATE = 3; // seconds per meter
+  private ASCENT_RATE = 6; // seconds per meter
+
   getStandardGases(): BreathingGas[] {
     return StandardGases;
   }
@@ -22,7 +25,7 @@ export class DivePlannerService {
 
     this.diveSegments = [];
     this.diveSegments.push(this.diveSegmentFactory.createStartDiveSegment(startGas));
-    this.diveSegments.push(this.diveSegmentFactory.createEndDiveSegment(0, startGas));
+    this.diveSegments.push(this.diveSegmentFactory.createEndDiveSegment(0, 0, startGas));
   }
 
   getDiveSegments(): DiveSegment[] {
@@ -61,5 +64,33 @@ export class DivePlannerService {
     return 632 + newDepth + newGas.Oxygen;
   }
 
-  addDiveSegment(newDepth: number, newGas: BreathingGas, timeAtDepth: number): void {}
+  addDiveSegment(newDepth: number, newGas: BreathingGas, timeAtDepth: number): void {
+    // remove the final surface segment, will re-add it later
+    this.diveSegments.pop();
+
+    let previousSegment = this.diveSegments[this.diveSegments.length - 1];
+    let startTime = previousSegment.EndTimestamp;
+
+    if (newDepth !== previousSegment.EndDepth) {
+      if (previousSegment.Gas.isEquivalent(newGas)) {
+        const newSegment = this.diveSegmentFactory.createDepthChangeSegment(startTime, previousSegment.EndDepth, newDepth, timeAtDepth, previousSegment.Gas);
+        this.diveSegments.push(newSegment);
+      } else {
+        const newSegment = this.diveSegmentFactory.createDepthChangeSegment(startTime, previousSegment.EndDepth, newDepth, 0, previousSegment.Gas);
+        this.diveSegments.push(newSegment);
+      }
+    }
+
+    previousSegment = this.diveSegments[this.diveSegments.length - 1];
+    startTime = previousSegment.EndTimestamp;
+
+    if (!previousSegment.Gas.isEquivalent(newGas)) {
+      const newSegment = this.diveSegmentFactory.createGasChangeSegment(startTime, newGas, timeAtDepth, newDepth);
+      this.diveSegments.push(newSegment);
+    }
+
+    const endTime = this.diveSegments[this.diveSegments.length - 1].EndTimestamp;
+
+    this.diveSegments.push(this.diveSegmentFactory.createEndDiveSegment(endTime, newDepth, newGas));
+  }
 }
