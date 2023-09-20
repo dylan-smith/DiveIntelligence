@@ -55,7 +55,7 @@
     </div>
   </div>
   <h1>Select new gas</h1>
-  <mat-radio-group [(ngModel)]="newGasSelectedOption">
+  <mat-radio-group [(ngModel)]="newGasSelectedOption" (change)="calculateNewGas()">
     <div class="new-gas-row input-section mat-elevation-z2">
       <div class="new-gas-col">
         <mat-radio-button value="current">
@@ -71,7 +71,7 @@
         </div>
         <div>
           <mat-form-field>
-            <mat-select [(ngModel)]="standardGas" hideSingleSelectionIndicator>
+            <mat-select [(ngModel)]="standardGas" hideSingleSelectionIndicator (selectionChange)="calculateNewGas()" [disabled]="getStandardGasDisabled()">
               <mat-select-trigger>
                 <div>{{ standardGas?.Name }}</div>
                 <div class="gas-description" [innerHTML]="standardGas?.getCompositionDescription()"></div>

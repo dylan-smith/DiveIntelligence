@@ -44,8 +44,15 @@ export class AddDiveSegmentComponent {
   }
 
   calculateNewGas(): void {
-    if (this.newGasSelectedOption === 'current') {
-      this.newGas = this.divePlanner.getCurrentGas();
+    // default it to current gas (e.g. standard is selected but no option picked in dropdown)
+    this.newGas = this.divePlanner.getCurrentGas();
+
+    if (this.newGasSelectedOption === 'standard' && this.standardGas !== undefined) {
+      this.newGas = this.standardGas;
     }
+  }
+
+  getStandardGasDisabled(): boolean {
+    return this.newGasSelectedOption !== 'standard';
   }
 }
