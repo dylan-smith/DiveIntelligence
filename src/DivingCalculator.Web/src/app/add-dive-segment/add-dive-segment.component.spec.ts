@@ -8,7 +8,7 @@ describe('AddDiveSegmentComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [AddDiveSegmentComponent]
+      declarations: [AddDiveSegmentComponent],
     });
     fixture = TestBed.createComponent(AddDiveSegmentComponent);
     component = fixture.componentInstance;
