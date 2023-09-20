@@ -60,4 +60,6 @@ export class DivePlannerService {
   getNoDecoLimit(newDepth: number, newGas: BreathingGas): number {
     return 632 + newDepth + newGas.Oxygen;
   }
+
+  addDiveSegment(newDepth: number, newGas: BreathingGas, timeAtDepth: number): void {}
 }

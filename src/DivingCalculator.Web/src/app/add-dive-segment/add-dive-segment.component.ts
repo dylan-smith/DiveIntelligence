@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
 import { BreathingGas } from '../dive-planner-service/BreathingGas';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'dive-add-dive-segment',
@@ -22,7 +23,10 @@ export class AddDiveSegmentComponent {
   private DESCENT_RATE = 3; // seconds per meter
   private ASCENT_RATE = 6; // seconds per meter
 
-  constructor(public divePlanner: DivePlannerService) {
+  constructor(
+    public divePlanner: DivePlannerService,
+    private router: Router
+  ) {
     this.newDepth = divePlanner.getCurrentDepth();
     this.calculateNewDepthData();
     this.newGasSelectedOption = 'current';
@@ -69,5 +73,10 @@ export class AddDiveSegmentComponent {
   updateCustomGasNitrogen() {
     this.customGas.Nitrogen = 100 - this.customGas.Oxygen - this.customGas.Helium;
     this.calculateNewGas();
+  }
+
+  onSave(): void {
+    this.divePlanner.addDiveSegment(this.newDepth, this.newGas, this.timeAtDepth);
+    this.router.navigate(['/dive-plan']);
   }
 }
