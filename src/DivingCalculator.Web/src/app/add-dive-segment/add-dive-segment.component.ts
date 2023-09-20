@@ -55,19 +55,37 @@ export class AddDiveSegmentComponent {
     this.router.navigate(['/dive-plan']);
   }
 
+  getPO2Warning(pO2: number): string | undefined {
+    if (pO2 > 1.4 && pO2 <= 1.6) return 'Oxygen partial pressure should only go above 1.4 during deco stops';
+    return undefined;
+  }
+
+  getPO2Error(pO2: number): string | undefined {
+    if (pO2 > 1.6) return 'Oxygen partial pressure should never go above 1.6';
+    if (pO2 < 0.18) return 'Oxygen partial pressure should never go below 0.18';
+    return undefined;
+  }
+
+  getENDWarning(END: number): string | undefined {
+    if (END > 30 && END <= 40) return 'Some divers (e.g. GUE) aim to keep END below 30m';
+    return undefined;
+  }
+
+  getENDError(END: number): string | undefined {
+    if (END > 40) return 'Most divers aim to keep END below 40m';
+    return undefined;
+  }
+
   getCurrentPO2(): number {
     return this.divePlanner.getCurrentGas().getPO2(this.divePlanner.getCurrentDepth());
   }
 
   getCurrentPO2Warning(): string | undefined {
-    if (this.getCurrentPO2() > 1.4 && this.getCurrentPO2() <= 1.6) return 'Oxygen partial pressure should only go above 1.4 during deco stops';
-    return undefined;
+    return this.getPO2Warning(this.getCurrentPO2());
   }
 
   getCurrentPO2Error(): string | undefined {
-    if (this.getCurrentPO2() > 1.6) return 'Oxygen partial pressure should never go above 1.6';
-    if (this.getCurrentPO2() < 0.18) return 'Oxygen partial pressure should never go below 0.18';
-    return undefined;
+    return this.getPO2Error(this.getCurrentPO2());
   }
 
   getCurrentEND(): number {
@@ -75,13 +93,11 @@ export class AddDiveSegmentComponent {
   }
 
   getCurrentENDWarning(): string | undefined {
-    if (this.getCurrentEND() > 30 && this.getCurrentEND() <= 40) return 'Some divers (e.g. GUE) aim to keep END below 30m';
-    return undefined;
+    return this.getENDWarning(this.getCurrentEND());
   }
 
   getCurrentENDError(): string | undefined {
-    if (this.getCurrentEND() > 40) return 'Most divers aim to keep END below 40m';
-    return undefined;
+    return this.getENDError(this.getCurrentEND());
   }
 
   getNewDepthPO2(): number {
@@ -89,14 +105,11 @@ export class AddDiveSegmentComponent {
   }
 
   getNewDepthPO2Warning(): string | undefined {
-    if (this.getNewDepthPO2() > 1.4 && this.getNewDepthPO2() <= 1.6) return 'Oxygen partial pressure should only go above 1.4 during deco stops';
-    return undefined;
+    return this.getPO2Warning(this.getNewDepthPO2());
   }
 
   getNewDepthPO2Error(): string | undefined {
-    if (this.getNewDepthPO2() > 1.6) return 'Oxygen partial pressure should never go above 1.6';
-    if (this.getNewDepthPO2() < 0.18) return 'Oxygen partial pressure should never go below 0.18';
-    return undefined;
+    return this.getPO2Error(this.getNewDepthPO2());
   }
 
   getNewDepthEND(): number {
@@ -104,13 +117,11 @@ export class AddDiveSegmentComponent {
   }
 
   getNewDepthENDWarning(): string | undefined {
-    if (this.getNewDepthEND() > 30 && this.getNewDepthEND() <= 40) return 'Some divers (e.g. GUE) aim to keep END below 30m';
-    return undefined;
+    return this.getENDWarning(this.getNewDepthEND());
   }
 
   getNewDepthENDError(): string | undefined {
-    if (this.getNewDepthEND() > 40) return 'Most divers aim to keep END below 40m';
-    return undefined;
+    return this.getENDError(this.getNewDepthEND());
   }
 
   getDescentDuration(): number | undefined {
