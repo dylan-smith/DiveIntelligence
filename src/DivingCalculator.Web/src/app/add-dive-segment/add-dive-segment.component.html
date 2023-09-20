@@ -71,11 +71,15 @@
         </div>
         <div>
           <mat-form-field>
-            <mat-label>Standard Gas</mat-label>
-            <mat-select>
-              <mat-option>Air</mat-option>
-              <mat-option>Enriched Air</mat-option>
-              <mat-option>Trimix</mat-option>
+            <mat-select [(ngModel)]="standardGas" hideSingleSelectionIndicator>
+              <mat-select-trigger>
+                <div>{{ standardGas?.Name }}</div>
+                <div class="gas-description" [innerHTML]="standardGas?.getCompositionDescription()"></div>
+              </mat-select-trigger>
+              <mat-option *ngFor="let gas of divePlanner.getStandardGases()" [value]="gas">
+                <div>{{ gas.Name }}</div>
+                <div class="gas-description" [innerHTML]="gas.getCompositionDescription()"></div>
+              </mat-option>
             </mat-select>
           </mat-form-field>
         </div>
