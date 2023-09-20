@@ -79,4 +79,28 @@ export class AddDiveSegmentComponent {
     this.divePlanner.addDiveSegment(this.newDepth, this.newGas, this.timeAtDepth * 60);
     this.router.navigate(['/dive-plan']);
   }
+
+  getCurrentPO2(): number {
+    return this.divePlanner.getCurrentGas().getPO2(this.divePlanner.getCurrentDepth());
+  }
+
+  isCurrentPO2Warning(): boolean {
+    return this.getCurrentPO2() > 1.4 && this.getCurrentPO2() <= 1.6;
+  }
+
+  isCurrentPO2Error(): boolean {
+    return this.getCurrentPO2() > 1.6;
+  }
+
+  getCurrentEND(): number {
+    return this.divePlanner.getCurrentGas().getEND(this.divePlanner.getCurrentDepth());
+  }
+
+  isCurrentENDWarning(): boolean {
+    return this.getCurrentEND() > 30 && this.getCurrentEND() <= 40;
+  }
+
+  isCurrentENDError(): boolean {
+    return this.getCurrentEND() > 40;
+  }
 }

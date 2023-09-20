@@ -4,47 +4,65 @@
       Current Depth:
       <strong>{{ divePlanner.getCurrentDepth() }}m</strong>
     </div>
-    <div
-      class="dive-stat"
-      matTooltip="If you have no deco obligations so far this will be 0. Otherwise it is the minimum depth you can safely ascend directly to."
-      matTooltipPosition="right">
-      Current Ceiling:
-      <strong>{{ divePlanner.getCurrentCeiling() }}m</strong>
+    <div class="dive-stat">
+      <span
+        matTooltip="If you have no deco obligations so far this will be 0. Otherwise it is the minimum depth you can safely ascend directly to."
+        matTooltipPosition="right">
+        Current Ceiling:
+        <strong>{{ divePlanner.getCurrentCeiling() }}m</strong>
+      </span>
     </div>
     <div class="dive-stat">
       Current Gas:
       <strong [innerHTML]="divePlanner.getCurrentGas().getDescription()"></strong>
     </div>
-    <div
-      class="gas-stat dive-stat"
-      matTooltip="Maximum depth this gas can be breathed at without going over an oxygen partial pressure of 1.4 (1.6 for deco stops)"
-      matTooltipPosition="right">
-      <!-- eslint-disable-next-line prettier/prettier -->
+    <div class="gas-stat dive-stat">
+      <span
+        matTooltip="Maximum depth this gas can be breathed at without going over an oxygen partial pressure of 1.4 (1.6 for deco stops)"
+        matTooltipPosition="right">
+        <!-- eslint-disable-next-line prettier/prettier -->
       Max Depth (PO<sub>2</sub>):
-      <strong>{{ divePlanner.getCurrentGas().getMaxDepthPO2() }}m ({{ divePlanner.getCurrentGas().getMaxDepthPO2Deco() }}m deco)</strong>
+        <strong>{{ divePlanner.getCurrentGas().getMaxDepthPO2() }}m ({{ divePlanner.getCurrentGas().getMaxDepthPO2Deco() }}m deco)</strong>
+      </span>
     </div>
-    <div
-      class="gas-stat dive-stat"
-      matTooltip="Maximum depth this gas can be breathed at before you experience nitrogen narcosis equivalent to 40m on air"
-      matTooltipPosition="right">
-      Max Depth (END):
-      <strong>{{ divePlanner.getCurrentGas().getMaxDepthEND() }}m</strong>
+    <div class="gas-stat dive-stat">
+      <span matTooltip="Maximum depth this gas can be breathed at before you experience nitrogen narcosis equivalent to 40m on air" matTooltipPosition="right">
+        Max Depth (END):
+        <strong>{{ divePlanner.getCurrentGas().getMaxDepthEND() }}m</strong>
+      </span>
     </div>
-    <div
-      class="gas-stat dive-stat"
-      matTooltip="Minimum depth this gas can be breathed at without going below an oxygen partial pressure of 0.18"
-      matTooltipPosition="right">
-      Min Depth (Hypoxia):
-      <strong>{{ divePlanner.getCurrentGas().getMinDepth() }}m</strong>
+    <div class="gas-stat dive-stat">
+      <span matTooltip="Minimum depth this gas can be breathed at without going below an oxygen partial pressure of 0.18" matTooltipPosition="right">
+        Min Depth (Hypoxia):
+        <strong>{{ divePlanner.getCurrentGas().getMinDepth() }}m</strong>
+      </span>
     </div>
-    <div class="dive-stat" matTooltip="Oxygen partial pressure of the current gas at the current depth" matTooltipPosition="right">
-      <!-- eslint-disable-next-line prettier/prettier -->
-      PO<sub>2</sub>:
-      <strong>{{ divePlanner.getCurrentGas().getPO2(divePlanner.getCurrentDepth()) }}</strong>
+    <div class="dive-stat">
+      <span matTooltip="Oxygen partial pressure of the current gas at the current depth" matTooltipPosition="right">
+        <!-- eslint-disable-next-line prettier/prettier -->
+        PO<sub>2</sub>:
+        <strong>{{ getCurrentPO2() | number: '1.2-2' }}</strong>
+      </span>
+      <mat-icon
+        *ngIf="isCurrentPO2Warning()"
+        class="warning-icon"
+        matTooltip="Oxygen partial pressure should only go above 1.4 during deco stops"
+        matTooltipPosition="right">
+        warning
+      </mat-icon>
+      <mat-icon *ngIf="isCurrentPO2Error()" class="error-icon" matTooltip="Oxygen partial pressure should never go above 1.6" matTooltipPosition="right">
+        error
+      </mat-icon>
     </div>
-    <div class="dive-stat" matTooltip="Equivalent narcotic depth of the current gas at the current depth" matTooltipPosition="right">
-      END:
-      <strong>{{ newDepthEND }}m</strong>
+    <div class="dive-stat">
+      <span matTooltip="Equivalent narcotic depth of the current gas at the current depth" matTooltipPosition="right">
+        END:
+        <strong>{{ getCurrentEND() }}m</strong>
+      </span>
+      <mat-icon *ngIf="isCurrentENDWarning()" class="warning-icon" matTooltip="Some divers (e.g. GUE) aim to keep END below 30m" matTooltipPosition="right">
+        warning
+      </mat-icon>
+      <mat-icon *ngIf="isCurrentENDError()" class="error-icon" matTooltip="Most divers aim to keep END below 40m" matTooltipPosition="right">error</mat-icon>
     </div>
   </div>
   <h1>Select new depth</h1>
