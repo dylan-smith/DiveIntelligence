@@ -19,9 +19,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
+import { AddDiveSegmentComponent } from './add-dive-segment/add-dive-segment.component';
 
 @NgModule({
-  declarations: [AppComponent, NewDiveComponent, HomeComponent, DivePlanComponent, HumanDurationPipe, ColonDurationPipe],
+  declarations: [AppComponent, NewDiveComponent, HomeComponent, DivePlanComponent, HumanDurationPipe, ColonDurationPipe, AddDiveSegmentComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -34,6 +36,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatFormFieldModule,
     MatTooltipModule,
     MatIconModule,
+    MatSelectModule,
   ],
   providers: [HumanDurationPipe, ColonDurationPipe],
   bootstrap: [AppComponent],

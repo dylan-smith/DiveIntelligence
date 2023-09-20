@@ -1,0 +1,152 @@
+<main>
+  <div class="calculation-section mat-elevation-z2">
+    <div class="dive-stat">
+      Current Depth:
+      <strong>0m</strong>
+    </div>
+    <div class="dive-stat">
+      Current Ceiling:
+      <strong>0m</strong>
+    </div>
+    <div class="dive-stat">
+      Current Gas:
+      <strong>Air (O2: 21%, He: 0%, N2:35%)</strong>
+    </div>
+    <div class="gas-stat dive-stat">
+      <!-- eslint-disable-next-line prettier/prettier -->
+      Max Depth (PO<sub>2</sub>):
+      <strong>56m (66m deco)</strong>
+    </div>
+    <div class="gas-stat dive-stat">
+      Max Depth (END):
+      <strong>40m</strong>
+    </div>
+    <div class="gas-stat dive-stat">
+      Min Depth (Hypoxia):
+      <strong>0m</strong>
+    </div>
+  </div>
+  <h1>Select new depth</h1>
+  <div class="new-depth-row">
+    <div class="input-section mat-elevation-z2">
+      <mat-form-field class="depth-input">
+        <mat-label>New Depth (m)</mat-label>
+        <input matInput type="number" />
+      </mat-form-field>
+    </div>
+    <div class="calculation-section mat-elevation-z2">
+      <div class="dive-stat">
+        Descent Time:
+        <strong>2 min @ 20m/min</strong>
+      </div>
+      <div class="dive-stat">
+        <!-- eslint-disable-next-line prettier/prettier -->
+        PO<sub>2</sub>:
+        <strong>1.05</strong>
+      </div>
+      <div class="dive-stat">
+        END:
+        <strong>40m</strong>
+      </div>
+    </div>
+  </div>
+  <h1>Select new gas</h1>
+  <mat-radio-group>
+    <div class="new-gas-row input-section mat-elevation-z2">
+      <div class="new-gas-col">
+        <mat-radio-button>
+          <div>Current Gas</div>
+          <div class="gas-description">Air (O2: 21%, He: 0%, N2: 79%)</div>
+        </mat-radio-button>
+      </div>
+      <div class="new-gas-col">
+        <div>
+          <mat-radio-button>
+            <div>Standard Gas</div>
+          </mat-radio-button>
+        </div>
+        <div>
+          <mat-form-field>
+            <mat-label>Standard Gas</mat-label>
+            <mat-select>
+              <mat-option>Air</mat-option>
+              <mat-option>Enriched Air</mat-option>
+              <mat-option>Trimix</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="new-gas-col">
+        <mat-radio-button value="custom">Custom gas</mat-radio-button>
+        <div>
+          <mat-form-field class="custom-gas-input">
+            <mat-label>Oxygen (%)</mat-label>
+            <input matInput type="number" min="0" max="100" />
+          </mat-form-field>
+          <mat-form-field class="custom-gas-input">
+            <mat-label>Helium (%)</mat-label>
+            <input matInput type="number" min="0" max="100" />
+          </mat-form-field>
+          <mat-form-field
+            class="custom-gas-input"
+            matTooltip="The nitrogen value will be automatically calculated when you input the values for oxygen and helium">
+            <mat-label>Nitrogen (%)</mat-label>
+            <input matInput type="number" disabled />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="new-gas-col">
+        <mat-radio-button>
+          <div>Optimal Deco Gas</div>
+          <div class="gas-description">Air (O2: 21%, He: 0%, N2: 79%)</div>
+        </mat-radio-button>
+      </div>
+    </div>
+  </mat-radio-group>
+  <div class="gas-calculation-section calculation-section mat-elevation-z2">
+    <div class="gas-calculation-chunk">
+      <div class="dive-stat">
+        <!-- eslint-disable-next-line prettier/prettier -->
+        PO<sub>2</sub>:
+        <strong>0.6m</strong>
+      </div>
+      <div class="dive-stat">
+        END:
+        <strong>12m</strong>
+      </div>
+      <div class="dive-stat">
+        No Deco Limit:
+        <strong>69m 22 sec</strong>
+      </div>
+    </div>
+    <div class="gas-calculation-chunk">
+      <div class="dive-stat">
+        <!-- eslint-disable-next-line prettier/prettier -->
+        Max Depth (PO<sub>2</sub>):
+        <strong>106m (123m deco)</strong>
+      </div>
+      <div class="dive-stat">
+        Max Depth (END):
+        <strong>40m</strong>
+      </div>
+      <div class="dive-stat">
+        Min Depth (Hypoxia):
+        <strong>0m</strong>
+      </div>
+    </div>
+  </div>
+  <h1>Select time at depth</h1>
+  <div class="time-at-depth-row">
+    <div class="input-section mat-elevation-z2">
+      <mat-form-field class="time-input">
+        <mat-label>Time at Depth (mins)</mat-label>
+        <input matInput type="number" />
+      </mat-form-field>
+    </div>
+    <div class="ceiling-graph"></div>
+  </div>
+  <div class="actions">
+    <button mat-flat-button color="primary">Save</button>
+    <button mat-stroked-button color="secondary">Cancel</button>
+  </div>
+</main>

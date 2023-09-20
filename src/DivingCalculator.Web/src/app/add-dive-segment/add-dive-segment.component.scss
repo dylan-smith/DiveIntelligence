@@ -1,0 +1,94 @@
+.calculation-section {
+  padding: 1rem;
+  margin-top: 1rem;
+  margin-left: 1rem;
+  width: fit-content;
+  height: fit-content;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding-top: 2rem;
+  padding-left: 10rem;
+}
+
+.dive-stat, .gas-stat {
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
+}
+
+.gas-stat {
+  padding-left: 2rem;
+}
+
+.new-depth-row, .new-gas-row {
+  display: flex;
+}
+
+.input-section {
+  margin-top: 1rem;
+  margin-left: 1rem;
+  width: fit-content;
+  border-style: solid;
+  border-width: 4px;
+  border-color: #BB75C1;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.depth-input {
+  padding-bottom: 0;
+  padding-top: 1rem;
+  width: 10rem;
+}
+
+h1 {
+  padding-left: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 0rem;
+}
+
+.custom-gas-input {
+  width: 8rem;
+}
+
+.new-gas-row {
+  padding: 1rem;
+}
+
+.new-gas-col {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.gas-description {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 0.8rem;
+}
+
+.gas-calculation-section {
+  display: flex;
+  width: 500px;
+  justify-content: space-between;
+}
+
+.gas-calculation-chunk {
+  padding-right: 0rem;
+}
+
+.time-input {
+  padding-bottom: 0;
+  padding-top: 1rem;
+  width: 13rem;
+}
+
+.actions {
+  margin-left: 1rem;
+  margin-top: 2rem;
+}
+
+button {
+  margin-right: 1rem;
+}
