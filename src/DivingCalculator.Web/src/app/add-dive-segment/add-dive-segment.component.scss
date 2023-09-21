@@ -35,6 +35,7 @@ main {
   border-width: 4px;
   padding-left: 1rem;
   padding-right: 1rem;
+  height: fit-content;
 }
 
 .depth-input {
@@ -103,4 +104,40 @@ mat-select {
 .error-icon {
   font-size: 1.4rem;
   margin-left: 0.5rem;
+}
+
+.nav-number {
+  margin-left: -70px;
+  margin-top: 1rem;
+  width: 70px;
+  height: 70px;
+  background-color: #8C9EFF;
+  border-radius: 35px;
+  text-align: center;
+  line-height: 70px;
+  font-size: 40px;
+  font-weight: bold;
+  color: white;
+}
+
+.header-row {
+  display: flex;
+}
+
+.nav-line-1 {
+  position: absolute;
+  width: 6px;
+  height: 180px;
+  background-color: #8C9EFF;
+  top: 370px;
+  left: 122px;
+}
+
+.nav-line-2 {
+  position: absolute;
+  width: 6px;
+  height: 380px;
+  background-color: #8C9EFF;
+  top: 600px;
+  left: 122px;
 }

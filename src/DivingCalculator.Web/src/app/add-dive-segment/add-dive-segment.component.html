@@ -1,4 +1,6 @@
 <main>
+  <div class="nav-line-1"></div>
+  <div class="nav-line-2"></div>
   <div class="calculation-section mat-elevation-z2">
     <div class="dive-stat">
       Current Depth:
@@ -59,7 +61,10 @@
       <mat-icon *ngIf="getCurrentENDError() !== undefined" class="error-icon" [matTooltip]="getCurrentENDError()!" matTooltipPosition="right">error</mat-icon>
     </div>
   </div>
-  <h1>Select new depth</h1>
+  <div class="header-row">
+    <div class="nav-number">1</div>
+    <h1>Select new depth</h1>
+  </div>
   <div class="new-depth-row">
     <div class="input-section mat-elevation-z2">
       <mat-form-field class="depth-input">
@@ -68,9 +73,9 @@
       </mat-form-field>
     </div>
     <div class="calculation-section mat-elevation-z2">
-      <div class="dive-stat" *ngIf="getDescentDuration() !== undefined">
+      <div class="dive-stat" *ngIf="getAscentDuration() === undefined">
         Descent Time:
-        <strong>{{ getDescentDuration()! | humanDuration }} @ 20m/min</strong>
+        <strong>{{ getDescentDuration() ?? 0 | humanDuration }} @ 20m/min</strong>
       </div>
       <div class="dive-stat" *ngIf="getAscentDuration() !== undefined">
         Ascent Time:
@@ -103,7 +108,10 @@
       </div>
     </div>
   </div>
-  <h1>Select new gas</h1>
+  <div class="header-row">
+    <div class="nav-number">2</div>
+    <h1>Select new gas</h1>
+  </div>
   <mat-radio-group [(ngModel)]="newGasSelectedOption" (change)="calculateNewGas()">
     <div class="new-gas-row input-section mat-elevation-z2">
       <div class="new-gas-col">
@@ -226,7 +234,10 @@
       </div>
     </div>
   </div>
-  <h1>Select time at depth</h1>
+  <div class="header-row">
+    <div class="nav-number">3</div>
+    <h1>Select time at depth</h1>
+  </div>
   <div class="time-at-depth-row">
     <div class="input-section mat-elevation-z2">
       <mat-form-field class="time-input">
