@@ -117,15 +117,10 @@ namespace DivingCalculator
             //profile.SetDepth(6, 27000);
             //profile.SetDepth(0, 27020);
 
-            profile.SetDepth(40, 120);
-            profile.SetGas(trimix_12_53, 120);
+            profile.SetDepth(100, 300);
+            profile.SetDepth(100, 3900);
 
-            profile.SetDepth(0, 360);
-            //profile.SetDepth(100, 300);
-            //profile.SetDepth(100, 3900);
-            //profile.SetDepth(55, 4140);
-            //profile.SetDepth(55, 7740);
-            //profile.SetDepth(0, 8070);
+            
 
             // GUE Example
             //profile = new DiveProfile(new BreathingGas(0.21, 0.44, 0.35));
