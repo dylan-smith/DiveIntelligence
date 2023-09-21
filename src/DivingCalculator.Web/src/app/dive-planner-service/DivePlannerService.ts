@@ -50,6 +50,18 @@ export class DivePlannerService {
     return this.getPreviousSegment().EndDepth;
   }
 
+  getOptimalDecoGas(depth: number): BreathingGas {
+    const atm = depth / 10 + 1;
+    const oxygen = Math.min(100, Math.floor(160 / atm));
+
+    const targetPN2 = 5 * 0.79;
+    let nitrogen = (targetPN2 / atm) * 100;
+    const helium = Math.max(0, Math.ceil(100 - oxygen - nitrogen));
+    nitrogen = 100 - oxygen - helium;
+
+    return new BreathingGas('Custom', oxygen, helium, nitrogen);
+  }
+
   getCurrentCeiling(): number {
     const currentTime = this.getPreviousSegment().EndTimestamp;
 

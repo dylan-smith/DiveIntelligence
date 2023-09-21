@@ -35,6 +35,10 @@ export class AddDiveSegmentComponent {
     if (this.newGasSelectedOption === 'custom') {
       this.newGas = this.customGas;
     }
+
+    if (this.newGasSelectedOption === 'optimal') {
+      this.newGas = this.divePlanner.getOptimalDecoGas(this.newDepth);
+    }
   }
 
   getStandardGasDisabled(): boolean {

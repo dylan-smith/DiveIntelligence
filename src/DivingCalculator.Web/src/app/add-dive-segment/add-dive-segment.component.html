@@ -69,7 +69,7 @@
     <div class="input-section mat-elevation-z2">
       <mat-form-field class="depth-input">
         <mat-label>New Depth (m)</mat-label>
-        <input matInput type="number" min="0" [(ngModel)]="newDepth" />
+        <input matInput type="number" min="0" [(ngModel)]="newDepth" (input)="calculateNewGas()" />
       </mat-form-field>
     </div>
     <div class="calculation-section mat-elevation-z2">
@@ -175,6 +175,12 @@
             <input matInput type="number" [ngModel]="customGas.Nitrogen" disabled />
           </mat-form-field>
         </div>
+      </div>
+      <div class="new-gas-col">
+        <mat-radio-button value="optimal">
+          <div>Optimal Deco Gas</div>
+          <div class="gas-description" [innerHTML]="divePlanner.getOptimalDecoGas(newDepth).getDescription()"></div>
+        </mat-radio-button>
       </div>
     </div>
   </mat-radio-group>
