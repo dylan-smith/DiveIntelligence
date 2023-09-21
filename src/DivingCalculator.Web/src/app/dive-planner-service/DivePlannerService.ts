@@ -53,7 +53,7 @@ export class DivePlannerService {
   getCurrentCeiling(): number {
     const currentTime = this.getPreviousSegment().EndTimestamp;
 
-    return new BuhlmannZHL16C(this.diveProfile).getCeiling(currentTime);
+    return Math.ceil(new BuhlmannZHL16C(this.diveProfile).getCeiling(currentTime));
   }
 
   getCurrentGas(): BreathingGas {
@@ -71,6 +71,10 @@ export class DivePlannerService {
 
     let previousSegment = this.diveProfile.segments[this.diveProfile.segments.length - 1];
     let startTime = previousSegment.EndTimestamp;
+
+    if (newDepth === previousSegment.EndDepth && previousSegment.Gas.isEquivalent(newGas) && timeAtDepth > 0) {
+      this.diveProfile.extendLastSegment(timeAtDepth);
+    }
 
     if (newDepth !== previousSegment.EndDepth) {
       if (previousSegment.Gas.isEquivalent(newGas)) {

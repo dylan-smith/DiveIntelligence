@@ -3,18 +3,17 @@ import { DiveSegment } from './DiveSegment';
 
 export class DiveProfile {
   public segments: DiveSegment[] = [];
-  private profileByTime: Map<number, { depth: number; gas: BreathingGas }> = new Map();
 
   addSegment(segment: DiveSegment): void {
     this.segments.push(segment);
-
-    // TODO: this can be optimized to only do the new segment breakdown
-    this.breakDownByEachSecond();
   }
 
   removeLastSegment(): void {
     this.segments.pop();
-    this.breakDownByEachSecond();
+  }
+
+  extendLastSegment(time: number): void {
+    this.segments[this.segments.length - 1].EndTimestamp += time;
   }
 
   getMaxDepth(): number {
@@ -22,15 +21,7 @@ export class DiveProfile {
   }
 
   getAverageDepth(): number {
-    if (this.profileByTime.size === 0) {
-      return 0;
-    }
-
-    return (
-      Array.from(this.profileByTime)
-        .map(([, value]) => value.depth)
-        .reduce((sum, current) => sum + current, 0) / this.profileByTime.size
-    );
+    return this.segments.reduce((sum, current) => sum + current.getAverageDepth() * current.getDuration(), 0) / this.getTotalTime();
   }
 
   getTotalTime(): number {
@@ -58,25 +49,10 @@ export class DiveProfile {
   }
 
   getDepth(time: number): number {
-    if (time <= 0) {
-      return 0;
-    }
-
-    const segment = this.getSegment(time);
-
-    return segment.StartDepth + ((segment.EndDepth - segment.StartDepth) * (time - segment.StartTimestamp)) / (segment.EndTimestamp - segment.StartTimestamp);
+    return this.getSegment(time).getDepth(time);
   }
 
   getEND(time: number): number {
     return (this.getPN2(time) / 0.79 - 1) * 10;
-  }
-
-  breakDownByEachSecond(): void {
-    this.profileByTime.clear();
-    this.profileByTime.set(0, { depth: 0, gas: this.segments[0].Gas });
-
-    for (let t = 1; t <= this.getTotalTime(); t++) {
-      this.profileByTime.set(t, { depth: this.getDepth(t), gas: this.getGas(t) });
-    }
   }
 }
