@@ -3,13 +3,14 @@ import { StandardGases } from './StandardGases';
 import { BreathingGas } from './BreathingGas';
 import { DiveSegment } from './DiveSegment';
 import { DiveSegmentFactoryService } from './DiveSegmentFactory.service';
+import { DiveProfile } from './DiveProfile';
+import { BuhlmannZHL16C } from './BuhlmannZHL16C';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DivePlannerService {
-  startGas: BreathingGas | undefined;
-  diveSegments: DiveSegment[] = [];
+  public diveProfile: DiveProfile = new DiveProfile();
 
   constructor(private diveSegmentFactory: DiveSegmentFactoryService) {}
 
@@ -21,77 +22,76 @@ export class DivePlannerService {
   }
 
   startDive(startGas: BreathingGas) {
-    this.startGas = startGas;
-
-    this.diveSegments = [];
-    this.diveSegments.push(this.diveSegmentFactory.createStartDiveSegment(startGas));
-    this.diveSegments.push(this.diveSegmentFactory.createEndDiveSegment(0, 0, startGas));
+    this.diveProfile.addSegment(this.diveSegmentFactory.createStartDiveSegment(startGas));
+    this.diveProfile.addSegment(this.diveSegmentFactory.createEndDiveSegment(0, 0, startGas));
   }
 
   getDiveSegments(): DiveSegment[] {
-    return this.diveSegments;
+    return this.diveProfile.segments;
   }
 
   getDiveDuration(): number {
-    return this.diveSegments[this.diveSegments.length - 1].EndTimestamp;
+    return this.diveProfile.getTotalTime();
   }
 
   getMaxDepth(): number {
-    return Math.max(...this.diveSegments.map(x => x.EndDepth));
+    return this.diveProfile.getMaxDepth();
   }
 
   getAverageDepth(): number {
-    if (this.getMaxDepth() === 0) {
-      return 0;
-    }
+    return this.diveProfile.getAverageDepth();
+  }
 
-    return this.diveSegments.map(x => x.getAverageDepth() * x.getDuration()).reduce((sum, current) => sum + current, 0) / this.getDiveDuration();
+  getPreviousSegment(): DiveSegment {
+    return this.diveProfile.segments[this.diveProfile.segments.length - 2];
   }
 
   getCurrentDepth(): number {
-    return this.diveSegments[this.diveSegments.length - 2].EndDepth;
+    return this.getPreviousSegment().EndDepth;
   }
 
   getCurrentCeiling(): number {
-    return 0;
+    const currentTime = this.getPreviousSegment().EndTimestamp;
+
+    return new BuhlmannZHL16C(this.diveProfile).getCeiling(currentTime);
   }
 
   getCurrentGas(): BreathingGas {
-    return this.diveSegments[this.diveSegments.length - 2].Gas;
+    return this.getPreviousSegment().Gas;
   }
 
   getNoDecoLimit(newDepth: number, newGas: BreathingGas): number {
+    // TODO: implement
     return 632 + newDepth + newGas.Oxygen;
   }
 
   addDiveSegment(newDepth: number, newGas: BreathingGas, timeAtDepth: number): void {
     // remove the final surface segment, will re-add it later
-    this.diveSegments.pop();
+    this.diveProfile.removeLastSegment();
 
-    let previousSegment = this.diveSegments[this.diveSegments.length - 1];
+    let previousSegment = this.diveProfile.segments[this.diveProfile.segments.length - 1];
     let startTime = previousSegment.EndTimestamp;
 
     if (newDepth !== previousSegment.EndDepth) {
       if (previousSegment.Gas.isEquivalent(newGas)) {
-        const newSegment = this.diveSegmentFactory.createDepthChangeSegment(startTime, previousSegment.EndDepth, newDepth, timeAtDepth, previousSegment.Gas);
-        this.diveSegments.push(newSegment);
+        this.diveProfile.addSegment(
+          this.diveSegmentFactory.createDepthChangeSegment(startTime, previousSegment.EndDepth, newDepth, timeAtDepth, previousSegment.Gas)
+        );
       } else {
-        const newSegment = this.diveSegmentFactory.createDepthChangeSegment(startTime, previousSegment.EndDepth, newDepth, 0, previousSegment.Gas);
-        this.diveSegments.push(newSegment);
+        this.diveProfile.addSegment(this.diveSegmentFactory.createDepthChangeSegment(startTime, previousSegment.EndDepth, newDepth, 0, previousSegment.Gas));
       }
     }
 
-    previousSegment = this.diveSegments[this.diveSegments.length - 1];
+    previousSegment = this.diveProfile.segments[this.diveProfile.segments.length - 1];
     startTime = previousSegment.EndTimestamp;
 
     if (!previousSegment.Gas.isEquivalent(newGas)) {
-      const newSegment = this.diveSegmentFactory.createGasChangeSegment(startTime, newGas, timeAtDepth, newDepth);
-      this.diveSegments.push(newSegment);
+      this.diveProfile.addSegment(this.diveSegmentFactory.createGasChangeSegment(startTime, newGas, timeAtDepth, newDepth));
     }
 
-    const endTime = this.diveSegments[this.diveSegments.length - 1].EndTimestamp;
+    const endTime = this.diveProfile.segments[this.diveProfile.segments.length - 1].EndTimestamp;
 
-    this.diveSegments.push(this.diveSegmentFactory.createEndDiveSegment(endTime, newDepth, newGas));
+    this.diveProfile.addSegment(this.diveSegmentFactory.createEndDiveSegment(endTime, newDepth, newGas));
   }
 
   getDescentDuration(newDepth: number): number | undefined {
