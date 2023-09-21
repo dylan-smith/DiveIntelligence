@@ -9,8 +9,11 @@ import { BreathingGas } from './BreathingGas';
 export class DiveSegmentFactoryService {
   constructor(private humanDurationPipe: HumanDurationPipe) {}
 
+  private readonly DESCENT_RATE = 3; // seconds per meter
+  private readonly ASCENT_RATE = 6; // seconds per meter
+
   createEndDiveSegment(startTime: number, depth: number, gas: BreathingGas): DiveSegment {
-    const ascentTime = this.getDescentDuration(depth, 0);
+    const ascentTime = this.getTravelTime(depth, 0);
     const ascentTimeDuration = this.humanDurationPipe.transform(ascentTime);
     const endTime = startTime + ascentTime;
 
@@ -22,7 +25,7 @@ export class DiveSegmentFactoryService {
   }
 
   createDepthChangeSegment(startTime: number, previousDepth: number, newDepth: number, duration: number, gas: BreathingGas) {
-    const descentTime = this.getDescentDuration(previousDepth, newDepth);
+    const descentTime = this.getTravelTime(previousDepth, newDepth);
     const endTime = startTime + descentTime + duration;
     const title = newDepth > previousDepth ? `Descend to ${newDepth}m` : `Ascend to ${newDepth}m`;
     const description =
@@ -41,11 +44,11 @@ export class DiveSegmentFactoryService {
     return new DiveSegment(startTime, endTime, title, description, depth, depth, newGas);
   }
 
-  getDescentDuration(previousDepth: number, newDepth: number): number {
+  getTravelTime(previousDepth: number, newDepth: number): number {
     if (newDepth > previousDepth) {
-      return (newDepth - previousDepth) * 3;
+      return (newDepth - previousDepth) * this.DESCENT_RATE;
     } else {
-      return (previousDepth - newDepth) * 6;
+      return (previousDepth - newDepth) * this.ASCENT_RATE;
     }
   }
 }

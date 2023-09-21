@@ -210,7 +210,7 @@
       <div class="dive-stat">
         <span matTooltip="The amount of time you can stay at the new depth on the new gas and safely ascend directly to the surface" matTooltipPosition="right">
           No Deco Limit:
-          <strong>{{ divePlanner.getNoDecoLimit(newDepth, newGas) | humanDuration }}</strong>
+          <strong>{{ getNoDecoLimit() }}</strong>
         </span>
       </div>
     </div>

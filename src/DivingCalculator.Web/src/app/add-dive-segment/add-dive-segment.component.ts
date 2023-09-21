@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
 import { BreathingGas } from '../dive-planner-service/BreathingGas';
 import { Router } from '@angular/router';
+import { HumanDurationPipe } from '../pipes/human-duration.pipe';
 
 @Component({
   selector: 'dive-add-dive-segment',
@@ -18,7 +19,8 @@ export class AddDiveSegmentComponent {
 
   constructor(
     public divePlanner: DivePlannerService,
-    private router: Router
+    private router: Router,
+    private humanDurationPipe: HumanDurationPipe
   ) {
     this.newDepth = divePlanner.getCurrentDepth();
     this.newGasSelectedOption = 'current';
@@ -158,5 +160,15 @@ export class AddDiveSegmentComponent {
 
   getNewGasENDError(): string | undefined {
     return this.getENDError(this.getNewGasEND());
+  }
+
+  getNoDecoLimit(): string {
+    const ndl = this.divePlanner.getNoDecoLimit(this.newDepth, this.newGas);
+
+    if (ndl === undefined) {
+      return 'Infinite';
+    }
+
+    return this.humanDurationPipe.transform(ndl);
   }
 }

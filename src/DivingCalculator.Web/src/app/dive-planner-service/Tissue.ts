@@ -1,3 +1,4 @@
+import { BreathingGas } from './BreathingGas';
 import { DiveProfile } from './DiveProfile';
 
 export class Tissue {
@@ -53,20 +54,65 @@ export class Tissue {
   }
 
   getA(time: number): number {
-    return (this.getPN2(time) * this.a_n2 + this.getPHe(time) * this.a_he) / this.getPTotal(time);
+    return this.getAByPressures(this.getPN2(time), this.getPHe(time));
+  }
+
+  getAByPressures(pN2: number, pHe: number): number {
+    return (pN2 * this.a_n2 + pHe * this.a_he) / (pN2 + pHe);
   }
 
   getB(time: number): number {
-    return (this.getPN2(time) * this.b_n2 + this.getPHe(time) * this.b_he) / this.getPTotal(time);
+    return this.getBByPressures(this.getPN2(time), this.getPHe(time));
+  }
+
+  getBByPressures(pN2: number, pHe: number): number {
+    return (pN2 * this.b_n2 + pHe * this.b_he) / (pN2 + pHe);
   }
 
   getMValue(time: number): number {
-    return (this.getPTotal(time) - this.getA(time)) * this.getB(time);
+    return this.getMValueByPressures(this.getPN2(time), this.getPHe(time));
+  }
+
+  getMValueByPressures(pN2: number, pHe: number): number {
+    return (pN2 + pHe - this.getAByPressures(pN2, pHe)) * this.getBByPressures(pN2, pHe);
   }
 
   getCeiling(time: number): number {
     const result = (this.getMValue(time) - 1) * 10;
     return result < 0 ? 0 : result;
+  }
+
+  getCeilingByPressures(pN2: number, pHe: number): number {
+    const result = (this.getMValueByPressures(pN2, pHe) - 1) * 10;
+    return result < 0 ? 0 : result;
+  }
+
+  getNoDecoLimit(depth: number, gas: BreathingGas): number | undefined {
+    let ceiling = this.getCeiling(this.tissueByTime.size - 1);
+
+    if (ceiling > 0) {
+      return 0;
+    }
+
+    const minCeiling = this.getCeilingByPressures(gas.getPN2(depth), gas.getPHe(depth));
+
+    if (minCeiling === 0) {
+      return undefined;
+    }
+
+    let time = 0;
+    let pN2 = this.getPN2(this.tissueByTime.size - 1);
+    let pHe = this.getPHe(this.tissueByTime.size - 1);
+
+    while (ceiling <= 0) {
+      time += 1;
+
+      pN2 += this.getPN2Delta(pN2, gas.getPN2(depth));
+      pHe += this.getPHeDelta(pHe, gas.getPHe(depth));
+      ceiling = this.getCeilingByPressures(pN2, pHe);
+    }
+
+    return time;
   }
 
   getPN2(time: number): number {

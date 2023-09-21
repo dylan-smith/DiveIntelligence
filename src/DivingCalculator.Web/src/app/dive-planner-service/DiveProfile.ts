@@ -16,6 +16,16 @@ export class DiveProfile {
     this.segments[this.segments.length - 1].EndTimestamp += time;
   }
 
+  getCurrentProfile(): DiveProfile {
+    const result = new DiveProfile();
+    result.segments = this.segments.slice(0, -1);
+    return result;
+  }
+
+  getLastSegment(): DiveSegment {
+    return this.segments[this.segments.length - 1];
+  }
+
   getMaxDepth(): number {
     return Math.max(...this.segments.map(x => x.EndDepth));
   }

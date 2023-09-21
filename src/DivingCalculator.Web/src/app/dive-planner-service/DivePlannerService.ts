@@ -72,13 +72,32 @@ export class DivePlannerService {
     return this.getPreviousSegment().Gas;
   }
 
-  getNoDecoLimit(newDepth: number, newGas: BreathingGas): number {
-    // TODO: implement
-    return 632 + newDepth + newGas.Oxygen;
+  getNoDecoLimit(newDepth: number, newGas: BreathingGas): number | undefined {
+    const wipProfile = this.diveProfile.getCurrentProfile();
+
+    wipProfile.addSegment(
+      this.diveSegmentFactory.createDepthChangeSegment(
+        wipProfile.getLastSegment().EndTimestamp,
+        wipProfile.getLastSegment().EndDepth,
+        newDepth,
+        0,
+        this.getCurrentGas()
+      )
+    );
+    const algo = new BuhlmannZHL16C(wipProfile);
+
+    const ndl = algo.getNoDecoLimit(newDepth, newGas);
+
+    if (ndl === undefined) {
+      return undefined;
+    }
+
+    const timeToSurface = this.diveSegmentFactory.getTravelTime(wipProfile.getLastSegment().EndDepth, 0);
+    return Math.max(0, ndl - timeToSurface);
   }
 
   addDiveSegment(newDepth: number, newGas: BreathingGas, timeAtDepth: number): void {
-    // remove the final surface segment, will re-add it later
+    // remove the final surface segment, will re-add it below
     this.diveProfile.removeLastSegment();
 
     let previousSegment = this.diveProfile.segments[this.diveProfile.segments.length - 1];
