@@ -166,7 +166,7 @@ export class AddDiveSegmentComponent {
     const ndl = this.divePlanner.getNoDecoLimit(this.newDepth, this.newGas);
 
     if (ndl === undefined) {
-      return 'Infinite';
+      return '> 5 hours';
     }
 
     return this.humanDurationPipe.transform(ndl);

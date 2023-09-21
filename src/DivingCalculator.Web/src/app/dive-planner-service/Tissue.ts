@@ -19,6 +19,7 @@ export class Tissue {
 
   readonly ENVIRONMENT_PN2 = 0.79;
   readonly ENVIRONMENT_PHE = 0.0;
+  readonly MAX_NDL = 3600 * 5;
 
   private applyDiveProfile(profile: DiveProfile): void {
     this.tissueByTime.clear();
@@ -104,12 +105,16 @@ export class Tissue {
     let pN2 = this.getPN2(this.tissueByTime.size - 1);
     let pHe = this.getPHe(this.tissueByTime.size - 1);
 
-    while (ceiling <= 0) {
+    while (ceiling <= 0 && time < this.MAX_NDL) {
       time += 1;
 
       pN2 += this.getPN2Delta(pN2, gas.getPN2(depth));
       pHe += this.getPHeDelta(pHe, gas.getPHe(depth));
       ceiling = this.getCeilingByPressures(pN2, pHe);
+    }
+
+    if (time >= this.MAX_NDL) {
+      return undefined;
     }
 
     return time;
