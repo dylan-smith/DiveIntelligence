@@ -69,7 +69,7 @@
     <div class="input-section mat-elevation-z2">
       <mat-form-field class="depth-input">
         <mat-label>New Depth (m)</mat-label>
-        <input matInput type="number" min="0" [(ngModel)]="newDepth" (input)="calculateNewGas()" />
+        <input matInput type="number" min="0" [(ngModel)]="newDepth" (input)="onNewDepthInput()" />
       </mat-form-field>
     </div>
     <div class="calculation-section mat-elevation-z2">
@@ -112,7 +112,7 @@
     <div class="nav-number">2</div>
     <h1>Select new gas</h1>
   </div>
-  <mat-radio-group [(ngModel)]="newGasSelectedOption" (change)="calculateNewGas()">
+  <mat-radio-group [(ngModel)]="newGasSelectedOption" (change)="onGasTypeChange()">
     <div class="new-gas-row input-section mat-elevation-z2">
       <div class="new-gas-col">
         <mat-radio-button value="current">
@@ -128,7 +128,11 @@
         </div>
         <div>
           <mat-form-field>
-            <mat-select [(ngModel)]="standardGas" hideSingleSelectionIndicator (selectionChange)="calculateNewGas()" [disabled]="getStandardGasDisabled()">
+            <mat-select
+              [(ngModel)]="standardGas"
+              hideSingleSelectionIndicator
+              (selectionChange)="onStandardGasSelectionChange()"
+              [disabled]="getStandardGasDisabled()">
               <mat-select-trigger>
                 <div>{{ standardGas?.Name }}</div>
                 <div class="gas-description" [innerHTML]="standardGas?.getCompositionDescription()"></div>
@@ -146,27 +150,11 @@
         <div>
           <mat-form-field class="custom-gas-input">
             <mat-label>Oxygen (%)</mat-label>
-            <input
-              matInput
-              type="number"
-              min="0"
-              max="100"
-              [(ngModel)]="customGas.Oxygen"
-              (change)="updateCustomGasNitrogen()"
-              (input)="updateCustomGasNitrogen()"
-              [disabled]="getCustomGasDisabled()" />
+            <input matInput type="number" min="0" max="100" [(ngModel)]="customGas.Oxygen" (input)="onOxygenInput()" [disabled]="getCustomGasDisabled()" />
           </mat-form-field>
           <mat-form-field class="custom-gas-input">
             <mat-label>Helium (%)</mat-label>
-            <input
-              matInput
-              type="number"
-              min="0"
-              max="100"
-              [(ngModel)]="customGas.Helium"
-              (change)="updateCustomGasNitrogen()"
-              (input)="updateCustomGasNitrogen()"
-              [disabled]="getCustomGasDisabled()" />
+            <input matInput type="number" min="0" max="100" [(ngModel)]="customGas.Helium" (input)="onHeliumInput()" [disabled]="getCustomGasDisabled()" />
           </mat-form-field>
           <mat-form-field
             class="custom-gas-input"
@@ -245,13 +233,31 @@
     <h1>Select time at depth</h1>
   </div>
   <div class="time-at-depth-row">
-    <div class="input-section mat-elevation-z2">
-      <mat-form-field class="time-input">
-        <mat-label>Time at Depth (mins)</mat-label>
-        <input matInput type="number" [(ngModel)]="timeAtDepth" />
-      </mat-form-field>
+    <div class="time-input-col">
+      <div class="input-section mat-elevation-z2">
+        <mat-form-field class="time-input">
+          <mat-label>Time at Depth (mins)</mat-label>
+          <input matInput type="number" [(ngModel)]="timeAtDepth" (input)="onTimeAtDepthInput()" />
+        </mat-form-field>
+      </div>
+      <div class="calculation-section mat-elevation-z2">
+        <div class="dive-stat">
+          <span matTooltip="The deco ceiling after the time at depth has elapsed" matTooltipPosition="right">
+            Ceiling:
+            <strong>{{ getNewDecoCeiling() }}</strong>
+          </span>
+        </div>
+        <div class="dive-stat">
+          <span matTooltip="Total dive runtime after adding in the time for ascent/descent and the time at depth" matTooltipPosition="right">
+            Total Dive Duration:
+            <strong>{{ getTotalDiveDuration() | humanDuration }}</strong>
+          </span>
+        </div>
+      </div>
     </div>
-    <div class="ceiling-graph"></div>
+    <div class="ceiling-chart calculation-section mat-elevation-z2">
+      <div id="ceiling-chart" class="plotly-graph"></div>
+    </div>
   </div>
   <div class="actions">
     <button mat-flat-button color="primary" (click)="onSave()">Save</button>
