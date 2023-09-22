@@ -26,9 +26,11 @@
       </div>
     </div>
     <div class="errors">
-      <div class="plan-error" *ngIf="false">
+      <div class="plan-error" *ngIf="showCeilingError()">
         <mat-icon>error</mat-icon>
-        <strong class="error-message">Exceeded ceiling by up to 34.2m for 3 min 12 sec</strong>
+        <strong class="error-message">
+          Exceeded ceiling by up to {{ getCeilingErrorAmount() | number: '1.1-1' }}m for {{ getCeilingErrorDuration() | humanDuration }}
+        </strong>
       </div>
     </div>
   </div>

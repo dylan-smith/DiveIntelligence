@@ -284,4 +284,16 @@ export class DivePlanComponent implements OnInit {
   public getGraphClass(): string {
     return this.getShowGraphs() ? '' : 'hidden';
   }
+
+  public getCeilingErrorAmount(): number {
+    return this.divePlanner.getCeilingError().amount;
+  }
+
+  public getCeilingErrorDuration(): number {
+    return this.divePlanner.getCeilingError().duration;
+  }
+
+  public showCeilingError(): boolean {
+    return this.getCeilingErrorAmount() > 0;
+  }
 }

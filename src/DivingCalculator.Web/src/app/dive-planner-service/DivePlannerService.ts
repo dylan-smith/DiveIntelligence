@@ -229,4 +229,22 @@ export class DivePlannerService {
 
     return Math.ceil(algo.getCeiling(wipProfile.getTotalTime()));
   }
+
+  getCeilingError(): { amount: number; duration: number } {
+    let amount = 0;
+    let duration = 0;
+    const algo = new BuhlmannZHL16C(this.diveProfile);
+
+    for (let t = 0; t < this.getDiveDuration(); t++) {
+      const ceiling = algo.getCeiling(t);
+      const depth = this.diveProfile.getDepth(t);
+
+      if (depth < ceiling) {
+        amount = Math.max(amount, ceiling - depth);
+        duration++;
+      }
+    }
+
+    return { amount, duration };
+  }
 }
