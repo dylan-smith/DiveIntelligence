@@ -73,4 +73,24 @@ export class DiveSegment {
 
     return data;
   }
+
+  getPO2ChartData(): { time: number; pO2: number; decoLimit: number; limit: number; min: number }[] {
+    const data: { time: number; pO2: number; decoLimit: number; limit: number; min: number }[] = [];
+
+    for (let i = this.StartTimestamp; i <= this.EndTimestamp; i++) {
+      data.push({ time: i, pO2: this.Gas.getPO2(this.getDepth(i)), decoLimit: 1.6, limit: 1.4, min: 0.18 });
+    }
+
+    return data;
+  }
+
+  getENDChartData(): { time: number; end: number; warningLimit: number; errorLimit: number }[] {
+    const data: { time: number; end: number; warningLimit: number; errorLimit: number }[] = [];
+
+    for (let i = this.StartTimestamp; i <= this.EndTimestamp; i++) {
+      data.push({ time: i, end: this.Gas.getEND(this.getDepth(i)), warningLimit: 30, errorLimit: 40 });
+    }
+
+    return data;
+  }
 }

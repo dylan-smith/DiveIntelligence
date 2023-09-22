@@ -48,7 +48,7 @@ export class BreathingGas {
   }
 
   getEND(depth: number): number {
-    return Math.max(0, Math.ceil((this.getPN2(depth) / 0.79 - 1) * 10));
+    return Math.max(0, (this.getPN2(depth) / 0.79 - 1) * 10);
   }
 
   isEquivalent(other: BreathingGas): boolean {

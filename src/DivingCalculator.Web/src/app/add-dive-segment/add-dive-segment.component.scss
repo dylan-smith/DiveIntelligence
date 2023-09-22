@@ -23,7 +23,7 @@ main {
   padding-left: 2rem;
 }
 
-.new-depth-row, .new-gas-row {
+.new-depth-row, .new-gas-row, .time-at-depth-row {
   display: flex;
 }
 
@@ -140,4 +140,14 @@ mat-select {
   background-color: #8C9EFF;
   top: 600px;
   left: 122px;
+}
+
+.plotly-graph {
+  width: 100%;
+  height: 100%;
+}
+
+.ceiling-chart {
+  width: 400px;
+  height: 200px;
 }
