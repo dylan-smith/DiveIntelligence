@@ -95,7 +95,7 @@ export class AddDiveSegmentComponent {
   }
 
   getCurrentEND(): number {
-    return this.divePlanner.getCurrentGas().getEND(this.divePlanner.getCurrentDepth());
+    return Math.ceil(this.divePlanner.getCurrentGas().getEND(this.divePlanner.getCurrentDepth()));
   }
 
   getCurrentENDWarning(): string | undefined {
@@ -119,7 +119,7 @@ export class AddDiveSegmentComponent {
   }
 
   getNewDepthEND(): number {
-    return this.divePlanner.getCurrentGas().getEND(this.newDepth);
+    return Math.ceil(this.divePlanner.getCurrentGas().getEND(this.newDepth));
   }
 
   getNewDepthENDWarning(): string | undefined {
@@ -151,7 +151,7 @@ export class AddDiveSegmentComponent {
   }
 
   getNewGasEND(): number {
-    return this.newGas.getEND(this.newDepth);
+    return Math.ceil(this.newGas.getEND(this.newDepth));
   }
 
   getNewGasENDWarning(): string | undefined {

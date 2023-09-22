@@ -22,6 +22,7 @@ export class DivePlanComponent implements OnInit {
   private drawChart(): void {
     Plotly.newPlot('depth-chart', this.getDepthChartData(), this.getDepthChartLayout(), this.getChartOptions());
     Plotly.newPlot('po2-chart', this.getPO2ChartData(), this.getPO2ChartLayout(), this.getChartOptions());
+    Plotly.newPlot('end-chart', this.getENDChartData(), this.getENDChartLayout(), this.getChartOptions());
   }
 
   public getDepthChartData(): Plotly.Data[] {
@@ -89,7 +90,6 @@ export class DivePlanComponent implements OnInit {
         type: 'scatter',
         mode: 'lines',
         name: 'Min Limit (Hypoxia)',
-        // fill: 'tozeroy',
         marker: {
           color: 'red',
         },
@@ -106,7 +106,7 @@ export class DivePlanComponent implements OnInit {
         mode: 'lines',
         name: 'Working Limit',
         marker: {
-          color: 'lightpink',
+          color: 'orange',
         },
         line: {
           dash: 'dot',
@@ -120,7 +120,6 @@ export class DivePlanComponent implements OnInit {
         type: 'scatter',
         mode: 'lines',
         name: 'Deco Limit',
-        // fill: 'tozeroy',
         marker: {
           color: 'red',
         },
@@ -133,6 +132,59 @@ export class DivePlanComponent implements OnInit {
     ];
   }
 
+  public getENDChartData(): Plotly.Data[] {
+    const endData = this.divePlanner.getENDChartData();
+    const x = endData.map(d => new Date(1970, 1, 1, 0, 0, d.time, 0));
+    const y = endData.map(d => d.end);
+    const warningLimit = endData.map(d => d.warningLimit);
+    const errorLimit = endData.map(d => d.errorLimit);
+
+    return [
+      {
+        x,
+        y,
+        type: 'scatter',
+        mode: 'lines',
+        name: 'END',
+        line: {
+          color: 'rgb(31, 119, 180)',
+          width: 5,
+        },
+        hovertemplate: `%{y:.0f}m`,
+      },
+      {
+        x,
+        y: warningLimit,
+        type: 'scatter',
+        mode: 'lines',
+        name: 'Warning Limit',
+        marker: {
+          color: 'orange',
+        },
+        line: {
+          dash: 'dot',
+          width: 2,
+        },
+        hovertemplate: `%{y:.0f}m`,
+      },
+      {
+        x,
+        y: errorLimit,
+        type: 'scatter',
+        mode: 'lines',
+        name: 'Error Limit',
+        marker: {
+          color: 'red',
+        },
+        line: {
+          dash: 'dot',
+          width: 2,
+        },
+        hovertemplate: `%{y:.0f}m`,
+      },
+    ];
+  }
+
   public getDepthChartLayout(): Partial<Plotly.Layout> {
     return {
       autosize: true,
@@ -141,16 +193,14 @@ export class DivePlanComponent implements OnInit {
         text: 'Depth vs Ceiling',
         y: 0.98,
       },
-      margin: { l: 35, r: 10, b: 20, t: 20 },
+      margin: { l: 35, r: 10, b: 30, t: 20, pad: 10 },
       xaxis: {
         fixedrange: true,
-        // title: 'Time (HH:MM:SS)',
         tickformat: '%H:%M:%S',
       },
       yaxis: {
         fixedrange: true,
         autorange: 'reversed',
-        // title: 'Depth (M)',
       },
       hovermode: 'x unified',
       hoverlabel: {
@@ -168,7 +218,33 @@ export class DivePlanComponent implements OnInit {
         text: 'Gas PO2',
         y: 0.98,
       },
-      margin: { l: 35, r: 10, b: 20, t: 20 },
+      margin: { l: 35, r: 10, b: 30, t: 20, pad: 10 },
+      xaxis: {
+        fixedrange: true,
+        tickformat: '%H:%M:%S',
+      },
+      yaxis: {
+        fixedrange: true,
+        rangemode: 'tozero',
+        zeroline: false,
+      },
+      hovermode: 'x unified',
+      hoverlabel: {
+        bgcolor: 'rgba(200, 200, 200, 0.4)',
+        bordercolor: 'rgba(200, 200, 200, 0.25)',
+      },
+    };
+  }
+
+  public getENDChartLayout(): Partial<Plotly.Layout> {
+    return {
+      autosize: true,
+      showlegend: false,
+      title: {
+        text: 'Equivalent Narcotic Depth',
+        y: 0.98,
+      },
+      margin: { l: 35, r: 10, b: 30, t: 20, pad: 10 },
       xaxis: {
         fixedrange: true,
         tickformat: '%H:%M:%S',

@@ -170,4 +170,14 @@ export class DivePlannerService {
 
     return data;
   }
+
+  getENDChartData(): { time: number; end: number; warningLimit: number; errorLimit: number }[] {
+    let data: { time: number; end: number; warningLimit: number; errorLimit: number }[] = [];
+
+    for (const segment of this.diveProfile.segments) {
+      data = [...data, ...segment.getENDChartData()];
+    }
+
+    return data;
+  }
 }
