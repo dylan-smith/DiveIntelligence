@@ -1,15 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
 import { BreathingGas } from '../dive-planner-service/BreathingGas';
 import { Router } from '@angular/router';
 import { HumanDurationPipe } from '../pipes/human-duration.pipe';
+import * as Plotly from 'plotly.js-basic-dist-min';
 
 @Component({
   selector: 'dive-add-dive-segment',
   templateUrl: './add-dive-segment.component.html',
   styleUrls: ['./add-dive-segment.component.scss'],
 })
-export class AddDiveSegmentComponent {
+export class AddDiveSegmentComponent implements OnInit {
   newDepth: number;
   newGas: BreathingGas = this.divePlanner.getCurrentGas();
   newGasSelectedOption: string;
@@ -24,6 +25,116 @@ export class AddDiveSegmentComponent {
   ) {
     this.newDepth = divePlanner.getCurrentDepth();
     this.newGasSelectedOption = 'current';
+  }
+
+  ngOnInit(): void {
+    this.drawCeilingChart();
+  }
+
+  drawCeilingChart(): void {
+    Plotly.react('ceiling-chart', this.getCeilingChartData(), this.getCeilingChartLayout(), this.getCeilingChartOptions());
+  }
+
+  public getCeilingChartData(): Plotly.Data[] {
+    const depthData = this.divePlanner.getCeilingChartData(this.newDepth, this.newGas);
+    const x = depthData.map(d => new Date(1970, 1, 1, 0, 0, d.time, 0));
+    const y = depthData.map(d => d.ceiling);
+
+    return [
+      {
+        x,
+        y,
+        type: 'scatter',
+        mode: 'lines',
+        name: 'Ceiling',
+        line: {
+          color: 'rgb(31, 119, 180)',
+          width: 2,
+        },
+        hovertemplate: `%{y:.0f}m`,
+      },
+    ];
+  }
+
+  public getCeilingChartLayout(): Partial<Plotly.Layout> {
+    return {
+      autosize: false,
+      showlegend: false,
+      title: {
+        text: 'Ceiling Over Time',
+        y: 0.98,
+      },
+      margin: { l: 35, r: 10, b: 30, t: 20, pad: 10 },
+      xaxis: {
+        fixedrange: true,
+        tickformat: '%H:%M:%S',
+      },
+      yaxis: {
+        fixedrange: true,
+        autorange: 'reversed',
+      },
+      hovermode: 'x unified',
+      hoverlabel: {
+        bgcolor: 'rgba(200, 200, 200, 0.25)',
+        bordercolor: 'rgba(200, 200, 200, 0.4)',
+      },
+      shapes: [
+        {
+          type: 'line',
+          xref: 'x',
+          yref: 'paper',
+          x0: new Date(1970, 1, 1, 0, 0, this.timeAtDepth * 60, 0),
+          x1: new Date(1970, 1, 1, 0, 0, this.timeAtDepth * 60, 0),
+          y0: 0,
+          y1: 1,
+          line: {
+            color: 'red',
+            width: 1,
+            dash: 'dot',
+          },
+        },
+      ],
+    };
+  }
+
+  public getCeilingChartOptions(): Partial<Plotly.Config> {
+    return {
+      responsive: true,
+      displaylogo: false,
+      displayModeBar: false,
+      autosizable: true,
+      scrollZoom: false,
+      editable: false,
+    };
+  }
+
+  onNewDepthInput(): void {
+    this.calculateNewGas();
+    this.drawCeilingChart();
+  }
+
+  onGasTypeChange(): void {
+    this.calculateNewGas();
+    this.drawCeilingChart();
+  }
+
+  onStandardGasSelectionChange(): void {
+    this.calculateNewGas();
+    this.drawCeilingChart();
+  }
+
+  onOxygenInput(): void {
+    this.updateCustomGasNitrogen();
+    this.drawCeilingChart();
+  }
+
+  onHeliumInput(): void {
+    this.updateCustomGasNitrogen();
+    this.drawCeilingChart();
+  }
+
+  onTimeAtDepthInput(): void {
+    this.drawCeilingChart();
   }
 
   calculateNewGas(): void {
@@ -170,5 +281,15 @@ export class AddDiveSegmentComponent {
     }
 
     return this.humanDurationPipe.transform(ndl);
+  }
+
+  getNewDecoCeiling(): string {
+    const ceiling = this.divePlanner.getNewCeiling(this.newDepth, this.newGas, this.timeAtDepth * 60);
+
+    return `${ceiling}m`;
+  }
+
+  getTotalDiveDuration(): number {
+    return this.divePlanner.getDiveDuration() + this.divePlanner.getTravelTime(this.newDepth) + this.timeAtDepth * 60;
   }
 }
