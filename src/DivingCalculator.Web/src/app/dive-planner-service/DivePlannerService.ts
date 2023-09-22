@@ -160,4 +160,14 @@ export class DivePlannerService {
 
     return data;
   }
+
+  getPO2ChartData(): { time: number; pO2: number; decoLimit: number; limit: number; min: number }[] {
+    let data: { time: number; pO2: number; decoLimit: number; limit: number; min: number }[] = [];
+
+    for (const segment of this.diveProfile.segments) {
+      data = [...data, ...segment.getPO2ChartData()];
+    }
+
+    return data;
+  }
 }
