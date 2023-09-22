@@ -34,10 +34,16 @@
   </div>
   <div class="graphs">
     <div class="graph mat-elevation-z2">
-      <div id="plotly-chart" class="plotly-graph" [class]="getGraphClass()"></div>
+      <div id="depth-chart" class="plotly-graph" [class]="getGraphClass()"></div>
       <div *ngIf="!getShowGraphs()">Create dive segements to populate graphs</div>
     </div>
-    <div class="graph mat-elevation-z2">Create dive segements to populate graphs</div>
-    <div class="graph mat-elevation-z2">Create dive segements to populate graphs</div>
+    <div class="graph mat-elevation-z2">
+      <div id="po2-chart" class="plotly-graph" [class]="getGraphClass()"></div>
+      <div *ngIf="!getShowGraphs()">Create dive segements to populate graphs</div>
+    </div>
+    <div class="graph mat-elevation-z2">
+      <div id="end-chart" class="plotly-graph" [class]="getGraphClass()"></div>
+      <div *ngIf="!getShowGraphs()">Create dive segements to populate graphs</div>
+    </div>
   </div>
 </main>
