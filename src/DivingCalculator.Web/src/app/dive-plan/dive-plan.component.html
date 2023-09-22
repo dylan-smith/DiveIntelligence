@@ -46,6 +46,13 @@
           Hypoxic gas as low as {{ getHypoxicErrorAmount() | number: '1.3-3' }} for {{ getHypoxicErrorDuration() | humanDuration }}
         </strong>
       </div>
+      <div class="plan-error" *ngIf="showENDError()">
+        <mat-icon>error</mat-icon>
+        <strong class="error-message">
+          <!-- eslint-disable-next-line prettier/prettier -->
+          END as deep as {{ getENDErrorAmount() | number: '1.1-1' }}m for {{ getENDErrorDuration() | humanDuration }}
+        </strong>
+      </div>
     </div>
     <div class="graph mat-elevation-z2">
       <div id="depth-chart" class="plotly-graph" [class]="getGraphClass()"></div>

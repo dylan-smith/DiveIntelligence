@@ -279,4 +279,20 @@ export class DivePlannerService {
 
     return { minPO2, duration };
   }
+
+  getENDError(): { end: number; duration: number } {
+    let maxEND = 0;
+    let duration = 0;
+
+    for (let t = 0; t < this.getDiveDuration(); t++) {
+      const end = this.diveProfile.getEND(t);
+
+      if (end > 40) {
+        maxEND = Math.max(end, maxEND);
+        duration++;
+      }
+    }
+
+    return { end: maxEND, duration };
+  }
 }

@@ -320,4 +320,16 @@ export class DivePlanComponent implements OnInit {
   public showHypoxicError(): boolean {
     return this.getHypoxicErrorDuration() > 0;
   }
+
+  public getENDErrorAmount(): number {
+    return this.divePlanner.getENDError().end;
+  }
+
+  public getENDErrorDuration(): number {
+    return this.divePlanner.getENDError().duration;
+  }
+
+  public showENDError(): boolean {
+    return this.getENDErrorDuration() > 0;
+  }
 }
