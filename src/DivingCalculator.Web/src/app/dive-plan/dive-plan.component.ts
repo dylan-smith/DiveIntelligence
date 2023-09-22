@@ -294,6 +294,18 @@ export class DivePlanComponent implements OnInit {
   }
 
   public showCeilingError(): boolean {
-    return this.getCeilingErrorAmount() > 0;
+    return this.getCeilingErrorDuration() > 0;
+  }
+
+  public getPO2ErrorAmount(): number {
+    return this.divePlanner.getPO2Error().maxPO2;
+  }
+
+  public getPO2ErrorDuration(): number {
+    return this.divePlanner.getPO2Error().duration;
+  }
+
+  public showPO2Error(): boolean {
+    return this.getPO2ErrorDuration() > 0;
   }
 }

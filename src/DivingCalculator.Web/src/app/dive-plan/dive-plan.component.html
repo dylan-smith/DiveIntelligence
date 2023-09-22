@@ -25,6 +25,8 @@
         <strong>{{ divePlanner.getAverageDepth() | number: '1.0-0' }}m</strong>
       </div>
     </div>
+  </div>
+  <div class="graphs">
     <div class="errors">
       <div class="plan-error" *ngIf="showCeilingError()">
         <mat-icon>error</mat-icon>
@@ -32,9 +34,13 @@
           Exceeded ceiling by up to {{ getCeilingErrorAmount() | number: '1.1-1' }}m for {{ getCeilingErrorDuration() | humanDuration }}
         </strong>
       </div>
+      <div class="plan-error" *ngIf="showPO2Error()">
+        <mat-icon>error</mat-icon>
+        <strong class="error-message">
+          Exceeded safe PO2 for {{ getPO2ErrorDuration() | humanDuration }}, up to PO2 = {{ getPO2ErrorAmount() | number: '1.2-2' }}
+        </strong>
+      </div>
     </div>
-  </div>
-  <div class="graphs">
     <div class="graph mat-elevation-z2">
       <div id="depth-chart" class="plotly-graph" [class]="getGraphClass()"></div>
       <div *ngIf="!getShowGraphs()">Create dive segements to populate graphs</div>

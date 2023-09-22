@@ -247,4 +247,20 @@ export class DivePlannerService {
 
     return { amount, duration };
   }
+
+  getPO2Error(): { maxPO2: number; duration: number } {
+    let maxPO2 = 0;
+    let duration = 0;
+
+    for (let t = 0; t < this.getDiveDuration(); t++) {
+      const pO2 = this.diveProfile.getPO2(t);
+
+      if (pO2 > 1.6) {
+        maxPO2 = Math.max(maxPO2, pO2);
+        duration++;
+      }
+    }
+
+    return { maxPO2, duration };
+  }
 }
