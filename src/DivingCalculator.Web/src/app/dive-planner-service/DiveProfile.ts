@@ -31,6 +31,7 @@ export class DiveProfile {
   }
 
   getAverageDepth(): number {
+    if (this.getTotalTime() === 0) return 0;
     return this.segments.reduce((sum, current) => sum + current.getAverageDepth() * current.getDuration(), 0) / this.getTotalTime();
   }
 
