@@ -34,7 +34,7 @@
     "@angular-eslint/eslint-plugin-template": "16.2.0",
     "@angular-eslint/schematics": "16.2.0",
     "@angular-eslint/template-parser": "16.2.0",
-    "@angular/cli": "~16.2.1",
+    "@angular/cli": "~16.2.3",
     "@angular/compiler-cli": "^16.2.0",
     "@azure/static-web-apps-cli": "^1.1.4",
     "@types/jasmine": "~4.3.0",
