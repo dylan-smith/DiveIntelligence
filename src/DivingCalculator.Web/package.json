@@ -21,7 +21,7 @@
     "@angular/material": "^16.2.4",
     "@angular/platform-browser": "^16.2.0",
     "@angular/platform-browser-dynamic": "^16.2.0",
-    "@angular/router": "^16.2.0",
+    "@angular/router": "^16.2.6",
     "plotly.js-basic-dist-min": "^2.26.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
