@@ -17,6 +17,6 @@
   }
 
   mat-list-option[aria-selected="true"] {
-    background: map-get($accent, 100) !important;
+    background: map-get($primary, 100) !important;
   }
 }
