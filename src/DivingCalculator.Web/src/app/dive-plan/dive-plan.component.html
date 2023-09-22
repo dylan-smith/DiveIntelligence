@@ -40,6 +40,12 @@
           Exceeded safe PO2 for {{ getPO2ErrorDuration() | humanDuration }}, up to PO2 = {{ getPO2ErrorAmount() | number: '1.2-2' }}
         </strong>
       </div>
+      <div class="plan-error" *ngIf="showHypoxicError()">
+        <mat-icon>error</mat-icon>
+        <strong class="error-message">
+          Hypoxic gas as low as {{ getHypoxicErrorAmount() | number: '1.3-3' }} for {{ getHypoxicErrorDuration() | humanDuration }}
+        </strong>
+      </div>
     </div>
     <div class="graph mat-elevation-z2">
       <div id="depth-chart" class="plotly-graph" [class]="getGraphClass()"></div>

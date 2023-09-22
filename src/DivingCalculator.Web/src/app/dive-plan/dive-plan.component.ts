@@ -308,4 +308,16 @@ export class DivePlanComponent implements OnInit {
   public showPO2Error(): boolean {
     return this.getPO2ErrorDuration() > 0;
   }
+
+  public getHypoxicErrorAmount(): number {
+    return this.divePlanner.getHypoxicError().minPO2;
+  }
+
+  public getHypoxicErrorDuration(): number {
+    return this.divePlanner.getHypoxicError().duration;
+  }
+
+  public showHypoxicError(): boolean {
+    return this.getHypoxicErrorDuration() > 0;
+  }
 }

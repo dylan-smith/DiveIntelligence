@@ -263,4 +263,20 @@ export class DivePlannerService {
 
     return { maxPO2, duration };
   }
+
+  getHypoxicError(): { minPO2: number; duration: number } {
+    let minPO2 = 999;
+    let duration = 0;
+
+    for (let t = 0; t < this.getDiveDuration(); t++) {
+      const pO2 = this.diveProfile.getPO2(t);
+
+      if (pO2 < 0.18) {
+        minPO2 = Math.min(minPO2, pO2);
+        duration++;
+      }
+    }
+
+    return { minPO2, duration };
+  }
 }
