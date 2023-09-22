@@ -13,7 +13,7 @@ export class DiveProfile {
   }
 
   extendLastSegment(time: number): void {
-    this.segments[this.segments.length - 1].EndTimestamp += time;
+    this.getLastSegment().EndTimestamp += time;
   }
 
   getCurrentProfile(): DiveProfile {
@@ -36,11 +36,11 @@ export class DiveProfile {
   }
 
   getTotalTime(): number {
-    return this.segments[this.segments.length - 1].EndTimestamp;
+    return this.getLastSegment().EndTimestamp;
   }
 
   getSegment(time: number): DiveSegment {
-    return this.segments.find(x => x.EndTimestamp > time && x.StartTimestamp <= time) ?? this.segments[this.segments.length - 1];
+    return this.segments.find(x => x.EndTimestamp > time && x.StartTimestamp <= time) ?? this.getLastSegment();
   }
 
   getGas(time: number): BreathingGas {
