@@ -145,6 +145,10 @@ export class DivePlannerService {
     return undefined;
   }
 
+  getTravelTime(newDepth: number): number {
+    return this.diveSegmentFactory.getTravelTime(this.getCurrentDepth(), newDepth);
+  }
+
   getDepthChartData(): { time: number; depth: number; ceiling: number }[] {
     let data: { time: number; depth: number; ceiling: number }[] = [];
 
@@ -159,5 +163,70 @@ export class DivePlannerService {
     }
 
     return data;
+  }
+
+  getPO2ChartData(): { time: number; pO2: number; decoLimit: number; limit: number; min: number }[] {
+    let data: { time: number; pO2: number; decoLimit: number; limit: number; min: number }[] = [];
+
+    for (const segment of this.diveProfile.segments) {
+      data = [...data, ...segment.getPO2ChartData()];
+    }
+
+    return data;
+  }
+
+  getENDChartData(): { time: number; end: number; warningLimit: number; errorLimit: number }[] {
+    let data: { time: number; end: number; warningLimit: number; errorLimit: number }[] = [];
+
+    for (const segment of this.diveProfile.segments) {
+      data = [...data, ...segment.getENDChartData()];
+    }
+
+    return data;
+  }
+
+  getCeilingChartData(newDepth: number, newGas: BreathingGas): { time: number; ceiling: number }[] {
+    const data: { time: number; ceiling: number }[] = [];
+
+    const startTime = this.diveProfile.getTotalTime();
+    const chartDuration = 3600 * 2;
+
+    const wipProfile = this.diveProfile.getCurrentProfile();
+
+    wipProfile.addSegment(
+      this.diveSegmentFactory.createDepthChangeSegment(
+        wipProfile.getLastSegment().EndTimestamp,
+        wipProfile.getLastSegment().EndDepth,
+        newDepth,
+        0,
+        this.getCurrentGas()
+      )
+    );
+    wipProfile.addSegment(this.diveSegmentFactory.createGasChangeSegment(wipProfile.getLastSegment().EndTimestamp, newGas, chartDuration, newDepth));
+    const algo = new BuhlmannZHL16C(wipProfile);
+
+    for (let t = startTime; t < startTime + chartDuration; t++) {
+      data.push({ time: t - startTime, ceiling: algo.getCeiling(t) });
+    }
+
+    return data;
+  }
+
+  getNewCeiling(newDepth: number, newGas: BreathingGas, timeAtDepth: number): number {
+    const wipProfile = this.diveProfile.getCurrentProfile();
+
+    wipProfile.addSegment(
+      this.diveSegmentFactory.createDepthChangeSegment(
+        wipProfile.getLastSegment().EndTimestamp,
+        wipProfile.getLastSegment().EndDepth,
+        newDepth,
+        0,
+        this.getCurrentGas()
+      )
+    );
+    wipProfile.addSegment(this.diveSegmentFactory.createGasChangeSegment(wipProfile.getLastSegment().EndTimestamp, newGas, timeAtDepth, newDepth));
+    const algo = new BuhlmannZHL16C(wipProfile);
+
+    return Math.ceil(algo.getCeiling(wipProfile.getTotalTime()));
   }
 }
