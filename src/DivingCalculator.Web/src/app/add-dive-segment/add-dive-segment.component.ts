@@ -18,6 +18,10 @@ export class AddDiveSegmentComponent implements OnInit {
   customGas: BreathingGas = new BreathingGas('Custom', 21, 0, 79);
   timeAtDepth = 0;
 
+  private readonly ERROR_COLOR = 'red';
+  private readonly WARNING_COLOR = 'orange';
+  private readonly PRIMARY_COLOR = '#3F51B5'; // Indigo 500
+
   constructor(
     public divePlanner: DivePlannerService,
     private router: Router,
@@ -48,7 +52,7 @@ export class AddDiveSegmentComponent implements OnInit {
         mode: 'lines',
         name: 'Ceiling',
         line: {
-          color: 'rgb(31, 119, 180)',
+          color: this.PRIMARY_COLOR,
           width: 2,
         },
         hovertemplate: `%{y:.0f}m`,
@@ -88,7 +92,7 @@ export class AddDiveSegmentComponent implements OnInit {
           y0: 0,
           y1: 1,
           line: {
-            color: 'red',
+            color: this.ERROR_COLOR,
             width: 1,
             dash: 'dot',
           },

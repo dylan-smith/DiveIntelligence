@@ -6,12 +6,15 @@
   $background: map-get($color, background);
   $foreground: map-get($color, foreground);
 
+  $nav-color: map-get($primary, A100);
+  $nav-text: map-get(map-get($primary, contrast), A200);
+
   .calculation-section {
     background-color: map-get($background, card);
   }
 
   .input-section {
-    border-color: map-get($primary, A100);
+    border-color: $nav-color;
     background-color: map-get($background, card);
   }
 
@@ -25,5 +28,18 @@
 
   .error-icon {
     color: map-get($warn, error);
+  }
+
+  .nav-number {
+    background-color:$nav-color;
+    color: $nav-text;
+  }
+
+  .nav-line-1 {
+    background-color: $nav-color;
+  }
+
+  .nav-line-2 {
+    background-color: $nav-color;
   }
 }

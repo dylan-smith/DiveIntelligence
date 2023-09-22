@@ -11,6 +11,10 @@ import * as Plotly from 'plotly.js-basic-dist-min';
 export class DivePlanComponent implements OnInit {
   planEvents: DiveSegment[];
 
+  private readonly ERROR_COLOR = 'red';
+  private readonly WARNING_COLOR = 'orange';
+  private readonly PRIMARY_COLOR = '#3F51B5'; // Indigo 500
+
   constructor(public divePlanner: DivePlannerService) {
     this.planEvents = divePlanner.getDiveSegments();
   }
@@ -39,7 +43,7 @@ export class DivePlanComponent implements OnInit {
         mode: 'lines',
         name: 'Depth',
         line: {
-          color: 'rgb(31, 119, 180)',
+          color: this.PRIMARY_COLOR,
           width: 5,
         },
         hovertemplate: `%{y:.0f}m`,
@@ -52,7 +56,7 @@ export class DivePlanComponent implements OnInit {
         name: 'Ceiling',
         fill: 'tozeroy',
         marker: {
-          color: 'lightpink',
+          color: this.ERROR_COLOR,
         },
         line: {
           dash: 'dot',
@@ -79,7 +83,7 @@ export class DivePlanComponent implements OnInit {
         mode: 'lines',
         name: 'PO2',
         line: {
-          color: 'rgb(31, 119, 180)',
+          color: this.PRIMARY_COLOR,
           width: 5,
         },
         hovertemplate: `%{y:.2f}`,
@@ -91,7 +95,7 @@ export class DivePlanComponent implements OnInit {
         mode: 'lines',
         name: 'Min Limit (Hypoxia)',
         marker: {
-          color: 'red',
+          color: this.ERROR_COLOR,
         },
         line: {
           dash: 'dot',
@@ -106,7 +110,7 @@ export class DivePlanComponent implements OnInit {
         mode: 'lines',
         name: 'Working Limit',
         marker: {
-          color: 'orange',
+          color: this.WARNING_COLOR,
         },
         line: {
           dash: 'dot',
@@ -121,7 +125,7 @@ export class DivePlanComponent implements OnInit {
         mode: 'lines',
         name: 'Deco Limit',
         marker: {
-          color: 'red',
+          color: this.ERROR_COLOR,
         },
         line: {
           dash: 'dot',
@@ -147,7 +151,7 @@ export class DivePlanComponent implements OnInit {
         mode: 'lines',
         name: 'END',
         line: {
-          color: 'rgb(31, 119, 180)',
+          color: this.PRIMARY_COLOR,
           width: 5,
         },
         hovertemplate: `%{y:.0f}m`,
@@ -159,7 +163,7 @@ export class DivePlanComponent implements OnInit {
         mode: 'lines',
         name: 'Warning Limit',
         marker: {
-          color: 'orange',
+          color: this.WARNING_COLOR,
         },
         line: {
           dash: 'dot',
@@ -174,7 +178,7 @@ export class DivePlanComponent implements OnInit {
         mode: 'lines',
         name: 'Error Limit',
         marker: {
-          color: 'red',
+          color: this.ERROR_COLOR,
         },
         line: {
           dash: 'dot',
@@ -204,7 +208,7 @@ export class DivePlanComponent implements OnInit {
       },
       hovermode: 'x unified',
       hoverlabel: {
-        bgcolor: 'rgba(200, 200, 200, 0.25)',
+        bgcolor: 'rgba(200, 200, 200, 0.4)',
         bordercolor: 'rgba(200, 200, 200, 0.4)',
       },
     };
@@ -231,7 +235,7 @@ export class DivePlanComponent implements OnInit {
       hovermode: 'x unified',
       hoverlabel: {
         bgcolor: 'rgba(200, 200, 200, 0.4)',
-        bordercolor: 'rgba(200, 200, 200, 0.25)',
+        bordercolor: 'rgba(200, 200, 200, 0.4)',
       },
     };
   }
@@ -257,7 +261,7 @@ export class DivePlanComponent implements OnInit {
       hovermode: 'x unified',
       hoverlabel: {
         bgcolor: 'rgba(200, 200, 200, 0.4)',
-        bordercolor: 'rgba(200, 200, 200, 0.25)',
+        bordercolor: 'rgba(200, 200, 200, 0.4)',
       },
     };
   }
