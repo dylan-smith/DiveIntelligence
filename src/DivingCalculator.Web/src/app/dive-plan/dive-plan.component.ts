@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
 import { DiveSegment } from '../dive-planner-service/DiveSegment';
-import * as Plotly from 'plotly.js-dist-min';
+import * as Plotly from 'plotly.js-basic-dist-min';
 
 @Component({
   selector: 'dive-dive-plan',
