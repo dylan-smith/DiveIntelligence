@@ -63,4 +63,14 @@ export class DiveSegment {
 
     return 0; // should never happen
   }
+
+  getDepthChartData(): { time: number; depth: number; ceiling: number }[] {
+    const data: { time: number; depth: number; ceiling: number }[] = [];
+
+    for (let i = this.StartTimestamp; i <= this.EndTimestamp; i++) {
+      data.push({ time: i, depth: this.getDepth(i), ceiling: 0 });
+    }
+
+    return data;
+  }
 }

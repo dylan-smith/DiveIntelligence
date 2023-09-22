@@ -22,6 +22,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { AddDiveSegmentComponent } from './add-dive-segment/add-dive-segment.component';
 
+import * as PlotlyJS from 'plotly.js-dist-min';
+import { PlotlyModule } from 'angular-plotly.js';
+
+PlotlyModule.plotlyjs = PlotlyJS;
+
 @NgModule({
   declarations: [AppComponent, NewDiveComponent, HomeComponent, DivePlanComponent, HumanDurationPipe, ColonDurationPipe, AddDiveSegmentComponent],
   imports: [
@@ -37,6 +42,7 @@ import { AddDiveSegmentComponent } from './add-dive-segment/add-dive-segment.com
     MatTooltipModule,
     MatIconModule,
     MatSelectModule,
+    PlotlyModule,
   ],
   providers: [HumanDurationPipe, ColonDurationPipe],
   bootstrap: [AppComponent],

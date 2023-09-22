@@ -144,4 +144,20 @@ export class DivePlannerService {
 
     return undefined;
   }
+
+  getDepthChartData(): { time: number; depth: number; ceiling: number }[] {
+    let data: { time: number; depth: number; ceiling: number }[] = [];
+
+    for (const segment of this.diveProfile.segments) {
+      data = [...data, ...segment.getDepthChartData()];
+    }
+
+    const algo = new BuhlmannZHL16C(this.diveProfile);
+
+    for (const d of data) {
+      d.ceiling = algo.getCeiling(d.time);
+    }
+
+    return data;
+  }
 }

@@ -9,12 +9,17 @@ main {
 }
 
 .graph {
-  height: 240px;
-  width: 640px;
+  height: 340px;
+  width: 840px;
   margin: 1rem;
   justify-content: center;
   align-items: center;
   display: flex;
+}
+
+.plotly-graph {
+  width: 100%;
+  height: 100%;
 }
 
 .add-segment-button {
@@ -70,4 +75,8 @@ mat-selection-list {
 .dive-stat {
   padding-top: 0.1rem;
   padding-bottom: 0.1rem;
+}
+
+.hidden {
+  display: none;
 }
