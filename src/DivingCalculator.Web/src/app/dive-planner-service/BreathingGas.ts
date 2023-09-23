@@ -54,4 +54,8 @@ export class BreathingGas {
   isEquivalent(other: BreathingGas): boolean {
     return this.Oxygen === other.Oxygen && this.Helium === other.Helium && this.Nitrogen === other.Nitrogen;
   }
+
+  getMaxDecoDepth(): number {
+    return Math.min(this.getMaxDepthPO2Deco(), this.getMaxDepthEND());
+  }
 }

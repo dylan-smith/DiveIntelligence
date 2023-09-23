@@ -258,6 +258,13 @@
               <strong>{{ getTotalDiveDuration() | humanDuration }}</strong>
             </span>
           </div>
+          <mat-divider *ngIf="getDecoMilestones().length > 0"></mat-divider>
+          <div class="dive-stat" *ngFor="let milestone of getDecoMilestones()">
+            <span [matTooltip]="milestone.tooltip" matTooltipPosition="right">
+              <strong>{{ milestone.duration | humanDuration }}</strong>
+              : {{ milestone.gas }} @ {{ milestone.depth }}m
+            </span>
+          </div>
         </div>
       </div>
       <div class="ceiling-chart calculation-section mat-elevation-z2">

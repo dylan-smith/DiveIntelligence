@@ -188,9 +188,6 @@ export class DivePlannerService {
   getCeilingChartData(newDepth: number, newGas: BreathingGas): { time: number; ceiling: number }[] {
     const data: { time: number; ceiling: number }[] = [];
 
-    const startTime = this.diveProfile.getTotalTime();
-    const chartDuration = 3600 * 2;
-
     const wipProfile = this.diveProfile.getCurrentProfile();
 
     wipProfile.addSegment(
@@ -202,6 +199,10 @@ export class DivePlannerService {
         this.getCurrentGas()
       )
     );
+
+    const startTime = wipProfile.getTotalTime();
+    const chartDuration = 3600 * 2;
+
     wipProfile.addSegment(this.diveSegmentFactory.createGasChangeSegment(wipProfile.getLastSegment().EndTimestamp, newGas, chartDuration, newDepth));
     const algo = new BuhlmannZHL16C(wipProfile);
 
@@ -224,6 +225,7 @@ export class DivePlannerService {
         this.getCurrentGas()
       )
     );
+
     wipProfile.addSegment(this.diveSegmentFactory.createGasChangeSegment(wipProfile.getLastSegment().EndTimestamp, newGas, timeAtDepth, newDepth));
     const algo = new BuhlmannZHL16C(wipProfile);
 
