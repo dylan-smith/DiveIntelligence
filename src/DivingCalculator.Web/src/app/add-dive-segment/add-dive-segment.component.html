@@ -124,6 +124,10 @@
             <div>Current Gas</div>
             <div class="gas-description" [innerHTML]="divePlanner.getCurrentGas().getDescription()"></div>
           </mat-radio-button>
+          <mat-radio-button value="optimal" id="optimal-deco-gas-radio">
+            <div>Optimal Deco Gas</div>
+            <div class="gas-description" [innerHTML]="divePlanner.getOptimalDecoGas(newDepth).getDescription()"></div>
+          </mat-radio-button>
         </div>
         <div class="new-gas-col">
           <div>
@@ -168,12 +172,6 @@
               <input matInput type="number" [ngModel]="customGas.Nitrogen" disabled />
             </mat-form-field>
           </div>
-        </div>
-        <div class="new-gas-col">
-          <mat-radio-button value="optimal">
-            <div>Optimal Deco Gas</div>
-            <div class="gas-description" [innerHTML]="divePlanner.getOptimalDecoGas(newDepth).getDescription()"></div>
-          </mat-radio-button>
         </div>
       </div>
     </mat-radio-group>

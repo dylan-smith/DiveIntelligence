@@ -72,6 +72,8 @@ h1 {
 .new-gas-col {
   padding-left: 1rem;
   padding-right: 1rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .gas-description {
@@ -157,4 +159,8 @@ mat-select {
 .ceiling-chart {
   width: 400px;
   height: 200px;
+}
+
+#optimal-deco-gas-radio {
+  margin-top: 1rem;
 }
