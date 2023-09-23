@@ -9,8 +9,19 @@
 main {
   display: flex;
   justify-content: center;
+}
+
+.main-content {
+  display: flex;
+  justify-content: center;
   flex-direction: column;
   padding-left: 6rem;
+}
+
+.nav-line-container {
+  position: relative;
+  height: 0;
+  width: 0;
 }
 
 .dive-stat, .gas-stat {
@@ -126,8 +137,8 @@ mat-select {
   position: absolute;
   width: 6px;
   height: 180px;
-  top: 370px;
-  left: 58px;
+  top: 380px;
+  left: -38px;
 }
 
 .nav-line-2 {
@@ -135,7 +146,7 @@ mat-select {
   width: 6px;
   height: 380px;
   top: 600px;
-  left: 58px;
+  left: -38px;
 }
 
 .plotly-graph {
