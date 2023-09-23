@@ -8,7 +8,8 @@ export class DiveSegment {
     public Description: string,
     public StartDepth: number,
     public EndDepth: number,
-    public Gas: BreathingGas
+    public Gas: BreathingGas,
+    public Icon: string
   ) {}
 
   private readonly DESCENT_RATE_PER_METER = 3; // seconds per meter
