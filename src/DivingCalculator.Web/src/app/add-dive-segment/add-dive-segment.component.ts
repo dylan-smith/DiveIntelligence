@@ -67,8 +67,8 @@ export class AddDiveSegmentComponent implements OnInit {
   totalDiveDuration: number = this.getTotalDiveDuration();
 
   newCeiling: number = this.getNewDecoCeiling();
-  decoMilestones: { duration: number; gas: string; depth: number; tooltip: string }[] = this.getDecoMilestones();
-  hasDecoMilestones: boolean = this.getDecoMilestones().length > 0;
+  decoMilestones!: { duration: number; gas: string; depth: number; tooltip: string }[];
+  hasDecoMilestones!: boolean;
 
   // **************************
 
@@ -96,9 +96,6 @@ export class AddDiveSegmentComponent implements OnInit {
     this.calculateNewGasStats();
 
     this.totalDiveDuration = this.getTotalDiveDuration();
-
-    this.newCeiling = this.getNewDecoCeiling();
-    this.calculateDecoMilestones();
   }
 
   onGasTypeChange(): void {
@@ -109,9 +106,6 @@ export class AddDiveSegmentComponent implements OnInit {
     this.isCustomGasDisabled = this.getCustomGasDisabled();
 
     this.calculateNewGasStats();
-
-    this.newCeiling = this.getNewDecoCeiling();
-    this.calculateDecoMilestones();
   }
 
   onStandardGasSelectionChange(): void {
@@ -119,9 +113,6 @@ export class AddDiveSegmentComponent implements OnInit {
     this.drawCeilingChart();
 
     this.calculateNewGasStats();
-
-    this.newCeiling = this.getNewDecoCeiling();
-    this.calculateDecoMilestones();
   }
 
   onOxygenInput(): void {
@@ -129,9 +120,6 @@ export class AddDiveSegmentComponent implements OnInit {
     this.drawCeilingChart();
 
     this.calculateNewGasStats();
-
-    this.newCeiling = this.getNewDecoCeiling();
-    this.calculateDecoMilestones();
   }
 
   onHeliumInput(): void {
@@ -139,15 +127,11 @@ export class AddDiveSegmentComponent implements OnInit {
     this.drawCeilingChart();
 
     this.calculateNewGasStats();
-
-    this.newCeiling = this.getNewDecoCeiling();
-    this.calculateDecoMilestones();
   }
 
   onTimeAtDepthInput(): void {
     this.drawCeilingChart();
     this.totalDiveDuration = this.getTotalDiveDuration();
-    this.newCeiling = this.getNewDecoCeiling();
   }
 
   private calculateNewGasStats(): void {
@@ -180,23 +164,24 @@ export class AddDiveSegmentComponent implements OnInit {
     this.newDepthENDError = this.getNewDepthENDError();
   }
 
-  private calculateDecoMilestones(): void {
-    this.decoMilestones = this.getDecoMilestones();
-    this.hasDecoMilestones = this.getDecoMilestones().length > 0;
-  }
-
   private isNewDepthDescent(): boolean {
     return this.newDepth >= this.divePlanner.getCurrentDepth();
   }
 
   private drawCeilingChart(): void {
-    Plotly.react('ceiling-chart', this.getCeilingChartData(), this.getCeilingChartLayout(), this.getCeilingChartOptions());
+    const ceilingData = this.divePlanner.getCeilingChartData(this.newDepth, this.newGas);
+    Plotly.react('ceiling-chart', this.getCeilingChartData(ceilingData), this.getCeilingChartLayout(), this.getCeilingChartOptions());
+
+    this.newCeiling = Math.ceil(ceilingData[0].ceiling);
+
+    const milestones = this.getDecoMilestones(ceilingData);
+    this.decoMilestones = milestones;
+    this.hasDecoMilestones = milestones.length > 0;
   }
 
-  private getCeilingChartData(): Plotly.Data[] {
-    const depthData = this.divePlanner.getCeilingChartData(this.newDepth, this.newGas);
-    const x = depthData.map(d => new Date(1970, 1, 1, 0, 0, d.time, 0));
-    const y = depthData.map(d => d.ceiling);
+  private getCeilingChartData(data: { time: number; ceiling: number }[]): Plotly.Data[] {
+    const x = data.map(d => new Date(1970, 1, 1, 0, 0, d.time, 0));
+    const y = data.map(d => d.ceiling);
 
     return [
       {
@@ -412,8 +397,8 @@ export class AddDiveSegmentComponent implements OnInit {
     return this.divePlanner.getDiveDuration() + this.divePlanner.getTravelTime(this.newDepth) + this.timeAtDepth * 60;
   }
 
-  private getDecoMilestones(): { duration: number; gas: string; depth: number; tooltip: string }[] {
-    const ceilingData = this.divePlanner.getCeilingChartData(this.newDepth, this.newGas).map(d => Math.ceil(d.ceiling));
+  private getDecoMilestones(data: { time: number; ceiling: number }[]): { duration: number; gas: string; depth: number; tooltip: string }[] {
+    const ceilingData = data.map(d => Math.ceil(d.ceiling));
     const standardGases = this.divePlanner.getStandardGases();
     const decoGases = standardGases.filter(g => g.MaxDecoDepth < ceilingData[0]);
     const milestones: { duration: number; gas: string; depth: number; tooltip: string }[] = [];
