@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { StandardGases } from './StandardGases';
 import { BreathingGas } from './BreathingGas';
 import { DiveSegment } from './DiveSegment';
 import { DiveSegmentFactoryService } from './DiveSegmentFactory.service';
@@ -18,7 +17,7 @@ export class DivePlannerService {
   private ASCENT_RATE = 6; // seconds per meter
 
   getStandardGases(): BreathingGas[] {
-    return StandardGases;
+    return BreathingGas.StandardGases;
   }
 
   startDive(startGas: BreathingGas) {
@@ -127,22 +126,6 @@ export class DivePlannerService {
     const endTime = this.diveProfile.segments[this.diveProfile.segments.length - 1].EndTimestamp;
 
     this.diveProfile.addSegment(this.diveSegmentFactory.createEndDiveSegment(endTime, newDepth, newGas));
-  }
-
-  getDescentDuration(newDepth: number): number | undefined {
-    if (newDepth > this.getCurrentDepth()) {
-      return (newDepth - this.getCurrentDepth()) * this.DESCENT_RATE;
-    }
-
-    return undefined;
-  }
-
-  getAscentDuration(newDepth: number): number | undefined {
-    if (newDepth < this.getCurrentDepth()) {
-      return (this.getCurrentDepth() - newDepth) * this.ASCENT_RATE;
-    }
-
-    return undefined;
   }
 
   getTravelTime(newDepth: number): number {

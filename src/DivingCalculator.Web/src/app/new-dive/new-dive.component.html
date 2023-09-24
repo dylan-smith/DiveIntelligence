@@ -21,7 +21,7 @@
           matTooltipPosition="left"
           [matTooltip]="getGasTooltip(gas)">
           <span matListItemTitle>{{ gas.Name }}</span>
-          <span matListItemLine [innerHTML]="gas.getCompositionDescription()"></span>
+          <span matListItemLine [innerHTML]="gas.CompositionDescription"></span>
         </mat-list-option>
       </mat-selection-list>
     </div>
@@ -32,25 +32,11 @@
       <div>
         <mat-form-field>
           <mat-label>Oxygen (%)</mat-label>
-          <input
-            matInput
-            type="number"
-            min="0"
-            max="100"
-            [(ngModel)]="customGas.Oxygen"
-            (change)="updateCustomGasNitrogen()"
-            [disabled]="getCustomGasDisabled()" />
+          <input matInput type="number" min="0" max="100" [(ngModel)]="customGas.Oxygen" (input)="onOxygenInput()" [disabled]="getCustomGasDisabled()" />
         </mat-form-field>
         <mat-form-field>
           <mat-label>Helium (%)</mat-label>
-          <input
-            matInput
-            type="number"
-            min="0"
-            max="100"
-            [(ngModel)]="customGas.Helium"
-            (change)="updateCustomGasNitrogen()"
-            [disabled]="getCustomGasDisabled()" />
+          <input matInput type="number" min="0" max="100" [(ngModel)]="customGas.Helium" (input)="onHeliumInput()" [disabled]="getCustomGasDisabled()" />
         </mat-form-field>
         <mat-form-field matTooltip="The nitrogen value will be automatically calculated when you input the values for oxygen and helium">
           <mat-label>Nitrogen (%)</mat-label>
@@ -66,19 +52,19 @@
           matTooltipPosition="right">
           <!-- eslint-disable-next-line prettier/prettier -->
           Max Depth (PO<sub>2</sub>):
-          <strong>{{ getSelectedGas().getMaxDepthPO2() }}m ({{ getSelectedGas().getMaxDepthPO2Deco() }}m deco)</strong>
+          <strong>{{ getSelectedGas().MaxDepthPO2 }}m ({{ getSelectedGas().MaxDepthPO2Deco }}m deco)</strong>
         </div>
         <div
           class="gas-calc"
           matTooltip="Maximum depth this gas can be breathed at before you experience nitrogen narcosis equivelant to 40m on air"
           matTooltipPosition="right">
           Max Depth (END):
-          <strong>{{ getSelectedGas().getMaxDepthEND() }}m</strong>
+          <strong>{{ getSelectedGas().MaxDepthEND }}m</strong>
         </div>
         <div class="gas-calc">
           <span matTooltip="Minimum depth this gas can be breathed at without going below an oxygen partial pressure of 0.18" matTooltipPosition="below">
             Min Depth (Hypoxia):
-            <strong>{{ getSelectedGas().getMinDepth() }}m</strong>
+            <strong>{{ getSelectedGas().MinDepth }}m</strong>
           </span>
           <mat-icon [class.hidden]="!isMinDepthError()" class="error" matTooltip="This gas cannot be breathed at the surface due to the hypoxic oxygen content">
             error

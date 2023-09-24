@@ -7,27 +7,27 @@
     <div class="calculation-section mat-elevation-z2">
       <div class="dive-stat">
         Current Depth:
-        <strong>{{ divePlanner.getCurrentDepth() }}m</strong>
+        <strong>{{ currentDepth }}m</strong>
       </div>
       <div class="dive-stat">
         <span
           matTooltip="If you have no deco obligations so far this will be 0. Otherwise it is the minimum depth you can safely ascend directly to."
           matTooltipPosition="right">
           Current Ceiling:
-          <strong>{{ divePlanner.getCurrentCeiling() }}m</strong>
+          <strong>{{ currentCeiling }}m</strong>
         </span>
       </div>
       <div class="dive-stat">
         Current Gas:
-        <strong [innerHTML]="divePlanner.getCurrentGas().getDescription()"></strong>
+        <strong [innerHTML]="currentGas.Description"></strong>
       </div>
       <div class="gas-stat dive-stat">
         <span
           matTooltip="Maximum depth this gas can be breathed at without going over an oxygen partial pressure of 1.4 (1.6 for deco stops)"
           matTooltipPosition="right">
           <!-- eslint-disable-next-line prettier/prettier -->
-        Max Depth (PO<sub>2</sub>):
-          <strong>{{ divePlanner.getCurrentGas().getMaxDepthPO2() }}m ({{ divePlanner.getCurrentGas().getMaxDepthPO2Deco() }}m deco)</strong>
+          Max Depth (PO<sub>2</sub>):
+          <strong>{{ currentGas.MaxDepthPO2 }}m ({{ currentGas.MaxDepthPO2Deco }}m deco)</strong>
         </span>
       </div>
       <div class="gas-stat dive-stat">
@@ -35,35 +35,31 @@
           matTooltip="Maximum depth this gas can be breathed at before you experience nitrogen narcosis equivalent to 40m on air"
           matTooltipPosition="right">
           Max Depth (END):
-          <strong>{{ divePlanner.getCurrentGas().getMaxDepthEND() }}m</strong>
+          <strong>{{ currentGas.MaxDepthEND }}m</strong>
         </span>
       </div>
       <div class="gas-stat dive-stat">
         <span matTooltip="Minimum depth this gas can be breathed at without going below an oxygen partial pressure of 0.18" matTooltipPosition="right">
           Min Depth (Hypoxia):
-          <strong>{{ divePlanner.getCurrentGas().getMinDepth() }}m</strong>
+          <strong>{{ currentGas.MinDepth }}m</strong>
         </span>
       </div>
       <div class="dive-stat">
         <span matTooltip="Oxygen partial pressure of the current gas at the current depth" matTooltipPosition="above">
           <!-- eslint-disable-next-line prettier/prettier -->
-        PO<sub>2</sub>:
-          <strong>{{ getCurrentPO2() | number: '1.2-2' }}</strong>
+          PO<sub>2</sub>:
+          <strong>{{ currentPO2 | number: '1.2-2' }}</strong>
         </span>
-        <mat-icon *ngIf="getCurrentPO2Warning() !== undefined" class="warning-icon" [matTooltip]="getCurrentPO2Warning()!" matTooltipPosition="right">
-          warning
-        </mat-icon>
-        <mat-icon *ngIf="getCurrentPO2Error() !== undefined" class="error-icon" [matTooltip]="getCurrentPO2Error()!" matTooltipPosition="right">error</mat-icon>
+        <mat-icon *ngIf="hasCurrentPO2Warning" class="warning-icon" [matTooltip]="currentPO2Warning!" matTooltipPosition="right">warning</mat-icon>
+        <mat-icon *ngIf="hasCurrentPO2Error" class="error-icon" [matTooltip]="currentPO2Error!" matTooltipPosition="right">error</mat-icon>
       </div>
       <div class="dive-stat">
         <span matTooltip="Equivalent narcotic depth of the current gas at the current depth" matTooltipPosition="above">
           END:
-          <strong>{{ getCurrentEND() }}m</strong>
+          <strong>{{ currentEND }}m</strong>
         </span>
-        <mat-icon *ngIf="getCurrentENDWarning() !== undefined" class="warning-icon" [matTooltip]="getCurrentENDWarning()!" matTooltipPosition="right">
-          warning
-        </mat-icon>
-        <mat-icon *ngIf="getCurrentENDError() !== undefined" class="error-icon" [matTooltip]="getCurrentENDError()!" matTooltipPosition="right">error</mat-icon>
+        <mat-icon *ngIf="hasCurrentENDWarning" class="warning-icon" [matTooltip]="currentENDWarning!" matTooltipPosition="right">warning</mat-icon>
+        <mat-icon *ngIf="hasCurrentENDError" class="error-icon" [matTooltip]="currentENDError!" matTooltipPosition="right">error</mat-icon>
       </div>
     </div>
     <div class="header-row">
@@ -78,38 +74,30 @@
         </mat-form-field>
       </div>
       <div class="calculation-section mat-elevation-z2">
-        <div class="dive-stat" *ngIf="getAscentDuration() === undefined">
+        <div class="dive-stat" *ngIf="isDescent">
           Descent Time:
-          <strong>{{ getDescentDuration() ?? 0 | humanDuration }} @ 20m/min</strong>
+          <strong>{{ travelTime | humanDuration }} @ 20m/min</strong>
         </div>
-        <div class="dive-stat" *ngIf="getAscentDuration() !== undefined">
+        <div class="dive-stat" *ngIf="isAscent">
           Ascent Time:
-          <strong>{{ getAscentDuration()! | humanDuration }} @ 10m/min</strong>
+          <strong>{{ travelTime | humanDuration }} @ 10m/min</strong>
         </div>
         <div class="dive-stat">
           <span matTooltip="Oxygen partial pressure of the current gas at the new depth" matTooltipPosition="above">
             <!-- eslint-disable-next-line prettier/prettier -->
-          PO<sub>2</sub>:
-            <strong>{{ getNewDepthPO2() | number: '1.2-2' }}</strong>
+            PO<sub>2</sub>:
+            <strong>{{ newDepthPO2 | number: '1.2-2' }}</strong>
           </span>
-          <mat-icon *ngIf="getNewDepthPO2Warning() !== undefined" class="warning-icon" [matTooltip]="getNewDepthPO2Warning()!" matTooltipPosition="right">
-            warning
-          </mat-icon>
-          <mat-icon *ngIf="getNewDepthPO2Error() !== undefined" class="error-icon" [matTooltip]="getNewDepthPO2Error()!" matTooltipPosition="right">
-            error
-          </mat-icon>
+          <mat-icon *ngIf="hasNewDepthPO2Warning" class="warning-icon" [matTooltip]="newDepthPO2Warning!" matTooltipPosition="right">warning</mat-icon>
+          <mat-icon *ngIf="hasNewDepthPO2Error" class="error-icon" [matTooltip]="newDepthPO2Error!" matTooltipPosition="right">error</mat-icon>
         </div>
         <div class="dive-stat">
           <span matTooltip="Equivalent narcotic depth of the current gas at the new depth" matTooltipPosition="above">
             END:
-            <strong>{{ getNewDepthEND() }}m</strong>
+            <strong>{{ newDepthEND }}m</strong>
           </span>
-          <mat-icon *ngIf="getNewDepthENDWarning() !== undefined" class="warning-icon" [matTooltip]="getNewDepthENDWarning()!" matTooltipPosition="right">
-            warning
-          </mat-icon>
-          <mat-icon *ngIf="getNewDepthENDError() !== undefined" class="error-icon" [matTooltip]="getNewDepthENDError()!" matTooltipPosition="right">
-            error
-          </mat-icon>
+          <mat-icon *ngIf="hasNewDepthENDWarning" class="warning-icon" [matTooltip]="newDepthENDWarning!" matTooltipPosition="right">warning</mat-icon>
+          <mat-icon *ngIf="hasNewDepthENDError" class="error-icon" [matTooltip]="newDepthENDError!" matTooltipPosition="right">error</mat-icon>
         </div>
       </div>
     </div>
@@ -122,11 +110,14 @@
         <div class="new-gas-col">
           <mat-radio-button value="current">
             <div>Current Gas</div>
-            <div class="gas-description" [innerHTML]="divePlanner.getCurrentGas().getDescription()"></div>
+            <div class="gas-description" [innerHTML]="currentGas.Description"></div>
           </mat-radio-button>
-          <mat-radio-button value="optimal" id="optimal-deco-gas-radio">
+          <mat-radio-button
+            value="optimal"
+            id="optimal-deco-gas-radio"
+            matTooltip="The gas with the maximum O2 while staying under 1.6 PO2, and the minimum Helium while staying at an END (Equivalent Narcotic Depth) of <= 40m">
             <div>Optimal Deco Gas</div>
-            <div class="gas-description" [innerHTML]="divePlanner.getOptimalDecoGas(newDepth).getDescription()"></div>
+            <div class="gas-description" [innerHTML]="optimalGas.Description"></div>
           </mat-radio-button>
         </div>
         <div class="new-gas-col">
@@ -141,14 +132,14 @@
                 [(ngModel)]="standardGas"
                 hideSingleSelectionIndicator
                 (selectionChange)="onStandardGasSelectionChange()"
-                [disabled]="getStandardGasDisabled()">
+                [disabled]="isStandardGasDisabled">
                 <mat-select-trigger>
                   <div>{{ standardGas?.Name }}</div>
-                  <div class="gas-description" [innerHTML]="standardGas?.getCompositionDescription()"></div>
+                  <div class="gas-description" [innerHTML]="standardGas?.CompositionDescription"></div>
                 </mat-select-trigger>
-                <mat-option *ngFor="let gas of divePlanner.getStandardGases()" [value]="gas">
+                <mat-option *ngFor="let gas of StandardGases" [value]="gas">
                   <div>{{ gas.Name }}</div>
-                  <div class="gas-description" [innerHTML]="gas.getCompositionDescription()"></div>
+                  <div class="gas-description" [innerHTML]="gas.Description"></div>
                 </mat-option>
               </mat-select>
             </mat-form-field>
@@ -159,11 +150,11 @@
           <div>
             <mat-form-field class="custom-gas-input">
               <mat-label>Oxygen (%)</mat-label>
-              <input matInput type="number" min="0" max="100" [(ngModel)]="customGas.Oxygen" (input)="onOxygenInput()" [disabled]="getCustomGasDisabled()" />
+              <input matInput type="number" min="0" max="100" [(ngModel)]="customGas.Oxygen" (input)="onOxygenInput()" [disabled]="isCustomGasDisabled" />
             </mat-form-field>
             <mat-form-field class="custom-gas-input">
               <mat-label>Helium (%)</mat-label>
-              <input matInput type="number" min="0" max="100" [(ngModel)]="customGas.Helium" (input)="onHeliumInput()" [disabled]="getCustomGasDisabled()" />
+              <input matInput type="number" min="0" max="100" [(ngModel)]="customGas.Helium" (input)="onHeliumInput()" [disabled]="isCustomGasDisabled" />
             </mat-form-field>
             <mat-form-field
               class="custom-gas-input"
@@ -180,30 +171,26 @@
         <div class="dive-stat">
           <span matTooltip="Oxygen partial pressure of the new gas at the new depth" matTooltipPosition="above">
             <!-- eslint-disable-next-line prettier/prettier -->
-          PO<sub>2</sub>:
-            <strong>{{ getNewGasPO2() | number: '1.2-2' }}m</strong>
+            PO<sub>2</sub>:
+            <strong>{{ newGasPO2 | number: '1.2-2' }}m</strong>
           </span>
-          <mat-icon *ngIf="getNewGasPO2Warning() !== undefined" class="warning-icon" [matTooltip]="getNewGasPO2Warning()!" matTooltipPosition="right">
-            warning
-          </mat-icon>
-          <mat-icon *ngIf="getNewGasPO2Error() !== undefined" class="error-icon" [matTooltip]="getNewGasPO2Error()!" matTooltipPosition="right">error</mat-icon>
+          <mat-icon *ngIf="hasNewGasPO2Warning" class="warning-icon" [matTooltip]="newGasPO2Warning!" matTooltipPosition="right">warning</mat-icon>
+          <mat-icon *ngIf="hasNewGasPO2Error" class="error-icon" [matTooltip]="newGasPO2Error!" matTooltipPosition="right">error</mat-icon>
         </div>
         <div class="dive-stat">
           <span matTooltip="Equivalent narcotic depth of the new gas at the new depth" matTooltipPosition="above">
             END:
-            <strong>{{ getNewGasEND() }}m</strong>
+            <strong>{{ newGasEND }}m</strong>
           </span>
-          <mat-icon *ngIf="getNewGasENDWarning() !== undefined" class="warning-icon" [matTooltip]="getNewGasENDWarning()!" matTooltipPosition="right">
-            warning
-          </mat-icon>
-          <mat-icon *ngIf="getNewGasENDError() !== undefined" class="error-icon" [matTooltip]="getNewGasENDError()!" matTooltipPosition="right">error</mat-icon>
+          <mat-icon *ngIf="hasNewGasENDWarning" class="warning-icon" [matTooltip]="newGasENDWarning!" matTooltipPosition="right">warning</mat-icon>
+          <mat-icon *ngIf="hasNewGasENDError" class="error-icon" [matTooltip]="newGasENDError!" matTooltipPosition="right">error</mat-icon>
         </div>
         <div class="dive-stat">
           <span
             matTooltip="The amount of time you can stay at the new depth on the new gas and safely ascend directly to the surface"
             matTooltipPosition="right">
             No Deco Limit:
-            <strong>{{ getNoDecoLimit() }}</strong>
+            <strong>{{ noDecoLimit }}</strong>
           </span>
         </div>
       </div>
@@ -213,8 +200,8 @@
             matTooltip="Maximum depth the new gas can be breathed at without going over an oxygen partial pressure of 1.4 (1.6 for deco stops)"
             matTooltipPosition="right">
             <!-- eslint-disable-next-line prettier/prettier -->
-          Max Depth (PO<sub>2</sub>):
-            <strong>{{ newGas.getMaxDepthPO2() }}m ({{ newGas.getMaxDepthPO2Deco() }}m deco)</strong>
+            Max Depth (PO<sub>2</sub>):
+            <strong>{{ newGas.MaxDepthPO2 }}m ({{ newGas.MaxDepthPO2Deco }}m deco)</strong>
           </span>
         </div>
         <div class="dive-stat">
@@ -222,13 +209,13 @@
             matTooltip="Maximum depth the new gas can be breathed at before you experience nitrogen narcosis equivalent to 40m on air"
             matTooltipPosition="right">
             Max Depth (END):
-            <strong>{{ newGas.getMaxDepthEND() }}m</strong>
+            <strong>{{ newGas.MaxDepthEND }}m</strong>
           </span>
         </div>
         <div class="dive-stat">
           <span matTooltip="Minimum depth the new gas can be breathed at without going below an oxygen partial pressure of 0.18" matTooltipPosition="right">
             Min Depth (Hypoxia):
-            <strong>{{ newGas.getMinDepth() }}m</strong>
+            <strong>{{ newGas.MinDepth }}m</strong>
           </span>
         </div>
       </div>
@@ -249,17 +236,17 @@
           <div class="dive-stat">
             <span matTooltip="The deco ceiling after the ascent/descent time and time at depth has elapsed" matTooltipPosition="right">
               Ceiling:
-              <strong>{{ getNewDecoCeiling() }}</strong>
+              <strong>{{ newCeiling }}m</strong>
             </span>
           </div>
           <div class="dive-stat">
             <span matTooltip="Total dive runtime after adding in the time for ascent/descent and the time at depth" matTooltipPosition="right">
               Total Dive Duration:
-              <strong>{{ getTotalDiveDuration() | humanDuration }}</strong>
+              <strong>{{ totalDiveDuration | humanDuration }}</strong>
             </span>
           </div>
-          <mat-divider *ngIf="getDecoMilestones().length > 0"></mat-divider>
-          <div class="dive-stat" *ngFor="let milestone of getDecoMilestones()">
+          <mat-divider *ngIf="hasDecoMilestones"></mat-divider>
+          <div class="dive-stat" *ngFor="let milestone of decoMilestones">
             <span [matTooltip]="milestone.tooltip" matTooltipPosition="right">
               <strong>{{ milestone.duration | humanDuration }}</strong>
               : {{ milestone.gas }} @ {{ milestone.depth }}m
