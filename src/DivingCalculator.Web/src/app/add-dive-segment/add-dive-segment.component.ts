@@ -175,7 +175,7 @@ export class AddDiveSegmentComponent implements OnInit {
     if (this.timeAtDepth < 120) {
       this.newCeiling = Math.ceil(ceilingData[this.timeAtDepth * 60].ceiling);
     } else {
-      this.newCeiling = this.divePlanner.getNewCeiling(this.newDepth, this.newGas, this.timeAtDepth);
+      this.newCeiling = this.divePlanner.getNewCeiling(this.newDepth, this.newGas, this.timeAtDepth * 60);
     }
 
     const milestones = this.getDecoMilestones(ceilingData);
