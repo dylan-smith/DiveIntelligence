@@ -22,16 +22,19 @@ jobs:
       working-directory: src/DivingCalculator.Web
     - run: npm run build
       working-directory: src/DivingCalculator.Web
-    - run: cp src/DivingCalculator.Web/staticwebapp.config.json src/DivingCalculator.Web/dist/dive-intelligence/staticwebapp.config.json
-    - name: Update my-file.json description
+    - name: Copy staticwebapp.config.json
+      run: cp src/DivingCalculator.Web/staticwebapp.config.json src/DivingCalculator.Web/dist/dive-intelligence/staticwebapp.config.json
+    - name: Set Instrumentation Key
       if: github.ref == 'refs/heads/master'
       uses: jossef/action-set-json-field@v2.1
       with:
-        file: src/DivingCalculator.Web/dist/assets/config/json.json
+        file: src/DivingCalculator.Web/dist/dive-intelligence/assets/config/json.json
         field: instrumentationKey
         value: ${{ vars.INSTRUMENTATION_KEY }}
-    - run: az storage blob upload-batch --connection-string "${{ secrets.SOURCE_MAPS_CONNECTION_STRING}}" --source src/DivingCalculator.Web/dist//dive-intelligence --destination sourcemaps --overwrite true
+    - name: Upload Source Maps
+      run: az storage blob upload-batch --connection-string "${{ secrets.SOURCE_MAPS_CONNECTION_STRING}}" --source src/DivingCalculator.Web/dist/dive-intelligence --destination sourcemaps --overwrite true
       if: github.ref == 'refs/heads/master'
-    - run: npm run deploy -- --env production --deployment-token ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
+    - name: Deploy to Azure Static Web Apps
+      run: npm run deploy -- --env production --deployment-token ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
       if: github.ref == 'refs/heads/master'
       working-directory: src/DivingCalculator.Web
