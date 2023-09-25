@@ -4,14 +4,19 @@ import { DiveSegment } from './DiveSegment';
 import { DiveSegmentFactoryService } from './DiveSegmentFactory.service';
 import { DiveProfile } from './DiveProfile';
 import { BuhlmannZHL16C } from './BuhlmannZHL16C';
+import { ApplicationInsightsService } from '../application-insights-service/application-insights.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DivePlannerService {
   public diveProfile: DiveProfile = new DiveProfile();
+  private diveID = crypto.randomUUID();
 
-  constructor(private diveSegmentFactory: DiveSegmentFactoryService) {}
+  constructor(
+    private diveSegmentFactory: DiveSegmentFactoryService,
+    private appInsights: ApplicationInsightsService
+  ) {}
 
   private DESCENT_RATE = 3; // seconds per meter
   private ASCENT_RATE = 6; // seconds per meter
@@ -21,6 +26,11 @@ export class DivePlannerService {
   }
 
   startDive(startGas: BreathingGas) {
+    this.diveID = crypto.randomUUID();
+    this.appInsights.trackEvent('StartDive', {
+      diveID: this.diveID,
+      startGas: { description: startGas.Description, oxygen: startGas.Oxygen, helium: startGas.Helium, nitrogen: startGas.Nitrogen },
+    });
     this.diveProfile.addSegment(this.diveSegmentFactory.createStartDiveSegment(startGas));
     this.diveProfile.addSegment(this.diveSegmentFactory.createEndDiveSegment(0, 0, startGas));
   }
@@ -126,6 +136,13 @@ export class DivePlannerService {
     const endTime = this.diveProfile.segments[this.diveProfile.segments.length - 1].EndTimestamp;
 
     this.diveProfile.addSegment(this.diveSegmentFactory.createEndDiveSegment(endTime, newDepth, newGas));
+
+    this.appInsights.trackEvent('AddDiveSegment', {
+      diveID: this.diveID,
+      newDepth,
+      newGas: { description: newGas.Description, oxygen: newGas.Oxygen, helium: newGas.Helium, nitrogen: newGas.Nitrogen },
+      timeAtDepth,
+    });
   }
 
   getTravelTime(newDepth: number): number {

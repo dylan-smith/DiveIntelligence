@@ -1,7 +1,7 @@
 import { ErrorHandler, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularPlugin } from '@microsoft/applicationinsights-angularplugin-js';
-import { ApplicationInsights, ITelemetryPlugin } from '@microsoft/applicationinsights-web';
+import { ApplicationInsights, ICustomProperties, ITelemetryPlugin } from '@microsoft/applicationinsights-web';
 import { AppConfig } from 'src/app.config';
 
 @Injectable()
@@ -28,8 +28,8 @@ export class ApplicationInsightsService {
   }
 
   // expose methods that can be used in components and services
-  trackEvent(name: string): void {
-    this.appInsights.trackEvent({ name });
+  trackEvent(name: string, customProperties: ICustomProperties | undefined): void {
+    this.appInsights.trackEvent({ name }, customProperties);
   }
 
   trackTrace(message: string): void {
