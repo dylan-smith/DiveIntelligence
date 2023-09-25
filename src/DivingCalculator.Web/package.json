@@ -22,6 +22,8 @@
     "@angular/platform-browser": "^16.2.0",
     "@angular/platform-browser-dynamic": "^16.2.0",
     "@angular/router": "^16.2.0",
+    "@microsoft/applicationinsights-angularplugin-js": "^3.0.3",
+    "@microsoft/applicationinsights-web": "^2.8.14",
     "plotly.js-basic-dist-min": "^2.26.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
