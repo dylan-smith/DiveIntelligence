@@ -177,6 +177,8 @@ export class AddDiveSegmentComponent implements OnInit {
     const milestones = this.getDecoMilestones(ceilingData);
     this.decoMilestones = milestones;
     this.hasDecoMilestones = milestones.length > 0;
+
+    throw new Error('Exception message');
   }
 
   private getCeilingChartData(data: { time: number; ceiling: number }[]): Plotly.Data[] {

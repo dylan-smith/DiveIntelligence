@@ -21,12 +21,15 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { AddDiveSegmentComponent } from './add-dive-segment/add-dive-segment.component';
+import { APP_CONFIG, AppConfig } from 'src/app.config';
+import { ApplicationInsightsModule } from './application-insights.module';
 
 @NgModule({
   declarations: [AppComponent, NewDiveComponent, HomeComponent, DivePlanComponent, HumanDurationPipe, ColonDurationPipe, AddDiveSegmentComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    ApplicationInsightsModule,
     BrowserAnimationsModule,
     MatButtonModule,
     MatRadioModule,
@@ -38,7 +41,15 @@ import { AddDiveSegmentComponent } from './add-dive-segment/add-dive-segment.com
     MatIconModule,
     MatSelectModule,
   ],
-  providers: [HumanDurationPipe, ColonDurationPipe],
+  providers: [
+    HumanDurationPipe,
+    ColonDurationPipe,
+    {
+      provide: AppConfig,
+      useFactory: (config: AppConfig) => config,
+      deps: [APP_CONFIG],
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
