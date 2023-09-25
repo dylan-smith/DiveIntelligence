@@ -172,7 +172,11 @@ export class AddDiveSegmentComponent implements OnInit {
     const ceilingData = this.divePlanner.getCeilingChartData(this.newDepth, this.newGas);
     Plotly.react('ceiling-chart', this.getCeilingChartData(ceilingData), this.getCeilingChartLayout(), this.getCeilingChartOptions());
 
-    this.newCeiling = Math.ceil(ceilingData[0].ceiling);
+    if (this.timeAtDepth < 120) {
+      this.newCeiling = Math.ceil(ceilingData[this.timeAtDepth * 60].ceiling);
+    } else {
+      this.newCeiling = this.divePlanner.getNewCeiling(this.newDepth, this.newGas, this.timeAtDepth * 60);
+    }
 
     const milestones = this.getDecoMilestones(ceilingData);
     this.decoMilestones = milestones;
