@@ -28,7 +28,7 @@ jobs:
       if: github.ref == 'refs/heads/master'
       uses: jossef/action-set-json-field@v2.1
       with:
-        file: src/DivingCalculator.Web/dist/dive-intelligence/assets/config/json.json
+        file: src/DivingCalculator.Web/dist/dive-intelligence/assets/config.json
         field: instrumentationKey
         value: ${{ vars.INSTRUMENTATION_KEY }}
     - name: Upload Source Maps
