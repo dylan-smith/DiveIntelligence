@@ -15,7 +15,7 @@ export class AddDiveSegmentComponent implements OnInit {
   newGas: BreathingGas = this.divePlanner.getCurrentGas();
   newGasSelectedOption = 'current';
   standardGas: BreathingGas | undefined;
-  customGas: BreathingGas = new BreathingGas('Custom', 21, 0, 79);
+  customGas: BreathingGas = BreathingGas.create(21, 0, 79);
   timeAtDepth = 0;
 
   // **************************
@@ -287,7 +287,7 @@ export class AddDiveSegmentComponent implements OnInit {
 
   private updateCustomGasNitrogen() {
     this.customGas.Nitrogen = 100 - this.customGas.Oxygen - this.customGas.Helium;
-    this.customGas = new BreathingGas(this.customGas.Name, this.customGas.Oxygen, this.customGas.Helium, this.customGas.Nitrogen); // need this to recalculate the properties
+    this.customGas = BreathingGas.create(this.customGas.Oxygen, this.customGas.Helium, this.customGas.Nitrogen); // need this to recalculate the properties
     this.calculateNewGas();
   }
 

@@ -68,7 +68,7 @@ export class DivePlannerService {
     const helium = Math.max(0, Math.ceil(100 - oxygen - nitrogen));
     nitrogen = 100 - oxygen - helium;
 
-    return new BreathingGas('Custom', oxygen, helium, nitrogen);
+    return BreathingGas.create(oxygen, helium, nitrogen);
   }
 
   getCurrentCeiling(): number {

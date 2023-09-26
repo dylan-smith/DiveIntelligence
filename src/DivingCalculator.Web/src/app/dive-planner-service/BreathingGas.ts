@@ -11,13 +11,24 @@ export class BreathingGas {
   MinDepth!: number;
   MaxDecoDepth!: number;
 
-  constructor(name: string, oxygen: number, helium: number, nitrogen: number) {
+  private constructor(name: string, oxygen: number, helium: number, nitrogen: number) {
     this.Name = name;
     this.Oxygen = oxygen;
     this.Helium = helium;
     this.Nitrogen = nitrogen;
 
     this.updateDetails();
+  }
+
+  static create(oxygen: number, helium: number, nitrogen: number): BreathingGas {
+    const gas = new BreathingGas('Custom', oxygen, helium, nitrogen);
+
+    const standardGas = BreathingGas.StandardGases.find(g => g.isEquivalent(gas));
+    if (standardGas !== undefined) {
+      return new BreathingGas(standardGas.Name, standardGas.Oxygen, standardGas.Helium, standardGas.Nitrogen);
+    }
+
+    return gas;
   }
 
   updateDetails(): void {
