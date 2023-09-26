@@ -249,12 +249,12 @@ export class DivePlannerService {
     for (let t = 0; t <= this.diveProfile.getTotalTime(); t++) {
       const tissuesPHe: number[] = [];
       for (let i = 1; i <= 16; i++) {
-        tissuesPHe.push(algo.getTissuePN2(t, i));
+        tissuesPHe.push(algo.getTissuePHe(t, i));
       }
 
       data.push({
         time: t,
-        gasPHe: this.diveProfile.getPN2(t),
+        gasPHe: this.diveProfile.getPHe(t),
         tissuesPHe,
       });
     }
