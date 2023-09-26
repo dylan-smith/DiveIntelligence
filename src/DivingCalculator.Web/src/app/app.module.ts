@@ -23,6 +23,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { AddDiveSegmentComponent } from './add-dive-segment/add-dive-segment.component';
 import { APP_CONFIG, AppConfig } from 'src/app.config';
 import { ApplicationInsightsModule } from './application-insights.module';
+import { YouTubePlayerModule } from '@angular/youtube-player';
 
 @NgModule({
   declarations: [AppComponent, NewDiveComponent, HomeComponent, DivePlanComponent, HumanDurationPipe, ColonDurationPipe, AddDiveSegmentComponent],
@@ -40,6 +41,7 @@ import { ApplicationInsightsModule } from './application-insights.module';
     MatTooltipModule,
     MatIconModule,
     MatSelectModule,
+    YouTubePlayerModule,
   ],
   providers: [
     HumanDurationPipe,

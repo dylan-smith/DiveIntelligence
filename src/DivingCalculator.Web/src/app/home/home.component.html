@@ -1,3 +1,20 @@
 <main>
-  <button mat-flat-button color="primary" routerLink="/new-dive">Plan a Dive</button>
+  <div class="top-section">
+    <button mat-flat-button id="plan-dive" color="primary" routerLink="/new-dive">Plan a Dive</button>
+  </div>
+  <div class="help">
+    <youtube-player videoId="hHT0q-vCi1Y"></youtube-player>
+    <a mat-stroked-button class="help-link" href="https://github.com/dylan-smith/DiveIntelligence/issues">
+      <div mat-stroked-button class="issues">
+        <div class="help-button-text">Bug Reports + Feature Requests</div>
+        <img src="/assets/github-mark.svg" alt="github logo" />
+      </div>
+    </a>
+    <a mat-stroked-button class="help-link" href="https://github.com/dylan-smith/DiveIntelligence/discussions">
+      <div mat-stroked-button class="issues">
+        <div class="help-button-text">Q&A + Discussion</div>
+        <img src="/assets/github-mark.svg" alt="github logo" />
+      </div>
+    </a>
+  </div>
 </main>
