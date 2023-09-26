@@ -139,7 +139,7 @@
                 </mat-select-trigger>
                 <mat-option *ngFor="let gas of StandardGases" [value]="gas">
                   <div>{{ gas.Name }}</div>
-                  <div class="gas-description" [innerHTML]="gas.Description"></div>
+                  <div class="gas-description" [innerHTML]="gas.CompositionDescription"></div>
                 </mat-option>
               </mat-select>
             </mat-form-field>
