@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ApplicationInsightsService } from '../application-insights-service/application-insights.service';
 
 @Component({
   selector: 'dive-home',
@@ -15,5 +16,18 @@ export class HomeComponent implements OnInit {
       document.body.appendChild(tag);
       apiLoaded = true;
     }
+  }
+
+  constructor(window: Window, appInsights: ApplicationInsightsService) {
+    appInsights.trackEvent('ResolutionInfo', {
+      availWidth: window.screen.availWidth,
+      availHeight: window.screen.availHeight,
+      devicePixelRatio: window.devicePixelRatio,
+      screenWidth: window.screen.width,
+      screenHeight: window.screen.height,
+      orientation: window.screen.orientation,
+      innerWidth: window.innerWidth,
+      innerHeight: window.innerHeight,
+    });
   }
 }

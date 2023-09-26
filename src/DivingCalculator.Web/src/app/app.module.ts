@@ -51,6 +51,7 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
       useFactory: (config: AppConfig) => config,
       deps: [APP_CONFIG],
     },
+    { provide: Window, useValue: window },
   ],
   bootstrap: [AppComponent],
 })
