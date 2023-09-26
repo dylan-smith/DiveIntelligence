@@ -20,13 +20,16 @@ export class DivePlanComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.drawChart();
+    this.drawCharts();
   }
 
-  private drawChart(): void {
+  private drawCharts(): void {
     Plotly.newPlot('depth-chart', this.getDepthChartData(), this.getDepthChartLayout(), this.getChartOptions());
     Plotly.newPlot('po2-chart', this.getPO2ChartData(), this.getPO2ChartLayout(), this.getChartOptions());
     Plotly.newPlot('end-chart', this.getENDChartData(), this.getENDChartLayout(), this.getChartOptions());
+    Plotly.newPlot('tissues-ceiling-chart', this.getTissuesCeilingChartData(), this.getTissuesCeilingChartLayout(), this.getChartOptions());
+    Plotly.newPlot('tissues-pn2-chart', this.getTissuesPN2ChartData(), this.getTissuesPN2ChartLayout(), this.getChartOptions());
+    Plotly.newPlot('tissues-phe-chart', this.getTissuesPHeChartData(), this.getTissuesPHeChartLayout(), this.getChartOptions());
   }
 
   public getDepthChartData(): Plotly.Data[] {
@@ -189,6 +192,117 @@ export class DivePlanComponent implements OnInit {
     ];
   }
 
+  public getTissuesCeilingChartData(): Plotly.Data[] {
+    const ceilingData = this.divePlanner.getTissuesCeilingChartData();
+    const x = ceilingData.map(d => new Date(1970, 1, 1, 0, 0, d.time, 0));
+
+    const ceilingTraces: Plotly.Data[] = [];
+
+    for (let i = 1; i <= 16; i++) {
+      ceilingTraces.push({
+        x,
+        y: ceilingData.map(d => d.tissuesCeiling[i - 1]),
+        type: 'scatter',
+        mode: 'lines',
+        name: `Tissue ${i} Ceiling`,
+        line: {
+          width: 2,
+        },
+        hovertemplate: `%{y:.0f}m`,
+      });
+    }
+
+    return [
+      {
+        x,
+        y: ceilingData.map(d => d.depth),
+        type: 'scatter',
+        mode: 'lines',
+        name: 'Depth',
+        line: {
+          color: this.PRIMARY_COLOR,
+          width: 5,
+        },
+        hovertemplate: `%{y:.0f}m`,
+      },
+      ...ceilingTraces,
+    ];
+  }
+
+  public getTissuesPN2ChartData(): Plotly.Data[] {
+    const ceilingData = this.divePlanner.getTissuesPN2ChartData();
+    const x = ceilingData.map(d => new Date(1970, 1, 1, 0, 0, d.time, 0));
+
+    const tissueTraces: Plotly.Data[] = [];
+
+    for (let i = 1; i <= 16; i++) {
+      tissueTraces.push({
+        x,
+        y: ceilingData.map(d => d.tissuesPN2[i - 1]),
+        type: 'scatter',
+        mode: 'lines',
+        name: `Tissue ${i} PN2`,
+        line: {
+          width: 2,
+        },
+        hovertemplate: `%{y:.2f}`,
+      });
+    }
+
+    return [
+      {
+        x,
+        y: ceilingData.map(d => d.gasPN2),
+        type: 'scatter',
+        mode: 'lines',
+        name: 'Gas PN2',
+        line: {
+          color: this.PRIMARY_COLOR,
+          width: 5,
+        },
+        hovertemplate: `%{y:.2f}`,
+      },
+      ...tissueTraces,
+    ];
+  }
+
+  public getTissuesPHeChartData(): Plotly.Data[] {
+    const ceilingData = this.divePlanner.getTissuesPHeChartData();
+    const x = ceilingData.map(d => new Date(1970, 1, 1, 0, 0, d.time, 0));
+
+    const tissueTraces: Plotly.Data[] = [];
+
+    for (let i = 1; i <= 16; i++) {
+      tissueTraces.push({
+        x,
+        y: ceilingData.map(d => d.tissuesPHe[i - 1]),
+        type: 'scatter',
+        mode: 'lines',
+        name: `Tissue ${i} PHe`,
+        line: {
+          width: 2,
+        },
+        hovertemplate: `%{y:.2f}`,
+      });
+    }
+
+    return [
+      {
+        x,
+        y: ceilingData.map(d => d.gasPHe),
+        type: 'scatter',
+        mode: 'lines',
+        name: 'Gas PHe',
+        line: {
+          color: this.PRIMARY_COLOR,
+          width: 5,
+        },
+        hovertemplate: `%{y:.2f}`,
+      },
+      ...tissueTraces,
+    ];
+  }
+
   public getDepthChartLayout(): Partial<Plotly.Layout> {
     return {
       autosize: true,
@@ -246,6 +360,83 @@ export class DivePlanComponent implements OnInit {
       showlegend: false,
       title: {
         text: 'Equivalent Narcotic Depth',
+        y: 0.98,
+      },
+      margin: { l: 35, r: 10, b: 30, t: 20, pad: 10 },
+      xaxis: {
+        fixedrange: true,
+        tickformat: '%H:%M:%S',
+      },
+      yaxis: {
+        fixedrange: true,
+        rangemode: 'tozero',
+        zeroline: false,
+      },
+      hovermode: 'x unified',
+      hoverlabel: {
+        bgcolor: 'rgba(200, 200, 200, 0.4)',
+        bordercolor: 'rgba(200, 200, 200, 0.4)',
+      },
+    };
+  }
+
+  public getTissuesCeilingChartLayout(): Partial<Plotly.Layout> {
+    return {
+      autosize: true,
+      showlegend: false,
+      title: {
+        text: 'Tissues Ceiling vs Depth',
+        y: 0.98,
+      },
+      margin: { l: 35, r: 10, b: 30, t: 20, pad: 10 },
+      xaxis: {
+        fixedrange: true,
+        tickformat: '%H:%M:%S',
+      },
+      yaxis: {
+        fixedrange: true,
+        autorange: 'reversed',
+      },
+      hovermode: 'x unified',
+      hoverlabel: {
+        bgcolor: 'rgba(200, 200, 200, 0.4)',
+        bordercolor: 'rgba(200, 200, 200, 0.4)',
+      },
+    };
+  }
+
+  public getTissuesPN2ChartLayout(): Partial<Plotly.Layout> {
+    return {
+      autosize: true,
+      showlegend: false,
+      title: {
+        text: 'Tissues PN<sub>2</sub> vs Gas PN<sub>2</sub>',
+        y: 0.98,
+      },
+      margin: { l: 35, r: 10, b: 30, t: 20, pad: 10 },
+      xaxis: {
+        fixedrange: true,
+        tickformat: '%H:%M:%S',
+      },
+      yaxis: {
+        fixedrange: true,
+        rangemode: 'tozero',
+        zeroline: false,
+      },
+      hovermode: 'x unified',
+      hoverlabel: {
+        bgcolor: 'rgba(200, 200, 200, 0.4)',
+        bordercolor: 'rgba(200, 200, 200, 0.4)',
+      },
+    };
+  }
+
+  public getTissuesPHeChartLayout(): Partial<Plotly.Layout> {
+    return {
+      autosize: true,
+      showlegend: false,
+      title: {
+        text: 'Tissues PHe vs Gas PHe',
         y: 0.98,
       },
       margin: { l: 35, r: 10, b: 30, t: 20, pad: 10 },

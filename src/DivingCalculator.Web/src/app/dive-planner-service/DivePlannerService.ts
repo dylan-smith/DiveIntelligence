@@ -185,6 +185,83 @@ export class DivePlannerService {
     return data;
   }
 
+  getTissuesCeilingChartData(): { time: number; depth: number; tissuesCeiling: number[] }[] {
+    const data: {
+      time: number;
+      depth: number;
+      tissuesCeiling: number[];
+    }[] = [];
+
+    const algo = new BuhlmannZHL16C(this.diveProfile);
+
+    for (const segment of this.diveProfile.segments) {
+      for (const d of segment.getDepthChartData()) {
+        const ceilings: number[] = [];
+        for (let i = 1; i <= 16; i++) {
+          ceilings.push(algo.getTissueCeiling(d.time, i));
+        }
+
+        data.push({
+          time: d.time,
+          depth: d.depth,
+          tissuesCeiling: ceilings,
+        });
+      }
+    }
+
+    return data;
+  }
+
+  getTissuesPN2ChartData(): { time: number; gasPN2: number; tissuesPN2: number[] }[] {
+    const data: {
+      time: number;
+      gasPN2: number;
+      tissuesPN2: number[];
+    }[] = [];
+
+    const algo = new BuhlmannZHL16C(this.diveProfile);
+
+    for (let t = 0; t <= this.diveProfile.getTotalTime(); t++) {
+      const tissuesPN2: number[] = [];
+      for (let i = 1; i <= 16; i++) {
+        tissuesPN2.push(algo.getTissuePN2(t, i));
+      }
+
+      data.push({
+        time: t,
+        gasPN2: this.diveProfile.getPN2(t),
+        tissuesPN2,
+      });
+    }
+
+    return data;
+  }
+
+  getTissuesPHeChartData(): { time: number; gasPHe: number; tissuesPHe: number[] }[] {
+    const data: {
+      time: number;
+      gasPHe: number;
+      tissuesPHe: number[];
+    }[] = [];
+
+    const algo = new BuhlmannZHL16C(this.diveProfile);
+
+    for (let t = 0; t <= this.diveProfile.getTotalTime(); t++) {
+      const tissuesPHe: number[] = [];
+      for (let i = 1; i <= 16; i++) {
+        tissuesPHe.push(algo.getTissuePN2(t, i));
+      }
+
+      data.push({
+        time: t,
+        gasPHe: this.diveProfile.getPN2(t),
+        tissuesPHe,
+      });
+    }
+
+    return data;
+  }
+
   getCeilingChartData(newDepth: number, newGas: BreathingGas): { time: number; ceiling: number }[] {
     const data: { time: number; ceiling: number }[] = [];
 

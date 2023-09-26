@@ -36,4 +36,16 @@ export class BuhlmannZHL16C {
 
     return Math.min(...validNdls);
   }
+
+  getTissueCeiling(time: number, tissue: number): number {
+    return this.tissues[tissue - 1].getCeiling(time);
+  }
+
+  getTissuePN2(time: number, tissue: number): number {
+    return this.tissues[tissue - 1].getPN2(time);
+  }
+
+  getTissuePHe(time: number, tissue: number): number {
+    return this.tissues[tissue - 1].getPHe(time);
+  }
 }

@@ -134,6 +134,11 @@ export class AddDiveSegmentComponent implements OnInit {
     this.totalDiveDuration = this.getTotalDiveDuration();
   }
 
+  onSave(): void {
+    this.divePlanner.addDiveSegment(this.newDepth, this.newGas, this.timeAtDepth * 60);
+    this.router.navigate(['/dive-plan']);
+  }
+
   private calculateNewGasStats(): void {
     this.newGasPO2 = this.getNewGasPO2();
     this.hasNewGasPO2Warning = this.getNewGasPO2Warning() !== undefined;
@@ -282,12 +287,8 @@ export class AddDiveSegmentComponent implements OnInit {
 
   private updateCustomGasNitrogen() {
     this.customGas.Nitrogen = 100 - this.customGas.Oxygen - this.customGas.Helium;
+    this.customGas = new BreathingGas(this.customGas.Name, this.customGas.Oxygen, this.customGas.Helium, this.customGas.Nitrogen); // need this to recalculate the properties
     this.calculateNewGas();
-  }
-
-  onSave(): void {
-    this.divePlanner.addDiveSegment(this.newDepth, this.newGas, this.timeAtDepth * 60);
-    this.router.navigate(['/dive-plan']);
   }
 
   private getPO2Warning(pO2: number): string | undefined {
