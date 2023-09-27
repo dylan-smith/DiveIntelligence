@@ -4,6 +4,8 @@ import { BreathingGas } from '../dive-planner-service/BreathingGas';
 import { Router } from '@angular/router';
 import { HumanDurationPipe } from '../pipes/human-duration.pipe';
 import * as Plotly from 'plotly.js-basic-dist-min';
+import { MatDialog } from '@angular/material/dialog';
+import { GraphDialogComponent } from '../graph-dialog/graph-dialog.component';
 
 @Component({
   selector: 'dive-add-dive-segment',
@@ -78,7 +80,8 @@ export class AddDiveSegmentComponent implements OnInit {
   constructor(
     private divePlanner: DivePlannerService,
     private router: Router,
-    private humanDurationPipe: HumanDurationPipe
+    private humanDurationPipe: HumanDurationPipe,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -431,5 +434,15 @@ export class AddDiveSegmentComponent implements OnInit {
     }
 
     return milestones;
+  }
+
+  public onCeilingChartClick(): void {
+    const ceilingData = this.divePlanner.getCeilingChartData(this.newDepth, this.newGas);
+
+    this.dialog.open(GraphDialogComponent, {
+      data: { trace: this.getCeilingChartData(ceilingData), layout: this.getCeilingChartLayout(), options: this.getCeilingChartOptions() },
+      height: '80%',
+      width: '80%',
+    });
   }
 }
