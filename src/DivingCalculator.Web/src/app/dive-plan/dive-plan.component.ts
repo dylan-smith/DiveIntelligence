@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
 import { DiveSegment } from '../dive-planner-service/DiveSegment';
 import * as Plotly from 'plotly.js-basic-dist-min';
+import { MatDialog } from '@angular/material/dialog';
+import { GraphDialogComponent } from '../graph-dialog/graph-dialog.component';
 
 @Component({
   selector: 'dive-dive-plan',
@@ -15,7 +17,10 @@ export class DivePlanComponent implements OnInit {
   private readonly WARNING_COLOR = 'orange';
   private readonly PRIMARY_COLOR = '#3F51B5'; // Indigo 500
 
-  constructor(public divePlanner: DivePlannerService) {
+  constructor(
+    public divePlanner: DivePlannerService,
+    public dialog: MatDialog
+  ) {
     this.planEvents = divePlanner.getDiveSegments();
   }
 
@@ -522,5 +527,65 @@ export class DivePlanComponent implements OnInit {
 
   public showENDError(): boolean {
     return this.getENDErrorDuration() > 0;
+  }
+
+  public onDepthChartClick(): void {
+    if (this.getShowGraphs()) {
+      this.dialog.open(GraphDialogComponent, {
+        data: { trace: this.getDepthChartData(), layout: this.getDepthChartLayout(), options: this.getChartOptions() },
+        height: '80%',
+        width: '80%',
+      });
+    }
+  }
+
+  public onPO2ChartClick(): void {
+    if (this.getShowGraphs()) {
+      this.dialog.open(GraphDialogComponent, {
+        data: { trace: this.getPO2ChartData(), layout: this.getPO2ChartLayout(), options: this.getChartOptions() },
+        height: '80%',
+        width: '80%',
+      });
+    }
+  }
+
+  public onENDChartClick(): void {
+    if (this.getShowGraphs()) {
+      this.dialog.open(GraphDialogComponent, {
+        data: { trace: this.getENDChartData(), layout: this.getENDChartLayout(), options: this.getChartOptions() },
+        height: '80%',
+        width: '80%',
+      });
+    }
+  }
+
+  public onTissuesCeilingChartClick(): void {
+    if (this.getShowGraphs()) {
+      this.dialog.open(GraphDialogComponent, {
+        data: { trace: this.getTissuesCeilingChartData(), layout: this.getTissuesCeilingChartLayout(), options: this.getChartOptions() },
+        height: '80%',
+        width: '80%',
+      });
+    }
+  }
+
+  public onTissuesPN2ChartClick(): void {
+    if (this.getShowGraphs()) {
+      this.dialog.open(GraphDialogComponent, {
+        data: { trace: this.getTissuesPN2ChartData(), layout: this.getTissuesPN2ChartLayout(), options: this.getChartOptions() },
+        height: '80%',
+        width: '80%',
+      });
+    }
+  }
+
+  public onTissuesPHeChartClick(): void {
+    if (this.getShowGraphs()) {
+      this.dialog.open(GraphDialogComponent, {
+        data: { trace: this.getTissuesPHeChartData(), layout: this.getTissuesPHeChartLayout(), options: this.getChartOptions() },
+        height: '80%',
+        width: '80%',
+      });
+    }
   }
 }
