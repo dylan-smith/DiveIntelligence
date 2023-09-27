@@ -19,6 +19,8 @@ export class NewDiveComponent {
   selectedStandardGas: BreathingGas = this.standardGases[0];
   gasType = 'standard';
   customGas: BreathingGas = BreathingGas.create(21, 0, 79);
+  ascentRate = this.divePlanner.settings.ascentRate;
+  descentRate = this.divePlanner.settings.descentRate;
 
   isMinDepthError(): boolean {
     return this.getSelectedGas().MinDepth > 0;
@@ -59,6 +61,14 @@ export class NewDiveComponent {
 
   getGasTooltip(gas: BreathingGas): string {
     return `Max Depth (PO2): ${gas.MaxDepthPO2}m (${gas.MaxDepthPO2Deco}m deco)\nMax Depth (END): ${gas.MaxDepthEND}m\nMin Depth (Hypoxia): ${gas.MinDepth}m`;
+  }
+
+  onDescentRateInput(): void {
+    this.divePlanner.settings.descentRate = this.descentRate;
+  }
+
+  onAscentRateInput(): void {
+    this.divePlanner.settings.ascentRate = this.ascentRate;
   }
 
   onSave() {

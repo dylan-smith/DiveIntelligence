@@ -57,3 +57,20 @@ mat-selection-list {
   height: auto;
   width: auto;
 }
+
+.settings-input {
+  width: 200px;
+}
+
+.dive-settings {
+  padding: 1.5rem;
+  margin-top: 3rem;
+}
+
+mat-form-field {
+  display: block;
+}
+
+.custom-gas-inputs {
+  display: flex;
+}

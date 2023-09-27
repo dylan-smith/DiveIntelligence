@@ -76,11 +76,11 @@
       <div class="calculation-section mat-elevation-z2">
         <div class="dive-stat" *ngIf="isDescent">
           Descent Time:
-          <strong>{{ travelTime | humanDuration }} @ 20m/min</strong>
+          <strong>{{ travelTime | humanDuration }} @ {{ descentRate }}m/min</strong>
         </div>
         <div class="dive-stat" *ngIf="isAscent">
           Ascent Time:
-          <strong>{{ travelTime | humanDuration }} @ 10m/min</strong>
+          <strong>{{ travelTime | humanDuration }} @ {{ ascentRate }}m/min</strong>
         </div>
         <div class="dive-stat">
           <span matTooltip="Oxygen partial pressure of the current gas at the new depth" matTooltipPosition="above">

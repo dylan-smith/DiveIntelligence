@@ -8,7 +8,7 @@ describe('GraphDialogComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [GraphDialogComponent]
+      declarations: [GraphDialogComponent],
     });
     fixture = TestBed.createComponent(GraphDialogComponent);
     component = fixture.componentInstance;

@@ -36,6 +36,8 @@ export class AddDiveSegmentComponent implements OnInit {
   currentENDError: string | undefined = this.getCurrentENDError();
 
   travelTime: number = this.divePlanner.getTravelTime(this.newDepth);
+  descentRate: number = this.divePlanner.settings.descentRate;
+  ascentRate: number = this.divePlanner.settings.ascentRate;
   isDescent: boolean = this.isNewDepthDescent();
   isAscent = !this.isNewDepthDescent();
   newDepthPO2: number = this.getNewDepthPO2();

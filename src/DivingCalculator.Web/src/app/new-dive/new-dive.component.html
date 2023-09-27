@@ -26,21 +26,37 @@
       </mat-selection-list>
     </div>
     <div class="custom-gas">
-      <div class="radio-button">
-        <mat-radio-button value="custom">Custom gas</mat-radio-button>
-      </div>
       <div>
-        <mat-form-field>
-          <mat-label>Oxygen (%)</mat-label>
-          <input matInput type="number" min="0" max="100" [(ngModel)]="customGas.Oxygen" (input)="onOxygenInput()" [disabled]="getCustomGasDisabled()" />
+        <div class="radio-button">
+          <mat-radio-button value="custom">Custom gas</mat-radio-button>
+        </div>
+        <div class="custom-gas-inputs">
+          <mat-form-field>
+            <mat-label>Oxygen (%)</mat-label>
+            <input matInput type="number" min="0" max="100" [(ngModel)]="customGas.Oxygen" (input)="onOxygenInput()" [disabled]="getCustomGasDisabled()" />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Helium (%)</mat-label>
+            <input matInput type="number" min="0" max="100" [(ngModel)]="customGas.Helium" (input)="onHeliumInput()" [disabled]="getCustomGasDisabled()" />
+          </mat-form-field>
+          <mat-form-field matTooltip="The nitrogen value will be automatically calculated when you input the values for oxygen and helium">
+            <mat-label>Nitrogen (%)</mat-label>
+            <input matInput type="number" [(ngModel)]="customGas.Nitrogen" disabled />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="dive-settings mat-elevation-z2">
+        <h2>
+          <mat-icon>settings</mat-icon>
+          Dive Settings
+        </h2>
+        <mat-form-field class="settings-input">
+          <mat-label>Descent Rate (m/min)</mat-label>
+          <input matInput type="number" min="1" [(ngModel)]="descentRate" (input)="onDescentRateInput()" />
         </mat-form-field>
-        <mat-form-field>
-          <mat-label>Helium (%)</mat-label>
-          <input matInput type="number" min="0" max="100" [(ngModel)]="customGas.Helium" (input)="onHeliumInput()" [disabled]="getCustomGasDisabled()" />
-        </mat-form-field>
-        <mat-form-field matTooltip="The nitrogen value will be automatically calculated when you input the values for oxygen and helium">
-          <mat-label>Nitrogen (%)</mat-label>
-          <input matInput type="number" [(ngModel)]="customGas.Nitrogen" disabled />
+        <mat-form-field class="settings-input">
+          <mat-label>Ascent Rate (m/min)</mat-label>
+          <input matInput type="number" min="1" [(ngModel)]="ascentRate" (input)="onAscentRateInput()" />
         </mat-form-field>
       </div>
     </div>

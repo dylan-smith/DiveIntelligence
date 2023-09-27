@@ -9,11 +9,10 @@ export class DiveSegment {
     public StartDepth: number,
     public EndDepth: number,
     public Gas: BreathingGas,
-    public Icon: string
+    public Icon: string,
+    private descentRate: number,
+    private ascentRate: number
   ) {}
-
-  private readonly DESCENT_RATE_PER_METER = 3; // seconds per meter
-  private readonly ASCENT_RATE_PER_METER = 6; // seconds per meter
 
   getDuration(): number {
     return this.EndTimestamp - this.StartTimestamp;
@@ -55,11 +54,13 @@ export class DiveSegment {
     }
 
     if (this.StartDepth < this.EndDepth) {
-      return (this.EndDepth - this.StartDepth) * this.DESCENT_RATE_PER_METER;
+      const descentRatePerMeter = 60 / this.descentRate;
+      return Math.round((this.EndDepth - this.StartDepth) * descentRatePerMeter);
     }
 
     if (this.EndDepth < this.StartDepth) {
-      return (this.StartDepth - this.EndDepth) * this.ASCENT_RATE_PER_METER;
+      const ascentRatePerMeter = 60 / this.ascentRate;
+      return Math.round((this.StartDepth - this.EndDepth) * ascentRatePerMeter);
     }
 
     return 0; // should never happen
