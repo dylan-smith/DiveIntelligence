@@ -1,3 +1,5 @@
+import { DiveSettings } from './DiveSettings';
+
 export class BreathingGas {
   Name: string;
   Oxygen: number;
@@ -10,22 +12,30 @@ export class BreathingGas {
   MaxDepthEND!: number;
   MinDepth!: number;
   MaxDecoDepth!: number;
+  private _diveSettings: DiveSettings;
 
-  private constructor(name: string, oxygen: number, helium: number, nitrogen: number) {
+  private constructor(name: string, oxygen: number, helium: number, nitrogen: number, diveSettings: DiveSettings) {
     this.Name = name;
     this.Oxygen = oxygen;
     this.Helium = helium;
     this.Nitrogen = nitrogen;
 
+    this._diveSettings = diveSettings;
+    this._diveSettings.subscribeToChanges(() => this.onDiveSettingsChanged());
+
     this.updateDetails();
   }
 
-  static create(oxygen: number, helium: number, nitrogen: number): BreathingGas {
-    const gas = new BreathingGas('Custom', oxygen, helium, nitrogen);
+  onDiveSettingsChanged(): void {
+    this.updateDetails();
+  }
+
+  static create(oxygen: number, helium: number, nitrogen: number, settings: DiveSettings): BreathingGas {
+    const gas = new BreathingGas('Custom', oxygen, helium, nitrogen, settings);
 
     const standardGas = BreathingGas.StandardGases.find(g => g.isEquivalent(gas));
     if (standardGas !== undefined) {
-      return new BreathingGas(standardGas.Name, standardGas.Oxygen, standardGas.Helium, standardGas.Nitrogen);
+      return new BreathingGas(standardGas.Name, standardGas.Oxygen, standardGas.Helium, standardGas.Nitrogen, settings);
     }
 
     return gas;
@@ -41,19 +51,23 @@ export class BreathingGas {
     this.MaxDecoDepth = this.getMaxDecoDepth();
   }
 
-  static StandardGases: BreathingGas[] = [
-    new BreathingGas('Air', 21, 0, 79),
-    new BreathingGas('Nitrox 32', 32, 0, 68),
-    new BreathingGas('Oxygen', 100, 0, 0),
-    new BreathingGas('Helitrox 25/25', 25, 25, 50),
-    new BreathingGas('Helitrox 21/35', 21, 35, 44),
-    new BreathingGas('Trimix 18/45', 18, 45, 37),
-    new BreathingGas('Trimix 15/55', 15, 55, 30),
-    new BreathingGas('Trimix 12/60', 12, 60, 28),
-    new BreathingGas('Trimix 10/70', 10, 70, 20),
-    new BreathingGas('Nitrox 50', 50, 0, 50),
-    new BreathingGas('Helitrox 35/25', 35, 25, 40),
-  ];
+  static StandardGases: BreathingGas[];
+
+  static GenerateStandardGases(settings: DiveSettings) {
+    this.StandardGases = [
+      new BreathingGas('Air', 21, 0, 79, settings),
+      new BreathingGas('Nitrox 32', 32, 0, 68, settings),
+      new BreathingGas('Oxygen', 100, 0, 0, settings),
+      new BreathingGas('Helitrox 25/25', 25, 25, 50, settings),
+      new BreathingGas('Helitrox 21/35', 21, 35, 44, settings),
+      new BreathingGas('Trimix 18/45', 18, 45, 37, settings),
+      new BreathingGas('Trimix 15/55', 15, 55, 30, settings),
+      new BreathingGas('Trimix 12/60', 12, 60, 28, settings),
+      new BreathingGas('Trimix 10/70', 10, 70, 20, settings),
+      new BreathingGas('Nitrox 50', 50, 0, 50, settings),
+      new BreathingGas('Helitrox 35/25', 35, 25, 40, settings),
+    ];
+  }
 
   private getDescription(): string {
     return `${this.Name} (${this.getCompositionDescription()})`;
@@ -72,7 +86,11 @@ export class BreathingGas {
   }
 
   private getMaxDepthEND(): number {
-    return Math.floor(3950 / this.Nitrogen - 10);
+    if (this._diveSettings.isOxygenNarcotic) {
+      return Math.floor(5000 / (this.Nitrogen + this.Oxygen) - 10);
+    } else {
+      return Math.floor(3950 / this.Nitrogen - 10);
+    }
   }
 
   private getMinDepth(): number {
@@ -92,6 +110,10 @@ export class BreathingGas {
   }
 
   getEND(depth: number): number {
+    if (this._diveSettings.isOxygenNarcotic) {
+      return Math.max(0, (this.getPN2(depth) + this.getPO2(depth) - 1) * 10);
+    }
+
     return Math.max(0, (this.getPN2(depth) / 0.79 - 1) * 10);
   }
 

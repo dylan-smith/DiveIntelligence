@@ -1,8 +1,11 @@
 import { BreathingGas } from './BreathingGas';
 import { DiveSegment } from './DiveSegment';
+import { DiveSettings } from './DiveSettings';
 
 export class DiveProfile {
   public segments: DiveSegment[] = [];
+
+  constructor(private diveSettings: DiveSettings) {}
 
   addSegment(segment: DiveSegment): void {
     this.segments.push(segment);
@@ -17,7 +20,7 @@ export class DiveProfile {
   }
 
   getCurrentProfile(): DiveProfile {
-    const result = new DiveProfile();
+    const result = new DiveProfile(this.diveSettings);
     result.segments = this.segments.slice(0, -1);
     return result;
   }
@@ -64,6 +67,10 @@ export class DiveProfile {
   }
 
   getEND(time: number): number {
+    if (this.diveSettings.isOxygenNarcotic) {
+      return (this.getPN2(time) + this.getPO2(time) - 1) * 10;
+    }
+
     return (this.getPN2(time) / 0.79 - 1) * 10;
   }
 }

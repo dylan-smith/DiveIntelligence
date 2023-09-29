@@ -21,6 +21,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AddDiveSegmentComponent } from './add-dive-segment/add-dive-segment.component';
 import { APP_CONFIG, AppConfig } from 'src/app.config';
 import { ApplicationInsightsModule } from './application-insights.module';
@@ -43,6 +44,7 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
     MatIconModule,
     MatSelectModule,
     MatDialogModule,
+    MatSlideToggleModule,
     YouTubePlayerModule,
   ],
   providers: [

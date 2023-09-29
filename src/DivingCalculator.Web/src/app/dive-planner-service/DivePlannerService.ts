@@ -11,14 +11,16 @@ import { DiveSettings } from './DiveSettings';
   providedIn: 'root',
 })
 export class DivePlannerService {
-  public diveProfile: DiveProfile = new DiveProfile();
   private diveID = crypto.randomUUID();
   public settings: DiveSettings = new DiveSettings();
+  public diveProfile: DiveProfile = new DiveProfile(this.settings);
 
   constructor(
     private diveSegmentFactory: DiveSegmentFactoryService,
     private appInsights: ApplicationInsightsService
-  ) {}
+  ) {
+    BreathingGas.GenerateStandardGases(this.settings);
+  }
 
   getStandardGases(): BreathingGas[] {
     return BreathingGas.StandardGases;
@@ -62,12 +64,18 @@ export class DivePlannerService {
     const atm = depth / 10 + 1;
     const oxygen = Math.min(100, Math.floor(160 / atm));
 
-    const targetPN2 = 5 * 0.79;
-    let nitrogen = (targetPN2 / atm) * 100;
+    let targetPN2 = 5 * 79;
+
+    if (this.settings.isOxygenNarcotic) {
+      const targetNarcotic = 500;
+      targetPN2 = targetNarcotic - oxygen * atm;
+    }
+
+    let nitrogen = targetPN2 / atm;
     const helium = Math.max(0, Math.ceil(100 - oxygen - nitrogen));
     nitrogen = 100 - oxygen - helium;
 
-    return BreathingGas.create(oxygen, helium, nitrogen);
+    return BreathingGas.create(oxygen, helium, nitrogen, this.settings);
   }
 
   getCurrentCeiling(): number {

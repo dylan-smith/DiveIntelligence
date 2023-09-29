@@ -18,9 +18,10 @@ export class NewDiveComponent {
   standardGases: BreathingGas[] = this.divePlanner.getStandardGases();
   selectedStandardGas: BreathingGas = this.standardGases[0];
   gasType = 'standard';
-  customGas: BreathingGas = BreathingGas.create(21, 0, 79);
+  customGas: BreathingGas = BreathingGas.create(21, 0, 79, this.divePlanner.settings);
   ascentRate = this.divePlanner.settings.ascentRate;
   descentRate = this.divePlanner.settings.descentRate;
+  isOxygenNarcotic = this.divePlanner.settings.isOxygenNarcotic;
 
   isMinDepthError(): boolean {
     return this.getSelectedGas().MinDepth > 0;
@@ -52,7 +53,7 @@ export class NewDiveComponent {
 
   updateCustomGasNitrogen() {
     this.customGas.Nitrogen = 100 - this.customGas.Oxygen - this.customGas.Helium;
-    this.customGas = BreathingGas.create(this.customGas.Oxygen, this.customGas.Helium, this.customGas.Nitrogen);
+    this.customGas = BreathingGas.create(this.customGas.Oxygen, this.customGas.Helium, this.customGas.Nitrogen, this.divePlanner.settings);
   }
 
   onStandardGasChange(event: MatSelectionListChange) {
@@ -69,6 +70,10 @@ export class NewDiveComponent {
 
   onAscentRateInput(): void {
     this.divePlanner.settings.ascentRate = this.ascentRate;
+  }
+
+  onOxygenNarcoticChange(): void {
+    this.divePlanner.settings.isOxygenNarcotic = this.isOxygenNarcotic;
   }
 
   onSave() {
