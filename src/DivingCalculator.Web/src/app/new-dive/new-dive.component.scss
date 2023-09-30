@@ -73,6 +73,14 @@ mat-selection-list {
   margin-top: 3rem;
 }
 
+.dive-settings-row {
+  display: flex;
+}
+
+.dive-settings-col {
+  margin: 1rem;
+}
+
 mat-form-field {
   display: block;
 }
@@ -83,4 +91,9 @@ mat-form-field {
 
 .toggle-label {
   padding: 1rem;
+}
+
+mat-slide-toggle {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }

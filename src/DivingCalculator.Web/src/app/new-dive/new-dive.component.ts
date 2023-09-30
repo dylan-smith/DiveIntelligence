@@ -12,7 +12,7 @@ import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
 export class NewDiveComponent {
   constructor(
     private router: Router,
-    private divePlanner: DivePlannerService
+    public divePlanner: DivePlannerService
   ) {}
 
   standardGases: BreathingGas[] = this.divePlanner.getStandardGases();
@@ -22,6 +22,11 @@ export class NewDiveComponent {
   ascentRate = this.divePlanner.settings.ascentRate;
   descentRate = this.divePlanner.settings.descentRate;
   isOxygenNarcotic = this.divePlanner.settings.isOxygenNarcotic;
+  workingPO2Maximum = this.divePlanner.settings.workingPO2Maximum;
+  decoPO2Maximum = this.divePlanner.settings.decoPO2Maximum;
+  pO2Minimum = this.divePlanner.settings.pO2Minimum;
+  ENDWarningThreshold = this.divePlanner.settings.ENDWarningThreshold;
+  ENDErrorThreshold = this.divePlanner.settings.ENDErrorThreshold;
 
   isMinDepthError(): boolean {
     return this.getSelectedGas().MinDepth > 0;
@@ -74,6 +79,26 @@ export class NewDiveComponent {
 
   onOxygenNarcoticChange(): void {
     this.divePlanner.settings.isOxygenNarcotic = this.isOxygenNarcotic;
+  }
+
+  onWorkingPO2MaximumInput(): void {
+    this.divePlanner.settings.workingPO2Maximum = this.workingPO2Maximum;
+  }
+
+  onDecoPO2MaximumInput(): void {
+    this.divePlanner.settings.decoPO2Maximum = this.decoPO2Maximum;
+  }
+
+  onPO2MinimumInput(): void {
+    this.divePlanner.settings.pO2Minimum = this.pO2Minimum;
+  }
+
+  onENDWarningThresholdInput(): void {
+    this.divePlanner.settings.ENDWarningThreshold = this.ENDWarningThreshold;
+  }
+
+  onENDErrorThresholdInput(): void {
+    this.divePlanner.settings.ENDErrorThreshold = this.ENDErrorThreshold;
   }
 
   onSave() {

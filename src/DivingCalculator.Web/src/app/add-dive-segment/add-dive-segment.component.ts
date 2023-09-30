@@ -80,7 +80,7 @@ export class AddDiveSegmentComponent implements OnInit {
   private readonly PRIMARY_COLOR = '#3F51B5'; // Indigo 500
 
   constructor(
-    private divePlanner: DivePlannerService,
+    public divePlanner: DivePlannerService,
     private router: Router,
     private humanDurationPipe: HumanDurationPipe,
     public dialog: MatDialog
@@ -297,23 +297,25 @@ export class AddDiveSegmentComponent implements OnInit {
   }
 
   private getPO2Warning(pO2: number): string | undefined {
-    if (pO2 > 1.4 && pO2 <= 1.6) return 'Oxygen partial pressure should only go above 1.4 during deco stops';
+    if (pO2 > this.divePlanner.settings.workingPO2Maximum && pO2 <= this.divePlanner.settings.decoPO2Maximum)
+      return `Oxygen partial pressure should only go above ${this.divePlanner.settings.workingPO2Maximum} during deco stops`;
     return undefined;
   }
 
   private getPO2Error(pO2: number): string | undefined {
-    if (pO2 > 1.6) return 'Oxygen partial pressure should never go above 1.6';
-    if (pO2 < 0.18) return 'Oxygen partial pressure should never go below 0.18';
+    if (pO2 > this.divePlanner.settings.decoPO2Maximum) return `Oxygen partial pressure should never go above ${this.divePlanner.settings.decoPO2Maximum}`;
+    if (pO2 < this.divePlanner.settings.pO2Minimum) return `Oxygen partial pressure should never go below ${this.divePlanner.settings.pO2Minimum}`;
     return undefined;
   }
 
   private getENDWarning(END: number): string | undefined {
-    if (END > 30 && END <= 40) return 'Some divers (e.g. GUE) aim to keep END below 30m';
+    if (END > this.divePlanner.settings.ENDWarningThreshold && END <= this.divePlanner.settings.ENDErrorThreshold)
+      return this.divePlanner.settings.ENDWarningMessage;
     return undefined;
   }
 
   private getENDError(END: number): string | undefined {
-    if (END > 40) return 'Most divers aim to keep END below 40m';
+    if (END > this.divePlanner.settings.ENDErrorThreshold) return this.divePlanner.settings.ENDErrorMessage;
     return undefined;
   }
 

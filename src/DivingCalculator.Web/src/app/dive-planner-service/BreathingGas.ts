@@ -1,4 +1,4 @@
-import { DiveSettings } from './DiveSettings';
+import { DiveSettingsService } from './DiveSettings.service';
 
 export class BreathingGas {
   Name: string;
@@ -12,9 +12,9 @@ export class BreathingGas {
   MaxDepthEND!: number;
   MinDepth!: number;
   MaxDecoDepth!: number;
-  private _diveSettings: DiveSettings;
+  private _diveSettings: DiveSettingsService;
 
-  private constructor(name: string, oxygen: number, helium: number, nitrogen: number, diveSettings: DiveSettings) {
+  private constructor(name: string, oxygen: number, helium: number, nitrogen: number, diveSettings: DiveSettingsService) {
     this.Name = name;
     this.Oxygen = oxygen;
     this.Helium = helium;
@@ -30,7 +30,7 @@ export class BreathingGas {
     this.updateDetails();
   }
 
-  static create(oxygen: number, helium: number, nitrogen: number, settings: DiveSettings): BreathingGas {
+  static create(oxygen: number, helium: number, nitrogen: number, settings: DiveSettingsService): BreathingGas {
     const gas = new BreathingGas('Custom', oxygen, helium, nitrogen, settings);
 
     const standardGas = BreathingGas.StandardGases.find(g => g.isEquivalent(gas));
@@ -53,7 +53,7 @@ export class BreathingGas {
 
   static StandardGases: BreathingGas[];
 
-  static GenerateStandardGases(settings: DiveSettings) {
+  static GenerateStandardGases(settings: DiveSettingsService) {
     this.StandardGases = [
       new BreathingGas('Air', 21, 0, 79, settings),
       new BreathingGas('Nitrox 32', 32, 0, 68, settings),
@@ -78,23 +78,23 @@ export class BreathingGas {
   }
 
   private getMaxDepthPO2(): number {
-    return Math.floor(1400 / this.Oxygen - 10);
+    return Math.floor((this._diveSettings.workingPO2Maximum * 1000) / this.Oxygen - 10);
   }
 
   private getMaxDepthPO2Deco(): number {
-    return Math.floor(1600 / this.Oxygen - 10);
+    return Math.floor((this._diveSettings.decoPO2Maximum * 1000) / this.Oxygen - 10);
   }
 
   private getMaxDepthEND(): number {
     if (this._diveSettings.isOxygenNarcotic) {
-      return Math.floor(5000 / (this.Nitrogen + this.Oxygen) - 10);
+      return Math.floor(((this._diveSettings.ENDErrorThreshold + 10) * 100) / (this.Nitrogen + this.Oxygen) - 10);
     } else {
-      return Math.floor(3950 / this.Nitrogen - 10);
+      return Math.floor((790 * ((this._diveSettings.ENDErrorThreshold + 10) / 10)) / this.Nitrogen - 10);
     }
   }
 
   private getMinDepth(): number {
-    return Math.max(0, Math.ceil(180 / this.Oxygen - 10));
+    return Math.max(0, Math.ceil((this._diveSettings.pO2Minimum * 1000) / this.Oxygen - 10));
   }
 
   getPO2(depth: number): number {

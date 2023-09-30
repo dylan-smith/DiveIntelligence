@@ -50,38 +50,77 @@
           <mat-icon>settings</mat-icon>
           Dive Settings
         </h2>
-        <mat-form-field class="settings-input">
-          <mat-label>Descent Rate (m/min)</mat-label>
-          <input matInput type="number" min="1" [(ngModel)]="descentRate" (input)="onDescentRateInput()" />
-        </mat-form-field>
-        <mat-form-field class="settings-input">
-          <mat-label>Ascent Rate (m/min)</mat-label>
-          <input matInput type="number" min="1" [(ngModel)]="ascentRate" (input)="onAscentRateInput()" />
-        </mat-form-field>
-        <mat-slide-toggle [(ngModel)]="isOxygenNarcotic" (change)="onOxygenNarcoticChange()">
-          <span class="toggle-label">Is Oxygen Narcotic?</span>
-        </mat-slide-toggle>
+        <div class="dive-settings-row">
+          <div class="dive-settings-col">
+            <mat-form-field
+              class="settings-input"
+              matTooltip="The maximum oxygen partial pressure during the working (i.e. non-deco) part of the dive. If any part of the dive plan exceeds this a warning will be shown. Default: 1.4"
+              matTooltipPosition="right">
+              <mat-label>Working PO2 Maximum</mat-label>
+              <input matInput type="number" step=".1" [(ngModel)]="workingPO2Maximum" (input)="onWorkingPO2MaximumInput()" />
+            </mat-form-field>
+            <mat-form-field
+              class="settings-input"
+              matTooltip="The maximum oxygen partial pressure acceptable during deco stops. If any part of the dive plan exceeds this an error will be shown. Default: 1.6"
+              matTooltipPosition="right">
+              <mat-label>Deco PO2 Maximum</mat-label>
+              <input matInput type="number" step=".1" [(ngModel)]="decoPO2Maximum" (input)="onDecoPO2MaximumInput()" />
+            </mat-form-field>
+            <mat-form-field
+              class="settings-input"
+              matTooltip="The minimum acceptable oxygen partial pressure. This is applicable when breathing hypoxic mixtures. Default: 0.18"
+              matTooltipPosition="right">
+              <mat-label>Minimum PO2</mat-label>
+              <input matInput type="number" step=".01" [(ngModel)]="pO2Minimum" (input)="onPO2MinimumInput()" />
+            </mat-form-field>
+            <mat-form-field
+              class="settings-input"
+              matTooltip="If the equivalent narcotic depth exceeds this value a warning will be shown. Default: 30m"
+              matTooltipPosition="right">
+              <mat-label>END Warning Threshold (m)</mat-label>
+              <input matInput type="number" [(ngModel)]="ENDWarningThreshold" (input)="onENDWarningThresholdInput()" />
+            </mat-form-field>
+            <mat-form-field
+              class="settings-input"
+              matTooltip="If the equivalent narcotic depth exceeds this value an error will be shown. Default: 40m"
+              matTooltipPosition="right">
+              <mat-label>END Error Threshold (m)</mat-label>
+              <input matInput type="number" [(ngModel)]="ENDErrorThreshold" (input)="onENDErrorThresholdInput()" />
+            </mat-form-field>
+          </div>
+          <div class="dive-settings-col">
+            <mat-form-field class="settings-input">
+              <mat-label>Descent Rate (m/min)</mat-label>
+              <input matInput type="number" min="1" [(ngModel)]="descentRate" (input)="onDescentRateInput()" />
+            </mat-form-field>
+            <mat-form-field class="settings-input">
+              <mat-label>Ascent Rate (m/min)</mat-label>
+              <input matInput type="number" min="1" [(ngModel)]="ascentRate" (input)="onAscentRateInput()" />
+            </mat-form-field>
+            <mat-slide-toggle
+              [(ngModel)]="isOxygenNarcotic"
+              (change)="onOxygenNarcoticChange()"
+              matTooltip="If this is turned off only the Nitrogen content will be considered when calculating the equivalent narcotic depth (END). If enabled both Oxygen and Nitrogen will be included. Default: On"
+              matTooltipPosition="right">
+              <span class="toggle-label">Is Oxygen Narcotic?</span>
+            </mat-slide-toggle>
+          </div>
+        </div>
       </div>
     </div>
     <div class="summary-data">
       <div class="gas-calculations mat-elevation-z2">
-        <div
-          class="gas-calc"
-          matTooltip="Maximum depth this gas can be breathed at without going over an oxygen partial pressure of 1.4 (1.6 for deco stops)"
-          matTooltipPosition="right">
+        <div class="gas-calc" [matTooltip]="divePlanner.settings.MaxDepthPO2Tooltip" matTooltipPosition="right">
           <!-- eslint-disable-next-line prettier/prettier -->
           Max Depth (PO<sub>2</sub>):
           <strong>{{ getSelectedGas().MaxDepthPO2 }}m ({{ getSelectedGas().MaxDepthPO2Deco }}m deco)</strong>
         </div>
-        <div
-          class="gas-calc"
-          matTooltip="Maximum depth this gas can be breathed at before you experience nitrogen narcosis equivelant to 40m on air"
-          matTooltipPosition="right">
+        <div class="gas-calc" [matTooltip]="divePlanner.settings.MaxDepthENDTooltip" matTooltipPosition="right">
           Max Depth (END):
           <strong>{{ getSelectedGas().MaxDepthEND }}m</strong>
         </div>
         <div class="gas-calc">
-          <span matTooltip="Minimum depth this gas can be breathed at without going below an oxygen partial pressure of 0.18" matTooltipPosition="below">
+          <span [matTooltip]="divePlanner.settings.MinDepthTooltip" matTooltipPosition="below">
             Min Depth (Hypoxia):
             <strong>{{ getSelectedGas().MinDepth }}m</strong>
           </span>

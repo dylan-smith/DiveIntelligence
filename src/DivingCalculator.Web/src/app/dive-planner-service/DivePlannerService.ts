@@ -5,19 +5,19 @@ import { DiveSegmentFactoryService } from './DiveSegmentFactory.service';
 import { DiveProfile } from './DiveProfile';
 import { BuhlmannZHL16C } from './BuhlmannZHL16C';
 import { ApplicationInsightsService } from '../application-insights-service/application-insights.service';
-import { DiveSettings } from './DiveSettings';
+import { DiveSettingsService } from './DiveSettings.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DivePlannerService {
   private diveID = crypto.randomUUID();
-  public settings: DiveSettings = new DiveSettings();
   public diveProfile: DiveProfile = new DiveProfile(this.settings);
 
   constructor(
     private diveSegmentFactory: DiveSegmentFactoryService,
-    private appInsights: ApplicationInsightsService
+    private appInsights: ApplicationInsightsService,
+    public settings: DiveSettingsService
   ) {
     BreathingGas.GenerateStandardGases(this.settings);
   }
@@ -33,7 +33,7 @@ export class DivePlannerService {
       startGas: { description: startGas.Description, oxygen: startGas.Oxygen, helium: startGas.Helium, nitrogen: startGas.Nitrogen },
     });
     this.diveProfile.addSegment(this.diveSegmentFactory.createStartDiveSegment(startGas));
-    this.diveProfile.addSegment(this.diveSegmentFactory.createEndDiveSegment(0, 0, startGas, this.settings.ascentRate));
+    this.diveProfile.addSegment(this.diveSegmentFactory.createEndDiveSegment(0, 0, startGas));
   }
 
   getDiveSegments(): DiveSegment[] {
@@ -62,12 +62,12 @@ export class DivePlannerService {
 
   getOptimalDecoGas(depth: number): BreathingGas {
     const atm = depth / 10 + 1;
-    const oxygen = Math.min(100, Math.floor(160 / atm));
+    const oxygen = Math.min(100, Math.floor((this.settings.decoPO2Maximum * 100) / atm));
 
-    let targetPN2 = 5 * 79;
+    let targetPN2 = (this.settings.ENDErrorThreshold / 10 + 1) * 79;
 
     if (this.settings.isOxygenNarcotic) {
-      const targetNarcotic = 500;
+      const targetNarcotic = (this.settings.ENDErrorThreshold / 10 + 1) * 100;
       targetPN2 = targetNarcotic - oxygen * atm;
     }
 
@@ -97,9 +97,7 @@ export class DivePlannerService {
         wipProfile.getLastSegment().EndDepth,
         newDepth,
         0,
-        this.getCurrentGas(),
-        this.settings.descentRate,
-        this.settings.ascentRate
+        this.getCurrentGas()
       )
     );
     const algo = new BuhlmannZHL16C(wipProfile);
@@ -110,59 +108,41 @@ export class DivePlannerService {
       return undefined;
     }
 
-    const timeToSurface = this.diveSegmentFactory.getTravelTime(wipProfile.getLastSegment().EndDepth, 0, this.settings.descentRate, this.settings.ascentRate);
+    const timeToSurface = this.diveSegmentFactory.getTravelTime(wipProfile.getLastSegment().EndDepth, 0);
     return Math.max(0, ndl - timeToSurface);
   }
 
   addDiveSegment(newDepth: number, newGas: BreathingGas, timeAtDepth: number): void {
-    // remove the final surface segment, will re-add it below
-    this.diveProfile.removeLastSegment();
+    const newProfile = this.diveProfile.getCurrentProfile();
 
-    let previousSegment = this.diveProfile.segments[this.diveProfile.segments.length - 1];
+    let previousSegment = newProfile.getLastSegment();
     let startTime = previousSegment.EndTimestamp;
 
     if (newDepth === previousSegment.EndDepth && previousSegment.Gas.isEquivalent(newGas) && timeAtDepth > 0) {
-      this.diveProfile.extendLastSegment(timeAtDepth);
+      newProfile.extendLastSegment(timeAtDepth);
     }
 
     if (newDepth !== previousSegment.EndDepth) {
       if (previousSegment.Gas.isEquivalent(newGas)) {
-        this.diveProfile.addSegment(
-          this.diveSegmentFactory.createDepthChangeSegment(
-            startTime,
-            previousSegment.EndDepth,
-            newDepth,
-            timeAtDepth,
-            previousSegment.Gas,
-            this.settings.descentRate,
-            this.settings.ascentRate
-          )
+        newProfile.addSegment(
+          this.diveSegmentFactory.createDepthChangeSegment(startTime, previousSegment.EndDepth, newDepth, timeAtDepth, previousSegment.Gas)
         );
       } else {
-        this.diveProfile.addSegment(
-          this.diveSegmentFactory.createDepthChangeSegment(
-            startTime,
-            previousSegment.EndDepth,
-            newDepth,
-            0,
-            previousSegment.Gas,
-            this.settings.descentRate,
-            this.settings.ascentRate
-          )
-        );
+        newProfile.addSegment(this.diveSegmentFactory.createDepthChangeSegment(startTime, previousSegment.EndDepth, newDepth, 0, previousSegment.Gas));
       }
     }
 
-    previousSegment = this.diveProfile.segments[this.diveProfile.segments.length - 1];
+    previousSegment = newProfile.getLastSegment();
     startTime = previousSegment.EndTimestamp;
 
     if (!previousSegment.Gas.isEquivalent(newGas)) {
-      this.diveProfile.addSegment(this.diveSegmentFactory.createGasChangeSegment(startTime, newGas, timeAtDepth, newDepth));
+      newProfile.addSegment(this.diveSegmentFactory.createGasChangeSegment(startTime, newGas, timeAtDepth, newDepth));
     }
 
-    const endTime = this.diveProfile.segments[this.diveProfile.segments.length - 1].EndTimestamp;
+    const endTime = newProfile.getLastSegment().EndTimestamp;
 
-    this.diveProfile.addSegment(this.diveSegmentFactory.createEndDiveSegment(endTime, newDepth, newGas, this.settings.ascentRate));
+    newProfile.addSegment(this.diveSegmentFactory.createEndDiveSegment(endTime, newDepth, newGas));
+    this.diveProfile = newProfile;
 
     this.appInsights.trackEvent('AddDiveSegment', {
       diveID: this.diveID,
@@ -173,7 +153,7 @@ export class DivePlannerService {
   }
 
   getTravelTime(newDepth: number): number {
-    return this.diveSegmentFactory.getTravelTime(this.getCurrentDepth(), newDepth, this.settings.descentRate, this.settings.ascentRate);
+    return this.diveSegmentFactory.getTravelTime(this.getCurrentDepth(), newDepth);
   }
 
   getDepthChartData(): { time: number; depth: number; ceiling: number }[] {
@@ -300,9 +280,7 @@ export class DivePlannerService {
         wipProfile.getLastSegment().EndDepth,
         newDepth,
         0,
-        this.getCurrentGas(),
-        this.settings.descentRate,
-        this.settings.ascentRate
+        this.getCurrentGas()
       )
     );
 
@@ -328,9 +306,7 @@ export class DivePlannerService {
         wipProfile.getLastSegment().EndDepth,
         newDepth,
         0,
-        this.getCurrentGas(),
-        this.settings.descentRate,
-        this.settings.ascentRate
+        this.getCurrentGas()
       )
     );
 
@@ -365,7 +341,7 @@ export class DivePlannerService {
     for (let t = 0; t < this.getDiveDuration(); t++) {
       const pO2 = this.diveProfile.getPO2(t);
 
-      if (pO2 > 1.6) {
+      if (pO2 > this.settings.decoPO2Maximum) {
         maxPO2 = Math.max(maxPO2, pO2);
         duration++;
       }
@@ -381,7 +357,7 @@ export class DivePlannerService {
     for (let t = 0; t < this.getDiveDuration(); t++) {
       const pO2 = this.diveProfile.getPO2(t);
 
-      if (pO2 < 0.18) {
+      if (pO2 < this.settings.pO2Minimum) {
         minPO2 = Math.min(minPO2, pO2);
         duration++;
       }
@@ -397,7 +373,7 @@ export class DivePlannerService {
     for (let t = 0; t < this.getDiveDuration(); t++) {
       const end = this.diveProfile.getEND(t);
 
-      if (end > 40) {
+      if (end > this.settings.ENDErrorThreshold) {
         maxEND = Math.max(end, maxEND);
         duration++;
       }

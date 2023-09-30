@@ -1,11 +1,11 @@
 import { BreathingGas } from './BreathingGas';
 import { DiveSegment } from './DiveSegment';
-import { DiveSettings } from './DiveSettings';
+import { DiveSettingsService } from './DiveSettings.service';
 
 export class DiveProfile {
   public segments: DiveSegment[] = [];
 
-  constructor(private diveSettings: DiveSettings) {}
+  constructor(private diveSettings: DiveSettingsService) {}
 
   addSegment(segment: DiveSegment): void {
     this.segments.push(segment);

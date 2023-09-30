@@ -1,4 +1,5 @@
 import { BreathingGas } from './BreathingGas';
+import { DiveSettingsService } from './DiveSettings.service';
 
 export class DiveSegment {
   constructor(
@@ -10,8 +11,7 @@ export class DiveSegment {
     public EndDepth: number,
     public Gas: BreathingGas,
     public Icon: string,
-    private descentRate: number,
-    private ascentRate: number
+    private settings: DiveSettingsService
   ) {}
 
   getDuration(): number {
@@ -54,12 +54,12 @@ export class DiveSegment {
     }
 
     if (this.StartDepth < this.EndDepth) {
-      const descentRatePerMeter = 60 / this.descentRate;
+      const descentRatePerMeter = 60 / this.settings.descentRate;
       return Math.round((this.EndDepth - this.StartDepth) * descentRatePerMeter);
     }
 
     if (this.EndDepth < this.StartDepth) {
-      const ascentRatePerMeter = 60 / this.ascentRate;
+      const ascentRatePerMeter = 60 / this.settings.ascentRate;
       return Math.round((this.StartDepth - this.EndDepth) * ascentRatePerMeter);
     }
 
@@ -80,7 +80,13 @@ export class DiveSegment {
     const data: { time: number; pO2: number; decoLimit: number; limit: number; min: number }[] = [];
 
     for (let i = this.StartTimestamp; i <= this.EndTimestamp; i++) {
-      data.push({ time: i, pO2: this.Gas.getPO2(this.getDepth(i)), decoLimit: 1.6, limit: 1.4, min: 0.18 });
+      data.push({
+        time: i,
+        pO2: this.Gas.getPO2(this.getDepth(i)),
+        decoLimit: this.settings.decoPO2Maximum,
+        limit: this.settings.workingPO2Maximum,
+        min: this.settings.pO2Minimum,
+      });
     }
 
     return data;
@@ -90,7 +96,12 @@ export class DiveSegment {
     const data: { time: number; end: number; warningLimit: number; errorLimit: number }[] = [];
 
     for (let i = this.StartTimestamp; i <= this.EndTimestamp; i++) {
-      data.push({ time: i, end: this.Gas.getEND(this.getDepth(i)), warningLimit: 30, errorLimit: 40 });
+      data.push({
+        time: i,
+        end: this.Gas.getEND(this.getDepth(i)),
+        warningLimit: this.settings.ENDWarningThreshold,
+        errorLimit: this.settings.ENDErrorThreshold,
+      });
     }
 
     return data;

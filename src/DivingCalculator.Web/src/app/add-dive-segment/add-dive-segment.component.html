@@ -22,30 +22,26 @@
         <strong [innerHTML]="currentGas.Description"></strong>
       </div>
       <div class="gas-stat dive-stat">
-        <span
-          matTooltip="Maximum depth this gas can be breathed at without going over an oxygen partial pressure of 1.4 (1.6 for deco stops)"
-          matTooltipPosition="right">
+        <span [matTooltip]="divePlanner.settings.MaxDepthPO2Tooltip" matTooltipPosition="right">
           <!-- eslint-disable-next-line prettier/prettier -->
           Max Depth (PO<sub>2</sub>):
           <strong>{{ currentGas.MaxDepthPO2 }}m ({{ currentGas.MaxDepthPO2Deco }}m deco)</strong>
         </span>
       </div>
       <div class="gas-stat dive-stat">
-        <span
-          matTooltip="Maximum depth this gas can be breathed at before you experience nitrogen narcosis equivalent to 40m on air"
-          matTooltipPosition="right">
+        <span [matTooltip]="divePlanner.settings.MaxDepthENDTooltip" matTooltipPosition="right">
           Max Depth (END):
           <strong>{{ currentGas.MaxDepthEND }}m</strong>
         </span>
       </div>
       <div class="gas-stat dive-stat">
-        <span matTooltip="Minimum depth this gas can be breathed at without going below an oxygen partial pressure of 0.18" matTooltipPosition="right">
+        <span [matTooltip]="divePlanner.settings.MinDepthTooltip" matTooltipPosition="right">
           Min Depth (Hypoxia):
           <strong>{{ currentGas.MinDepth }}m</strong>
         </span>
       </div>
       <div class="dive-stat">
-        <span matTooltip="Oxygen partial pressure of the current gas at the current depth" matTooltipPosition="above">
+        <span matTooltip="Oxygen partial pressure of the current gas at the current depth" matTooltipPosition="right">
           <!-- eslint-disable-next-line prettier/prettier -->
           PO<sub>2</sub>:
           <strong>{{ currentPO2 | number: '1.2-2' }}</strong>
@@ -54,7 +50,7 @@
         <mat-icon *ngIf="hasCurrentPO2Error" class="error-icon" [matTooltip]="currentPO2Error!" matTooltipPosition="right">error</mat-icon>
       </div>
       <div class="dive-stat">
-        <span matTooltip="Equivalent narcotic depth of the current gas at the current depth" matTooltipPosition="above">
+        <span matTooltip="Equivalent narcotic depth of the current gas at the current depth" matTooltipPosition="right">
           END:
           <strong>{{ currentEND }}m</strong>
         </span>
@@ -115,7 +111,9 @@
           <mat-radio-button
             value="optimal"
             id="optimal-deco-gas-radio"
-            matTooltip="The gas with the maximum O2 while staying under 1.6 PO2, and the minimum Helium while staying at an END (Equivalent Narcotic Depth) of <= 40m">
+            matTooltip="The gas with the maximum O2 while staying under {{
+              divePlanner.settings.decoPO2Maximum
+            }} PO2, and the minimum Helium while staying at an END (Equivalent Narcotic Depth) of <= {{ divePlanner.settings.ENDErrorThreshold }}m">
             <div>Optimal Deco Gas</div>
             <div class="gas-description" [innerHTML]="optimalGas.Description"></div>
           </mat-radio-button>
@@ -196,24 +194,20 @@
       </div>
       <div class="gas-calculation-chunk">
         <div class="dive-stat">
-          <span
-            matTooltip="Maximum depth the new gas can be breathed at without going over an oxygen partial pressure of 1.4 (1.6 for deco stops)"
-            matTooltipPosition="right">
+          <span [matTooltip]="divePlanner.settings.MaxDepthPO2Tooltip" matTooltipPosition="right">
             <!-- eslint-disable-next-line prettier/prettier -->
             Max Depth (PO<sub>2</sub>):
             <strong>{{ newGas.MaxDepthPO2 }}m ({{ newGas.MaxDepthPO2Deco }}m deco)</strong>
           </span>
         </div>
         <div class="dive-stat">
-          <span
-            matTooltip="Maximum depth the new gas can be breathed at before you experience nitrogen narcosis equivalent to 40m on air"
-            matTooltipPosition="right">
+          <span [matTooltip]="divePlanner.settings.MaxDepthENDTooltip" matTooltipPosition="right">
             Max Depth (END):
             <strong>{{ newGas.MaxDepthEND }}m</strong>
           </span>
         </div>
         <div class="dive-stat">
-          <span matTooltip="Minimum depth the new gas can be breathed at without going below an oxygen partial pressure of 0.18" matTooltipPosition="right">
+          <span [matTooltip]="divePlanner.settings.MinDepthTooltip" matTooltipPosition="right">
             Min Depth (Hypoxia):
             <strong>{{ newGas.MinDepth }}m</strong>
           </span>
