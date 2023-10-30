@@ -81,7 +81,7 @@ export class DivePlannerService {
   getCurrentCeiling(): number {
     const currentTime = this.getPreviousSegment().EndTimestamp;
 
-    return Math.ceil(new BuhlmannZHL16C(this.diveProfile).getCeiling(currentTime));
+    return Math.ceil(new BuhlmannZHL16C(this.diveProfile, this.settings).getCeiling(currentTime));
   }
 
   getCurrentGas(): BreathingGas {
@@ -100,16 +100,9 @@ export class DivePlannerService {
         this.getCurrentGas()
       )
     );
-    const algo = new BuhlmannZHL16C(wipProfile);
+    const algo = new BuhlmannZHL16C(wipProfile, this.settings);
 
-    const ndl = algo.getNoDecoLimit(newDepth, newGas);
-
-    if (ndl === undefined) {
-      return undefined;
-    }
-
-    const timeToSurface = this.diveSegmentFactory.getTravelTime(wipProfile.getLastSegment().EndDepth, 0);
-    return Math.max(0, ndl - timeToSurface);
+    return algo.getNoDecoLimit(newDepth, newGas);
   }
 
   addDiveSegment(newDepth: number, newGas: BreathingGas, timeAtDepth: number): void {
@@ -163,7 +156,7 @@ export class DivePlannerService {
       data = [...data, ...segment.getDepthChartData()];
     }
 
-    const algo = new BuhlmannZHL16C(this.diveProfile);
+    const algo = new BuhlmannZHL16C(this.diveProfile, this.settings);
 
     for (const d of data) {
       d.ceiling = algo.getCeiling(d.time);
@@ -199,7 +192,7 @@ export class DivePlannerService {
       tissuesCeiling: number[];
     }[] = [];
 
-    const algo = new BuhlmannZHL16C(this.diveProfile);
+    const algo = new BuhlmannZHL16C(this.diveProfile, this.settings);
 
     for (const segment of this.diveProfile.segments) {
       for (const d of segment.getDepthChartData()) {
@@ -226,7 +219,7 @@ export class DivePlannerService {
       tissuesPN2: number[];
     }[] = [];
 
-    const algo = new BuhlmannZHL16C(this.diveProfile);
+    const algo = new BuhlmannZHL16C(this.diveProfile, this.settings);
 
     for (let t = 0; t <= this.diveProfile.getTotalTime(); t++) {
       const tissuesPN2: number[] = [];
@@ -251,7 +244,7 @@ export class DivePlannerService {
       tissuesPHe: number[];
     }[] = [];
 
-    const algo = new BuhlmannZHL16C(this.diveProfile);
+    const algo = new BuhlmannZHL16C(this.diveProfile, this.settings);
 
     for (let t = 0; t <= this.diveProfile.getTotalTime(); t++) {
       const tissuesPHe: number[] = [];
@@ -288,7 +281,7 @@ export class DivePlannerService {
     const chartDuration = 3600 * 2;
 
     wipProfile.addSegment(this.diveSegmentFactory.createGasChangeSegment(wipProfile.getLastSegment().EndTimestamp, newGas, chartDuration, newDepth));
-    const algo = new BuhlmannZHL16C(wipProfile);
+    const algo = new BuhlmannZHL16C(wipProfile, this.settings);
 
     for (let t = startTime; t < startTime + chartDuration; t++) {
       data.push({ time: t - startTime, ceiling: algo.getCeiling(t) });
@@ -311,7 +304,7 @@ export class DivePlannerService {
     );
 
     wipProfile.addSegment(this.diveSegmentFactory.createGasChangeSegment(wipProfile.getLastSegment().EndTimestamp, newGas, timeAtDepth, newDepth));
-    const algo = new BuhlmannZHL16C(wipProfile);
+    const algo = new BuhlmannZHL16C(wipProfile, this.settings);
 
     return Math.ceil(algo.getCeiling(wipProfile.getTotalTime()));
   }
@@ -319,7 +312,7 @@ export class DivePlannerService {
   getCeilingError(): { amount: number; duration: number } {
     let amount = 0;
     let duration = 0;
-    const algo = new BuhlmannZHL16C(this.diveProfile);
+    const algo = new BuhlmannZHL16C(this.diveProfile, this.settings);
 
     for (let t = 0; t < this.getDiveDuration(); t++) {
       const ceiling = algo.getCeiling(t);

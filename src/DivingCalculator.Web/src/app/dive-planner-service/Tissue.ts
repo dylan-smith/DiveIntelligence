@@ -1,5 +1,6 @@
 import { BreathingGas } from './BreathingGas';
 import { DiveProfile } from './DiveProfile';
+import { DiveSettingsService } from './DiveSettings.service';
 
 export class Tissue {
   private tissueByTime: Map<number, { PN2: number; PHe: number }> = new Map();
@@ -12,7 +13,8 @@ export class Tissue {
     public heHalfLife: number,
     public a_he: number,
     public b_he: number,
-    profile: DiveProfile
+    private profile: DiveProfile,
+    private settings: DiveSettingsService
   ) {
     this.applyDiveProfile(profile);
   }
@@ -89,35 +91,42 @@ export class Tissue {
   }
 
   getNoDecoLimit(depth: number, gas: BreathingGas): number | undefined {
-    let ceiling = this.getCeiling(this.tissueByTime.size - 1);
-
-    if (ceiling > 0) {
-      return 0;
-    }
-
     const minCeiling = this.getCeilingByPressures(gas.getPN2(depth), gas.getPHe(depth));
 
     if (minCeiling === 0) {
       return undefined;
     }
 
-    let time = 0;
     let pN2 = this.getPN2(this.tissueByTime.size - 1);
     let pHe = this.getPHe(this.tissueByTime.size - 1);
 
-    while (ceiling <= 0 && time < this.MAX_NDL) {
-      time += 1;
+    for (let t = 0; t < this.MAX_NDL; t++) {
+      if (!this.canSurfaceSafely(pN2, pHe, depth, gas)) {
+        return t;
+      }
 
       pN2 += this.getPN2Delta(pN2, gas.getPN2(depth));
       pHe += this.getPHeDelta(pHe, gas.getPHe(depth));
-      ceiling = this.getCeilingByPressures(pN2, pHe);
     }
 
-    if (time >= this.MAX_NDL) {
-      return undefined;
+    return undefined;
+  }
+
+  canSurfaceSafely(pN2: number, pHe: number, depth: number, gas: BreathingGas): boolean {
+    let d = depth;
+
+    while (d > 0) {
+      pN2 += this.getPN2Delta(pN2, gas.getPN2(d));
+      pHe += this.getPHeDelta(pHe, gas.getPHe(d));
+
+      if (this.getCeilingByPressures(pN2, pHe) > d) {
+        return false;
+      }
+
+      d -= this.settings.ascentRate / 60;
     }
 
-    return time;
+    return true;
   }
 
   getPN2(time: number): number {
