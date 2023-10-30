@@ -21,7 +21,7 @@
     "@angular/material": "^16.2.6",
     "@angular/platform-browser": "^16.2.0",
     "@angular/platform-browser-dynamic": "^16.2.7",
-    "@angular/router": "^16.2.7",
+    "@angular/router": "^16.2.11",
     "@angular/youtube-player": "^16.2.6",
     "@microsoft/applicationinsights-angularplugin-js": "^14.0.0",
     "@microsoft/applicationinsights-web": "^3.0.3",
