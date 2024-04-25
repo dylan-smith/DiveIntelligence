@@ -4,6 +4,10 @@ updates:
     directory: "/src/DivingCalculator.Web/" # Location of package manifests
     schedule:
       interval: "weekly"
+    groups:
+      angular:
+        patterns:
+          - "@angular*"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
