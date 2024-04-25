@@ -66,10 +66,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "dive-intelligence:build:production"
+              "buildTarget": "dive-intelligence:build:production"
             },
             "development": {
-              "browserTarget": "dive-intelligence:build:development"
+              "buildTarget": "dive-intelligence:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -77,7 +77,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "dive-intelligence:build"
+            "buildTarget": "dive-intelligence:build"
           }
         },
         "test": {
