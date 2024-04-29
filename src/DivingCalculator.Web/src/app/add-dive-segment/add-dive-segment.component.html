@@ -54,7 +54,6 @@
           END:
           <strong>{{ currentEND }}m</strong>
         </span>
-        <mat-icon *ngIf="hasCurrentENDWarning" class="warning-icon" [matTooltip]="currentENDWarning!" matTooltipPosition="right">warning</mat-icon>
         <mat-icon *ngIf="hasCurrentENDError" class="error-icon" [matTooltip]="currentENDError!" matTooltipPosition="right">error</mat-icon>
       </div>
     </div>
@@ -92,7 +91,6 @@
             END:
             <strong>{{ newDepthEND }}m</strong>
           </span>
-          <mat-icon *ngIf="hasNewDepthENDWarning" class="warning-icon" [matTooltip]="newDepthENDWarning!" matTooltipPosition="right">warning</mat-icon>
           <mat-icon *ngIf="hasNewDepthENDError" class="error-icon" [matTooltip]="newDepthENDError!" matTooltipPosition="right">error</mat-icon>
         </div>
       </div>
@@ -180,7 +178,6 @@
             END:
             <strong>{{ newGasEND }}m</strong>
           </span>
-          <mat-icon *ngIf="hasNewGasENDWarning" class="warning-icon" [matTooltip]="newGasENDWarning!" matTooltipPosition="right">warning</mat-icon>
           <mat-icon *ngIf="hasNewGasENDError" class="error-icon" [matTooltip]="newGasENDError!" matTooltipPosition="right">error</mat-icon>
         </div>
         <div class="dive-stat">

@@ -25,7 +25,6 @@ export class NewDiveComponent {
   workingPO2Maximum = this.divePlanner.settings.workingPO2Maximum;
   decoPO2Maximum = this.divePlanner.settings.decoPO2Maximum;
   pO2Minimum = this.divePlanner.settings.pO2Minimum;
-  ENDWarningThreshold = this.divePlanner.settings.ENDWarningThreshold;
   ENDErrorThreshold = this.divePlanner.settings.ENDErrorThreshold;
 
   isMinDepthError(): boolean {
@@ -91,10 +90,6 @@ export class NewDiveComponent {
 
   onPO2MinimumInput(): void {
     this.divePlanner.settings.pO2Minimum = this.pO2Minimum;
-  }
-
-  onENDWarningThresholdInput(): void {
-    this.divePlanner.settings.ENDWarningThreshold = this.ENDWarningThreshold;
   }
 
   onENDErrorThresholdInput(): void {

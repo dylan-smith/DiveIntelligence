@@ -30,9 +30,7 @@ export class AddDiveSegmentComponent implements OnInit {
   currentPO2Warning: string | undefined = this.getCurrentPO2Warning();
   currentPO2Error: string | undefined = this.getCurrentPO2Error();
   currentEND: number = this.getCurrentEND();
-  hasCurrentENDWarning: boolean = this.getCurrentENDWarning() !== undefined;
   hasCurrentENDError: boolean = this.getCurrentENDError() !== undefined;
-  currentENDWarning: string | undefined = this.getCurrentENDWarning();
   currentENDError: string | undefined = this.getCurrentENDError();
 
   travelTime: number = this.divePlanner.getTravelTime(this.newDepth);
@@ -46,9 +44,7 @@ export class AddDiveSegmentComponent implements OnInit {
   newDepthPO2Warning: string | undefined = this.getNewDepthPO2Warning();
   newDepthPO2Error: string | undefined = this.getNewDepthPO2Error();
   newDepthEND: number = this.getNewDepthEND();
-  hasNewDepthENDWarning: boolean = this.getNewDepthENDWarning() !== undefined;
   hasNewDepthENDError: boolean = this.getNewDepthENDError() !== undefined;
-  newDepthENDWarning: string | undefined = this.getNewDepthENDWarning();
   newDepthENDError: string | undefined = this.getNewDepthENDError();
 
   StandardGases: BreathingGas[] = BreathingGas.StandardGases;
@@ -62,9 +58,7 @@ export class AddDiveSegmentComponent implements OnInit {
   newGasPO2Warning: string | undefined = this.getNewGasPO2Warning();
   newGasPO2Error: string | undefined = this.getNewGasPO2Error();
   newGasEND: number = this.getNewGasEND();
-  hasNewGasENDWarning: boolean = this.getNewGasENDWarning() !== undefined;
   hasNewGasENDError: boolean = this.getNewGasENDError() !== undefined;
-  newGasENDWarning: string | undefined = this.getNewGasENDWarning();
   newGasENDError: string | undefined = this.getNewGasENDError();
   noDecoLimit: string = this.getNoDecoLimit();
 
@@ -151,9 +145,7 @@ export class AddDiveSegmentComponent implements OnInit {
     this.newGasPO2Warning = this.getNewGasPO2Warning();
     this.newGasPO2Error = this.getNewGasPO2Error();
     this.newGasEND = this.getNewGasEND();
-    this.hasNewGasENDWarning = this.getNewGasENDWarning() !== undefined;
     this.hasNewGasENDError = this.getNewGasENDError() !== undefined;
-    this.newGasENDWarning = this.getNewGasENDWarning();
     this.newGasENDError = this.getNewGasENDError();
     this.noDecoLimit = this.getNoDecoLimit();
   }
@@ -168,9 +160,7 @@ export class AddDiveSegmentComponent implements OnInit {
     this.newDepthPO2Warning = this.getNewDepthPO2Warning();
     this.newDepthPO2Error = this.getNewDepthPO2Error();
     this.newDepthEND = this.getNewDepthEND();
-    this.hasNewDepthENDWarning = this.getNewDepthENDWarning() !== undefined;
     this.hasNewDepthENDError = this.getNewDepthENDError() !== undefined;
-    this.newDepthENDWarning = this.getNewDepthENDWarning();
     this.newDepthENDError = this.getNewDepthENDError();
   }
 
@@ -308,12 +298,6 @@ export class AddDiveSegmentComponent implements OnInit {
     return undefined;
   }
 
-  private getENDWarning(END: number): string | undefined {
-    if (END > this.divePlanner.settings.ENDWarningThreshold && END <= this.divePlanner.settings.ENDErrorThreshold)
-      return this.divePlanner.settings.ENDWarningMessage;
-    return undefined;
-  }
-
   private getENDError(END: number): string | undefined {
     if (END > this.divePlanner.settings.ENDErrorThreshold) return this.divePlanner.settings.ENDErrorMessage;
     return undefined;
@@ -333,10 +317,6 @@ export class AddDiveSegmentComponent implements OnInit {
 
   private getCurrentEND(): number {
     return Math.ceil(this.divePlanner.getCurrentGas().getEND(this.divePlanner.getCurrentDepth()));
-  }
-
-  private getCurrentENDWarning(): string | undefined {
-    return this.getENDWarning(this.getCurrentEND());
   }
 
   private getCurrentENDError(): string | undefined {
@@ -359,10 +339,6 @@ export class AddDiveSegmentComponent implements OnInit {
     return Math.ceil(this.divePlanner.getCurrentGas().getEND(this.newDepth));
   }
 
-  private getNewDepthENDWarning(): string | undefined {
-    return this.getENDWarning(this.getNewDepthEND());
-  }
-
   private getNewDepthENDError(): string | undefined {
     return this.getENDError(this.getNewDepthEND());
   }
@@ -381,10 +357,6 @@ export class AddDiveSegmentComponent implements OnInit {
 
   private getNewGasEND(): number {
     return Math.ceil(this.newGas.getEND(this.newDepth));
-  }
-
-  private getNewGasENDWarning(): string | undefined {
-    return this.getENDWarning(this.getNewGasEND());
   }
 
   private getNewGasENDError(): string | undefined {

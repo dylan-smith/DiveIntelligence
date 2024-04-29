@@ -148,7 +148,6 @@ export class DivePlanComponent implements OnInit {
     const endData = this.divePlanner.getENDChartData();
     const x = endData.map(d => new Date(1970, 1, 1, 0, 0, d.time, 0));
     const y = endData.map(d => d.end);
-    const warningLimit = endData.map(d => d.warningLimit);
     const errorLimit = endData.map(d => d.errorLimit);
 
     return [
@@ -161,21 +160,6 @@ export class DivePlanComponent implements OnInit {
         line: {
           color: this.PRIMARY_COLOR,
           width: 5,
-        },
-        hovertemplate: `%{y:.0f}m`,
-      },
-      {
-        x,
-        y: warningLimit,
-        type: 'scatter',
-        mode: 'lines',
-        name: 'Warning Limit',
-        marker: {
-          color: this.WARNING_COLOR,
-        },
-        line: {
-          dash: 'dot',
-          width: 2,
         },
         hovertemplate: `%{y:.0f}m`,
       },

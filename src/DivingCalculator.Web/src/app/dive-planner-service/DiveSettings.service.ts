@@ -10,7 +10,6 @@ export class DiveSettingsService {
   private _workingPO2Maximum = 1.4;
   private _decoPO2Maximum = 1.6;
   private _pO2Minimum = 0.18;
-  private _ENDWarningThreshold = 30;
   private _ENDErrorThreshold = 40;
   private _subscribers: (() => void)[] = [];
 
@@ -76,15 +75,6 @@ export class DiveSettingsService {
     this.onSettingChange();
   }
 
-  set ENDWarningThreshold(threshold: number) {
-    this._ENDWarningThreshold = threshold;
-    this.onSettingChange();
-  }
-
-  get ENDWarningThreshold(): number {
-    return this._ENDWarningThreshold;
-  }
-
   set ENDErrorThreshold(threshold: number) {
     this._ENDErrorThreshold = threshold;
     this.onSettingChange();
@@ -94,19 +84,7 @@ export class DiveSettingsService {
     return this._ENDErrorThreshold;
   }
 
-  get ENDWarningMessage(): string {
-    if (this._ENDWarningThreshold === 30) {
-      return `Some divers (e.g. GUE) aim to keep END below ${this._ENDWarningThreshold}m`;
-    }
-
-    return `END is above the configured warning threshold of ${this._ENDWarningThreshold}m`;
-  }
-
   get ENDErrorMessage(): string {
-    if (this._ENDErrorThreshold === 40) {
-      return `Most divers aim to keep END below ${this._ENDErrorThreshold}m`;
-    }
-
     return `END is above the configured error threshold of ${this._ENDErrorThreshold}m`;
   }
 

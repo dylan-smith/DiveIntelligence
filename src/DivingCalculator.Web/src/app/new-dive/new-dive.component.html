@@ -75,16 +75,9 @@
             </mat-form-field>
             <mat-form-field
               class="settings-input"
-              matTooltip="If the equivalent narcotic depth exceeds this value a warning will be shown. Default: 30m"
+              matTooltip="If the equivalent narcotic depth (air) exceeds this value an error will be shown. Default: 30m"
               matTooltipPosition="right">
-              <mat-label>END Warning Threshold (m)</mat-label>
-              <input matInput type="number" [(ngModel)]="ENDWarningThreshold" (input)="onENDWarningThresholdInput()" />
-            </mat-form-field>
-            <mat-form-field
-              class="settings-input"
-              matTooltip="If the equivalent narcotic depth exceeds this value an error will be shown. Default: 40m"
-              matTooltipPosition="right">
-              <mat-label>END Error Threshold (m)</mat-label>
+              <mat-label>Maximum END (m)</mat-label>
               <input matInput type="number" [(ngModel)]="ENDErrorThreshold" (input)="onENDErrorThresholdInput()" />
             </mat-form-field>
           </div>
