@@ -1,5 +1,5 @@
 import { BreathingGas } from './BreathingGas';
-import { DiveProfile } from './DiveProfile';
+import { DiveSegment } from './DiveSegment';
 
 export class Tissue {
   private tissueByTime: Map<number, { PN2: number; PHe: number }> = new Map();
@@ -11,31 +11,37 @@ export class Tissue {
     public b_n2: number,
     public heHalfLife: number,
     public a_he: number,
-    public b_he: number,
-    profile: DiveProfile
+    public b_he: number
   ) {
-    this.applyDiveProfile(profile);
+    this.tissueByTime.set(0, { PN2: this.ENVIRONMENT_PN2, PHe: this.ENVIRONMENT_PHE });
   }
 
   readonly ENVIRONMENT_PN2 = 0.79;
   readonly ENVIRONMENT_PHE = 0.0;
   readonly MAX_NDL = 3600 * 5;
 
-  private applyDiveProfile(profile: DiveProfile): void {
-    this.tissueByTime.clear();
-    this.tissueByTime.set(0, { PN2: this.ENVIRONMENT_PN2, PHe: this.ENVIRONMENT_PHE });
-
-    for (let t = 1; t <= profile.getTotalTime(); t++) {
+  calculateForSegment(segment: DiveSegment) {
+    for (let t = segment.StartTimestamp; t <= segment.EndTimestamp; t++) {
       const prevN2 = this.getTissueByTime(t - 1).PN2;
-      const gasN2 = profile.getGas(t).getPN2(profile.getDepth(t));
+      const gasN2 = segment.Gas.getPN2(segment.getDepth(t));
       const n2Delta = this.getPN2Delta(prevN2, gasN2);
 
       const prevHe = this.getTissueByTime(t - 1).PHe;
-      const gasHe = profile.getGas(t).getPHe(profile.getDepth(t));
+      const gasHe = segment.Gas.getPHe(segment.getDepth(t));
       const heDelta = this.getPHeDelta(prevHe, gasHe);
 
       this.tissueByTime.set(t, { PN2: prevN2 + n2Delta, PHe: prevHe + heDelta });
     }
+  }
+
+  discardAfterTime(time: number) {
+    this.tissueByTime = new Map(Array.from(this.tissueByTime.entries()).filter(([key]) => key <= time));
+  }
+
+  clone(): Tissue {
+    const clone = new Tissue(this.tissueNumber, this.n2HalfLife, this.a_n2, this.b_n2, this.heHalfLife, this.a_he, this.b_he);
+    clone.tissueByTime = new Map(this.tissueByTime);
+    return clone;
   }
 
   getTissueByTime(time: number): { PN2: number; PHe: number } {

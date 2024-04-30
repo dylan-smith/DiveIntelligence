@@ -1,27 +1,41 @@
 import { BreathingGas } from './BreathingGas';
+import { BuhlmannZHL16C } from './BuhlmannZHL16C';
 import { DiveSegment } from './DiveSegment';
 import { DiveSettingsService } from './DiveSettings.service';
 
 export class DiveProfile {
   public segments: DiveSegment[] = [];
+  public algo: BuhlmannZHL16C = new BuhlmannZHL16C();
 
   constructor(private diveSettings: DiveSettingsService) {}
 
   addSegment(segment: DiveSegment): void {
     this.segments.push(segment);
+    this.algo.calculateForSegment(segment);
   }
 
   removeLastSegment(): void {
     this.segments.pop();
+    this.algo.discardAfterTime(this.getTotalTime());
   }
 
   extendLastSegment(time: number): void {
     this.getLastSegment().EndTimestamp += time;
+    this.algo.calculateForSegment(this.getLastSegment());
+  }
+
+  clone(): DiveProfile {
+    const result = new DiveProfile(this.diveSettings);
+    result.algo = this.algo.clone();
+    // TODO: is it a problem that we're doing a shallow copy here? segments are currently mutable
+    result.segments = this.segments.slice();
+    return result;
   }
 
   getCurrentProfile(): DiveProfile {
-    const result = new DiveProfile(this.diveSettings);
-    result.segments = this.segments.slice(0, -1);
+    const result = this.clone();
+    result.removeLastSegment();
+
     return result;
   }
 
@@ -39,6 +53,8 @@ export class DiveProfile {
   }
 
   getTotalTime(): number {
+    if (this.segments.length === 0) return 0;
+
     return this.getLastSegment().EndTimestamp;
   }
 
