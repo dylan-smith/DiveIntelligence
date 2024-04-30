@@ -42,13 +42,13 @@ export class BreathingGas {
   }
 
   updateDetails(): void {
-    this.Description = this.getDescription();
-    this.CompositionDescription = this.getCompositionDescription();
-    this.MaxDepthPO2 = this.getMaxDepthPO2();
-    this.MaxDepthPO2Deco = this.getMaxDepthPO2Deco();
-    this.MaxDepthEND = this.getMaxDepthEND();
-    this.MinDepth = this.getMinDepth();
-    this.MaxDecoDepth = this.getMaxDecoDepth();
+    this.Description = this.calcDescription();
+    this.CompositionDescription = this.calcCompositionDescription();
+    this.MaxDepthPO2 = this.calcMaxDepthPO2();
+    this.MaxDepthPO2Deco = this.calcMaxDepthPO2Deco();
+    this.MaxDepthEND = this.calcMaxDepthEND();
+    this.MinDepth = this.calcMinDepth();
+    this.MaxDecoDepth = this.calcMaxDecoDepth();
   }
 
   static StandardGases: BreathingGas[];
@@ -69,23 +69,23 @@ export class BreathingGas {
     ];
   }
 
-  private getDescription(): string {
-    return `${this.Name} (${this.getCompositionDescription()})`;
+  private calcDescription(): string {
+    return `${this.Name} (${this.calcCompositionDescription()})`;
   }
 
-  private getCompositionDescription(): string {
+  private calcCompositionDescription(): string {
     return `O<sub>2</sub>: ${this.Oxygen}%, He: ${this.Helium}%, N<sub>2</sub>: ${this.Nitrogen}%`;
   }
 
-  private getMaxDepthPO2(): number {
+  private calcMaxDepthPO2(): number {
     return Math.floor((this._diveSettings.workingPO2Maximum * 1000) / this.Oxygen - 10);
   }
 
-  private getMaxDepthPO2Deco(): number {
+  private calcMaxDepthPO2Deco(): number {
     return Math.floor((this._diveSettings.decoPO2Maximum * 1000) / this.Oxygen - 10);
   }
 
-  private getMaxDepthEND(): number {
+  private calcMaxDepthEND(): number {
     if (this._diveSettings.isOxygenNarcotic) {
       return Math.floor(((this._diveSettings.ENDErrorThreshold + 10) * 100) / (this.Nitrogen + this.Oxygen) - 10);
     } else {
@@ -93,8 +93,12 @@ export class BreathingGas {
     }
   }
 
-  private getMinDepth(): number {
+  private calcMinDepth(): number {
     return Math.max(0, Math.ceil((this._diveSettings.pO2Minimum * 1000) / this.Oxygen - 10));
+  }
+
+  private calcMaxDecoDepth(): number {
+    return Math.min(this.calcMaxDepthPO2Deco(), this.calcMaxDepthEND());
   }
 
   getPO2(depth: number): number {
@@ -119,9 +123,5 @@ export class BreathingGas {
 
   isEquivalent(other: BreathingGas): boolean {
     return this.Oxygen === other.Oxygen && this.Helium === other.Helium && this.Nitrogen === other.Nitrogen;
-  }
-
-  private getMaxDecoDepth(): number {
-    return Math.min(this.getMaxDepthPO2Deco(), this.getMaxDepthEND());
   }
 }
