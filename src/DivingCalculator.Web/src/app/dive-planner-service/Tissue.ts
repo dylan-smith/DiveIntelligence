@@ -3,6 +3,8 @@ import { DiveSegment } from './DiveSegment';
 
 export class Tissue {
   private tissueByTime: Map<number, { PN2: number; PHe: number }> = new Map();
+  private n2DeltaMultiplier: number = 0;
+  private heDeltaMultiplier: number = 0;
 
   constructor(
     public tissueNumber: number,
@@ -14,6 +16,8 @@ export class Tissue {
     public b_he: number
   ) {
     this.tissueByTime.set(0, { PN2: this.ENVIRONMENT_PN2, PHe: this.ENVIRONMENT_PHE });
+    this.n2DeltaMultiplier = (1 - Math.pow(2, -(1 / (n2HalfLife * 60))));
+    this.heDeltaMultiplier = (1 - Math.pow(2, -(1 / (heHalfLife * 60))));
   }
 
   readonly ENVIRONMENT_PN2 = 0.79;
@@ -49,15 +53,15 @@ export class Tissue {
   }
 
   getPN2Delta(tissuePN2: number, gasPN2: number): number {
-    return this.getTissueDelta(tissuePN2, gasPN2, this.n2HalfLife);
+    return this.getTissueDelta(tissuePN2, gasPN2, this.n2DeltaMultiplier);
   }
 
   getPHeDelta(tissuePHe: number, gasPHe: number): number {
-    return this.getTissueDelta(tissuePHe, gasPHe, this.heHalfLife);
+    return this.getTissueDelta(tissuePHe, gasPHe, this.heDeltaMultiplier);
   }
 
-  getTissueDelta(tissuePartialPressure: number, gasPartialPressure: number, halfLife: number): number {
-    return (gasPartialPressure - tissuePartialPressure) * (1 - Math.pow(2, -(1 / (halfLife * 60))));
+  getTissueDelta(tissuePartialPressure: number, gasPartialPressure: number, deltaMultiplier: number): number {
+    return (gasPartialPressure - tissuePartialPressure) * this.deltaMultiplier;
   }
 
   getA(time: number): number {
