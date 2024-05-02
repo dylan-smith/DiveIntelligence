@@ -1,5 +1,5 @@
-import { BreathingGas } from "./BreathingGas";
-import { DiveSegment } from "./DiveSegment";
+import { BreathingGas } from './BreathingGas';
+import { DiveSegment } from './DiveSegment';
 
 export class Tissue {
   private tissueByTime: Map<number, { PN2: number; PHe: number }> = new Map();
@@ -45,21 +45,11 @@ export class Tissue {
   }
 
   discardAfterTime(time: number) {
-    this.tissueByTime = new Map(
-      Array.from(this.tissueByTime.entries()).filter(([key]) => key <= time)
-    );
+    this.tissueByTime = new Map(Array.from(this.tissueByTime.entries()).filter(([key]) => key <= time));
   }
 
   clone(): Tissue {
-    const clone = new Tissue(
-      this.tissueNumber,
-      this.n2HalfLife,
-      this.a_n2,
-      this.b_n2,
-      this.heHalfLife,
-      this.a_he,
-      this.b_he
-    );
+    const clone = new Tissue(this.tissueNumber, this.n2HalfLife, this.a_n2, this.b_n2, this.heHalfLife, this.a_he, this.b_he);
     clone.tissueByTime = new Map(this.tissueByTime);
     return clone;
   }
@@ -76,11 +66,7 @@ export class Tissue {
     return this.getTissueDelta(tissuePHe, gasPHe, this.heDeltaMultiplier);
   }
 
-  getTissueDelta(
-    tissuePartialPressure: number,
-    gasPartialPressure: number,
-    deltaMultiplier: number
-  ): number {
+  getTissueDelta(tissuePartialPressure: number, gasPartialPressure: number, deltaMultiplier: number): number {
     return (gasPartialPressure - tissuePartialPressure) * deltaMultiplier;
   }
 
@@ -105,10 +91,7 @@ export class Tissue {
   }
 
   getMValueByPressures(pN2: number, pHe: number): number {
-    return (
-      (pN2 + pHe - this.getAByPressures(pN2, pHe)) *
-      this.getBByPressures(pN2, pHe)
-    );
+    return (pN2 + pHe - this.getAByPressures(pN2, pHe)) * this.getBByPressures(pN2, pHe);
   }
 
   getCeiling(time: number): number {
@@ -128,10 +111,7 @@ export class Tissue {
       return 0;
     }
 
-    const minCeiling = this.getCeilingByPressures(
-      gas.getPN2(depth),
-      gas.getPHe(depth)
-    );
+    const minCeiling = this.getCeilingByPressures(gas.getPN2(depth), gas.getPHe(depth));
 
     if (minCeiling === 0) {
       return undefined;
