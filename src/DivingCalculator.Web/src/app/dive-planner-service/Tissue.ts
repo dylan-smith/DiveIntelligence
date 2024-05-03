@@ -62,12 +62,24 @@ export class Tissue {
     return this.getTissueDelta(tissuePN2, gasPN2, this.n2DeltaMultiplier);
   }
 
+  getPN2DeltaByTime(tissuePN2: number, gasPN2: number, time: number): number {
+    return this.getTissueDeltaByTime(tissuePN2, gasPN2, this.n2HalfLife, time);
+  }
+
   getPHeDelta(tissuePHe: number, gasPHe: number): number {
     return this.getTissueDelta(tissuePHe, gasPHe, this.heDeltaMultiplier);
   }
 
+  getPHeDeltaByTime(tissuePHe: number, gasPHe: number, time: number): number {
+    return this.getTissueDeltaByTime(tissuePHe, gasPHe, this.heHalfLife, time);
+  }
+
   getTissueDelta(tissuePartialPressure: number, gasPartialPressure: number, deltaMultiplier: number): number {
     return (gasPartialPressure - tissuePartialPressure) * deltaMultiplier;
+  }
+
+  getTissueDeltaByTime(tissuePartialPressure: number, gasPartialPressure: number, halflife: number, time: number): number {
+    return (gasPartialPressure - tissuePartialPressure) * (1 - Math.pow(2, -(time / (halflife * 60))));
   }
 
   getA(time: number): number {
@@ -105,7 +117,7 @@ export class Tissue {
   }
 
   getNoDecoLimit(depth: number, gas: BreathingGas): number | undefined {
-    let ceiling = this.getCeiling(this.tissueByTime.size - 1);
+    const ceiling = this.getCeiling(this.tissueByTime.size - 1);
 
     if (ceiling > 0) {
       return 0;
@@ -117,23 +129,32 @@ export class Tissue {
       return undefined;
     }
 
-    let time = 0;
-    let pN2 = this.getPN2(this.tissueByTime.size - 1);
-    let pHe = this.getPHe(this.tissueByTime.size - 1);
+    const pN2 = this.getPN2(this.tissueByTime.size - 1);
+    const pHe = this.getPHe(this.tissueByTime.size - 1);
 
-    while (ceiling <= 0 && time < this.MAX_NDL) {
-      time += 1;
+    let minNDL = 0;
+    let maxNDL = this.MAX_NDL;
+    let time = (maxNDL - minNDL) / 2;
 
-      pN2 += this.getPN2Delta(pN2, gas.getPN2(depth));
-      pHe += this.getPHeDelta(pHe, gas.getPHe(depth));
-      ceiling = this.getCeilingByPressures(pN2, pHe);
+    while (minNDL < maxNDL) {
+      const newPN2 = this.getPN2DeltaByTime(pN2, gas.getPN2(depth), time);
+      const newPHe = this.getPHeDeltaByTime(pHe, gas.getPHe(depth), time);
+      const newCeiling = this.getCeilingByPressures(newPN2, newPHe);
+
+      if (newCeiling <= 0) {
+        minNDL = time;
+      } else {
+        maxNDL = time - 1;
+      }
+
+      time = Math.ceil((maxNDL - minNDL) / 2) + minNDL;
     }
 
     if (time >= this.MAX_NDL) {
       return undefined;
     }
 
-    return time;
+    return Math.floor(time);
   }
 
   getPN2(time: number): number {
