@@ -7,6 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "ci-test": "ng test --watch=false",
     "lint": "ng lint",
     "deploy": "swa deploy ./dist/dive-intelligence"
   },
