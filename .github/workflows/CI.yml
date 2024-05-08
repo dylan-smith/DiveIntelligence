@@ -22,6 +22,8 @@ jobs:
       working-directory: src/DivingCalculator.Web
     - run: npm run build
       working-directory: src/DivingCalculator.Web
+    - run: npm run test
+      working-directory: src/DivingCalculator.Web
     - name: Copy staticwebapp.config.json
       run: cp src/DivingCalculator.Web/staticwebapp.config.json src/DivingCalculator.Web/dist/dive-intelligence/staticwebapp.config.json
     - name: Set Instrumentation Key
