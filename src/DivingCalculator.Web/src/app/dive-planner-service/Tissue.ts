@@ -137,8 +137,8 @@ export class Tissue {
     let time = (maxNDL - minNDL) / 2;
 
     while (minNDL < maxNDL) {
-      const newPN2 = this.getPN2DeltaByTime(pN2, gas.getPN2(depth), time);
-      const newPHe = this.getPHeDeltaByTime(pHe, gas.getPHe(depth), time);
+      const newPN2 = pN2 + this.getPN2DeltaByTime(pN2, gas.getPN2(depth), time);
+      const newPHe = pHe + this.getPHeDeltaByTime(pHe, gas.getPHe(depth), time);
       const newCeiling = this.getCeilingByPressures(newPN2, newPHe);
 
       if (newCeiling <= 0) {
