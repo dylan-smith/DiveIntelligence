@@ -3,7 +3,9 @@
 {
 	"name": "Node.js & TypeScript",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/typescript-node:18-bullseye",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
 	"features": {
 		"ghcr.io/devcontainers/features/azure-cli:1": {},
 		"ghcr.io/devcontainers-contrib/features/angular-cli:2": {},
@@ -16,7 +18,8 @@
 				"GitHub.vscode-github-actions",
 				"esbenp.prettier-vscode",
 				"GitHub.copilot",
-				"PKief.material-icon-theme"
+				"PKief.material-icon-theme",
+				"ms-azuretools.vscode-docker"
 			]
 		}
 	},
