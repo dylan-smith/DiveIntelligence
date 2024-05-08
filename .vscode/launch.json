@@ -17,9 +17,10 @@
             "name": "Attach Karma Chrome",
             "address": "localhost",
             "port": 9333,
+            "webRoot": "${workspaceFolder}/src/DivingCalculator.Web",
             "pathMapping": {
-                "/": "${workspaceRoot}",
-                "/base/": "${workspaceRoot}"
+                "/": "${workspaceRoot}/src/DivingCalculator.Web",
+                "/base/": "${workspaceRoot}/src/DivingCalculator.Web"
             }
         }
     ]
