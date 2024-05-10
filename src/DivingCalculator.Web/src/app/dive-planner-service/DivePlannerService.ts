@@ -11,7 +11,7 @@ import { DiveSettingsService } from './DiveSettings.service';
 })
 export class DivePlannerService {
   private diveID = crypto.randomUUID();
-  public diveProfile: DiveProfile = new DiveProfile(this.settings);
+  public diveProfile: DiveProfile = new DiveProfile(this.settings, this.diveSegmentFactory);
 
   constructor(
     private diveSegmentFactory: DiveSegmentFactoryService,
@@ -87,50 +87,8 @@ export class DivePlannerService {
     return this.getPreviousSegment().Gas;
   }
 
-  // TODO: could push logic down by making diveProfile depend on diveSegmentFactory
   getNoDecoLimit(newDepth: number, newGas: BreathingGas): number | undefined {
-    const wipProfile = this.diveProfile.getCurrentProfile();
-
-    wipProfile.addSegment(
-      this.diveSegmentFactory.createDepthChangeSegment(
-        wipProfile.getLastSegment().EndTimestamp,
-        wipProfile.getLastSegment().EndDepth,
-        newDepth,
-        0,
-        this.getCurrentGas()
-      )
-    );
-
-    wipProfile.addSegment(this.diveSegmentFactory.createGasChangeSegment(wipProfile.getTotalTime(), newGas, 0, newDepth));
-
-    const ndl = wipProfile.algo.getTimeToCeiling(newDepth, newGas);
-
-    if (ndl === undefined) {
-      return undefined;
-    }
-
-    wipProfile.addSegment(this.diveSegmentFactory.createDepthChangeSegment(wipProfile.getTotalTime(), newDepth, newDepth, ndl, newGas));
-
-    let time = 0;
-
-    // TODO: could use a binary search here for performance (instead of stepping 1 second at a time)
-    while (this.canSurfaceWithoutStops(wipProfile)) {
-      time++;
-      wipProfile.extendLastSegment(1);
-    }
-
-    return ndl + (time - 1);
-  }
-
-  canSurfaceWithoutStops(profile: DiveProfile): boolean {
-    profile.addSegment(
-      this.diveSegmentFactory.createEndDiveSegment(profile.getLastSegment().EndTimestamp, profile.getLastSegment().EndDepth, profile.getLastSegment().Gas)
-    );
-
-    const result = profile.getCeilingError().duration === 0;
-    profile.removeLastSegment();
-
-    return result;
+    return this.diveProfile.getNoDecoLimit(newDepth, newGas);
   }
 
   addDiveSegment(newDepth: number, newGas: BreathingGas, timeAtDepth: number): void {

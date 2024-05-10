@@ -1,13 +1,17 @@
 import { BreathingGas } from './BreathingGas';
 import { BuhlmannZHL16C } from './BuhlmannZHL16C';
 import { DiveSegment } from './DiveSegment';
+import { DiveSegmentFactoryService } from './DiveSegmentFactory.service';
 import { DiveSettingsService } from './DiveSettings.service';
 
 export class DiveProfile {
   public segments: DiveSegment[] = [];
   public algo: BuhlmannZHL16C = new BuhlmannZHL16C();
 
-  constructor(private diveSettings: DiveSettingsService) {}
+  constructor(
+    private diveSettings: DiveSettingsService,
+    private diveSegmentFactory: DiveSegmentFactoryService
+  ) {}
 
   addSegment(segment: DiveSegment): void {
     this.segments.push(segment);
@@ -25,7 +29,7 @@ export class DiveProfile {
   }
 
   clone(): DiveProfile {
-    const result = new DiveProfile(this.diveSettings);
+    const result = new DiveProfile(this.diveSettings, this.diveSegmentFactory);
     result.algo = this.algo.clone();
     // TODO: is it a problem that we're doing a shallow copy here? segments are currently mutable
     result.segments = this.segments.slice();
@@ -35,6 +39,51 @@ export class DiveProfile {
   getCurrentProfile(): DiveProfile {
     const result = this.clone();
     result.removeLastSegment();
+
+    return result;
+  }
+
+  getNoDecoLimit(newDepth: number, newGas: BreathingGas): number | undefined {
+    const wipProfile = this.getCurrentProfile();
+
+    wipProfile.addSegment(
+      this.diveSegmentFactory.createDepthChangeSegment(
+        wipProfile.getLastSegment().EndTimestamp,
+        wipProfile.getLastSegment().EndDepth,
+        newDepth,
+        0,
+        this.segments[this.segments.length - 2].Gas
+      )
+    );
+
+    wipProfile.addSegment(this.diveSegmentFactory.createGasChangeSegment(wipProfile.getTotalTime(), newGas, 0, newDepth));
+
+    const ndl = wipProfile.algo.getTimeToCeiling(newDepth, newGas);
+
+    if (ndl === undefined) {
+      return undefined;
+    }
+
+    wipProfile.addSegment(this.diveSegmentFactory.createDepthChangeSegment(wipProfile.getTotalTime(), newDepth, newDepth, ndl, newGas));
+
+    let time = 0;
+
+    // TODO: could use a binary search here for performance (instead of stepping 1 second at a time)
+    while (wipProfile.canSurfaceWithoutStops()) {
+      time++;
+      wipProfile.extendLastSegment(1);
+    }
+
+    return ndl + (time - 1);
+  }
+
+  canSurfaceWithoutStops(): boolean {
+    this.addSegment(
+      this.diveSegmentFactory.createEndDiveSegment(this.getLastSegment().EndTimestamp, this.getLastSegment().EndDepth, this.getLastSegment().Gas)
+    );
+
+    const result = this.getCeilingError().duration === 0;
+    this.removeLastSegment();
 
     return result;
   }
