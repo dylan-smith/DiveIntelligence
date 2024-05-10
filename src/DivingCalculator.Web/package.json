@@ -9,7 +9,8 @@
     "test": "ng test",
     "ci-test": "ng test --watch=false",
     "lint": "ng lint",
-    "deploy": "swa deploy ./dist/dive-intelligence"
+    "deploy": "swa deploy ./dist/dive-intelligence",
+    "all": "ng lint && ng build && ng test --watch=false"
   },
   "private": true,
   "dependencies": {
