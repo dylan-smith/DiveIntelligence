@@ -63,9 +63,7 @@ export class DivePlannerService {
   }
 
   getCurrentCeiling(): number {
-    const currentTime = this.getPreviousSegment().EndTimestamp;
-
-    return Math.ceil(this.diveProfile.algo.getCeiling(currentTime));
+    return this.diveProfile.getCurrentCeiling();
   }
 
   getCurrentGas(): BreathingGas {

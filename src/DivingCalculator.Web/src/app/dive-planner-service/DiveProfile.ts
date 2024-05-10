@@ -48,6 +48,12 @@ export class DiveProfile {
     return result;
   }
 
+  getCurrentCeiling(): number {
+    const currentTime = this.getPreviousSegment().EndTimestamp;
+
+    return Math.ceil(this.algo.getCeiling(currentTime));
+  }
+
   getPreviousSegment(): DiveSegment {
     return this.segments[this.segments.length - 2];
   }
