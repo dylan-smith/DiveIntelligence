@@ -48,6 +48,14 @@ export class DiveProfile {
     this.addSegment(this.diveSegmentFactory.createEndDiveSegment(endTime, newDepth, newGas));
   }
 
+  getCurrentDepth(): number {
+    return this.getPreviousSegment().EndDepth;
+  }
+
+  getTravelTime(newDepth: number): number {
+    return this.diveSegmentFactory.getTravelTime(this.getCurrentDepth(), newDepth);
+  }
+
   removeLastSegment(): void {
     this.segments.pop();
     this.algo.discardAfterTime(this.getTotalTime());

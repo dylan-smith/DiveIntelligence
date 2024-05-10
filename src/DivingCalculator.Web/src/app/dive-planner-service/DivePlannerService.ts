@@ -55,7 +55,7 @@ export class DivePlannerService {
   }
 
   getCurrentDepth(): number {
-    return this.getPreviousSegment().EndDepth;
+    return this.diveProfile.getCurrentDepth();
   }
 
   getOptimalDecoGas(depth: number): BreathingGas {
@@ -86,7 +86,7 @@ export class DivePlannerService {
   }
 
   getTravelTime(newDepth: number): number {
-    return this.diveSegmentFactory.getTravelTime(this.getCurrentDepth(), newDepth);
+    return this.diveProfile.getTravelTime(newDepth);
   }
 
   getDepthChartData(): { time: number; depth: number; ceiling: number }[] {
