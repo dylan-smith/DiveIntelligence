@@ -54,6 +54,10 @@ export class DiveProfile {
     return Math.ceil(this.algo.getCeiling(currentTime));
   }
 
+  getCurrentGas(): BreathingGas {
+    return this.getPreviousSegment().Gas;
+  }
+
   getPreviousSegment(): DiveSegment {
     return this.segments[this.segments.length - 2];
   }
