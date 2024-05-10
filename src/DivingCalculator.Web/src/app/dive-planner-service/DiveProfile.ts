@@ -39,6 +39,24 @@ export class DiveProfile {
     return result;
   }
 
+  // TODO: memoize this and only recalculate on the new segment bits
+  getCeilingError(): { amount: number; duration: number } {
+    let amount = 0;
+    let duration = 0;
+
+    for (let t = 0; t < this.getTotalTime(); t++) {
+      const ceiling = this.algo.getCeiling(t);
+      const depth = this.getDepth(t);
+
+      if (depth < ceiling) {
+        amount = Math.max(amount, ceiling - depth);
+        duration++;
+      }
+    }
+
+    return { amount, duration };
+  }
+
   getLastSegment(): DiveSegment {
     return this.segments[this.segments.length - 1];
   }

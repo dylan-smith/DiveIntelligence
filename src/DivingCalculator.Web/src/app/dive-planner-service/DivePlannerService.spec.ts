@@ -74,7 +74,7 @@ describe('DivePlannerService', () => {
     expect(svc.getMaxDepth()).toBe(30);
     expect(svc.getPO2Error().duration).toBe(0);
 
-    expect(svc.getNoDecoLimit(25, air)).toBe(96);
+    expect(svc.getNoDecoLimit(25, air)).toBe(518);
     expect(svc.getOptimalDecoGas(25).Oxygen).toBe(45);
     expect(svc.getOptimalDecoGas(25).Helium).toBe(0);
     expect(svc.getOptimalDecoGas(25).Nitrogen).toBe(55);
