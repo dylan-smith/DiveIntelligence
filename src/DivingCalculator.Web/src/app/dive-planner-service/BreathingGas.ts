@@ -69,6 +69,24 @@ export class BreathingGas {
     ];
   }
 
+  static getOptimalDecoGas(depth: number, settings: DiveSettingsService): BreathingGas {
+    const atm = depth / 10 + 1;
+    const oxygen = Math.min(100, Math.floor((settings.decoPO2Maximum * 100) / atm));
+
+    let targetPN2 = (settings.ENDErrorThreshold / 10 + 1) * 79;
+
+    if (settings.isOxygenNarcotic) {
+      const targetNarcotic = (settings.ENDErrorThreshold / 10 + 1) * 100;
+      targetPN2 = targetNarcotic - oxygen * atm;
+    }
+
+    let nitrogen = targetPN2 / atm;
+    const helium = Math.max(0, Math.ceil(100 - oxygen - nitrogen));
+    nitrogen = 100 - oxygen - helium;
+
+    return BreathingGas.create(oxygen, helium, nitrogen, settings);
+  }
+
   private calcDescription(): string {
     return `${this.Name} (${this.calcCompositionDescription()})`;
   }

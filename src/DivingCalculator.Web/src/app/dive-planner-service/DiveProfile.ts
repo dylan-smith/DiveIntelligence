@@ -28,6 +28,11 @@ export class DiveProfile {
     this.algo.calculateForSegment(this.getLastSegment());
   }
 
+  startDive(startGas: BreathingGas): void {
+    this.addSegment(this.diveSegmentFactory.createStartDiveSegment(startGas));
+    this.addSegment(this.diveSegmentFactory.createEndDiveSegment(0, 0, startGas));
+  }
+
   clone(): DiveProfile {
     const result = new DiveProfile(this.diveSettings, this.diveSegmentFactory);
     result.algo = this.algo.clone();
@@ -41,6 +46,10 @@ export class DiveProfile {
     result.removeLastSegment();
 
     return result;
+  }
+
+  getPreviousSegment(): DiveSegment {
+    return this.segments[this.segments.length - 2];
   }
 
   getNoDecoLimit(newDepth: number, newGas: BreathingGas): number | undefined {
