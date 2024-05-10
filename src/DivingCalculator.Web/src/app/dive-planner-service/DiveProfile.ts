@@ -214,6 +214,24 @@ export class DiveProfile {
     return (this.getPN2(time) / 0.79 - 1) * 10;
   }
 
+  getNewCeiling(newDepth: number, newGas: BreathingGas, timeAtDepth: number): number {
+    const wipProfile = this.getCurrentProfile();
+
+    wipProfile.addSegment(
+      this.diveSegmentFactory.createDepthChangeSegment(
+        wipProfile.getLastSegment().EndTimestamp,
+        wipProfile.getLastSegment().EndDepth,
+        newDepth,
+        0,
+        this.getCurrentGas()
+      )
+    );
+
+    wipProfile.addSegment(this.diveSegmentFactory.createGasChangeSegment(wipProfile.getLastSegment().EndTimestamp, newGas, timeAtDepth, newDepth));
+
+    return Math.ceil(wipProfile.algo.getCeiling(wipProfile.getTotalTime()));
+  }
+
   getDepthChartData(): { time: number; depth: number; ceiling: number }[] {
     let data: { time: number; depth: number; ceiling: number }[] = [];
 

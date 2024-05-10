@@ -118,21 +118,7 @@ export class DivePlannerService {
   }
 
   getNewCeiling(newDepth: number, newGas: BreathingGas, timeAtDepth: number): number {
-    const wipProfile = this.diveProfile.getCurrentProfile();
-
-    wipProfile.addSegment(
-      this.diveSegmentFactory.createDepthChangeSegment(
-        wipProfile.getLastSegment().EndTimestamp,
-        wipProfile.getLastSegment().EndDepth,
-        newDepth,
-        0,
-        this.getCurrentGas()
-      )
-    );
-
-    wipProfile.addSegment(this.diveSegmentFactory.createGasChangeSegment(wipProfile.getLastSegment().EndTimestamp, newGas, timeAtDepth, newDepth));
-
-    return Math.ceil(wipProfile.algo.getCeiling(wipProfile.getTotalTime()));
+    return this.diveProfile.getNewCeiling(newDepth, newGas, timeAtDepth);
   }
 
   getCeilingError(): { amount: number; duration: number } {
