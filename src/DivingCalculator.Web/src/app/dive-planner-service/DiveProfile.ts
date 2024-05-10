@@ -18,6 +18,36 @@ export class DiveProfile {
     this.algo.calculateForSegment(segment);
   }
 
+  addDiveSegment(newDepth: number, newGas: BreathingGas, timeAtDepth: number): void {
+    this.removeLastSegment();
+
+    let previousSegment = this.getLastSegment();
+    let startTime = previousSegment.EndTimestamp;
+
+    if (newDepth === previousSegment.EndDepth && previousSegment.Gas.isEquivalent(newGas) && timeAtDepth > 0) {
+      this.extendLastSegment(timeAtDepth);
+    }
+
+    if (newDepth !== previousSegment.EndDepth) {
+      if (previousSegment.Gas.isEquivalent(newGas)) {
+        this.addSegment(this.diveSegmentFactory.createDepthChangeSegment(startTime, previousSegment.EndDepth, newDepth, timeAtDepth, previousSegment.Gas));
+      } else {
+        this.addSegment(this.diveSegmentFactory.createDepthChangeSegment(startTime, previousSegment.EndDepth, newDepth, 0, previousSegment.Gas));
+      }
+    }
+
+    previousSegment = this.getLastSegment();
+    startTime = previousSegment.EndTimestamp;
+
+    if (!previousSegment.Gas.isEquivalent(newGas)) {
+      this.addSegment(this.diveSegmentFactory.createGasChangeSegment(startTime, newGas, timeAtDepth, newDepth));
+    }
+
+    const endTime = this.getLastSegment().EndTimestamp;
+
+    this.addSegment(this.diveSegmentFactory.createEndDiveSegment(endTime, newDepth, newGas));
+  }
+
   removeLastSegment(): void {
     this.segments.pop();
     this.algo.discardAfterTime(this.getTotalTime());

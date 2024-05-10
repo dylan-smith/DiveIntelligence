@@ -75,36 +75,7 @@ export class DivePlannerService {
   }
 
   addDiveSegment(newDepth: number, newGas: BreathingGas, timeAtDepth: number): void {
-    const newProfile = this.diveProfile.getCurrentProfile();
-
-    let previousSegment = newProfile.getLastSegment();
-    let startTime = previousSegment.EndTimestamp;
-
-    if (newDepth === previousSegment.EndDepth && previousSegment.Gas.isEquivalent(newGas) && timeAtDepth > 0) {
-      newProfile.extendLastSegment(timeAtDepth);
-    }
-
-    if (newDepth !== previousSegment.EndDepth) {
-      if (previousSegment.Gas.isEquivalent(newGas)) {
-        newProfile.addSegment(
-          this.diveSegmentFactory.createDepthChangeSegment(startTime, previousSegment.EndDepth, newDepth, timeAtDepth, previousSegment.Gas)
-        );
-      } else {
-        newProfile.addSegment(this.diveSegmentFactory.createDepthChangeSegment(startTime, previousSegment.EndDepth, newDepth, 0, previousSegment.Gas));
-      }
-    }
-
-    previousSegment = newProfile.getLastSegment();
-    startTime = previousSegment.EndTimestamp;
-
-    if (!previousSegment.Gas.isEquivalent(newGas)) {
-      newProfile.addSegment(this.diveSegmentFactory.createGasChangeSegment(startTime, newGas, timeAtDepth, newDepth));
-    }
-
-    const endTime = newProfile.getLastSegment().EndTimestamp;
-
-    newProfile.addSegment(this.diveSegmentFactory.createEndDiveSegment(endTime, newDepth, newGas));
-    this.diveProfile = newProfile;
+    this.diveProfile.addDiveSegment(newDepth, newGas, timeAtDepth);
 
     this.appInsights.trackEvent('AddDiveSegment', {
       diveID: this.diveID,
