@@ -42,8 +42,8 @@ export class BuhlmannZHL16C {
     return Math.max(...this.tissues.map(t => t.getCeiling(time)));
   }
 
-  getNoDecoLimit(depth: number, gas: BreathingGas): number | undefined {
-    const tissueNdls = this.tissues.map(t => t.getNoDecoLimit(depth, gas));
+  getTimeToCeiling(depth: number, gas: BreathingGas): number | undefined {
+    const tissueNdls = this.tissues.map(t => t.getTimeToCeiling(depth, gas));
     const validNdls = tissueNdls.filter(x => x !== undefined) as number[];
 
     if (validNdls.length === 0) return undefined;

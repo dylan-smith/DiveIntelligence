@@ -87,6 +87,7 @@ export class DivePlannerService {
     return this.getPreviousSegment().Gas;
   }
 
+  // TODO: could push logic down by making diveProfile depend on diveSegmentFactory
   getNoDecoLimit(newDepth: number, newGas: BreathingGas): number | undefined {
     const wipProfile = this.diveProfile.getCurrentProfile();
 
@@ -100,14 +101,36 @@ export class DivePlannerService {
       )
     );
 
-    const ndl = wipProfile.algo.getNoDecoLimit(newDepth, newGas);
+    wipProfile.addSegment(this.diveSegmentFactory.createGasChangeSegment(wipProfile.getTotalTime(), newGas, 0, newDepth));
+
+    const ndl = wipProfile.algo.getTimeToCeiling(newDepth, newGas);
 
     if (ndl === undefined) {
       return undefined;
     }
 
-    const timeToSurface = this.diveSegmentFactory.getTravelTime(wipProfile.getLastSegment().EndDepth, 0);
-    return Math.max(0, ndl - timeToSurface);
+    wipProfile.addSegment(this.diveSegmentFactory.createDepthChangeSegment(wipProfile.getTotalTime(), newDepth, newDepth, ndl, newGas));
+
+    let time = 0;
+
+    // TODO: could use a binary search here for performance (instead of stepping 1 second at a time)
+    while (this.canSurfaceWithoutStops(wipProfile)) {
+      time++;
+      wipProfile.extendLastSegment(1);
+    }
+
+    return ndl + (time - 1);
+  }
+
+  canSurfaceWithoutStops(profile: DiveProfile): boolean {
+    profile.addSegment(
+      this.diveSegmentFactory.createEndDiveSegment(profile.getLastSegment().EndTimestamp, profile.getLastSegment().EndDepth, profile.getLastSegment().Gas)
+    );
+
+    const result = profile.getCeilingError().duration === 0;
+    profile.removeLastSegment();
+
+    return result;
   }
 
   addDiveSegment(newDepth: number, newGas: BreathingGas, timeAtDepth: number): void {
@@ -305,20 +328,7 @@ export class DivePlannerService {
   }
 
   getCeilingError(): { amount: number; duration: number } {
-    let amount = 0;
-    let duration = 0;
-
-    for (let t = 0; t < this.getDiveDuration(); t++) {
-      const ceiling = this.diveProfile.algo.getCeiling(t);
-      const depth = this.diveProfile.getDepth(t);
-
-      if (depth < ceiling) {
-        amount = Math.max(amount, ceiling - depth);
-        duration++;
-      }
-    }
-
-    return { amount, duration };
+    return this.diveProfile.getCeilingError();
   }
 
   getPO2Error(): { maxPO2: number; duration: number } {

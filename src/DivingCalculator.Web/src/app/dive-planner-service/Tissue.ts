@@ -116,7 +116,7 @@ export class Tissue {
     return result < 0 ? 0 : result;
   }
 
-  getNoDecoLimit(depth: number, gas: BreathingGas): number | undefined {
+  getTimeToCeiling(depth: number, gas: BreathingGas): number | undefined {
     const ceiling = this.getCeiling(this.tissueByTime.size - 1);
 
     if (ceiling > 0) {
