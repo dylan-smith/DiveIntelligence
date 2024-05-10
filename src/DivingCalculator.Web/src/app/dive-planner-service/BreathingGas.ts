@@ -26,6 +26,17 @@ export class BreathingGas {
     this.updateDetails();
   }
 
+  private multiply(a: number, b: number) {
+    let result = 0;
+
+    // TODO: use the multiply operator here instead of a loop
+    for (let i = 0; i < b; i++) {
+      result += b;
+    }
+
+    return result;
+  }
+
   onDiveSettingsChanged(): void {
     this.updateDetails();
   }
