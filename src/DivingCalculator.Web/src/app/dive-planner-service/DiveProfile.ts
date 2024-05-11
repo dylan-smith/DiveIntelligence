@@ -13,7 +13,7 @@ export class DiveProfile {
     private diveSegmentFactory: DiveSegmentFactoryService
   ) {}
 
-  addSegment(segment: DiveSegment): void {
+  private addSegment(segment: DiveSegment): void {
     this.segments.push(segment);
     this.algo.calculateForSegment(segment);
   }
@@ -56,12 +56,12 @@ export class DiveProfile {
     return this.diveSegmentFactory.getTravelTime(this.getCurrentDepth(), newDepth);
   }
 
-  removeLastSegment(): void {
+  private removeLastSegment(): void {
     this.segments.pop();
     this.algo.discardAfterTime(this.getTotalTime());
   }
 
-  extendLastSegment(time: number): void {
+  private extendLastSegment(time: number): void {
     this.getLastSegment().EndTimestamp += time;
     this.algo.calculateForSegment(this.getLastSegment());
   }
@@ -71,7 +71,7 @@ export class DiveProfile {
     this.addSegment(this.diveSegmentFactory.createEndDiveSegment(0, 0, startGas));
   }
 
-  clone(): DiveProfile {
+  private clone(): DiveProfile {
     const result = new DiveProfile(this.diveSettings, this.diveSegmentFactory);
     result.algo = this.algo.clone();
     // TODO: is it a problem that we're doing a shallow copy here? segments are currently mutable
@@ -79,7 +79,7 @@ export class DiveProfile {
     return result;
   }
 
-  getCurrentProfile(): DiveProfile {
+  private getCurrentProfile(): DiveProfile {
     const result = this.clone();
     result.removeLastSegment();
 
@@ -134,7 +134,7 @@ export class DiveProfile {
     return ndl + (time - 1);
   }
 
-  canSurfaceWithoutStops(): boolean {
+  private canSurfaceWithoutStops(): boolean {
     this.addSegment(
       this.diveSegmentFactory.createEndDiveSegment(this.getLastSegment().EndTimestamp, this.getLastSegment().EndDepth, this.getLastSegment().Gas)
     );
@@ -211,7 +211,7 @@ export class DiveProfile {
     return { end: maxEND, duration };
   }
 
-  getLastSegment(): DiveSegment {
+  private getLastSegment(): DiveSegment {
     return this.segments[this.segments.length - 1];
   }
 
@@ -230,31 +230,31 @@ export class DiveProfile {
     return this.getLastSegment().EndTimestamp;
   }
 
-  getSegment(time: number): DiveSegment {
+  private getSegment(time: number): DiveSegment {
     return this.segments.find(x => x.EndTimestamp > time && x.StartTimestamp <= time) ?? this.getLastSegment();
   }
 
-  getGas(time: number): BreathingGas {
+  private getGas(time: number): BreathingGas {
     return this.getSegment(time).Gas;
   }
 
-  getPO2(time: number): number {
+  private getPO2(time: number): number {
     return this.getGas(time).getPO2(this.getDepth(time));
   }
 
-  getPN2(time: number): number {
+  private getPN2(time: number): number {
     return this.getGas(time).getPN2(this.getDepth(time));
   }
 
-  getPHe(time: number): number {
+  private getPHe(time: number): number {
     return this.getGas(time).getPHe(this.getDepth(time));
   }
 
-  getDepth(time: number): number {
+  private getDepth(time: number): number {
     return this.getSegment(time).getDepth(time);
   }
 
-  getEND(time: number): number {
+  private getEND(time: number): number {
     if (this.diveSettings.isOxygenNarcotic) {
       return (this.getPN2(time) + this.getPO2(time) - 1) * 10;
     }
