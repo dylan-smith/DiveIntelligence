@@ -13,11 +13,6 @@ export class DiveProfile {
     private diveSegmentFactory: DiveSegmentFactoryService
   ) {}
 
-  private addSegment(segment: DiveSegment): void {
-    this.segments.push(segment);
-    this.algo.calculateForSegment(segment);
-  }
-
   addDiveSegment(newDepth: number, newGas: BreathingGas, timeAtDepth: number): void {
     this.removeLastSegment();
 
@@ -56,34 +51,9 @@ export class DiveProfile {
     return this.diveSegmentFactory.getTravelTime(this.getCurrentDepth(), newDepth);
   }
 
-  private removeLastSegment(): void {
-    this.segments.pop();
-    this.algo.discardAfterTime(this.getTotalTime());
-  }
-
-  private extendLastSegment(time: number): void {
-    this.getLastSegment().EndTimestamp += time;
-    this.algo.calculateForSegment(this.getLastSegment());
-  }
-
   startDive(startGas: BreathingGas): void {
     this.addSegment(this.diveSegmentFactory.createStartDiveSegment(startGas));
     this.addSegment(this.diveSegmentFactory.createEndDiveSegment(0, 0, startGas));
-  }
-
-  private clone(): DiveProfile {
-    const result = new DiveProfile(this.diveSettings, this.diveSegmentFactory);
-    result.algo = this.algo.clone();
-    // TODO: is it a problem that we're doing a shallow copy here? segments are currently mutable
-    result.segments = this.segments.slice();
-    return result;
-  }
-
-  private getCurrentProfile(): DiveProfile {
-    const result = this.clone();
-    result.removeLastSegment();
-
-    return result;
   }
 
   getCurrentCeiling(): number {
@@ -94,10 +64,6 @@ export class DiveProfile {
 
   getCurrentGas(): BreathingGas {
     return this.getPreviousSegment().Gas;
-  }
-
-  private getPreviousSegment(): DiveSegment {
-    return this.segments[this.segments.length - 2];
   }
 
   getNoDecoLimit(newDepth: number, newGas: BreathingGas): number | undefined {
@@ -132,17 +98,6 @@ export class DiveProfile {
     }
 
     return ndl + (time - 1);
-  }
-
-  private canSurfaceWithoutStops(): boolean {
-    this.addSegment(
-      this.diveSegmentFactory.createEndDiveSegment(this.getLastSegment().EndTimestamp, this.getLastSegment().EndDepth, this.getLastSegment().Gas)
-    );
-
-    const result = this.getCeilingError().duration === 0;
-    this.removeLastSegment();
-
-    return result;
   }
 
   // TODO: memoize this and only recalculate on the new segment bits
@@ -211,10 +166,6 @@ export class DiveProfile {
     return { end: maxEND, duration };
   }
 
-  private getLastSegment(): DiveSegment {
-    return this.segments[this.segments.length - 1];
-  }
-
   getMaxDepth(): number {
     return Math.max(...this.segments.map(x => x.EndDepth));
   }
@@ -228,38 +179,6 @@ export class DiveProfile {
     if (this.segments.length === 0) return 0;
 
     return this.getLastSegment().EndTimestamp;
-  }
-
-  private getSegment(time: number): DiveSegment {
-    return this.segments.find(x => x.EndTimestamp > time && x.StartTimestamp <= time) ?? this.getLastSegment();
-  }
-
-  private getGas(time: number): BreathingGas {
-    return this.getSegment(time).Gas;
-  }
-
-  private getPO2(time: number): number {
-    return this.getGas(time).getPO2(this.getDepth(time));
-  }
-
-  private getPN2(time: number): number {
-    return this.getGas(time).getPN2(this.getDepth(time));
-  }
-
-  private getPHe(time: number): number {
-    return this.getGas(time).getPHe(this.getDepth(time));
-  }
-
-  private getDepth(time: number): number {
-    return this.getSegment(time).getDepth(time);
-  }
-
-  private getEND(time: number): number {
-    if (this.diveSettings.isOxygenNarcotic) {
-      return (this.getPN2(time) + this.getPO2(time) - 1) * 10;
-    }
-
-    return (this.getPN2(time) / 0.79 - 1) * 10;
   }
 
   getNewCeiling(newDepth: number, newGas: BreathingGas, timeAtDepth: number): number {
@@ -410,5 +329,86 @@ export class DiveProfile {
     }
 
     return data;
+  }
+
+  private addSegment(segment: DiveSegment): void {
+    this.segments.push(segment);
+    this.algo.calculateForSegment(segment);
+  }
+
+  private removeLastSegment(): void {
+    this.segments.pop();
+    this.algo.discardAfterTime(this.getTotalTime());
+  }
+
+  private extendLastSegment(time: number): void {
+    this.getLastSegment().EndTimestamp += time;
+    this.algo.calculateForSegment(this.getLastSegment());
+  }
+
+  private clone(): DiveProfile {
+    const result = new DiveProfile(this.diveSettings, this.diveSegmentFactory);
+    result.algo = this.algo.clone();
+    // TODO: is it a problem that we're doing a shallow copy here? segments are currently mutable
+    result.segments = this.segments.slice();
+    return result;
+  }
+
+  private getCurrentProfile(): DiveProfile {
+    const result = this.clone();
+    result.removeLastSegment();
+
+    return result;
+  }
+
+  private getPreviousSegment(): DiveSegment {
+    return this.segments[this.segments.length - 2];
+  }
+
+  private canSurfaceWithoutStops(): boolean {
+    this.addSegment(
+      this.diveSegmentFactory.createEndDiveSegment(this.getLastSegment().EndTimestamp, this.getLastSegment().EndDepth, this.getLastSegment().Gas)
+    );
+
+    const result = this.getCeilingError().duration === 0;
+    this.removeLastSegment();
+
+    return result;
+  }
+
+  private getLastSegment(): DiveSegment {
+    return this.segments[this.segments.length - 1];
+  }
+
+  private getSegment(time: number): DiveSegment {
+    return this.segments.find(x => x.EndTimestamp > time && x.StartTimestamp <= time) ?? this.getLastSegment();
+  }
+
+  private getGas(time: number): BreathingGas {
+    return this.getSegment(time).Gas;
+  }
+
+  private getPO2(time: number): number {
+    return this.getGas(time).getPO2(this.getDepth(time));
+  }
+
+  private getPN2(time: number): number {
+    return this.getGas(time).getPN2(this.getDepth(time));
+  }
+
+  private getPHe(time: number): number {
+    return this.getGas(time).getPHe(this.getDepth(time));
+  }
+
+  private getDepth(time: number): number {
+    return this.getSegment(time).getDepth(time);
+  }
+
+  private getEND(time: number): number {
+    if (this.diveSettings.isOxygenNarcotic) {
+      return (this.getPN2(time) + this.getPO2(time) - 1) * 10;
+    }
+
+    return (this.getPN2(time) / 0.79 - 1) * 10;
   }
 }
