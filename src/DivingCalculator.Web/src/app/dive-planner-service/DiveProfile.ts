@@ -96,7 +96,7 @@ export class DiveProfile {
     return this.getPreviousSegment().Gas;
   }
 
-  getPreviousSegment(): DiveSegment {
+  private getPreviousSegment(): DiveSegment {
     return this.segments[this.segments.length - 2];
   }
 

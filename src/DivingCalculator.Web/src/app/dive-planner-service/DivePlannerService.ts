@@ -50,10 +50,6 @@ export class DivePlannerService {
     return this.diveProfile.getAverageDepth();
   }
 
-  getPreviousSegment(): DiveSegment {
-    return this.diveProfile.getPreviousSegment();
-  }
-
   getCurrentDepth(): number {
     return this.diveProfile.getCurrentDepth();
   }
