@@ -5,6 +5,7 @@ import { DiveSegmentFactoryService } from './DiveSegmentFactory.service';
 import { DiveProfile } from './DiveProfile';
 import { ApplicationInsightsService } from '../application-insights-service/application-insights.service';
 import { DiveSettingsService } from './DiveSettings.service';
+import { ChartGeneratorService } from './ChartGenerator.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +17,7 @@ export class DivePlannerService {
   constructor(
     private diveSegmentFactory: DiveSegmentFactoryService,
     private appInsights: ApplicationInsightsService,
+    private chartGenerator: ChartGeneratorService,
     public settings: DiveSettingsService
   ) {
     BreathingGas.GenerateStandardGases(this.settings);
@@ -86,31 +88,31 @@ export class DivePlannerService {
   }
 
   getDepthChartData(): { time: number; depth: number; ceiling: number }[] {
-    return this.diveProfile.getDepthChartData();
+    return this.chartGenerator.getDepthChartData(this.diveProfile);
   }
 
   getPO2ChartData(): { time: number; pO2: number; decoLimit: number; limit: number; min: number }[] {
-    return this.diveProfile.getPO2ChartData();
+    return this.chartGenerator.getPO2ChartData(this.diveProfile);
   }
 
   getENDChartData(): { time: number; end: number; errorLimit: number }[] {
-    return this.diveProfile.getENDChartData();
+    return this.chartGenerator.getENDChartData(this.diveProfile);
   }
 
   getTissuesCeilingChartData(): { time: number; depth: number; tissuesCeiling: number[] }[] {
-    return this.diveProfile.getTissuesCeilingChartData();
+    return this.chartGenerator.getTissuesCeilingChartData(this.diveProfile);
   }
 
   getTissuesPN2ChartData(): { time: number; gasPN2: number; tissuesPN2: number[] }[] {
-    return this.diveProfile.getTissuesPN2ChartData();
+    return this.chartGenerator.getTissuesPN2ChartData(this.diveProfile);
   }
 
   getTissuesPHeChartData(): { time: number; gasPHe: number; tissuesPHe: number[] }[] {
-    return this.diveProfile.getTissuesPHeChartData();
+    return this.chartGenerator.getTissuesPHeChartData(this.diveProfile);
   }
 
   getCeilingChartData(newDepth: number, newGas: BreathingGas): { time: number; ceiling: number }[] {
-    return this.diveProfile.getCeilingChartData(newDepth, newGas);
+    return this.chartGenerator.getCeilingChartData(newDepth, newGas, this.diveProfile);
   }
 
   getNewCeiling(newDepth: number, newGas: BreathingGas, timeAtDepth: number): number {

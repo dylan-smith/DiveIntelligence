@@ -4,6 +4,7 @@ import { DiveSettingsService } from './DiveSettings.service';
 import { DiveSegmentFactoryService } from './DiveSegmentFactory.service';
 import { HumanDurationPipe } from '../pipes/human-duration.pipe';
 import { BreathingGas } from './BreathingGas';
+import { ChartGeneratorService } from './ChartGenerator.service';
 
 describe('DivePlannerService', () => {
   beforeEach(() =>
@@ -16,7 +17,8 @@ describe('DivePlannerService', () => {
     const diveSettingsService = new DiveSettingsService();
     const mockAppInsights = jasmine.createSpyObj('ApplicationInsightsService', ['trackEvent', 'trackTrace']);
     const diveSegmentFactory = new DiveSegmentFactoryService(new HumanDurationPipe(), diveSettingsService);
-    const svc = new DivePlannerService(diveSegmentFactory, mockAppInsights, diveSettingsService);
+    const chartGenerator = new ChartGeneratorService(diveSegmentFactory);
+    const svc = new DivePlannerService(diveSegmentFactory, mockAppInsights, chartGenerator, diveSettingsService);
 
     const startGas = svc.getStandardGases()[0]; // Air
     svc.startDive(startGas);
@@ -46,7 +48,8 @@ describe('DivePlannerService', () => {
     const diveSettingsService = new DiveSettingsService();
     const mockAppInsights = jasmine.createSpyObj('ApplicationInsightsService', ['trackEvent', 'trackTrace']);
     const diveSegmentFactory = new DiveSegmentFactoryService(new HumanDurationPipe(), diveSettingsService);
-    const svc = new DivePlannerService(diveSegmentFactory, mockAppInsights, diveSettingsService);
+    const chartGenerator = new ChartGeneratorService(diveSegmentFactory);
+    const svc = new DivePlannerService(diveSegmentFactory, mockAppInsights, chartGenerator, diveSettingsService);
 
     const nitrox32 = svc.getStandardGases().filter(gas => gas.name === 'Nitrox 32')[0];
     const air = svc.getStandardGases().filter(gas => gas.name === 'Air')[0];
@@ -89,7 +92,8 @@ describe('DivePlannerService', () => {
     const diveSettingsService = new DiveSettingsService();
     const mockAppInsights = jasmine.createSpyObj('ApplicationInsightsService', ['trackEvent', 'trackTrace']);
     const diveSegmentFactory = new DiveSegmentFactoryService(new HumanDurationPipe(), diveSettingsService);
-    const svc = new DivePlannerService(diveSegmentFactory, mockAppInsights, diveSettingsService);
+    const chartGenerator = new ChartGeneratorService(diveSegmentFactory);
+    const svc = new DivePlannerService(diveSegmentFactory, mockAppInsights, chartGenerator, diveSettingsService);
 
     const trimix1555 = svc.getStandardGases().filter(gas => gas.oxygen === 15 && gas.helium === 55)[0];
     const trimix1070 = svc.getStandardGases().filter(gas => gas.oxygen === 10 && gas.helium === 70)[0];

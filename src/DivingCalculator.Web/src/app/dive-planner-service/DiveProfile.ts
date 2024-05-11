@@ -199,141 +199,32 @@ export class DiveProfile {
     return Math.ceil(wipProfile.algo.getCeiling(wipProfile.getTotalTime()));
   }
 
-  getDepthChartData(): { time: number; depth: number; ceiling: number }[] {
-    let data: { time: number; depth: number; ceiling: number }[] = [];
-
-    for (const segment of this.segments) {
-      data = [...data, ...segment.getDepthChartData()];
-    }
-
-    for (const d of data) {
-      d.ceiling = this.algo.getCeiling(d.time);
-    }
-
-    return data;
-  }
-
-  getPO2ChartData(): { time: number; pO2: number; decoLimit: number; limit: number; min: number }[] {
-    let data: { time: number; pO2: number; decoLimit: number; limit: number; min: number }[] = [];
-
-    for (const segment of this.segments) {
-      data = [...data, ...segment.getPO2ChartData()];
-    }
-
-    return data;
-  }
-
-  getENDChartData(): { time: number; end: number; errorLimit: number }[] {
-    let data: { time: number; end: number; errorLimit: number }[] = [];
-
-    for (const segment of this.segments) {
-      data = [...data, ...segment.getENDChartData()];
-    }
-
-    return data;
-  }
-
-  getTissuesCeilingChartData(): { time: number; depth: number; tissuesCeiling: number[] }[] {
-    const data: {
-      time: number;
-      depth: number;
-      tissuesCeiling: number[];
-    }[] = [];
-
-    for (const segment of this.segments) {
-      for (const d of segment.getDepthChartData()) {
-        const ceilings: number[] = [];
-        for (let i = 1; i <= 16; i++) {
-          ceilings.push(this.algo.getTissueCeiling(d.time, i));
-        }
-
-        data.push({
-          time: d.time,
-          depth: d.depth,
-          tissuesCeiling: ceilings,
-        });
-      }
-    }
-
-    return data;
-  }
-
-  getTissuesPN2ChartData(): { time: number; gasPN2: number; tissuesPN2: number[] }[] {
-    const data: {
-      time: number;
-      gasPN2: number;
-      tissuesPN2: number[];
-    }[] = [];
-
-    for (let t = 0; t <= this.getTotalTime(); t++) {
-      const tissuesPN2: number[] = [];
-      for (let i = 1; i <= 16; i++) {
-        tissuesPN2.push(this.algo.getTissuePN2(t, i));
-      }
-
-      data.push({
-        time: t,
-        gasPN2: this.getPN2(t),
-        tissuesPN2,
-      });
-    }
-
-    return data;
-  }
-
-  getTissuesPHeChartData(): { time: number; gasPHe: number; tissuesPHe: number[] }[] {
-    const data: {
-      time: number;
-      gasPHe: number;
-      tissuesPHe: number[];
-    }[] = [];
-
-    for (let t = 0; t <= this.getTotalTime(); t++) {
-      const tissuesPHe: number[] = [];
-      for (let i = 1; i <= 16; i++) {
-        tissuesPHe.push(this.algo.getTissuePHe(t, i));
-      }
-
-      data.push({
-        time: t,
-        gasPHe: this.getPHe(t),
-        tissuesPHe,
-      });
-    }
-
-    return data;
-  }
-
-  getCeilingChartData(newDepth: number, newGas: BreathingGas): { time: number; ceiling: number }[] {
-    const data: { time: number; ceiling: number }[] = [];
-
-    const wipProfile = this.getCurrentProfile();
-
-    wipProfile.addSegment(
-      this.diveSegmentFactory.createDepthChangeSegment(
-        wipProfile.getLastSegment().EndTimestamp,
-        wipProfile.getLastSegment().EndDepth,
-        newDepth,
-        0,
-        this.getCurrentGas()
-      )
-    );
-
-    const startTime = wipProfile.getTotalTime();
-    const chartDuration = 3600 * 2;
-
-    wipProfile.addSegment(this.diveSegmentFactory.createGasChangeSegment(wipProfile.getLastSegment().EndTimestamp, newGas, chartDuration, newDepth));
-
-    for (let t = startTime; t < startTime + chartDuration; t++) {
-      data.push({ time: t - startTime, ceiling: wipProfile.algo.getCeiling(t) });
-    }
-
-    return data;
-  }
-
-  private addSegment(segment: DiveSegment): void {
+  addSegment(segment: DiveSegment): void {
     this.segments.push(segment);
     this.algo.calculateForSegment(segment);
+  }
+
+  getLastSegment(): DiveSegment {
+    return this.segments[this.segments.length - 1];
+  }
+
+  getCurrentProfile(): DiveProfile {
+    const result = this.clone();
+    result.removeLastSegment();
+
+    return result;
+  }
+
+  getPO2(time: number): number {
+    return this.getGas(time).getPO2(this.getDepth(time));
+  }
+
+  getPN2(time: number): number {
+    return this.getGas(time).getPN2(this.getDepth(time));
+  }
+
+  getPHe(time: number): number {
+    return this.getGas(time).getPHe(this.getDepth(time));
   }
 
   private removeLastSegment(): void {
@@ -354,13 +245,6 @@ export class DiveProfile {
     return result;
   }
 
-  private getCurrentProfile(): DiveProfile {
-    const result = this.clone();
-    result.removeLastSegment();
-
-    return result;
-  }
-
   private getPreviousSegment(): DiveSegment {
     return this.segments[this.segments.length - 2];
   }
@@ -376,28 +260,12 @@ export class DiveProfile {
     return result;
   }
 
-  private getLastSegment(): DiveSegment {
-    return this.segments[this.segments.length - 1];
-  }
-
   private getSegment(time: number): DiveSegment {
     return this.segments.find(x => x.EndTimestamp > time && x.StartTimestamp <= time) ?? this.getLastSegment();
   }
 
   private getGas(time: number): BreathingGas {
     return this.getSegment(time).Gas;
-  }
-
-  private getPO2(time: number): number {
-    return this.getGas(time).getPO2(this.getDepth(time));
-  }
-
-  private getPN2(time: number): number {
-    return this.getGas(time).getPN2(this.getDepth(time));
-  }
-
-  private getPHe(time: number): number {
-    return this.getGas(time).getPHe(this.getDepth(time));
   }
 
   private getDepth(time: number): number {
