@@ -163,6 +163,54 @@ export class DiveProfile {
     return { amount, duration };
   }
 
+  getPO2Error(): { maxPO2: number; duration: number } {
+    let maxPO2 = 0;
+    let duration = 0;
+
+    for (let t = 0; t < this.getTotalTime(); t++) {
+      const pO2 = this.getPO2(t);
+
+      if (pO2 > this.diveSettings.decoPO2Maximum) {
+        maxPO2 = Math.max(maxPO2, pO2);
+        duration++;
+      }
+    }
+
+    return { maxPO2, duration };
+  }
+
+  getHypoxicError(): { minPO2: number; duration: number } {
+    let minPO2 = 999;
+    let duration = 0;
+
+    for (let t = 0; t < this.getTotalTime(); t++) {
+      const pO2 = this.getPO2(t);
+
+      if (pO2 < this.diveSettings.pO2Minimum) {
+        minPO2 = Math.min(minPO2, pO2);
+        duration++;
+      }
+    }
+
+    return { minPO2, duration };
+  }
+
+  getENDError(): { end: number; duration: number } {
+    let maxEND = 0;
+    let duration = 0;
+
+    for (let t = 0; t < this.getTotalTime(); t++) {
+      const end = this.getEND(t);
+
+      if (end > this.diveSettings.ENDErrorThreshold) {
+        maxEND = Math.max(end, maxEND);
+        duration++;
+      }
+    }
+
+    return { end: maxEND, duration };
+  }
+
   getLastSegment(): DiveSegment {
     return this.segments[this.segments.length - 1];
   }

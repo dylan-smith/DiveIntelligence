@@ -126,50 +126,14 @@ export class DivePlannerService {
   }
 
   getPO2Error(): { maxPO2: number; duration: number } {
-    let maxPO2 = 0;
-    let duration = 0;
-
-    for (let t = 0; t < this.getDiveDuration(); t++) {
-      const pO2 = this.diveProfile.getPO2(t);
-
-      if (pO2 > this.settings.decoPO2Maximum) {
-        maxPO2 = Math.max(maxPO2, pO2);
-        duration++;
-      }
-    }
-
-    return { maxPO2, duration };
+    return this.diveProfile.getPO2Error();
   }
 
   getHypoxicError(): { minPO2: number; duration: number } {
-    let minPO2 = 999;
-    let duration = 0;
-
-    for (let t = 0; t < this.getDiveDuration(); t++) {
-      const pO2 = this.diveProfile.getPO2(t);
-
-      if (pO2 < this.settings.pO2Minimum) {
-        minPO2 = Math.min(minPO2, pO2);
-        duration++;
-      }
-    }
-
-    return { minPO2, duration };
+    return this.diveProfile.getHypoxicError();
   }
 
   getENDError(): { end: number; duration: number } {
-    let maxEND = 0;
-    let duration = 0;
-
-    for (let t = 0; t < this.getDiveDuration(); t++) {
-      const end = this.diveProfile.getEND(t);
-
-      if (end > this.settings.ENDErrorThreshold) {
-        maxEND = Math.max(end, maxEND);
-        duration++;
-      }
-    }
-
-    return { end: maxEND, duration };
+    return this.diveProfile.getENDError();
   }
 }
