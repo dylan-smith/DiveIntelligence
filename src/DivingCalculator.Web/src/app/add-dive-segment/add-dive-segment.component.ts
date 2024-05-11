@@ -281,8 +281,8 @@ export class AddDiveSegmentComponent implements OnInit {
   }
 
   private updateCustomGasNitrogen() {
-    this.customGas.Nitrogen = 100 - this.customGas.Oxygen - this.customGas.Helium;
-    this.customGas = BreathingGas.create(this.customGas.Oxygen, this.customGas.Helium, this.customGas.Nitrogen, this.divePlanner.settings); // need this to recalculate the properties
+    this.customGas.nitrogen = 100 - this.customGas.oxygen - this.customGas.helium;
+    this.customGas = BreathingGas.create(this.customGas.oxygen, this.customGas.helium, this.customGas.nitrogen, this.divePlanner.settings); // need this to recalculate the properties
     this.calculateNewGas();
   }
 
@@ -384,16 +384,16 @@ export class AddDiveSegmentComponent implements OnInit {
   private getDecoMilestones(data: { time: number; ceiling: number }[]): { duration: number; gas: string; depth: number; tooltip: string }[] {
     const ceilingData = data.map(d => Math.ceil(d.ceiling));
     const standardGases = this.divePlanner.getStandardGases();
-    const decoGases = standardGases.filter(g => g.MaxDecoDepth < ceilingData[0]);
+    const decoGases = standardGases.filter(g => g.maxDecoDepth < ceilingData[0]);
     const milestones: { duration: number; gas: string; depth: number; tooltip: string }[] = [];
     let decoComplete = 0;
 
     for (let t = 0; t < ceilingData.length; t++) {
       for (const gas of decoGases) {
-        if (Math.ceil(ceilingData[t]) <= gas.MaxDecoDepth) {
+        if (Math.ceil(ceilingData[t]) <= gas.maxDecoDepth) {
           const tooltip = `If you spend ${this.humanDurationPipe.transform(t)} at ${this.newDepth}m, the ceiling will rise to
-                           ${ceilingData[t]}m which allow you to ascend and switch to ${gas.Name}`;
-          milestones.push({ duration: t, gas: gas.Name, depth: ceilingData[t], tooltip: tooltip });
+                           ${ceilingData[t]}m which allow you to ascend and switch to ${gas.name}`;
+          milestones.push({ duration: t, gas: gas.name, depth: ceilingData[t], tooltip: tooltip });
           decoGases.splice(decoGases.indexOf(gas), 1);
         }
       }

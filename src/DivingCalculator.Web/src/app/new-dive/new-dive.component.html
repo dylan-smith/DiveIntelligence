@@ -20,8 +20,8 @@
           matTooltipClass="tooltip-multiline tooltip-wide"
           matTooltipPosition="left"
           [matTooltip]="getGasTooltip(gas)">
-          <span matListItemTitle>{{ gas.Name }}</span>
-          <span matListItemLine [innerHTML]="gas.CompositionDescription"></span>
+          <span matListItemTitle>{{ gas.name }}</span>
+          <span matListItemLine [innerHTML]="gas.compositionDescription"></span>
         </mat-list-option>
       </mat-selection-list>
     </div>
@@ -33,15 +33,15 @@
         <div class="custom-gas-inputs">
           <mat-form-field>
             <mat-label>Oxygen (%)</mat-label>
-            <input matInput type="number" min="0" max="100" [(ngModel)]="customGas.Oxygen" (input)="onOxygenInput()" [disabled]="getCustomGasDisabled()" />
+            <input matInput type="number" min="0" max="100" [(ngModel)]="customGas.oxygen" (input)="onOxygenInput()" [disabled]="getCustomGasDisabled()" />
           </mat-form-field>
           <mat-form-field>
             <mat-label>Helium (%)</mat-label>
-            <input matInput type="number" min="0" max="100" [(ngModel)]="customGas.Helium" (input)="onHeliumInput()" [disabled]="getCustomGasDisabled()" />
+            <input matInput type="number" min="0" max="100" [(ngModel)]="customGas.helium" (input)="onHeliumInput()" [disabled]="getCustomGasDisabled()" />
           </mat-form-field>
           <mat-form-field matTooltip="The nitrogen value will be automatically calculated when you input the values for oxygen and helium">
             <mat-label>Nitrogen (%)</mat-label>
-            <input matInput type="number" [(ngModel)]="customGas.Nitrogen" disabled />
+            <input matInput type="number" [(ngModel)]="customGas.nitrogen" disabled />
           </mat-form-field>
         </div>
       </div>
@@ -106,16 +106,16 @@
         <div class="gas-calc" [matTooltip]="divePlanner.settings.MaxDepthPO2Tooltip" matTooltipPosition="right">
           <!-- eslint-disable-next-line prettier/prettier -->
           Max Depth (PO<sub>2</sub>):
-          <strong>{{ getSelectedGas().MaxDepthPO2 }}m ({{ getSelectedGas().MaxDepthPO2Deco }}m deco)</strong>
+          <strong>{{ getSelectedGas().maxDepthPO2 }}m ({{ getSelectedGas().maxDepthPO2Deco }}m deco)</strong>
         </div>
         <div class="gas-calc" [matTooltip]="divePlanner.settings.MaxDepthENDTooltip" matTooltipPosition="right">
           Max Depth (END):
-          <strong>{{ getSelectedGas().MaxDepthEND }}m</strong>
+          <strong>{{ getSelectedGas().maxDepthEND }}m</strong>
         </div>
         <div class="gas-calc">
           <span [matTooltip]="divePlanner.settings.MinDepthTooltip" matTooltipPosition="below">
             Min Depth (Hypoxia):
-            <strong>{{ getSelectedGas().MinDepth }}m</strong>
+            <strong>{{ getSelectedGas().minDepth }}m</strong>
           </span>
           <mat-icon [class.hidden]="!isMinDepthError()" class="error" matTooltip="This gas cannot be breathed at the surface due to the hypoxic oxygen content">
             error

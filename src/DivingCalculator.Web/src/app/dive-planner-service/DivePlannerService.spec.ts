@@ -24,11 +24,11 @@ describe('DivePlannerService', () => {
     expect(svc.getCurrentDepth()).toBe(0);
     expect(svc.getCurrentCeiling()).toBe(0);
     expect(svc.getCurrentGas()).toBe(startGas);
-    expect(svc.getCurrentGas().MaxDepthPO2).toBe(56);
-    expect(svc.getCurrentGas().MaxDepthPO2Deco).toBe(66);
-    expect(svc.getCurrentGas().MaxDepthEND).toBe(30);
-    expect(svc.getCurrentGas().MaxDecoDepth).toBe(30);
-    expect(svc.getCurrentGas().MinDepth).toBe(0);
+    expect(svc.getCurrentGas().maxDepthPO2).toBe(56);
+    expect(svc.getCurrentGas().maxDepthPO2Deco).toBe(66);
+    expect(svc.getCurrentGas().maxDepthEND).toBe(30);
+    expect(svc.getCurrentGas().maxDecoDepth).toBe(30);
+    expect(svc.getCurrentGas().minDepth).toBe(0);
     expect(svc.getCurrentGas().getEND(svc.getCurrentDepth())).toBe(0);
     expect(svc.getCurrentGas().getPO2(svc.getCurrentDepth())).toBe(0.21);
     expect(svc.getCurrentGas().getPN2(svc.getCurrentDepth())).toBe(0.79);
@@ -48,8 +48,8 @@ describe('DivePlannerService', () => {
     const diveSegmentFactory = new DiveSegmentFactoryService(new HumanDurationPipe(), diveSettingsService);
     const svc = new DivePlannerService(diveSegmentFactory, mockAppInsights, diveSettingsService);
 
-    const nitrox32 = svc.getStandardGases().filter(gas => gas.Name === 'Nitrox 32')[0];
-    const air = svc.getStandardGases().filter(gas => gas.Name === 'Air')[0];
+    const nitrox32 = svc.getStandardGases().filter(gas => gas.name === 'Nitrox 32')[0];
+    const air = svc.getStandardGases().filter(gas => gas.name === 'Air')[0];
 
     svc.startDive(nitrox32);
     svc.addDiveSegment(30, nitrox32, 25 * 60);
@@ -57,11 +57,11 @@ describe('DivePlannerService', () => {
     expect(svc.getCurrentDepth()).toBe(30);
     expect(svc.getCurrentCeiling()).toBe(0);
     expect(svc.getCurrentGas()).toBe(nitrox32);
-    expect(svc.getCurrentGas().MaxDepthPO2).toBe(33);
-    expect(svc.getCurrentGas().MaxDepthPO2Deco).toBe(40);
-    expect(svc.getCurrentGas().MaxDepthEND).toBe(30);
-    expect(svc.getCurrentGas().MaxDecoDepth).toBe(30);
-    expect(svc.getCurrentGas().MinDepth).toBe(0);
+    expect(svc.getCurrentGas().maxDepthPO2).toBe(33);
+    expect(svc.getCurrentGas().maxDepthPO2Deco).toBe(40);
+    expect(svc.getCurrentGas().maxDepthEND).toBe(30);
+    expect(svc.getCurrentGas().maxDecoDepth).toBe(30);
+    expect(svc.getCurrentGas().minDepth).toBe(0);
     expect(svc.getCurrentGas().getEND(svc.getCurrentDepth())).toBe(30);
     expect(svc.getCurrentGas().getPO2(svc.getCurrentDepth())).toBe(1.28);
     expect(svc.getCurrentGas().getPN2(svc.getCurrentDepth())).toBe(2.72);
@@ -75,9 +75,9 @@ describe('DivePlannerService', () => {
     expect(svc.getPO2Error().duration).toBe(0);
 
     expect(svc.getNoDecoLimit(25, air)).toBe(518);
-    expect(svc.getOptimalDecoGas(25).Oxygen).toBe(45);
-    expect(svc.getOptimalDecoGas(25).Helium).toBe(0);
-    expect(svc.getOptimalDecoGas(25).Nitrogen).toBe(55);
+    expect(svc.getOptimalDecoGas(25).oxygen).toBe(45);
+    expect(svc.getOptimalDecoGas(25).helium).toBe(0);
+    expect(svc.getOptimalDecoGas(25).nitrogen).toBe(55);
 
     expect(svc.getTravelTime(53)).toBe(69);
     expect(svc.getTravelTime(12)).toBe(108);
@@ -91,11 +91,11 @@ describe('DivePlannerService', () => {
     const diveSegmentFactory = new DiveSegmentFactoryService(new HumanDurationPipe(), diveSettingsService);
     const svc = new DivePlannerService(diveSegmentFactory, mockAppInsights, diveSettingsService);
 
-    const trimix1555 = svc.getStandardGases().filter(gas => gas.Oxygen === 15 && gas.Helium === 55)[0];
-    const trimix1070 = svc.getStandardGases().filter(gas => gas.Oxygen === 10 && gas.Helium === 70)[0];
-    const nitrox50 = svc.getStandardGases().filter(gas => gas.Oxygen === 50 && gas.Helium === 0)[0];
+    const trimix1555 = svc.getStandardGases().filter(gas => gas.oxygen === 15 && gas.helium === 55)[0];
+    const trimix1070 = svc.getStandardGases().filter(gas => gas.oxygen === 10 && gas.helium === 70)[0];
+    const nitrox50 = svc.getStandardGases().filter(gas => gas.oxygen === 50 && gas.helium === 0)[0];
     const custom3030 = BreathingGas.create(30, 30, 40, diveSettingsService);
-    const oxygen = svc.getStandardGases().filter(gas => gas.Oxygen === 100)[0];
+    const oxygen = svc.getStandardGases().filter(gas => gas.oxygen === 100)[0];
 
     svc.startDive(trimix1555);
     svc.addDiveSegment(50, trimix1070, 1 * 60);
@@ -107,11 +107,11 @@ describe('DivePlannerService', () => {
     expect(svc.getCurrentDepth()).toBe(6);
     expect(svc.getCurrentCeiling()).toBe(1);
     expect(svc.getCurrentGas()).toBe(oxygen);
-    expect(svc.getCurrentGas().MaxDepthPO2).toBe(4);
-    expect(svc.getCurrentGas().MaxDepthPO2Deco).toBe(6);
-    expect(svc.getCurrentGas().MaxDepthEND).toBe(30);
-    expect(svc.getCurrentGas().MaxDecoDepth).toBe(6);
-    expect(svc.getCurrentGas().MinDepth).toBe(0);
+    expect(svc.getCurrentGas().maxDepthPO2).toBe(4);
+    expect(svc.getCurrentGas().maxDepthPO2Deco).toBe(6);
+    expect(svc.getCurrentGas().maxDepthEND).toBe(30);
+    expect(svc.getCurrentGas().maxDecoDepth).toBe(6);
+    expect(svc.getCurrentGas().minDepth).toBe(0);
     expect(Math.round(svc.getCurrentGas().getEND(svc.getCurrentDepth()))).toBe(6);
     expect(svc.getCurrentGas().getPO2(svc.getCurrentDepth())).toBe(1.6);
     expect(svc.getCurrentGas().getPN2(svc.getCurrentDepth())).toBe(0);

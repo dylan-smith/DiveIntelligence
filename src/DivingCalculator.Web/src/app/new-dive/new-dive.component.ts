@@ -28,7 +28,7 @@ export class NewDiveComponent {
   ENDErrorThreshold = this.divePlanner.settings.ENDErrorThreshold;
 
   isMinDepthError(): boolean {
-    return this.getSelectedGas().MinDepth > 0;
+    return this.getSelectedGas().minDepth > 0;
   }
 
   getSelectedGas() {
@@ -56,8 +56,8 @@ export class NewDiveComponent {
   }
 
   updateCustomGasNitrogen() {
-    this.customGas.Nitrogen = 100 - this.customGas.Oxygen - this.customGas.Helium;
-    this.customGas = BreathingGas.create(this.customGas.Oxygen, this.customGas.Helium, this.customGas.Nitrogen, this.divePlanner.settings);
+    this.customGas.nitrogen = 100 - this.customGas.oxygen - this.customGas.helium;
+    this.customGas = BreathingGas.create(this.customGas.oxygen, this.customGas.helium, this.customGas.nitrogen, this.divePlanner.settings);
   }
 
   onStandardGasChange(event: MatSelectionListChange) {
@@ -65,7 +65,7 @@ export class NewDiveComponent {
   }
 
   getGasTooltip(gas: BreathingGas): string {
-    return `Max Depth (PO2): ${gas.MaxDepthPO2}m (${gas.MaxDepthPO2Deco}m deco)\nMax Depth (END): ${gas.MaxDepthEND}m\nMin Depth (Hypoxia): ${gas.MinDepth}m`;
+    return `Max Depth (PO2): ${gas.maxDepthPO2}m (${gas.maxDepthPO2Deco}m deco)\nMax Depth (END): ${gas.maxDepthEND}m\nMin Depth (Hypoxia): ${gas.minDepth}m`;
   }
 
   onDescentRateInput(): void {

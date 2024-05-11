@@ -1,27 +1,22 @@
 import { DiveSettingsService } from './DiveSettings.service';
 
 export class BreathingGas {
-  Name: string;
-  Oxygen: number;
-  Helium: number;
-  Nitrogen: number;
-  Description!: string;
-  CompositionDescription!: string;
-  MaxDepthPO2!: number;
-  MaxDepthPO2Deco!: number;
-  MaxDepthEND!: number;
-  MinDepth!: number;
-  MaxDecoDepth!: number;
-  private _diveSettings: DiveSettingsService;
+  description!: string;
+  compositionDescription!: string;
+  maxDepthPO2!: number;
+  maxDepthPO2Deco!: number;
+  maxDepthEND!: number;
+  minDepth!: number;
+  maxDecoDepth!: number;
 
-  private constructor(name: string, oxygen: number, helium: number, nitrogen: number, diveSettings: DiveSettingsService) {
-    this.Name = name;
-    this.Oxygen = oxygen;
-    this.Helium = helium;
-    this.Nitrogen = nitrogen;
-
-    this._diveSettings = diveSettings;
-    this._diveSettings.subscribeToChanges(() => this.onDiveSettingsChanged());
+  private constructor(
+    public name: string,
+    public oxygen: number,
+    public helium: number,
+    public nitrogen: number,
+    private diveSettings: DiveSettingsService
+  ) {
+    this.diveSettings.subscribeToChanges(() => this.onDiveSettingsChanged());
 
     this.updateDetails();
   }
@@ -35,20 +30,20 @@ export class BreathingGas {
 
     const standardGas = BreathingGas.StandardGases.find(g => g.isEquivalent(gas));
     if (standardGas !== undefined) {
-      return new BreathingGas(standardGas.Name, standardGas.Oxygen, standardGas.Helium, standardGas.Nitrogen, settings);
+      return new BreathingGas(standardGas.name, standardGas.oxygen, standardGas.helium, standardGas.nitrogen, settings);
     }
 
     return gas;
   }
 
   updateDetails(): void {
-    this.Description = this.calcDescription();
-    this.CompositionDescription = this.calcCompositionDescription();
-    this.MaxDepthPO2 = this.calcMaxDepthPO2();
-    this.MaxDepthPO2Deco = this.calcMaxDepthPO2Deco();
-    this.MaxDepthEND = this.calcMaxDepthEND();
-    this.MinDepth = this.calcMinDepth();
-    this.MaxDecoDepth = this.calcMaxDecoDepth();
+    this.description = this.calcDescription();
+    this.compositionDescription = this.calcCompositionDescription();
+    this.maxDepthPO2 = this.calcMaxDepthPO2();
+    this.maxDepthPO2Deco = this.calcMaxDepthPO2Deco();
+    this.maxDepthEND = this.calcMaxDepthEND();
+    this.minDepth = this.calcMinDepth();
+    this.maxDecoDepth = this.calcMaxDecoDepth();
   }
 
   static StandardGases: BreathingGas[];
@@ -88,31 +83,31 @@ export class BreathingGas {
   }
 
   private calcDescription(): string {
-    return `${this.Name} (${this.calcCompositionDescription()})`;
+    return `${this.name} (${this.calcCompositionDescription()})`;
   }
 
   private calcCompositionDescription(): string {
-    return `O<sub>2</sub>: ${this.Oxygen}%, He: ${this.Helium}%, N<sub>2</sub>: ${this.Nitrogen}%`;
+    return `O<sub>2</sub>: ${this.oxygen}%, He: ${this.helium}%, N<sub>2</sub>: ${this.nitrogen}%`;
   }
 
   private calcMaxDepthPO2(): number {
-    return Math.floor((this._diveSettings.workingPO2Maximum * 1000) / this.Oxygen - 10);
+    return Math.floor((this.diveSettings.workingPO2Maximum * 1000) / this.oxygen - 10);
   }
 
   private calcMaxDepthPO2Deco(): number {
-    return Math.floor((this._diveSettings.decoPO2Maximum * 1000) / this.Oxygen - 10);
+    return Math.floor((this.diveSettings.decoPO2Maximum * 1000) / this.oxygen - 10);
   }
 
   private calcMaxDepthEND(): number {
-    if (this._diveSettings.isOxygenNarcotic) {
-      return Math.floor(((this._diveSettings.ENDErrorThreshold + 10) * 100) / (this.Nitrogen + this.Oxygen) - 10);
+    if (this.diveSettings.isOxygenNarcotic) {
+      return Math.floor(((this.diveSettings.ENDErrorThreshold + 10) * 100) / (this.nitrogen + this.oxygen) - 10);
     } else {
-      return Math.floor((790 * ((this._diveSettings.ENDErrorThreshold + 10) / 10)) / this.Nitrogen - 10);
+      return Math.floor((790 * ((this.diveSettings.ENDErrorThreshold + 10) / 10)) / this.nitrogen - 10);
     }
   }
 
   private calcMinDepth(): number {
-    return Math.max(0, Math.ceil((this._diveSettings.pO2Minimum * 1000) / this.Oxygen - 10));
+    return Math.max(0, Math.ceil((this.diveSettings.pO2Minimum * 1000) / this.oxygen - 10));
   }
 
   private calcMaxDecoDepth(): number {
@@ -120,19 +115,19 @@ export class BreathingGas {
   }
 
   getPO2(depth: number): number {
-    return (depth / 10 + 1) * (this.Oxygen / 100);
+    return (depth / 10 + 1) * (this.oxygen / 100);
   }
 
   getPHe(depth: number): number {
-    return (depth / 10 + 1) * (this.Helium / 100);
+    return (depth / 10 + 1) * (this.helium / 100);
   }
 
   getPN2(depth: number): number {
-    return (depth / 10 + 1) * (this.Nitrogen / 100);
+    return (depth / 10 + 1) * (this.nitrogen / 100);
   }
 
   getEND(depth: number): number {
-    if (this._diveSettings.isOxygenNarcotic) {
+    if (this.diveSettings.isOxygenNarcotic) {
       return Math.max(0, (this.getPN2(depth) + this.getPO2(depth) - 1) * 10);
     }
 
@@ -140,6 +135,6 @@ export class BreathingGas {
   }
 
   isEquivalent(other: BreathingGas): boolean {
-    return this.Oxygen === other.Oxygen && this.Helium === other.Helium && this.Nitrogen === other.Nitrogen;
+    return this.oxygen === other.oxygen && this.helium === other.helium && this.nitrogen === other.nitrogen;
   }
 }

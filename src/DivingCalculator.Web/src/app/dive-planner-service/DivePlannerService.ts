@@ -11,7 +11,7 @@ import { DiveSettingsService } from './DiveSettings.service';
 })
 export class DivePlannerService {
   private diveID = crypto.randomUUID();
-  public diveProfile: DiveProfile = new DiveProfile(this.settings, this.diveSegmentFactory);
+  private diveProfile: DiveProfile = new DiveProfile(this.settings, this.diveSegmentFactory);
 
   constructor(
     private diveSegmentFactory: DiveSegmentFactoryService,
@@ -30,7 +30,7 @@ export class DivePlannerService {
     this.diveID = crypto.randomUUID();
     this.appInsights.trackEvent('StartDive', {
       diveID: this.diveID,
-      startGas: { description: startGas.Description, oxygen: startGas.Oxygen, helium: startGas.Helium, nitrogen: startGas.Nitrogen },
+      startGas: { description: startGas.description, oxygen: startGas.oxygen, helium: startGas.helium, nitrogen: startGas.nitrogen },
     });
   }
 
@@ -80,7 +80,7 @@ export class DivePlannerService {
     this.appInsights.trackEvent('AddDiveSegment', {
       diveID: this.diveID,
       newDepth,
-      newGas: { description: newGas.Description, oxygen: newGas.Oxygen, helium: newGas.Helium, nitrogen: newGas.Nitrogen },
+      newGas: { description: newGas.description, oxygen: newGas.oxygen, helium: newGas.helium, nitrogen: newGas.nitrogen },
       timeAtDepth,
     });
   }

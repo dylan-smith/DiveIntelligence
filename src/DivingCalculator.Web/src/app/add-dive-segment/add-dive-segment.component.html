@@ -19,25 +19,25 @@
       </div>
       <div class="dive-stat">
         Current Gas:
-        <strong [innerHTML]="currentGas.Description"></strong>
+        <strong [innerHTML]="currentGas.description"></strong>
       </div>
       <div class="gas-stat dive-stat">
         <span [matTooltip]="divePlanner.settings.MaxDepthPO2Tooltip" matTooltipPosition="right">
           <!-- eslint-disable-next-line prettier/prettier -->
           Max Depth (PO<sub>2</sub>):
-          <strong>{{ currentGas.MaxDepthPO2 }}m ({{ currentGas.MaxDepthPO2Deco }}m deco)</strong>
+          <strong>{{ currentGas.maxDepthPO2 }}m ({{ currentGas.maxDepthPO2Deco }}m deco)</strong>
         </span>
       </div>
       <div class="gas-stat dive-stat">
         <span [matTooltip]="divePlanner.settings.MaxDepthENDTooltip" matTooltipPosition="right">
           Max Depth (END):
-          <strong>{{ currentGas.MaxDepthEND }}m</strong>
+          <strong>{{ currentGas.maxDepthEND }}m</strong>
         </span>
       </div>
       <div class="gas-stat dive-stat">
         <span [matTooltip]="divePlanner.settings.MinDepthTooltip" matTooltipPosition="right">
           Min Depth (Hypoxia):
-          <strong>{{ currentGas.MinDepth }}m</strong>
+          <strong>{{ currentGas.minDepth }}m</strong>
         </span>
       </div>
       <div class="dive-stat">
@@ -104,7 +104,7 @@
         <div class="new-gas-col">
           <mat-radio-button value="current">
             <div>Current Gas</div>
-            <div class="gas-description" [innerHTML]="currentGas.Description"></div>
+            <div class="gas-description" [innerHTML]="currentGas.description"></div>
           </mat-radio-button>
           <mat-radio-button
             value="optimal"
@@ -113,7 +113,7 @@
               divePlanner.settings.decoPO2Maximum
             }} PO2, and the minimum Helium while staying at an END (Equivalent Narcotic Depth) of <= {{ divePlanner.settings.ENDErrorThreshold }}m">
             <div>Optimal Deco Gas</div>
-            <div class="gas-description" [innerHTML]="optimalGas.Description"></div>
+            <div class="gas-description" [innerHTML]="optimalGas.description"></div>
           </mat-radio-button>
         </div>
         <div class="new-gas-col">
@@ -130,12 +130,12 @@
                 (selectionChange)="onStandardGasSelectionChange()"
                 [disabled]="isStandardGasDisabled">
                 <mat-select-trigger>
-                  <div>{{ standardGas?.Name }}</div>
-                  <div class="gas-description" [innerHTML]="standardGas?.CompositionDescription"></div>
+                  <div>{{ standardGas?.name }}</div>
+                  <div class="gas-description" [innerHTML]="standardGas?.compositionDescription"></div>
                 </mat-select-trigger>
                 <mat-option *ngFor="let gas of StandardGases" [value]="gas">
-                  <div>{{ gas.Name }}</div>
-                  <div class="gas-description" [innerHTML]="gas.CompositionDescription"></div>
+                  <div>{{ gas.name }}</div>
+                  <div class="gas-description" [innerHTML]="gas.compositionDescription"></div>
                 </mat-option>
               </mat-select>
             </mat-form-field>
@@ -146,17 +146,17 @@
           <div>
             <mat-form-field class="custom-gas-input">
               <mat-label>Oxygen (%)</mat-label>
-              <input matInput type="number" min="0" max="100" [(ngModel)]="customGas.Oxygen" (input)="onOxygenInput()" [disabled]="isCustomGasDisabled" />
+              <input matInput type="number" min="0" max="100" [(ngModel)]="customGas.oxygen" (input)="onOxygenInput()" [disabled]="isCustomGasDisabled" />
             </mat-form-field>
             <mat-form-field class="custom-gas-input">
               <mat-label>Helium (%)</mat-label>
-              <input matInput type="number" min="0" max="100" [(ngModel)]="customGas.Helium" (input)="onHeliumInput()" [disabled]="isCustomGasDisabled" />
+              <input matInput type="number" min="0" max="100" [(ngModel)]="customGas.helium" (input)="onHeliumInput()" [disabled]="isCustomGasDisabled" />
             </mat-form-field>
             <mat-form-field
               class="custom-gas-input"
               matTooltip="The nitrogen value will be automatically calculated when you input the values for oxygen and helium">
               <mat-label>Nitrogen (%)</mat-label>
-              <input matInput type="number" [ngModel]="customGas.Nitrogen" disabled />
+              <input matInput type="number" [ngModel]="customGas.nitrogen" disabled />
             </mat-form-field>
           </div>
         </div>
@@ -194,19 +194,19 @@
           <span [matTooltip]="divePlanner.settings.MaxDepthPO2Tooltip" matTooltipPosition="right">
             <!-- eslint-disable-next-line prettier/prettier -->
             Max Depth (PO<sub>2</sub>):
-            <strong>{{ newGas.MaxDepthPO2 }}m ({{ newGas.MaxDepthPO2Deco }}m deco)</strong>
+            <strong>{{ newGas.maxDepthPO2 }}m ({{ newGas.maxDepthPO2Deco }}m deco)</strong>
           </span>
         </div>
         <div class="dive-stat">
           <span [matTooltip]="divePlanner.settings.MaxDepthENDTooltip" matTooltipPosition="right">
             Max Depth (END):
-            <strong>{{ newGas.MaxDepthEND }}m</strong>
+            <strong>{{ newGas.maxDepthEND }}m</strong>
           </span>
         </div>
         <div class="dive-stat">
           <span [matTooltip]="divePlanner.settings.MinDepthTooltip" matTooltipPosition="right">
             Min Depth (Hypoxia):
-            <strong>{{ newGas.MinDepth }}m</strong>
+            <strong>{{ newGas.minDepth }}m</strong>
           </span>
         </div>
       </div>
