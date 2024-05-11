@@ -10,6 +10,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      packages: read
+      actions: read
+      contents: read
     steps:
     - uses: actions/checkout@v4
     - name: Use Node.js 18.x
@@ -24,6 +29,15 @@ jobs:
       working-directory: src/DivingCalculator.Web
     - run: npm run ci-test
       working-directory: src/DivingCalculator.Web
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: javascript-typescript
+        build-mode: none
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:javascript-typescript"
     - name: Copy staticwebapp.config.json
       run: cp src/DivingCalculator.Web/staticwebapp.config.json src/DivingCalculator.Web/dist/dive-intelligence/staticwebapp.config.json
     - name: Set Instrumentation Key
