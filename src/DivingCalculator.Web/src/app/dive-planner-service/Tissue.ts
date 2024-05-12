@@ -54,65 +54,8 @@ export class Tissue {
     return clone;
   }
 
-  getTissueByTime(time: number): { PN2: number; PHe: number } {
-    return this.tissueByTime.get(time) ?? { PN2: 0, PHe: 0 };
-  }
-
-  getPN2Delta(tissuePN2: number, gasPN2: number): number {
-    return this.getTissueDelta(tissuePN2, gasPN2, this.n2DeltaMultiplier);
-  }
-
-  getPN2DeltaByTime(tissuePN2: number, gasPN2: number, time: number): number {
-    return this.getTissueDeltaByTime(tissuePN2, gasPN2, this.n2HalfLife, time);
-  }
-
-  getPHeDelta(tissuePHe: number, gasPHe: number): number {
-    return this.getTissueDelta(tissuePHe, gasPHe, this.heDeltaMultiplier);
-  }
-
-  getPHeDeltaByTime(tissuePHe: number, gasPHe: number, time: number): number {
-    return this.getTissueDeltaByTime(tissuePHe, gasPHe, this.heHalfLife, time);
-  }
-
-  getTissueDelta(tissuePartialPressure: number, gasPartialPressure: number, deltaMultiplier: number): number {
-    return (gasPartialPressure - tissuePartialPressure) * deltaMultiplier;
-  }
-
-  getTissueDeltaByTime(tissuePartialPressure: number, gasPartialPressure: number, halflife: number, time: number): number {
-    return (gasPartialPressure - tissuePartialPressure) * (1 - Math.pow(2, -(time / (halflife * 60))));
-  }
-
-  getA(time: number): number {
-    return this.getAByPressures(this.getPN2(time), this.getPHe(time));
-  }
-
-  getAByPressures(pN2: number, pHe: number): number {
-    return (pN2 * this.a_n2 + pHe * this.a_he) / (pN2 + pHe);
-  }
-
-  getB(time: number): number {
-    return this.getBByPressures(this.getPN2(time), this.getPHe(time));
-  }
-
-  getBByPressures(pN2: number, pHe: number): number {
-    return (pN2 * this.b_n2 + pHe * this.b_he) / (pN2 + pHe);
-  }
-
-  getMValue(time: number): number {
-    return this.getMValueByPressures(this.getPN2(time), this.getPHe(time));
-  }
-
-  getMValueByPressures(pN2: number, pHe: number): number {
-    return (pN2 + pHe - this.getAByPressures(pN2, pHe)) * this.getBByPressures(pN2, pHe);
-  }
-
   getCeiling(time: number): number {
     const result = (this.getMValue(time) - 1) * 10;
-    return result < 0 ? 0 : result;
-  }
-
-  getCeilingByPressures(pN2: number, pHe: number): number {
-    const result = (this.getMValueByPressures(pN2, pHe) - 1) * 10;
     return result < 0 ? 0 : result;
   }
 
@@ -165,7 +108,52 @@ export class Tissue {
     return this.getTissueByTime(time).PHe;
   }
 
-  getPTotal(time: number): number {
-    return this.getPN2(time) + this.getPHe(time);
+  private getCeilingByPressures(pN2: number, pHe: number): number {
+    const result = (this.getMValueByPressures(pN2, pHe) - 1) * 10;
+    return result < 0 ? 0 : result;
+  }
+
+  private getTissueByTime(time: number): { PN2: number; PHe: number } {
+    return this.tissueByTime.get(time) ?? { PN2: 0, PHe: 0 };
+  }
+
+  private getPN2Delta(tissuePN2: number, gasPN2: number): number {
+    return this.getTissueDelta(tissuePN2, gasPN2, this.n2DeltaMultiplier);
+  }
+
+  private getPN2DeltaByTime(tissuePN2: number, gasPN2: number, time: number): number {
+    return this.getTissueDeltaByTime(tissuePN2, gasPN2, this.n2HalfLife, time);
+  }
+
+  private getPHeDelta(tissuePHe: number, gasPHe: number): number {
+    return this.getTissueDelta(tissuePHe, gasPHe, this.heDeltaMultiplier);
+  }
+
+  private getPHeDeltaByTime(tissuePHe: number, gasPHe: number, time: number): number {
+    return this.getTissueDeltaByTime(tissuePHe, gasPHe, this.heHalfLife, time);
+  }
+
+  private getTissueDelta(tissuePartialPressure: number, gasPartialPressure: number, deltaMultiplier: number): number {
+    return (gasPartialPressure - tissuePartialPressure) * deltaMultiplier;
+  }
+
+  private getTissueDeltaByTime(tissuePartialPressure: number, gasPartialPressure: number, halflife: number, time: number): number {
+    return (gasPartialPressure - tissuePartialPressure) * (1 - Math.pow(2, -(time / (halflife * 60))));
+  }
+
+  private getAByPressures(pN2: number, pHe: number): number {
+    return (pN2 * this.a_n2 + pHe * this.a_he) / (pN2 + pHe);
+  }
+
+  private getBByPressures(pN2: number, pHe: number): number {
+    return (pN2 * this.b_n2 + pHe * this.b_he) / (pN2 + pHe);
+  }
+
+  private getMValue(time: number): number {
+    return this.getMValueByPressures(this.getPN2(time), this.getPHe(time));
+  }
+
+  private getMValueByPressures(pN2: number, pHe: number): number {
+    return (pN2 + pHe - this.getAByPressures(pN2, pHe)) * this.getBByPressures(pN2, pHe);
   }
 }
