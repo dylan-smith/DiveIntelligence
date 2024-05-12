@@ -2,18 +2,24 @@ import { Injectable } from '@angular/core';
 import { DiveProfile } from './DiveProfile';
 import { BreathingGas } from './BreathingGas';
 import { DiveSegmentFactoryService } from './DiveSegmentFactory.service';
+import { DiveSettingsService } from './DiveSettings.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChartGeneratorService {
-  constructor(private diveSegmentFactory: DiveSegmentFactoryService) {}
+  constructor(
+    private diveSegmentFactory: DiveSegmentFactoryService,
+    private diveSettings: DiveSettingsService
+  ) {}
 
   getDepthChartData(diveProfile: DiveProfile): { time: number; depth: number; ceiling: number }[] {
-    let data: { time: number; depth: number; ceiling: number }[] = [];
+    const data: { time: number; depth: number; ceiling: number }[] = [];
 
     for (const segment of diveProfile.segments) {
-      data = [...data, ...segment.getDepthChartData()];
+      for (let time = segment.StartTimestamp; time <= segment.EndTimestamp; time++) {
+        data.push({ time: time, depth: segment.getDepth(time), ceiling: 0 });
+      }
     }
 
     for (const d of data) {
@@ -24,20 +30,34 @@ export class ChartGeneratorService {
   }
 
   getPO2ChartData(diveProfile: DiveProfile): { time: number; pO2: number; decoLimit: number; limit: number; min: number }[] {
-    let data: { time: number; pO2: number; decoLimit: number; limit: number; min: number }[] = [];
+    const data: { time: number; pO2: number; decoLimit: number; limit: number; min: number }[] = [];
 
     for (const segment of diveProfile.segments) {
-      data = [...data, ...segment.getPO2ChartData()];
+      for (let time = segment.StartTimestamp; time <= segment.EndTimestamp; time++) {
+        data.push({
+          time: time,
+          pO2: segment.Gas.getPO2(segment.getDepth(time)),
+          decoLimit: this.diveSettings.decoPO2Maximum,
+          limit: this.diveSettings.workingPO2Maximum,
+          min: this.diveSettings.pO2Minimum,
+        });
+      }
     }
 
     return data;
   }
 
   getENDChartData(diveProfile: DiveProfile): { time: number; end: number; errorLimit: number }[] {
-    let data: { time: number; end: number; errorLimit: number }[] = [];
+    const data: { time: number; end: number; errorLimit: number }[] = [];
 
     for (const segment of diveProfile.segments) {
-      data = [...data, ...segment.getENDChartData()];
+      for (let time = segment.StartTimestamp; time <= segment.EndTimestamp; time++) {
+        data.push({
+          time: time,
+          end: segment.Gas.getEND(segment.getDepth(time)),
+          errorLimit: this.diveSettings.ENDErrorThreshold,
+        });
+      }
     }
 
     return data;
@@ -51,15 +71,15 @@ export class ChartGeneratorService {
     }[] = [];
 
     for (const segment of diveProfile.segments) {
-      for (const d of segment.getDepthChartData()) {
+      for (let time = segment.StartTimestamp; time <= segment.EndTimestamp; time++) {
         const ceilings: number[] = [];
-        for (let i = 1; i <= 16; i++) {
-          ceilings.push(diveProfile.algo.getTissueCeiling(d.time, i));
+        for (let tissue = 1; tissue <= 16; tissue++) {
+          ceilings.push(diveProfile.algo.getTissueCeiling(time, tissue));
         }
 
         data.push({
-          time: d.time,
-          depth: d.depth,
+          time: time,
+          depth: segment.getDepth(time),
           tissuesCeiling: ceilings,
         });
       }
@@ -75,15 +95,15 @@ export class ChartGeneratorService {
       tissuesPN2: number[];
     }[] = [];
 
-    for (let t = 0; t <= diveProfile.getTotalTime(); t++) {
+    for (let time = 0; time <= diveProfile.getTotalTime(); time++) {
       const tissuesPN2: number[] = [];
-      for (let i = 1; i <= 16; i++) {
-        tissuesPN2.push(diveProfile.algo.getTissuePN2(t, i));
+      for (let tissue = 1; tissue <= 16; tissue++) {
+        tissuesPN2.push(diveProfile.algo.getTissuePN2(time, tissue));
       }
 
       data.push({
-        time: t,
-        gasPN2: diveProfile.getPN2(t),
+        time: time,
+        gasPN2: diveProfile.getPN2(time),
         tissuesPN2,
       });
     }
@@ -98,15 +118,15 @@ export class ChartGeneratorService {
       tissuesPHe: number[];
     }[] = [];
 
-    for (let t = 0; t <= diveProfile.getTotalTime(); t++) {
+    for (let time = 0; time <= diveProfile.getTotalTime(); time++) {
       const tissuesPHe: number[] = [];
-      for (let i = 1; i <= 16; i++) {
-        tissuesPHe.push(diveProfile.algo.getTissuePHe(t, i));
+      for (let tissue = 1; tissue <= 16; tissue++) {
+        tissuesPHe.push(diveProfile.algo.getTissuePHe(time, tissue));
       }
 
       data.push({
-        time: t,
-        gasPHe: diveProfile.getPHe(t),
+        time: time,
+        gasPHe: diveProfile.getPHe(time),
         tissuesPHe,
       });
     }
@@ -134,8 +154,8 @@ export class ChartGeneratorService {
 
     wipProfile.addSegment(this.diveSegmentFactory.createGasChangeSegment(wipProfile.getLastSegment().EndTimestamp, newGas, chartDuration, newDepth));
 
-    for (let t = startTime; t < startTime + chartDuration; t++) {
-      data.push({ time: t - startTime, ceiling: wipProfile.algo.getCeiling(t) });
+    for (let time = startTime; time < startTime + chartDuration; time++) {
+      data.push({ time: time - startTime, ceiling: wipProfile.algo.getCeiling(time) });
     }
 
     return data;

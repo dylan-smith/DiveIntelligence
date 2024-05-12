@@ -17,7 +17,7 @@ describe('DivePlannerService', () => {
     const diveSettingsService = new DiveSettingsService();
     const mockAppInsights = jasmine.createSpyObj('ApplicationInsightsService', ['trackEvent', 'trackTrace']);
     const diveSegmentFactory = new DiveSegmentFactoryService(new HumanDurationPipe(), diveSettingsService);
-    const chartGenerator = new ChartGeneratorService(diveSegmentFactory);
+    const chartGenerator = new ChartGeneratorService(diveSegmentFactory, diveSettingsService);
     const svc = new DivePlannerService(diveSegmentFactory, mockAppInsights, chartGenerator, diveSettingsService);
 
     const startGas = svc.getStandardGases()[0]; // Air
@@ -48,7 +48,7 @@ describe('DivePlannerService', () => {
     const diveSettingsService = new DiveSettingsService();
     const mockAppInsights = jasmine.createSpyObj('ApplicationInsightsService', ['trackEvent', 'trackTrace']);
     const diveSegmentFactory = new DiveSegmentFactoryService(new HumanDurationPipe(), diveSettingsService);
-    const chartGenerator = new ChartGeneratorService(diveSegmentFactory);
+    const chartGenerator = new ChartGeneratorService(diveSegmentFactory, diveSettingsService);
     const svc = new DivePlannerService(diveSegmentFactory, mockAppInsights, chartGenerator, diveSettingsService);
 
     const nitrox32 = svc.getStandardGases().filter(gas => gas.name === 'Nitrox 32')[0];
@@ -92,7 +92,7 @@ describe('DivePlannerService', () => {
     const diveSettingsService = new DiveSettingsService();
     const mockAppInsights = jasmine.createSpyObj('ApplicationInsightsService', ['trackEvent', 'trackTrace']);
     const diveSegmentFactory = new DiveSegmentFactoryService(new HumanDurationPipe(), diveSettingsService);
-    const chartGenerator = new ChartGeneratorService(diveSegmentFactory);
+    const chartGenerator = new ChartGeneratorService(diveSegmentFactory, diveSettingsService);
     const svc = new DivePlannerService(diveSegmentFactory, mockAppInsights, chartGenerator, diveSettingsService);
 
     const trimix1555 = svc.getStandardGases().filter(gas => gas.oxygen === 15 && gas.helium === 55)[0];

@@ -48,7 +48,7 @@ export class DiveSegment {
     return this.StartDepth + ((this.EndDepth - this.StartDepth) * (time - this.StartTimestamp)) / (travelEnd - this.StartTimestamp);
   }
 
-  getTravelDuration(): number {
+  private getTravelDuration(): number {
     if (this.StartDepth === this.EndDepth) {
       return 0;
     }
@@ -64,45 +64,5 @@ export class DiveSegment {
     }
 
     return 0; // should never happen
-  }
-
-  getDepthChartData(): { time: number; depth: number; ceiling: number }[] {
-    const data: { time: number; depth: number; ceiling: number }[] = [];
-
-    for (let i = this.StartTimestamp; i <= this.EndTimestamp; i++) {
-      data.push({ time: i, depth: this.getDepth(i), ceiling: 0 });
-    }
-
-    return data;
-  }
-
-  getPO2ChartData(): { time: number; pO2: number; decoLimit: number; limit: number; min: number }[] {
-    const data: { time: number; pO2: number; decoLimit: number; limit: number; min: number }[] = [];
-
-    for (let i = this.StartTimestamp; i <= this.EndTimestamp; i++) {
-      data.push({
-        time: i,
-        pO2: this.Gas.getPO2(this.getDepth(i)),
-        decoLimit: this.settings.decoPO2Maximum,
-        limit: this.settings.workingPO2Maximum,
-        min: this.settings.pO2Minimum,
-      });
-    }
-
-    return data;
-  }
-
-  getENDChartData(): { time: number; end: number; errorLimit: number }[] {
-    const data: { time: number; end: number; errorLimit: number }[] = [];
-
-    for (let i = this.StartTimestamp; i <= this.EndTimestamp; i++) {
-      data.push({
-        time: i,
-        end: this.Gas.getEND(this.getDepth(i)),
-        errorLimit: this.settings.ENDErrorThreshold,
-      });
-    }
-
-    return data;
   }
 }
