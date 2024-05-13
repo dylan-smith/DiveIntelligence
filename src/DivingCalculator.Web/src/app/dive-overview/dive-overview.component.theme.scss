@@ -1,4 +1,4 @@
-@mixin dive-plan-theme($theme) {
+@mixin dive-overview-theme($theme) {
   $color: map-get($theme, color);
   $background: map-get($color, background);
   $warn: map-get($color, warn);

@@ -135,7 +135,7 @@ export class AddDiveSegmentComponent implements OnInit {
 
   onSave(): void {
     this.divePlanner.addDiveSegment(this.newDepth, this.newGas, this.timeAtDepth * 60);
-    this.router.navigate(['/dive-plan']);
+    this.router.navigate(['/dive-overview']);
   }
 
   private calculateNewGasStats(): void {

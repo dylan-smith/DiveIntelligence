@@ -6,11 +6,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { GraphDialogComponent } from '../graph-dialog/graph-dialog.component';
 
 @Component({
-  selector: 'dive-dive-plan',
-  templateUrl: './dive-plan.component.html',
-  styleUrls: ['./dive-plan.component.scss'],
+  selector: 'dive-dive-overview',
+  templateUrl: './dive-overview.component.html',
+  styleUrls: ['./dive-overview.component.scss'],
 })
-export class DivePlanComponent implements OnInit {
+export class DiveOverviewComponent implements OnInit {
   planEvents: DiveSegment[];
 
   private readonly ERROR_COLOR = 'red';

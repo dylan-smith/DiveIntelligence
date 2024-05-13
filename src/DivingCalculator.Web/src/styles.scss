@@ -27,8 +27,8 @@ $theme: mat.define-light-theme((
 @import './app/new-dive/new-dive.component.theme.scss';
 @include new-dive-theme($theme);
 
-@import './app/dive-plan/dive-plan.component.theme.scss';
-@include dive-plan-theme($theme);
+@import './app/dive-overview/dive-overview.component.theme.scss';
+@include dive-overview-theme($theme);
 
 @import './app/add-dive-segment/add-dive-segment.component.theme.scss';
 @include add-dive-segment-theme($theme);

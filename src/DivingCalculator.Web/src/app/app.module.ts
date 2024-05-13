@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NewDiveComponent } from './new-dive/new-dive.component';
 import { HomeComponent } from './home/home.component';
-import { DivePlanComponent } from './dive-plan/dive-plan.component';
+import { DiveOverviewComponent } from './dive-overview/dive-overview.component';
 import { HumanDurationPipe } from './pipes/human-duration.pipe';
 import { ColonDurationPipe } from './pipes/colon-duration.pipe';
 
@@ -28,7 +28,7 @@ import { ApplicationInsightsModule } from './application-insights.module';
 import { YouTubePlayerModule } from '@angular/youtube-player';
 
 @NgModule({
-  declarations: [AppComponent, NewDiveComponent, HomeComponent, DivePlanComponent, HumanDurationPipe, ColonDurationPipe, AddDiveSegmentComponent],
+  declarations: [AppComponent, NewDiveComponent, HomeComponent, DiveOverviewComponent, HumanDurationPipe, ColonDurationPipe, AddDiveSegmentComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

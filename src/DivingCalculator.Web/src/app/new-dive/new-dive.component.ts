@@ -98,6 +98,6 @@ export class NewDiveComponent {
 
   onSave() {
     this.divePlanner.startDive(this.getSelectedGas());
-    this.router.navigate(['/dive-plan']);
+    this.router.navigate(['/dive-overview']);
   }
 }
