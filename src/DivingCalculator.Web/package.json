@@ -30,7 +30,7 @@
     "plotly.js-basic-dist-min": "^2.32.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.6.2",
-    "zone.js": "^0.14.4"
+    "zone.js": "^0.14.5"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^17.3.7",
