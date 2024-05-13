@@ -3,16 +3,7 @@
   $background: map-get($color, background);
   $warn: map-get($color, warn);
 
-  .graph {
+  mat-list {
     background-color: map-get($background, card);
-  }
-
-  .dive-stats {
-    background-color: map-get($background, card);
-  }
-
-  .plan-error {
-    border-color: map-get($warn, error);
-    color: map-get($warn, error);
   }
 }

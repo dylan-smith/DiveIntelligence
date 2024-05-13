@@ -1,0 +1,14 @@
+<div class="dive-plan-list-section">
+  <mat-selection-list class="mat-elevation-z2">
+    <mat-list-item *ngFor="let planEvent of planEvents">
+      <span matListItemTitle>
+        <mat-icon class="segment-icon">{{ planEvent.Icon }}</mat-icon>
+        {{ planEvent.StartTimestamp | colonDuration }} {{ planEvent.Title }}
+      </span>
+      <span matListItemLine [innerHTML]="planEvent.Description" class="segment-description"></span>
+    </mat-list-item>
+  </mat-selection-list>
+  <button mat-fab color="primary" routerLink="/add-dive-segment" class="add-segment-button">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>

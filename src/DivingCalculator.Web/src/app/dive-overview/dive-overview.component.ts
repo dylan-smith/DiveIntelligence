@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
-import { DiveSegment } from '../dive-planner-service/DiveSegment';
 import * as Plotly from 'plotly.js-basic-dist-min';
 import { MatDialog } from '@angular/material/dialog';
 import { GraphDialogComponent } from '../graph-dialog/graph-dialog.component';
@@ -11,8 +10,6 @@ import { GraphDialogComponent } from '../graph-dialog/graph-dialog.component';
   styleUrls: ['./dive-overview.component.scss'],
 })
 export class DiveOverviewComponent implements OnInit {
-  planEvents: DiveSegment[];
-
   private readonly ERROR_COLOR = 'red';
   private readonly WARNING_COLOR = 'orange';
   private readonly PRIMARY_COLOR = '#3F51B5'; // Indigo 500
@@ -20,9 +17,7 @@ export class DiveOverviewComponent implements OnInit {
   constructor(
     public divePlanner: DivePlannerService,
     public dialog: MatDialog
-  ) {
-    this.planEvents = divePlanner.getDiveSegments();
-  }
+  ) {}
 
   ngOnInit(): void {
     this.drawCharts();

@@ -23,10 +23,6 @@ main {
   height: 100%;
 }
 
-.add-segment-button {
-  align-self: flex-end;
-}
-
 .plan-error {
   border-width: 2px;
   border-style: solid;
@@ -41,16 +37,11 @@ main {
   margin-left: 1rem;
 }
 
-.dive-stats{
+.dive-stats {
   margin-top: 1rem;
   margin-bottom: 1rem;
   width: fit-content;
   padding: 1rem;
-}
-
-.add-segment-button {
-  margin-top: 0.3rem;
-  margin-bottom: 1rem;
 }
 
 .dive-plan-section {
@@ -62,20 +53,6 @@ main {
   margin-left: 3rem;
 }
 
-mat-list {
-  width: fit-content;
-}
-
-.dive-plan-list-section {
-  width: fit-content;
-  display: flex;
-  flex-direction: column;
-}
-
-mat-selection-list {
-  padding: 0px;
-}
-
 .dive-stat {
   padding-top: 0.1rem;
   padding-bottom: 0.1rem;
@@ -83,12 +60,4 @@ mat-selection-list {
 
 .hidden {
   display: none;
-}
-
-.segment-icon {
-  padding-right: 0.5rem;
-}
-
-.segment-description {
-  padding-left: 2.3rem;
 }
