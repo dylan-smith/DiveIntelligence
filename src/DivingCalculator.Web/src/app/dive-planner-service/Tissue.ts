@@ -68,7 +68,7 @@ export class Tissue {
 
     const minCeiling = this.getCeilingByPressures(gas.getPN2(depth), gas.getPHe(depth));
 
-    if (minCeiling === 0) {
+    if (minCeiling === 0 || isNaN(minCeiling)) {
       return undefined;
     }
 
