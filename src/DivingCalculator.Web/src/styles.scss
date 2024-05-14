@@ -27,9 +27,6 @@ $theme: mat.define-light-theme((
 @import './app/new-dive/new-dive.component.theme.scss';
 @include new-dive-theme($theme);
 
-@import './app/dive-overview/dive-overview.component.theme.scss';
-@include dive-overview-theme($theme);
-
 @import './app/add-dive-segment/add-dive-segment.component.theme.scss';
 @include add-dive-segment-theme($theme);
 
@@ -56,6 +53,9 @@ $theme: mat.define-light-theme((
 
 @import './app/tissues-pn2-chart/tissues-pn2-chart.component.theme.scss';
 @include tissues-pn2-chart-theme($theme);
+
+@import './app/tissues-phe-chart/tissues-phe-chart.component.theme.scss';
+@include tissues-phe-chart-theme($theme);
 
 /* You can add global styles to this file, and also import other style files */
 

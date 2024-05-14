@@ -9,9 +9,6 @@
     <dive-po2-chart></dive-po2-chart>
     <dive-tissues-ceiling-chart></dive-tissues-ceiling-chart>
     <dive-tissues-pn2-chart></dive-tissues-pn2-chart>
-    <button (click)="onTissuesPHeChartClick()" class="graph mat-elevation-z2">
-      <div id="tissues-phe-chart" class="plotly-graph" [class]="getGraphClass()"></div>
-      <div *ngIf="!getShowGraphs()">Create dive segements to populate graphs</div>
-    </button>
+    <dive-tissues-phe-chart></dive-tissues-phe-chart>
   </div>
 </main>

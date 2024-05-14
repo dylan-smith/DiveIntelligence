@@ -1,4 +1,4 @@
-@mixin dive-overview-theme($theme) {
+@mixin tissues-phe-chart-theme($theme) {
   $color: map-get($theme, color);
   $background: map-get($color, background);
 
