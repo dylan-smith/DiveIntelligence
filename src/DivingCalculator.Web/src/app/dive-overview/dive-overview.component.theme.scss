@@ -1,14 +1,8 @@
 @mixin dive-overview-theme($theme) {
   $color: map-get($theme, color);
   $background: map-get($color, background);
-  $warn: map-get($color, warn);
 
   .graph {
     background-color: map-get($background, card);
-  }
-
-  .plan-error {
-    border-color: map-get($warn, error);
-    color: map-get($warn, error);
   }
 }

@@ -39,6 +39,9 @@ $theme: mat.define-light-theme((
 @import './app/dive-summary/dive-summary.component.theme.scss';
 @include dive-summary-theme($theme);
 
+@import './app/error-list/error-list.component.theme.scss';
+@include error-list-theme($theme);
+
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }

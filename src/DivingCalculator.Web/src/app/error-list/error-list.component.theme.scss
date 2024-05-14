@@ -1,0 +1,9 @@
+@mixin error-list-theme($theme) {
+  $color: map-get($theme, color);
+  $warn: map-get($color, warn);
+
+  .plan-error {
+    border-color: map-get($warn, error);
+    color: map-get($warn, error);
+  }
+}

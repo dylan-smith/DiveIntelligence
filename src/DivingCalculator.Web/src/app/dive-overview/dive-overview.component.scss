@@ -6,6 +6,8 @@ main {
 .dive-plan-section {
   display: flex;
   flex-direction: column;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .graph {
@@ -21,25 +23,6 @@ main {
 .plotly-graph {
   width: 100%;
   height: 100%;
-}
-
-.plan-error {
-  border-width: 2px;
-  border-style: solid;
-  padding: 0.3rem;
-  margin-bottom: 1rem;
-  width: fit-content;
-}
-
-.errors {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  margin-left: 1rem;
-}
-
-.dive-plan-section {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
 }
 
 .graphs {

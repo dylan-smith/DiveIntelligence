@@ -4,33 +4,7 @@
     <dive-dive-summary></dive-dive-summary>
   </div>
   <div class="graphs">
-    <div class="errors">
-      <div class="plan-error" *ngIf="showCeilingError()">
-        <mat-icon>error</mat-icon>
-        <strong class="error-message">
-          Exceeded ceiling by up to {{ getCeilingErrorAmount() | number: '1.1-1' }}m for {{ getCeilingErrorDuration() | humanDuration }}
-        </strong>
-      </div>
-      <div class="plan-error" *ngIf="showPO2Error()">
-        <mat-icon>error</mat-icon>
-        <strong class="error-message">
-          Exceeded safe PO2 for {{ getPO2ErrorDuration() | humanDuration }}, up to PO2 = {{ getPO2ErrorAmount() | number: '1.2-2' }}
-        </strong>
-      </div>
-      <div class="plan-error" *ngIf="showHypoxicError()">
-        <mat-icon>error</mat-icon>
-        <strong class="error-message">
-          Hypoxic gas as low as {{ getHypoxicErrorAmount() | number: '1.3-3' }} for {{ getHypoxicErrorDuration() | humanDuration }}
-        </strong>
-      </div>
-      <div class="plan-error" *ngIf="showENDError()">
-        <mat-icon>error</mat-icon>
-        <strong class="error-message">
-          <!-- eslint-disable-next-line prettier/prettier -->
-          END as deep as {{ getENDErrorAmount() | number: '1.1-1' }}m for {{ getENDErrorDuration() | humanDuration }}
-        </strong>
-      </div>
-    </div>
+    <dive-error-list></dive-error-list>
     <button (click)="onDepthChartClick()" class="graph mat-elevation-z2">
       <div id="depth-chart" class="plotly-graph" [class]="getGraphClass()"></div>
       <div *ngIf="!getShowGraphs()">Create dive segements to populate graphs</div>
