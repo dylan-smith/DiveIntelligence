@@ -9,6 +9,7 @@ import { NewDiveComponent } from './new-dive/new-dive.component';
 import { HomeComponent } from './home/home.component';
 import { DiveOverviewComponent } from './dive-overview/dive-overview.component';
 import { DivePlanComponent } from './dive-plan/dive-plan.component';
+import { DiveSummaryComponent } from './dive-summary/dive-summary.component';
 import { HumanDurationPipe } from './pipes/human-duration.pipe';
 import { ColonDurationPipe } from './pipes/colon-duration.pipe';
 
@@ -35,6 +36,7 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
     HomeComponent,
     DiveOverviewComponent,
     DivePlanComponent,
+    DiveSummaryComponent,
     HumanDurationPipe,
     ColonDurationPipe,
     AddDiveSegmentComponent,

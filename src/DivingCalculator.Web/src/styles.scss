@@ -33,6 +33,12 @@ $theme: mat.define-light-theme((
 @import './app/add-dive-segment/add-dive-segment.component.theme.scss';
 @include add-dive-segment-theme($theme);
 
+@import './app/dive-plan/dive-plan.component.theme.scss';
+@include dive-plan-theme($theme);
+
+@import './app/dive-summary/dive-summary.component.theme.scss';
+@include dive-summary-theme($theme);
+
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }

@@ -7,10 +7,6 @@
     background-color: map-get($background, card);
   }
 
-  .dive-stats {
-    background-color: map-get($background, card);
-  }
-
   .plan-error {
     border-color: map-get($warn, error);
     color: map-get($warn, error);

@@ -1,20 +1,7 @@
 <main>
   <div class="dive-plan-section">
     <dive-dive-plan></dive-dive-plan>
-    <div class="dive-stats mat-elevation-z2">
-      <div class="dive-stat">
-        Dive Duration:
-        <strong>{{ divePlanner.getDiveDuration() | humanDuration }}</strong>
-      </div>
-      <div class="dive-stat">
-        Max Depth:
-        <strong>{{ divePlanner.getMaxDepth() }}m</strong>
-      </div>
-      <div class="dive-stat">
-        Average Depth:
-        <strong>{{ divePlanner.getAverageDepth() | number: '1.0-0' }}m</strong>
-      </div>
-    </div>
+    <dive-dive-summary></dive-dive-summary>
   </div>
   <div class="graphs">
     <div class="errors">
