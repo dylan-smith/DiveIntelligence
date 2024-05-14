@@ -15,6 +15,7 @@ import { DepthChartComponent } from './depth-chart/depth-chart.component';
 import { PO2ChartComponent } from './po2-chart/po2-chart.component';
 import { ENDChartComponent } from './end-chart/end-chart.component';
 import { TissuesCeilingChartComponent } from './tissues-ceiling-chart/tissues-ceiling-chart.component';
+import { TissuesPN2ChartComponent } from './tissues-pn2-chart/tissues-pn2-chart.component';
 import { HumanDurationPipe } from './pipes/human-duration.pipe';
 import { ColonDurationPipe } from './pipes/colon-duration.pipe';
 
@@ -47,6 +48,7 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
     PO2ChartComponent,
     ENDChartComponent,
     TissuesCeilingChartComponent,
+    TissuesPN2ChartComponent,
     HumanDurationPipe,
     ColonDurationPipe,
     AddDiveSegmentComponent,

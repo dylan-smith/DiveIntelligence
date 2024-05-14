@@ -54,6 +54,9 @@ $theme: mat.define-light-theme((
 @import './app/tissues-ceiling-chart/tissues-ceiling-chart.component.theme.scss';
 @include tissues-ceiling-chart-theme($theme);
 
+@import './app/tissues-pn2-chart/tissues-pn2-chart.component.theme.scss';
+@include tissues-pn2-chart-theme($theme);
+
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }

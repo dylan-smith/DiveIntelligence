@@ -1,0 +1,8 @@
+@mixin tissues-pn2-chart-theme($theme) {
+  $color: map-get($theme, color);
+  $background: map-get($color, background);
+
+  .graph {
+    background-color: map-get($background, card);
+  }
+}
