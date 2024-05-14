@@ -24,80 +24,10 @@ export class DiveOverviewComponent implements OnInit {
   }
 
   private drawCharts(): void {
-    Plotly.newPlot('po2-chart', this.getPO2ChartData(), this.getPO2ChartLayout(), this.getChartOptions());
     Plotly.newPlot('end-chart', this.getENDChartData(), this.getENDChartLayout(), this.getChartOptions());
     Plotly.newPlot('tissues-ceiling-chart', this.getTissuesCeilingChartData(), this.getTissuesCeilingChartLayout(), this.getChartOptions());
     Plotly.newPlot('tissues-pn2-chart', this.getTissuesPN2ChartData(), this.getTissuesPN2ChartLayout(), this.getChartOptions());
     Plotly.newPlot('tissues-phe-chart', this.getTissuesPHeChartData(), this.getTissuesPHeChartLayout(), this.getChartOptions());
-  }
-
-  public getPO2ChartData(): Plotly.Data[] {
-    const pO2Data = this.divePlanner.getPO2ChartData();
-    const x = pO2Data.map(d => new Date(1970, 1, 1, 0, 0, d.time, 0));
-    const y = pO2Data.map(d => d.pO2);
-    const limit = pO2Data.map(d => d.limit);
-    const decoLimit = pO2Data.map(d => d.decoLimit);
-    const minLimit = pO2Data.map(d => d.min);
-
-    return [
-      {
-        x,
-        y,
-        type: 'scatter',
-        mode: 'lines',
-        name: 'PO2',
-        line: {
-          color: this.PRIMARY_COLOR,
-          width: 5,
-        },
-        hovertemplate: `%{y:.2f}`,
-      },
-      {
-        x,
-        y: minLimit,
-        type: 'scatter',
-        mode: 'lines',
-        name: 'Min Limit (Hypoxia)',
-        marker: {
-          color: this.ERROR_COLOR,
-        },
-        line: {
-          dash: 'dot',
-          width: 2,
-        },
-        hovertemplate: `%{y:.2f}`,
-      },
-      {
-        x,
-        y: limit,
-        type: 'scatter',
-        mode: 'lines',
-        name: 'Working Limit',
-        marker: {
-          color: this.WARNING_COLOR,
-        },
-        line: {
-          dash: 'dot',
-          width: 2,
-        },
-        hovertemplate: `%{y:.2f}`,
-      },
-      {
-        x,
-        y: decoLimit,
-        type: 'scatter',
-        mode: 'lines',
-        name: 'Deco Limit',
-        marker: {
-          color: this.ERROR_COLOR,
-        },
-        line: {
-          dash: 'dot',
-          width: 2,
-        },
-        hovertemplate: `%{y:.2f}`,
-      },
-    ];
   }
 
   public getENDChartData(): Plotly.Data[] {
@@ -248,32 +178,6 @@ export class DiveOverviewComponent implements OnInit {
     ];
   }
 
-  public getPO2ChartLayout(): Partial<Plotly.Layout> {
-    return {
-      autosize: true,
-      showlegend: false,
-      title: {
-        text: 'Gas PO2',
-        y: 0.98,
-      },
-      margin: { l: 35, r: 10, b: 30, t: 20, pad: 10 },
-      xaxis: {
-        fixedrange: true,
-        tickformat: '%H:%M:%S',
-      },
-      yaxis: {
-        fixedrange: true,
-        rangemode: 'tozero',
-        zeroline: false,
-      },
-      hovermode: 'x unified',
-      hoverlabel: {
-        bgcolor: 'rgba(200, 200, 200, 0.4)',
-        bordercolor: 'rgba(200, 200, 200, 0.4)',
-      },
-    };
-  }
-
   public getENDChartLayout(): Partial<Plotly.Layout> {
     return {
       autosize: true,
@@ -394,16 +298,6 @@ export class DiveOverviewComponent implements OnInit {
 
   public getGraphClass(): string {
     return this.getShowGraphs() ? '' : 'hidden';
-  }
-
-  public onPO2ChartClick(): void {
-    if (this.getShowGraphs()) {
-      this.dialog.open(GraphDialogComponent, {
-        data: { trace: this.getPO2ChartData(), layout: this.getPO2ChartLayout(), options: this.getChartOptions() },
-        height: '80%',
-        width: '80%',
-      });
-    }
   }
 
   public onENDChartClick(): void {

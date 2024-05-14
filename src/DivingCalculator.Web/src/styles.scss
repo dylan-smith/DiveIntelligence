@@ -42,6 +42,12 @@ $theme: mat.define-light-theme((
 @import './app/error-list/error-list.component.theme.scss';
 @include error-list-theme($theme);
 
+@import './app/depth-chart/depth-chart.component.theme.scss';
+@include depth-chart-theme($theme);
+
+@import './app/po2-chart/po2-chart.component.theme.scss';
+@include po2-chart-theme($theme);
+
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }

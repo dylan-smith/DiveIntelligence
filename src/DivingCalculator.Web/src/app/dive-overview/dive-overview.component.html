@@ -6,10 +6,7 @@
   <div class="graphs">
     <dive-error-list></dive-error-list>
     <dive-depth-chart></dive-depth-chart>
-    <button (click)="onPO2ChartClick()" class="graph mat-elevation-z2">
-      <div id="po2-chart" class="plotly-graph" [class]="getGraphClass()"></div>
-      <div *ngIf="!getShowGraphs()">Create dive segements to populate graphs</div>
-    </button>
+    <dive-po2-chart></dive-po2-chart>
     <button (click)="onENDChartClick()" class="graph mat-elevation-z2">
       <div id="end-chart" class="plotly-graph" [class]="getGraphClass()"></div>
       <div *ngIf="!getShowGraphs()">Create dive segements to populate graphs</div>
