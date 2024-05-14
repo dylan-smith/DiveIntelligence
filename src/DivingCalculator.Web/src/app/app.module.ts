@@ -13,6 +13,7 @@ import { DiveSummaryComponent } from './dive-summary/dive-summary.component';
 import { ErrorListComponent } from './error-list/error-list.component';
 import { DepthChartComponent } from './depth-chart/depth-chart.component';
 import { PO2ChartComponent } from './po2-chart/po2-chart.component';
+import { ENDChartComponent } from './end-chart/end-chart.component';
 import { HumanDurationPipe } from './pipes/human-duration.pipe';
 import { ColonDurationPipe } from './pipes/colon-duration.pipe';
 
@@ -43,6 +44,7 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
     ErrorListComponent,
     DepthChartComponent,
     PO2ChartComponent,
+    ENDChartComponent,
     HumanDurationPipe,
     ColonDurationPipe,
     AddDiveSegmentComponent,

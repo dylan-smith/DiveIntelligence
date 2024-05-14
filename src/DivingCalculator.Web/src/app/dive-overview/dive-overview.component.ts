@@ -24,47 +24,9 @@ export class DiveOverviewComponent implements OnInit {
   }
 
   private drawCharts(): void {
-    Plotly.newPlot('end-chart', this.getENDChartData(), this.getENDChartLayout(), this.getChartOptions());
     Plotly.newPlot('tissues-ceiling-chart', this.getTissuesCeilingChartData(), this.getTissuesCeilingChartLayout(), this.getChartOptions());
     Plotly.newPlot('tissues-pn2-chart', this.getTissuesPN2ChartData(), this.getTissuesPN2ChartLayout(), this.getChartOptions());
     Plotly.newPlot('tissues-phe-chart', this.getTissuesPHeChartData(), this.getTissuesPHeChartLayout(), this.getChartOptions());
-  }
-
-  public getENDChartData(): Plotly.Data[] {
-    const endData = this.divePlanner.getENDChartData();
-    const x = endData.map(d => new Date(1970, 1, 1, 0, 0, d.time, 0));
-    const y = endData.map(d => d.end);
-    const errorLimit = endData.map(d => d.errorLimit);
-
-    return [
-      {
-        x,
-        y,
-        type: 'scatter',
-        mode: 'lines',
-        name: 'END',
-        line: {
-          color: this.PRIMARY_COLOR,
-          width: 5,
-        },
-        hovertemplate: `%{y:.0f}m`,
-      },
-      {
-        x,
-        y: errorLimit,
-        type: 'scatter',
-        mode: 'lines',
-        name: 'Error Limit',
-        marker: {
-          color: this.ERROR_COLOR,
-        },
-        line: {
-          dash: 'dot',
-          width: 2,
-        },
-        hovertemplate: `%{y:.0f}m`,
-      },
-    ];
   }
 
   public getTissuesCeilingChartData(): Plotly.Data[] {
@@ -178,32 +140,6 @@ export class DiveOverviewComponent implements OnInit {
     ];
   }
 
-  public getENDChartLayout(): Partial<Plotly.Layout> {
-    return {
-      autosize: true,
-      showlegend: false,
-      title: {
-        text: 'Equivalent Narcotic Depth',
-        y: 0.98,
-      },
-      margin: { l: 35, r: 10, b: 30, t: 20, pad: 10 },
-      xaxis: {
-        fixedrange: true,
-        tickformat: '%H:%M:%S',
-      },
-      yaxis: {
-        fixedrange: true,
-        rangemode: 'tozero',
-        zeroline: false,
-      },
-      hovermode: 'x unified',
-      hoverlabel: {
-        bgcolor: 'rgba(200, 200, 200, 0.4)',
-        bordercolor: 'rgba(200, 200, 200, 0.4)',
-      },
-    };
-  }
-
   public getTissuesCeilingChartLayout(): Partial<Plotly.Layout> {
     return {
       autosize: true,
@@ -298,16 +234,6 @@ export class DiveOverviewComponent implements OnInit {
 
   public getGraphClass(): string {
     return this.getShowGraphs() ? '' : 'hidden';
-  }
-
-  public onENDChartClick(): void {
-    if (this.getShowGraphs()) {
-      this.dialog.open(GraphDialogComponent, {
-        data: { trace: this.getENDChartData(), layout: this.getENDChartLayout(), options: this.getChartOptions() },
-        height: '80%',
-        width: '80%',
-      });
-    }
   }
 
   public onTissuesCeilingChartClick(): void {

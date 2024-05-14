@@ -7,10 +7,7 @@
     <dive-error-list></dive-error-list>
     <dive-depth-chart></dive-depth-chart>
     <dive-po2-chart></dive-po2-chart>
-    <button (click)="onENDChartClick()" class="graph mat-elevation-z2">
-      <div id="end-chart" class="plotly-graph" [class]="getGraphClass()"></div>
-      <div *ngIf="!getShowGraphs()">Create dive segements to populate graphs</div>
-    </button>
+
     <button (click)="onTissuesCeilingChartClick()" class="graph mat-elevation-z2">
       <div id="tissues-ceiling-chart" class="plotly-graph" [class]="getGraphClass()"></div>
       <div *ngIf="!getShowGraphs()">Create dive segements to populate graphs</div>
