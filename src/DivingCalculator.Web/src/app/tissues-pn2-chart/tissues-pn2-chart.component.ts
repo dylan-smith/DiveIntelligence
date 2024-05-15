@@ -23,7 +23,25 @@ export class TissuesPN2ChartComponent implements OnInit {
     Plotly.newPlot('tissues-pn2-chart', this.getTissuesPN2ChartData(), this.getTissuesPN2ChartLayout(), this.getChartOptions());
   }
 
-  public getTissuesPN2ChartData(): Plotly.Data[] {
+  onTissuesPN2ChartClick(): void {
+    if (this.getShowGraphs()) {
+      this.dialog.open(GraphDialogComponent, {
+        data: { trace: this.getTissuesPN2ChartData(), layout: this.getTissuesPN2ChartLayout(), options: this.getChartOptions() },
+        height: '80%',
+        width: '80%',
+      });
+    }
+  }
+
+  getShowGraphs(): boolean {
+    return this.divePlanner.getDiveSegments().length > 2;
+  }
+
+  getGraphClass(): string {
+    return this.getShowGraphs() ? '' : 'hidden';
+  }
+
+  private getTissuesPN2ChartData(): Plotly.Data[] {
     const ceilingData = this.divePlanner.getTissuesPN2ChartData();
     const x = ceilingData.map(d => new Date(1970, 1, 1, 0, 0, d.time, 0));
 
@@ -60,7 +78,7 @@ export class TissuesPN2ChartComponent implements OnInit {
     ];
   }
 
-  public getTissuesPN2ChartLayout(): Partial<Plotly.Layout> {
+  private getTissuesPN2ChartLayout(): Partial<Plotly.Layout> {
     return {
       autosize: true,
       showlegend: false,
@@ -86,17 +104,7 @@ export class TissuesPN2ChartComponent implements OnInit {
     };
   }
 
-  public onTissuesPN2ChartClick(): void {
-    if (this.getShowGraphs()) {
-      this.dialog.open(GraphDialogComponent, {
-        data: { trace: this.getTissuesPN2ChartData(), layout: this.getTissuesPN2ChartLayout(), options: this.getChartOptions() },
-        height: '80%',
-        width: '80%',
-      });
-    }
-  }
-
-  public getChartOptions(): Partial<Plotly.Config> {
+  private getChartOptions(): Partial<Plotly.Config> {
     return {
       responsive: true,
       displaylogo: false,
@@ -105,13 +113,5 @@ export class TissuesPN2ChartComponent implements OnInit {
       scrollZoom: false,
       editable: false,
     };
-  }
-
-  public getShowGraphs(): boolean {
-    return this.divePlanner.getDiveSegments().length > 2;
-  }
-
-  public getGraphClass(): string {
-    return this.getShowGraphs() ? '' : 'hidden';
   }
 }

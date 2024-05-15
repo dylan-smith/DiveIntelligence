@@ -23,7 +23,25 @@ export class PO2ChartComponent implements OnInit {
     Plotly.newPlot('po2-chart', this.getPO2ChartData(), this.getPO2ChartLayout(), this.getChartOptions());
   }
 
-  public getPO2ChartData(): Plotly.Data[] {
+  onPO2ChartClick(): void {
+    if (this.getShowGraphs()) {
+      this.dialog.open(GraphDialogComponent, {
+        data: { trace: this.getPO2ChartData(), layout: this.getPO2ChartLayout(), options: this.getChartOptions() },
+        height: '80%',
+        width: '80%',
+      });
+    }
+  }
+
+  getShowGraphs(): boolean {
+    return this.divePlanner.getDiveSegments().length > 2;
+  }
+
+  getGraphClass(): string {
+    return this.getShowGraphs() ? '' : 'hidden';
+  }
+
+  private getPO2ChartData(): Plotly.Data[] {
     const pO2Data = this.divePlanner.getPO2ChartData();
     const x = pO2Data.map(d => new Date(1970, 1, 1, 0, 0, d.time, 0));
     const y = pO2Data.map(d => d.pO2);
@@ -92,7 +110,7 @@ export class PO2ChartComponent implements OnInit {
     ];
   }
 
-  public getPO2ChartLayout(): Partial<Plotly.Layout> {
+  private getPO2ChartLayout(): Partial<Plotly.Layout> {
     return {
       autosize: true,
       showlegend: false,
@@ -118,17 +136,7 @@ export class PO2ChartComponent implements OnInit {
     };
   }
 
-  public onPO2ChartClick(): void {
-    if (this.getShowGraphs()) {
-      this.dialog.open(GraphDialogComponent, {
-        data: { trace: this.getPO2ChartData(), layout: this.getPO2ChartLayout(), options: this.getChartOptions() },
-        height: '80%',
-        width: '80%',
-      });
-    }
-  }
-
-  public getChartOptions(): Partial<Plotly.Config> {
+  private getChartOptions(): Partial<Plotly.Config> {
     return {
       responsive: true,
       displaylogo: false,
@@ -137,13 +145,5 @@ export class PO2ChartComponent implements OnInit {
       scrollZoom: false,
       editable: false,
     };
-  }
-
-  public getShowGraphs(): boolean {
-    return this.divePlanner.getDiveSegments().length > 2;
-  }
-
-  public getGraphClass(): string {
-    return this.getShowGraphs() ? '' : 'hidden';
   }
 }

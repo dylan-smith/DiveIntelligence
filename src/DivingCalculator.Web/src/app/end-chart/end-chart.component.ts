@@ -11,7 +11,6 @@ import { GraphDialogComponent } from '../graph-dialog/graph-dialog.component';
 })
 export class ENDChartComponent implements OnInit {
   private readonly ERROR_COLOR = 'red';
-  private readonly WARNING_COLOR = 'orange';
   private readonly PRIMARY_COLOR = '#3F51B5'; // Indigo 500
 
   constructor(
@@ -23,7 +22,26 @@ export class ENDChartComponent implements OnInit {
     Plotly.newPlot('end-chart', this.getENDChartData(), this.getENDChartLayout(), this.getChartOptions());
   }
 
-  public getENDChartData(): Plotly.Data[] {
+  onENDChartClick(): void {
+    if (this.getShowGraphs()) {
+      this.dialog.open(GraphDialogComponent, {
+        data: { trace: this.getENDChartData(), layout: this.getENDChartLayout(), options: this.getChartOptions() },
+        height: '80%',
+        width: '80%',
+      });
+    }
+  }
+
+  getShowGraphs(): boolean {
+    return this.divePlanner.getDiveSegments().length > 2;
+  }
+
+  getGraphClass(): string {
+    return this.getShowGraphs() ? '' : 'hidden';
+  }
+
+  // TODO: memoize the result
+  private getENDChartData(): Plotly.Data[] {
     const endData = this.divePlanner.getENDChartData();
     const x = endData.map(d => new Date(1970, 1, 1, 0, 0, d.time, 0));
     const y = endData.map(d => d.end);
@@ -60,7 +78,7 @@ export class ENDChartComponent implements OnInit {
     ];
   }
 
-  public getENDChartLayout(): Partial<Plotly.Layout> {
+  private getENDChartLayout(): Partial<Plotly.Layout> {
     return {
       autosize: true,
       showlegend: false,
@@ -86,17 +104,7 @@ export class ENDChartComponent implements OnInit {
     };
   }
 
-  public onENDChartClick(): void {
-    if (this.getShowGraphs()) {
-      this.dialog.open(GraphDialogComponent, {
-        data: { trace: this.getENDChartData(), layout: this.getENDChartLayout(), options: this.getChartOptions() },
-        height: '80%',
-        width: '80%',
-      });
-    }
-  }
-
-  public getChartOptions(): Partial<Plotly.Config> {
+  private getChartOptions(): Partial<Plotly.Config> {
     return {
       responsive: true,
       displaylogo: false,
@@ -105,13 +113,5 @@ export class ENDChartComponent implements OnInit {
       scrollZoom: false,
       editable: false,
     };
-  }
-
-  public getShowGraphs(): boolean {
-    return this.divePlanner.getDiveSegments().length > 2;
-  }
-
-  public getGraphClass(): string {
-    return this.getShowGraphs() ? '' : 'hidden';
   }
 }

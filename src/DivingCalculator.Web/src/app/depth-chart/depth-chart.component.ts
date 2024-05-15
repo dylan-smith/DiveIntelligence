@@ -22,7 +22,25 @@ export class DepthChartComponent implements OnInit {
     Plotly.newPlot('depth-chart', this.getDepthChartData(), this.getDepthChartLayout(), this.getChartOptions());
   }
 
-  public getDepthChartData(): Plotly.Data[] {
+  onDepthChartClick(): void {
+    if (this.getShowGraphs()) {
+      this.dialog.open(GraphDialogComponent, {
+        data: { trace: this.getDepthChartData(), layout: this.getDepthChartLayout(), options: this.getChartOptions() },
+        height: '80%',
+        width: '80%',
+      });
+    }
+  }
+
+  getShowGraphs(): boolean {
+    return this.divePlanner.getDiveSegments().length > 2;
+  }
+
+  getGraphClass(): string {
+    return this.getShowGraphs() ? '' : 'hidden';
+  }
+
+  private getDepthChartData(): Plotly.Data[] {
     const depthData = this.divePlanner.getDepthChartData();
     const x = depthData.map(d => new Date(1970, 1, 1, 0, 0, d.time, 0));
     const y = depthData.map(d => d.depth);
@@ -60,7 +78,7 @@ export class DepthChartComponent implements OnInit {
     ];
   }
 
-  public getDepthChartLayout(): Partial<Plotly.Layout> {
+  private getDepthChartLayout(): Partial<Plotly.Layout> {
     return {
       autosize: true,
       showlegend: false,
@@ -85,25 +103,7 @@ export class DepthChartComponent implements OnInit {
     };
   }
 
-  public onDepthChartClick(): void {
-    if (this.getShowGraphs()) {
-      this.dialog.open(GraphDialogComponent, {
-        data: { trace: this.getDepthChartData(), layout: this.getDepthChartLayout(), options: this.getChartOptions() },
-        height: '80%',
-        width: '80%',
-      });
-    }
-  }
-
-  public getShowGraphs(): boolean {
-    return this.divePlanner.getDiveSegments().length > 2;
-  }
-
-  public getGraphClass(): string {
-    return this.getShowGraphs() ? '' : 'hidden';
-  }
-
-  public getChartOptions(): Partial<Plotly.Config> {
+  private getChartOptions(): Partial<Plotly.Config> {
     return {
       responsive: true,
       displaylogo: false,
