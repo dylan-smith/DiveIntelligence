@@ -41,73 +41,79 @@ export class PO2ChartComponent implements OnInit {
     return this.getShowGraphs() ? '' : 'hidden';
   }
 
-  private getPO2ChartData(): Plotly.Data[] {
-    const pO2Data = this.divePlanner.getPO2ChartData();
-    const x = pO2Data.map(d => new Date(1970, 1, 1, 0, 0, d.time, 0));
-    const y = pO2Data.map(d => d.pO2);
-    const limit = pO2Data.map(d => d.limit);
-    const decoLimit = pO2Data.map(d => d.decoLimit);
-    const minLimit = pO2Data.map(d => d.min);
+  private chartData: Plotly.Data[] | null = null;
 
-    return [
-      {
-        x,
-        y,
-        type: 'scatter',
-        mode: 'lines',
-        name: 'PO2',
-        line: {
-          color: this.PRIMARY_COLOR,
-          width: 5,
+  private getPO2ChartData(): Plotly.Data[] {
+    if (!this.chartData) {
+      const pO2Data = this.divePlanner.getPO2ChartData();
+      const x = pO2Data.map(d => new Date(1970, 1, 1, 0, 0, d.time, 0));
+      const y = pO2Data.map(d => d.pO2);
+      const limit = pO2Data.map(d => d.limit);
+      const decoLimit = pO2Data.map(d => d.decoLimit);
+      const minLimit = pO2Data.map(d => d.min);
+
+      this.chartData = [
+        {
+          x,
+          y,
+          type: 'scatter',
+          mode: 'lines',
+          name: 'PO2',
+          line: {
+            color: this.PRIMARY_COLOR,
+            width: 5,
+          },
+          hovertemplate: `%{y:.2f}`,
         },
-        hovertemplate: `%{y:.2f}`,
-      },
-      {
-        x,
-        y: minLimit,
-        type: 'scatter',
-        mode: 'lines',
-        name: 'Min Limit (Hypoxia)',
-        marker: {
-          color: this.ERROR_COLOR,
+        {
+          x,
+          y: minLimit,
+          type: 'scatter',
+          mode: 'lines',
+          name: 'Min Limit (Hypoxia)',
+          marker: {
+            color: this.ERROR_COLOR,
+          },
+          line: {
+            dash: 'dot',
+            width: 2,
+          },
+          hovertemplate: `%{y:.2f}`,
         },
-        line: {
-          dash: 'dot',
-          width: 2,
+        {
+          x,
+          y: limit,
+          type: 'scatter',
+          mode: 'lines',
+          name: 'Working Limit',
+          marker: {
+            color: this.WARNING_COLOR,
+          },
+          line: {
+            dash: 'dot',
+            width: 2,
+          },
+          hovertemplate: `%{y:.2f}`,
         },
-        hovertemplate: `%{y:.2f}`,
-      },
-      {
-        x,
-        y: limit,
-        type: 'scatter',
-        mode: 'lines',
-        name: 'Working Limit',
-        marker: {
-          color: this.WARNING_COLOR,
+        {
+          x,
+          y: decoLimit,
+          type: 'scatter',
+          mode: 'lines',
+          name: 'Deco Limit',
+          marker: {
+            color: this.ERROR_COLOR,
+          },
+          line: {
+            dash: 'dot',
+            width: 2,
+          },
+          hovertemplate: `%{y:.2f}`,
         },
-        line: {
-          dash: 'dot',
-          width: 2,
-        },
-        hovertemplate: `%{y:.2f}`,
-      },
-      {
-        x,
-        y: decoLimit,
-        type: 'scatter',
-        mode: 'lines',
-        name: 'Deco Limit',
-        marker: {
-          color: this.ERROR_COLOR,
-        },
-        line: {
-          dash: 'dot',
-          width: 2,
-        },
-        hovertemplate: `%{y:.2f}`,
-      },
-    ];
+      ];
+    }
+
+    return this.chartData;
   }
 
   private getPO2ChartLayout(): Partial<Plotly.Layout> {

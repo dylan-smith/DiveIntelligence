@@ -40,42 +40,48 @@ export class DepthChartComponent implements OnInit {
     return this.getShowGraphs() ? '' : 'hidden';
   }
 
-  private getDepthChartData(): Plotly.Data[] {
-    const depthData = this.divePlanner.getDepthChartData();
-    const x = depthData.map(d => new Date(1970, 1, 1, 0, 0, d.time, 0));
-    const y = depthData.map(d => d.depth);
-    const y2 = depthData.map(d => d.ceiling);
+  private chartData: Plotly.Data[] | null = null;
 
-    return [
-      {
-        x,
-        y,
-        type: 'scatter',
-        mode: 'lines',
-        name: 'Depth',
-        line: {
-          color: this.PRIMARY_COLOR,
-          width: 5,
+  private getDepthChartData(): Plotly.Data[] {
+    if (!this.chartData) {
+      const depthData = this.divePlanner.getDepthChartData();
+      const x = depthData.map(d => new Date(1970, 1, 1, 0, 0, d.time, 0));
+      const y = depthData.map(d => d.depth);
+      const y2 = depthData.map(d => d.ceiling);
+
+      this.chartData = [
+        {
+          x,
+          y,
+          type: 'scatter',
+          mode: 'lines',
+          name: 'Depth',
+          line: {
+            color: this.PRIMARY_COLOR,
+            width: 5,
+          },
+          hovertemplate: `%{y:.0f}m`,
         },
-        hovertemplate: `%{y:.0f}m`,
-      },
-      {
-        x,
-        y: y2,
-        type: 'scatter',
-        mode: 'lines',
-        name: 'Ceiling',
-        fill: 'tozeroy',
-        marker: {
-          color: this.ERROR_COLOR,
+        {
+          x,
+          y: y2,
+          type: 'scatter',
+          mode: 'lines',
+          name: 'Ceiling',
+          fill: 'tozeroy',
+          marker: {
+            color: this.ERROR_COLOR,
+          },
+          line: {
+            dash: 'dot',
+            width: 0,
+          },
+          hovertemplate: `%{y:.0f}m`,
         },
-        line: {
-          dash: 'dot',
-          width: 0,
-        },
-        hovertemplate: `%{y:.0f}m`,
-      },
-    ];
+      ];
+    }
+
+    return this.chartData;
   }
 
   private getDepthChartLayout(): Partial<Plotly.Layout> {

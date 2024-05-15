@@ -39,41 +39,47 @@ export class TissuesCeilingChartComponent implements OnInit {
     return this.getShowGraphs() ? '' : 'hidden';
   }
 
+  private chartData: Plotly.Data[] | null = null;
+
   private getTissuesCeilingChartData(): Plotly.Data[] {
-    const ceilingData = this.divePlanner.getTissuesCeilingChartData();
-    const x = ceilingData.map(d => new Date(1970, 1, 1, 0, 0, d.time, 0));
+    if (!this.chartData) {
+      const ceilingData = this.divePlanner.getTissuesCeilingChartData();
+      const x = ceilingData.map(d => new Date(1970, 1, 1, 0, 0, d.time, 0));
 
-    const ceilingTraces: Plotly.Data[] = [];
+      const ceilingTraces: Plotly.Data[] = [];
 
-    for (let i = 1; i <= 16; i++) {
-      ceilingTraces.push({
-        x,
-        y: ceilingData.map(d => d.tissuesCeiling[i - 1]),
-        type: 'scatter',
-        mode: 'lines',
-        name: `Tissue ${i} Ceiling`,
-        line: {
-          width: 2,
+      for (let i = 1; i <= 16; i++) {
+        ceilingTraces.push({
+          x,
+          y: ceilingData.map(d => d.tissuesCeiling[i - 1]),
+          type: 'scatter',
+          mode: 'lines',
+          name: `Tissue ${i} Ceiling`,
+          line: {
+            width: 2,
+          },
+          hovertemplate: `%{y:.0f}m`,
+        });
+      }
+
+      this.chartData = [
+        {
+          x,
+          y: ceilingData.map(d => d.depth),
+          type: 'scatter',
+          mode: 'lines',
+          name: 'Depth',
+          line: {
+            color: this.PRIMARY_COLOR,
+            width: 5,
+          },
+          hovertemplate: `%{y:.0f}m`,
         },
-        hovertemplate: `%{y:.0f}m`,
-      });
+        ...ceilingTraces,
+      ];
     }
 
-    return [
-      {
-        x,
-        y: ceilingData.map(d => d.depth),
-        type: 'scatter',
-        mode: 'lines',
-        name: 'Depth',
-        line: {
-          color: this.PRIMARY_COLOR,
-          width: 5,
-        },
-        hovertemplate: `%{y:.0f}m`,
-      },
-      ...ceilingTraces,
-    ];
+    return this.chartData;
   }
 
   private getTissuesCeilingChartLayout(): Partial<Plotly.Layout> {

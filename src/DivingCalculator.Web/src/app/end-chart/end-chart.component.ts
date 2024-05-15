@@ -40,42 +40,47 @@ export class ENDChartComponent implements OnInit {
     return this.getShowGraphs() ? '' : 'hidden';
   }
 
-  // TODO: memoize the result
-  private getENDChartData(): Plotly.Data[] {
-    const endData = this.divePlanner.getENDChartData();
-    const x = endData.map(d => new Date(1970, 1, 1, 0, 0, d.time, 0));
-    const y = endData.map(d => d.end);
-    const errorLimit = endData.map(d => d.errorLimit);
+  private chartData: Plotly.Data[] | null = null;
 
-    return [
-      {
-        x,
-        y,
-        type: 'scatter',
-        mode: 'lines',
-        name: 'END',
-        line: {
-          color: this.PRIMARY_COLOR,
-          width: 5,
+  private getENDChartData(): Plotly.Data[] {
+    if (!this.chartData) {
+      const endData = this.divePlanner.getENDChartData();
+      const x = endData.map(d => new Date(1970, 1, 1, 0, 0, d.time, 0));
+      const y = endData.map(d => d.end);
+      const errorLimit = endData.map(d => d.errorLimit);
+
+      this.chartData = [
+        {
+          x,
+          y,
+          type: 'scatter',
+          mode: 'lines',
+          name: 'END',
+          line: {
+            color: this.PRIMARY_COLOR,
+            width: 5,
+          },
+          hovertemplate: `%{y:.0f}m`,
         },
-        hovertemplate: `%{y:.0f}m`,
-      },
-      {
-        x,
-        y: errorLimit,
-        type: 'scatter',
-        mode: 'lines',
-        name: 'Error Limit',
-        marker: {
-          color: this.ERROR_COLOR,
+        {
+          x,
+          y: errorLimit,
+          type: 'scatter',
+          mode: 'lines',
+          name: 'Error Limit',
+          marker: {
+            color: this.ERROR_COLOR,
+          },
+          line: {
+            dash: 'dot',
+            width: 2,
+          },
+          hovertemplate: `%{y:.0f}m`,
         },
-        line: {
-          dash: 'dot',
-          width: 2,
-        },
-        hovertemplate: `%{y:.0f}m`,
-      },
-    ];
+      ];
+    }
+
+    return this.chartData;
   }
 
   private getENDChartLayout(): Partial<Plotly.Layout> {

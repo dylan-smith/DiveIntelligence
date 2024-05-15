@@ -41,41 +41,47 @@ export class TissuesPN2ChartComponent implements OnInit {
     return this.getShowGraphs() ? '' : 'hidden';
   }
 
+  private chartData: Plotly.Data[] | null = null;
+
   private getTissuesPN2ChartData(): Plotly.Data[] {
-    const ceilingData = this.divePlanner.getTissuesPN2ChartData();
-    const x = ceilingData.map(d => new Date(1970, 1, 1, 0, 0, d.time, 0));
+    if (!this.chartData) {
+      const ceilingData = this.divePlanner.getTissuesPN2ChartData();
+      const x = ceilingData.map(d => new Date(1970, 1, 1, 0, 0, d.time, 0));
 
-    const tissueTraces: Plotly.Data[] = [];
+      const tissueTraces: Plotly.Data[] = [];
 
-    for (let i = 1; i <= 16; i++) {
-      tissueTraces.push({
-        x,
-        y: ceilingData.map(d => d.tissuesPN2[i - 1]),
-        type: 'scatter',
-        mode: 'lines',
-        name: `Tissue ${i} PN2`,
-        line: {
-          width: 2,
+      for (let i = 1; i <= 16; i++) {
+        tissueTraces.push({
+          x,
+          y: ceilingData.map(d => d.tissuesPN2[i - 1]),
+          type: 'scatter',
+          mode: 'lines',
+          name: `Tissue ${i} PN2`,
+          line: {
+            width: 2,
+          },
+          hovertemplate: `%{y:.2f}`,
+        });
+      }
+
+      this.chartData = [
+        {
+          x,
+          y: ceilingData.map(d => d.gasPN2),
+          type: 'scatter',
+          mode: 'lines',
+          name: 'Gas PN2',
+          line: {
+            color: this.PRIMARY_COLOR,
+            width: 5,
+          },
+          hovertemplate: `%{y:.2f}`,
         },
-        hovertemplate: `%{y:.2f}`,
-      });
+        ...tissueTraces,
+      ];
     }
 
-    return [
-      {
-        x,
-        y: ceilingData.map(d => d.gasPN2),
-        type: 'scatter',
-        mode: 'lines',
-        name: 'Gas PN2',
-        line: {
-          color: this.PRIMARY_COLOR,
-          width: 5,
-        },
-        hovertemplate: `%{y:.2f}`,
-      },
-      ...tissueTraces,
-    ];
+    return this.chartData;
   }
 
   private getTissuesPN2ChartLayout(): Partial<Plotly.Layout> {
