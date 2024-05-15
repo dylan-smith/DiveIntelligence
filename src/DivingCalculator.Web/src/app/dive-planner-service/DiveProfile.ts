@@ -89,15 +89,35 @@ export class DiveProfile {
 
     wipProfile.addSegment(this.diveSegmentFactory.createDepthChangeSegment(wipProfile.getTotalTime(), newDepth, newDepth, ndl, newGas));
 
-    let time = 0;
+    let minTime = 0;
+    let maxTime = 200;
 
-    // TODO: could use a binary search here for performance (instead of stepping 1 second at a time)
+    wipProfile.extendLastSegment(maxTime);
+
     while (wipProfile.canSurfaceWithoutStops()) {
-      time++;
-      wipProfile.extendLastSegment(1);
+      minTime = maxTime;
+      wipProfile.extendLastSegment(maxTime);
+      maxTime *= 2;
     }
 
-    return ndl + (time - 1);
+    maxTime--;
+    let time = Math.ceil((maxTime - minTime) / 2) + minTime;
+
+    wipProfile.shortenLastSegment(maxTime + 1 - time);
+
+    while (minTime < maxTime) {
+      if (wipProfile.canSurfaceWithoutStops()) {
+        minTime = time;
+        time = Math.ceil((maxTime - minTime) / 2) + minTime;
+        wipProfile.extendLastSegment(time - minTime);
+      } else {
+        maxTime = time - 1;
+        time = Math.ceil((maxTime - minTime) / 2) + minTime;
+        wipProfile.shortenLastSegment(maxTime + 1 - time);
+      }
+    }
+
+    return ndl + minTime;
   }
 
   // TODO: memoize this and only recalculate on the new segment bits
@@ -234,6 +254,13 @@ export class DiveProfile {
 
   private extendLastSegment(time: number): void {
     this.getLastSegment().EndTimestamp += time;
+    // TODO: can improve perf by not recalculating whole segment, just the last bit of time
+    this.algo.calculateForSegment(this.getLastSegment());
+  }
+
+  private shortenLastSegment(time: number): void {
+    this.getLastSegment().EndTimestamp -= time;
+    // TODO: can improve perf by not recalculating whole segment, just throwing away some of the values instead
     this.algo.calculateForSegment(this.getLastSegment());
   }
 
