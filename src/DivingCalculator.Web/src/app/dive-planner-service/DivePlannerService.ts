@@ -134,4 +134,21 @@ export class DivePlannerService {
   getENDError(): { end: number; duration: number } {
     return this.diveProfile.getENDError();
   }
+
+  getPO2WarningMessage(pO2: number): string | undefined {
+    if (pO2 > this.settings.workingPO2Maximum && pO2 <= this.settings.decoPO2Maximum)
+      return `Oxygen partial pressure should only go above ${this.settings.workingPO2Maximum} during deco stops`;
+    return undefined;
+  }
+
+  getPO2ErrorMessage(pO2: number): string | undefined {
+    if (pO2 > this.settings.decoPO2Maximum) return `Oxygen partial pressure should never go above ${this.settings.decoPO2Maximum}`;
+    if (pO2 < this.settings.pO2Minimum) return `Oxygen partial pressure should never go below ${this.settings.pO2Minimum}`;
+    return undefined;
+  }
+
+  getENDErrorMessage(END: number): string | undefined {
+    if (END > this.settings.ENDErrorThreshold) return this.settings.ENDErrorMessage;
+    return undefined;
+  }
 }

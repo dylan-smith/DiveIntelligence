@@ -1,0 +1,17 @@
+@mixin current-stats-theme($theme) {
+  $color: map-get($theme, color);
+  $warn: map-get($color, warn);
+  $background: map-get($color, background);
+
+  .current-stats {
+    background-color: map-get($background, card);
+  }
+
+  .warning-icon {
+    color: map-get($warn, warning);
+  }
+
+  .error-icon {
+    color: map-get($warn, error);
+  }
+}

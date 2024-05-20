@@ -4,59 +4,7 @@
       <div class="nav-line-1"></div>
       <div class="nav-line-2"></div>
     </div>
-    <div class="calculation-section mat-elevation-z2">
-      <div class="dive-stat">
-        Current Depth:
-        <strong>{{ currentDepth }}m</strong>
-      </div>
-      <div class="dive-stat">
-        <span
-          matTooltip="If you have no deco obligations so far this will be 0. Otherwise it is the minimum depth you can safely ascend directly to."
-          matTooltipPosition="right">
-          Current Ceiling:
-          <strong>{{ currentCeiling }}m</strong>
-        </span>
-      </div>
-      <div class="dive-stat">
-        Current Gas:
-        <strong [innerHTML]="currentGas.description"></strong>
-      </div>
-      <div class="gas-stat dive-stat">
-        <span [matTooltip]="divePlanner.settings.MaxDepthPO2Tooltip" matTooltipPosition="right">
-          <!-- eslint-disable-next-line prettier/prettier -->
-          Max Depth (PO<sub>2</sub>):
-          <strong>{{ currentGas.maxDepthPO2 }}m ({{ currentGas.maxDepthPO2Deco }}m deco)</strong>
-        </span>
-      </div>
-      <div class="gas-stat dive-stat">
-        <span [matTooltip]="divePlanner.settings.MaxDepthENDTooltip" matTooltipPosition="right">
-          Max Depth (END):
-          <strong>{{ currentGas.maxDepthEND }}m</strong>
-        </span>
-      </div>
-      <div class="gas-stat dive-stat">
-        <span [matTooltip]="divePlanner.settings.MinDepthTooltip" matTooltipPosition="right">
-          Min Depth (Hypoxia):
-          <strong>{{ currentGas.minDepth }}m</strong>
-        </span>
-      </div>
-      <div class="dive-stat">
-        <span matTooltip="Oxygen partial pressure of the current gas at the current depth" matTooltipPosition="right">
-          <!-- eslint-disable-next-line prettier/prettier -->
-          PO<sub>2</sub>:
-          <strong>{{ currentPO2 | number: '1.2-2' }}</strong>
-        </span>
-        <mat-icon *ngIf="hasCurrentPO2Warning" class="warning-icon" [matTooltip]="currentPO2Warning!" matTooltipPosition="right">warning</mat-icon>
-        <mat-icon *ngIf="hasCurrentPO2Error" class="error-icon" [matTooltip]="currentPO2Error!" matTooltipPosition="right">error</mat-icon>
-      </div>
-      <div class="dive-stat">
-        <span matTooltip="Equivalent narcotic depth of the current gas at the current depth" matTooltipPosition="right">
-          END:
-          <strong>{{ currentEND }}m</strong>
-        </span>
-        <mat-icon *ngIf="hasCurrentENDError" class="error-icon" [matTooltip]="currentENDError!" matTooltipPosition="right">error</mat-icon>
-      </div>
-    </div>
+    <dive-current-stats class="mat-elevation-z2"></dive-current-stats>
     <div class="header-row">
       <div class="nav-number">1</div>
       <h1>Select new depth</h1>
@@ -168,7 +116,7 @@
           <span matTooltip="Oxygen partial pressure of the new gas at the new depth" matTooltipPosition="above">
             <!-- eslint-disable-next-line prettier/prettier -->
             PO<sub>2</sub>:
-            <strong>{{ newGasPO2 | number: '1.2-2' }}m</strong>
+            <strong>{{ newGasPO2 | number: '1.2-2' }}</strong>
           </span>
           <mat-icon *ngIf="hasNewGasPO2Warning" class="warning-icon" [matTooltip]="newGasPO2Warning!" matTooltipPosition="right">warning</mat-icon>
           <mat-icon *ngIf="hasNewGasPO2Error" class="error-icon" [matTooltip]="newGasPO2Error!" matTooltipPosition="right">error</mat-icon>

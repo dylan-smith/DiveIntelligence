@@ -19,19 +19,9 @@ export class AddDiveSegmentComponent implements OnInit {
   standardGas: BreathingGas | undefined;
   customGas: BreathingGas = BreathingGas.create(21, 0, 79, this.divePlanner.settings);
   timeAtDepth = 0;
+  currentGas: BreathingGas = this.divePlanner.getCurrentGas();
 
   // **************************
-  currentDepth: number = this.divePlanner.getCurrentDepth();
-  currentCeiling: number = this.divePlanner.getCurrentCeiling();
-  currentGas: BreathingGas = this.divePlanner.getCurrentGas();
-  currentPO2: number = this.getCurrentPO2();
-  hasCurrentPO2Warning: boolean = this.getCurrentPO2Warning() !== undefined;
-  hasCurrentPO2Error: boolean = this.getCurrentPO2Error() !== undefined;
-  currentPO2Warning: string | undefined = this.getCurrentPO2Warning();
-  currentPO2Error: string | undefined = this.getCurrentPO2Error();
-  currentEND: number = this.getCurrentEND();
-  hasCurrentENDError: boolean = this.getCurrentENDError() !== undefined;
-  currentENDError: string | undefined = this.getCurrentENDError();
 
   travelTime: number = this.divePlanner.getTravelTime(this.newDepth);
   descentRate: number = this.divePlanner.settings.descentRate;
@@ -39,13 +29,13 @@ export class AddDiveSegmentComponent implements OnInit {
   isDescent: boolean = this.isNewDepthDescent();
   isAscent = !this.isNewDepthDescent();
   newDepthPO2: number = this.getNewDepthPO2();
-  hasNewDepthPO2Warning: boolean = this.getNewDepthPO2Warning() !== undefined;
-  hasNewDepthPO2Error: boolean = this.getNewDepthPO2Error() !== undefined;
-  newDepthPO2Warning: string | undefined = this.getNewDepthPO2Warning();
-  newDepthPO2Error: string | undefined = this.getNewDepthPO2Error();
+  hasNewDepthPO2Warning: boolean = this.getNewDepthPO2WarningMessage() !== undefined;
+  hasNewDepthPO2Error: boolean = this.getNewDepthPO2ErrorMessage() !== undefined;
+  newDepthPO2Warning: string | undefined = this.getNewDepthPO2WarningMessage();
+  newDepthPO2Error: string | undefined = this.getNewDepthPO2ErrorMessage();
   newDepthEND: number = this.getNewDepthEND();
-  hasNewDepthENDError: boolean = this.getNewDepthENDError() !== undefined;
-  newDepthENDError: string | undefined = this.getNewDepthENDError();
+  hasNewDepthENDError: boolean = this.getNewDepthENDErrorMessage() !== undefined;
+  newDepthENDError: string | undefined = this.getNewDepthENDErrorMessage();
 
   StandardGases: BreathingGas[] = BreathingGas.StandardGases;
   optimalGas: BreathingGas = this.divePlanner.getOptimalDecoGas(this.newDepth);
@@ -53,13 +43,13 @@ export class AddDiveSegmentComponent implements OnInit {
   isCustomGasDisabled: boolean = this.getCustomGasDisabled();
 
   newGasPO2: number = this.getNewGasPO2();
-  hasNewGasPO2Warning: boolean = this.getNewGasPO2Warning() !== undefined;
-  hasNewGasPO2Error: boolean = this.getNewGasPO2Error() !== undefined;
-  newGasPO2Warning: string | undefined = this.getNewGasPO2Warning();
-  newGasPO2Error: string | undefined = this.getNewGasPO2Error();
+  hasNewGasPO2Warning: boolean = this.getNewGasPO2WarningMessage() !== undefined;
+  hasNewGasPO2Error: boolean = this.getNewGasPO2ErrorMessage() !== undefined;
+  newGasPO2Warning: string | undefined = this.getNewGasPO2WarningMessage();
+  newGasPO2Error: string | undefined = this.getNewGasPO2ErrorMessage();
   newGasEND: number = this.getNewGasEND();
-  hasNewGasENDError: boolean = this.getNewGasENDError() !== undefined;
-  newGasENDError: string | undefined = this.getNewGasENDError();
+  hasNewGasENDError: boolean = this.getNewGasENDErrorMessage() !== undefined;
+  newGasENDError: string | undefined = this.getNewGasENDErrorMessage();
   noDecoLimit: string = this.getNoDecoLimit();
 
   totalDiveDuration: number = this.getTotalDiveDuration();
@@ -140,13 +130,13 @@ export class AddDiveSegmentComponent implements OnInit {
 
   private calculateNewGasStats(): void {
     this.newGasPO2 = this.getNewGasPO2();
-    this.hasNewGasPO2Warning = this.getNewGasPO2Warning() !== undefined;
-    this.hasNewGasPO2Error = this.getNewGasPO2Error() !== undefined;
-    this.newGasPO2Warning = this.getNewGasPO2Warning();
-    this.newGasPO2Error = this.getNewGasPO2Error();
+    this.hasNewGasPO2Warning = this.getNewGasPO2WarningMessage() !== undefined;
+    this.hasNewGasPO2Error = this.getNewGasPO2ErrorMessage() !== undefined;
+    this.newGasPO2Warning = this.getNewGasPO2WarningMessage();
+    this.newGasPO2Error = this.getNewGasPO2ErrorMessage();
     this.newGasEND = this.getNewGasEND();
-    this.hasNewGasENDError = this.getNewGasENDError() !== undefined;
-    this.newGasENDError = this.getNewGasENDError();
+    this.hasNewGasENDError = this.getNewGasENDErrorMessage() !== undefined;
+    this.newGasENDError = this.getNewGasENDErrorMessage();
     this.noDecoLimit = this.getNoDecoLimit();
   }
 
@@ -155,13 +145,13 @@ export class AddDiveSegmentComponent implements OnInit {
     this.isDescent = this.isNewDepthDescent();
     this.isAscent = !this.isNewDepthDescent();
     this.newDepthPO2 = this.getNewDepthPO2();
-    this.hasNewDepthPO2Warning = this.getNewDepthPO2Warning() !== undefined;
-    this.hasNewDepthPO2Error = this.getNewDepthPO2Error() !== undefined;
-    this.newDepthPO2Warning = this.getNewDepthPO2Warning();
-    this.newDepthPO2Error = this.getNewDepthPO2Error();
+    this.hasNewDepthPO2Warning = this.getNewDepthPO2WarningMessage() !== undefined;
+    this.hasNewDepthPO2Error = this.getNewDepthPO2ErrorMessage() !== undefined;
+    this.newDepthPO2Warning = this.getNewDepthPO2WarningMessage();
+    this.newDepthPO2Error = this.getNewDepthPO2ErrorMessage();
     this.newDepthEND = this.getNewDepthEND();
-    this.hasNewDepthENDError = this.getNewDepthENDError() !== undefined;
-    this.newDepthENDError = this.getNewDepthENDError();
+    this.hasNewDepthENDError = this.getNewDepthENDErrorMessage() !== undefined;
+    this.newDepthENDError = this.getNewDepthENDErrorMessage();
   }
 
   private isNewDepthDescent(): boolean {
@@ -286,81 +276,44 @@ export class AddDiveSegmentComponent implements OnInit {
     this.calculateNewGas();
   }
 
-  private getPO2Warning(pO2: number): string | undefined {
-    if (pO2 > this.divePlanner.settings.workingPO2Maximum && pO2 <= this.divePlanner.settings.decoPO2Maximum)
-      return `Oxygen partial pressure should only go above ${this.divePlanner.settings.workingPO2Maximum} during deco stops`;
-    return undefined;
-  }
-
-  private getPO2Error(pO2: number): string | undefined {
-    if (pO2 > this.divePlanner.settings.decoPO2Maximum) return `Oxygen partial pressure should never go above ${this.divePlanner.settings.decoPO2Maximum}`;
-    if (pO2 < this.divePlanner.settings.pO2Minimum) return `Oxygen partial pressure should never go below ${this.divePlanner.settings.pO2Minimum}`;
-    return undefined;
-  }
-
-  private getENDError(END: number): string | undefined {
-    if (END > this.divePlanner.settings.ENDErrorThreshold) return this.divePlanner.settings.ENDErrorMessage;
-    return undefined;
-  }
-
-  private getCurrentPO2(): number {
-    return this.divePlanner.getCurrentGas().getPO2(this.divePlanner.getCurrentDepth());
-  }
-
-  private getCurrentPO2Warning(): string | undefined {
-    return this.getPO2Warning(this.getCurrentPO2());
-  }
-
-  private getCurrentPO2Error(): string | undefined {
-    return this.getPO2Error(this.getCurrentPO2());
-  }
-
-  private getCurrentEND(): number {
-    return Math.ceil(this.divePlanner.getCurrentGas().getEND(this.divePlanner.getCurrentDepth()));
-  }
-
-  private getCurrentENDError(): string | undefined {
-    return this.getENDError(this.getCurrentEND());
-  }
-
   private getNewDepthPO2(): number {
     return this.divePlanner.getCurrentGas().getPO2(this.newDepth);
   }
 
-  private getNewDepthPO2Warning(): string | undefined {
-    return this.getPO2Warning(this.getNewDepthPO2());
+  private getNewDepthPO2WarningMessage(): string | undefined {
+    return this.divePlanner.getPO2WarningMessage(this.getNewDepthPO2());
   }
 
-  private getNewDepthPO2Error(): string | undefined {
-    return this.getPO2Error(this.getNewDepthPO2());
+  private getNewDepthPO2ErrorMessage(): string | undefined {
+    return this.divePlanner.getPO2ErrorMessage(this.getNewDepthPO2());
   }
 
   private getNewDepthEND(): number {
     return Math.ceil(this.divePlanner.getCurrentGas().getEND(this.newDepth));
   }
 
-  private getNewDepthENDError(): string | undefined {
-    return this.getENDError(this.getNewDepthEND());
+  private getNewDepthENDErrorMessage(): string | undefined {
+    return this.divePlanner.getENDErrorMessage(this.getNewDepthEND());
   }
 
   private getNewGasPO2(): number {
     return this.newGas.getPO2(this.newDepth);
   }
 
-  private getNewGasPO2Warning(): string | undefined {
-    return this.getPO2Warning(this.getNewGasPO2());
+  private getNewGasPO2WarningMessage(): string | undefined {
+    return this.divePlanner.getPO2WarningMessage(this.getNewGasPO2());
   }
 
-  private getNewGasPO2Error(): string | undefined {
-    return this.getPO2Error(this.getNewGasPO2());
+  private getNewGasPO2ErrorMessage(): string | undefined {
+    return this.divePlanner.getPO2ErrorMessage(this.getNewGasPO2());
   }
 
   private getNewGasEND(): number {
     return Math.ceil(this.newGas.getEND(this.newDepth));
   }
 
-  private getNewGasENDError(): string | undefined {
-    return this.getENDError(this.getNewGasEND());
+  private getNewGasENDErrorMessage(): string | undefined {
+    return this.divePlanner.getENDErrorMessage(this.getNewGasEND());
   }
 
   private getNoDecoLimit(): string {

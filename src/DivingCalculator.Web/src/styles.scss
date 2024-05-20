@@ -57,6 +57,9 @@ $theme: mat.define-light-theme((
 @import './app/tissues-phe-chart/tissues-phe-chart.component.theme.scss';
 @include tissues-phe-chart-theme($theme);
 
+@import './app/current-stats/current-stats.component.theme.scss';
+@include current-stats-theme($theme);
+
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
