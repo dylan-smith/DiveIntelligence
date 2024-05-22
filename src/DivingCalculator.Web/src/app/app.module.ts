@@ -18,6 +18,7 @@ import { TissuesCeilingChartComponent } from './tissues-ceiling-chart/tissues-ce
 import { TissuesPN2ChartComponent } from './tissues-pn2-chart/tissues-pn2-chart.component';
 import { TissuesPHeChartComponent } from './tissues-phe-chart/tissues-phe-chart.component';
 import { CurrentStatsComponent } from './current-stats/current-stats.component';
+import { NewDepthStatsComponent } from './new-depth-stats/new-depth-stats.component';
 import { HumanDurationPipe } from './pipes/human-duration.pipe';
 import { ColonDurationPipe } from './pipes/colon-duration.pipe';
 
@@ -56,6 +57,7 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
     ColonDurationPipe,
     AddDiveSegmentComponent,
     CurrentStatsComponent,
+    NewDepthStatsComponent,
   ],
   imports: [
     BrowserModule,

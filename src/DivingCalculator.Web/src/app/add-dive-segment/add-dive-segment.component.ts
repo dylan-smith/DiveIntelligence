@@ -23,20 +23,6 @@ export class AddDiveSegmentComponent implements OnInit {
 
   // **************************
 
-  travelTime: number = this.divePlanner.getTravelTime(this.newDepth);
-  descentRate: number = this.divePlanner.settings.descentRate;
-  ascentRate: number = this.divePlanner.settings.ascentRate;
-  isDescent: boolean = this.isNewDepthDescent();
-  isAscent = !this.isNewDepthDescent();
-  newDepthPO2: number = this.getNewDepthPO2();
-  hasNewDepthPO2Warning: boolean = this.getNewDepthPO2WarningMessage() !== undefined;
-  hasNewDepthPO2Error: boolean = this.getNewDepthPO2ErrorMessage() !== undefined;
-  newDepthPO2Warning: string | undefined = this.getNewDepthPO2WarningMessage();
-  newDepthPO2Error: string | undefined = this.getNewDepthPO2ErrorMessage();
-  newDepthEND: number = this.getNewDepthEND();
-  hasNewDepthENDError: boolean = this.getNewDepthENDErrorMessage() !== undefined;
-  newDepthENDError: string | undefined = this.getNewDepthENDErrorMessage();
-
   StandardGases: BreathingGas[] = BreathingGas.StandardGases;
   optimalGas: BreathingGas = this.divePlanner.getOptimalDecoGas(this.newDepth);
   isStandardGasDisabled: boolean = this.getStandardGasDisabled();
@@ -77,8 +63,6 @@ export class AddDiveSegmentComponent implements OnInit {
   onNewDepthInput(): void {
     this.calculateNewGas();
     this.drawCeilingChart();
-
-    this.calculateNewDepthStats();
 
     this.optimalGas = this.divePlanner.getOptimalDecoGas(this.newDepth);
 
@@ -138,24 +122,6 @@ export class AddDiveSegmentComponent implements OnInit {
     this.hasNewGasENDError = this.getNewGasENDErrorMessage() !== undefined;
     this.newGasENDError = this.getNewGasENDErrorMessage();
     this.noDecoLimit = this.getNoDecoLimit();
-  }
-
-  private calculateNewDepthStats(): void {
-    this.travelTime = this.divePlanner.getTravelTime(this.newDepth);
-    this.isDescent = this.isNewDepthDescent();
-    this.isAscent = !this.isNewDepthDescent();
-    this.newDepthPO2 = this.getNewDepthPO2();
-    this.hasNewDepthPO2Warning = this.getNewDepthPO2WarningMessage() !== undefined;
-    this.hasNewDepthPO2Error = this.getNewDepthPO2ErrorMessage() !== undefined;
-    this.newDepthPO2Warning = this.getNewDepthPO2WarningMessage();
-    this.newDepthPO2Error = this.getNewDepthPO2ErrorMessage();
-    this.newDepthEND = this.getNewDepthEND();
-    this.hasNewDepthENDError = this.getNewDepthENDErrorMessage() !== undefined;
-    this.newDepthENDError = this.getNewDepthENDErrorMessage();
-  }
-
-  private isNewDepthDescent(): boolean {
-    return this.newDepth >= this.divePlanner.getCurrentDepth();
   }
 
   private drawCeilingChart(): void {
@@ -274,26 +240,6 @@ export class AddDiveSegmentComponent implements OnInit {
     this.customGas.nitrogen = 100 - this.customGas.oxygen - this.customGas.helium;
     this.customGas = BreathingGas.create(this.customGas.oxygen, this.customGas.helium, this.customGas.nitrogen, this.divePlanner.settings); // need this to recalculate the properties
     this.calculateNewGas();
-  }
-
-  private getNewDepthPO2(): number {
-    return this.divePlanner.getCurrentGas().getPO2(this.newDepth);
-  }
-
-  private getNewDepthPO2WarningMessage(): string | undefined {
-    return this.divePlanner.getPO2WarningMessage(this.getNewDepthPO2());
-  }
-
-  private getNewDepthPO2ErrorMessage(): string | undefined {
-    return this.divePlanner.getPO2ErrorMessage(this.getNewDepthPO2());
-  }
-
-  private getNewDepthEND(): number {
-    return Math.ceil(this.divePlanner.getCurrentGas().getEND(this.newDepth));
-  }
-
-  private getNewDepthENDErrorMessage(): string | undefined {
-    return this.divePlanner.getENDErrorMessage(this.getNewDepthEND());
   }
 
   private getNewGasPO2(): number {

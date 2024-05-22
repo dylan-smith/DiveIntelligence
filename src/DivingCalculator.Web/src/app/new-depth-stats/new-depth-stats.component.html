@@ -1,0 +1,26 @@
+<div class="new-depth-stats">
+  <div class="dive-stat" *ngIf="isDescent">
+    Descent Time:
+    <strong>{{ travelTime | humanDuration }} &#64; {{ descentRate }}m/min</strong>
+  </div>
+  <div class="dive-stat" *ngIf="isAscent">
+    Ascent Time:
+    <strong>{{ travelTime | humanDuration }} &#64; {{ ascentRate }}m/min</strong>
+  </div>
+  <div class="dive-stat">
+    <span matTooltip="Oxygen partial pressure of the current gas at the new depth" matTooltipPosition="above">
+      <!-- eslint-disable-next-line prettier/prettier -->
+      PO<sub>2</sub>:
+      <strong>{{ PO2 | number: '1.2-2' }}</strong>
+    </span>
+    <mat-icon *ngIf="hasPO2Warning" class="warning-icon" [matTooltip]="PO2WarningMessage!" matTooltipPosition="right">warning</mat-icon>
+    <mat-icon *ngIf="hasPO2Error" class="error-icon" [matTooltip]="PO2ErrorMessage!" matTooltipPosition="right">error</mat-icon>
+  </div>
+  <div class="dive-stat">
+    <span matTooltip="Equivalent narcotic depth of the current gas at the new depth" matTooltipPosition="above">
+      END:
+      <strong>{{ END }}m</strong>
+    </span>
+    <mat-icon *ngIf="hasENDError" class="error-icon" [matTooltip]="ENDErrorMessage!" matTooltipPosition="right">error</mat-icon>
+  </div>
+</div>

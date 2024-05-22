@@ -16,32 +16,7 @@
           <input matInput type="number" min="0" [(ngModel)]="newDepth" (input)="onNewDepthInput()" />
         </mat-form-field>
       </div>
-      <div class="calculation-section mat-elevation-z2">
-        <div class="dive-stat" *ngIf="isDescent">
-          Descent Time:
-          <strong>{{ travelTime | humanDuration }} &#64; {{ descentRate }}m/min</strong>
-        </div>
-        <div class="dive-stat" *ngIf="isAscent">
-          Ascent Time:
-          <strong>{{ travelTime | humanDuration }} &#64; {{ ascentRate }}m/min</strong>
-        </div>
-        <div class="dive-stat">
-          <span matTooltip="Oxygen partial pressure of the current gas at the new depth" matTooltipPosition="above">
-            <!-- eslint-disable-next-line prettier/prettier -->
-            PO<sub>2</sub>:
-            <strong>{{ newDepthPO2 | number: '1.2-2' }}</strong>
-          </span>
-          <mat-icon *ngIf="hasNewDepthPO2Warning" class="warning-icon" [matTooltip]="newDepthPO2Warning!" matTooltipPosition="right">warning</mat-icon>
-          <mat-icon *ngIf="hasNewDepthPO2Error" class="error-icon" [matTooltip]="newDepthPO2Error!" matTooltipPosition="right">error</mat-icon>
-        </div>
-        <div class="dive-stat">
-          <span matTooltip="Equivalent narcotic depth of the current gas at the new depth" matTooltipPosition="above">
-            END:
-            <strong>{{ newDepthEND }}m</strong>
-          </span>
-          <mat-icon *ngIf="hasNewDepthENDError" class="error-icon" [matTooltip]="newDepthENDError!" matTooltipPosition="right">error</mat-icon>
-        </div>
-      </div>
+      <dive-new-depth-stats class="mat-elevation-z2" [newDepth]="newDepth"></dive-new-depth-stats>
     </div>
     <div class="header-row">
       <div class="nav-number">2</div>
