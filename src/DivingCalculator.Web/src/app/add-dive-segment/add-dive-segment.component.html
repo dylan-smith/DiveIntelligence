@@ -22,69 +22,7 @@
       <div class="nav-number">2</div>
       <h1>Select new gas</h1>
     </div>
-    <mat-radio-group [(ngModel)]="newGasSelectedOption" (change)="onGasTypeChange()">
-      <div class="new-gas-row input-section mat-elevation-z2">
-        <div class="new-gas-col">
-          <mat-radio-button value="current">
-            <div>Current Gas</div>
-            <div class="gas-description" [innerHTML]="currentGas.description"></div>
-          </mat-radio-button>
-          <mat-radio-button
-            value="optimal"
-            id="optimal-deco-gas-radio"
-            matTooltip="The gas with the maximum O2 while staying under {{
-              divePlanner.settings.decoPO2Maximum
-            }} PO2, and the minimum Helium while staying at an END (Equivalent Narcotic Depth) of <= {{ divePlanner.settings.ENDErrorThreshold }}m">
-            <div>Optimal Deco Gas</div>
-            <div class="gas-description" [innerHTML]="optimalGas.description"></div>
-          </mat-radio-button>
-        </div>
-        <div class="new-gas-col">
-          <div>
-            <mat-radio-button value="standard">
-              <div>Standard Gas</div>
-            </mat-radio-button>
-          </div>
-          <div>
-            <mat-form-field>
-              <mat-select
-                [(ngModel)]="standardGas"
-                hideSingleSelectionIndicator
-                (selectionChange)="onStandardGasSelectionChange()"
-                [disabled]="isStandardGasDisabled">
-                <mat-select-trigger>
-                  <div>{{ standardGas?.name }}</div>
-                  <div class="gas-description" [innerHTML]="standardGas?.compositionDescription"></div>
-                </mat-select-trigger>
-                <mat-option *ngFor="let gas of StandardGases" [value]="gas">
-                  <div>{{ gas.name }}</div>
-                  <div class="gas-description" [innerHTML]="gas.compositionDescription"></div>
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="new-gas-col">
-          <mat-radio-button value="custom">Custom gas</mat-radio-button>
-          <div>
-            <mat-form-field class="custom-gas-input">
-              <mat-label>Oxygen (%)</mat-label>
-              <input matInput type="number" min="0" max="100" [(ngModel)]="customGas.oxygen" (input)="onOxygenInput()" [disabled]="isCustomGasDisabled" />
-            </mat-form-field>
-            <mat-form-field class="custom-gas-input">
-              <mat-label>Helium (%)</mat-label>
-              <input matInput type="number" min="0" max="100" [(ngModel)]="customGas.helium" (input)="onHeliumInput()" [disabled]="isCustomGasDisabled" />
-            </mat-form-field>
-            <mat-form-field
-              class="custom-gas-input"
-              matTooltip="The nitrogen value will be automatically calculated when you input the values for oxygen and helium">
-              <mat-label>Nitrogen (%)</mat-label>
-              <input matInput type="number" [ngModel]="customGas.nitrogen" disabled />
-            </mat-form-field>
-          </div>
-        </div>
-      </div>
-    </mat-radio-group>
+    <dive-new-gas-input (newGasSelected)="onNewGasSelected($event)" [newDepth]="this.newDepth" class="mat-elevation-z2"></dive-new-gas-input>
     <div class="gas-calculation-section calculation-section mat-elevation-z2">
       <div class="gas-calculation-chunk">
         <div class="dive-stat">

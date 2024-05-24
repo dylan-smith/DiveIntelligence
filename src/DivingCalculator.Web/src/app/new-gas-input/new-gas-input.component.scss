@@ -1,0 +1,30 @@
+.new-gas-input {
+  border-style: solid;
+  border-width: 4px;
+  padding: 1rem;
+  display: flex;
+}
+
+.custom-gas-input {
+  width: 8rem;
+}
+
+.new-gas-col {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.gas-description {
+  font-size: 0.8rem;
+}
+
+#optimal-deco-gas-radio {
+  margin-top: 1rem;
+  width: 260px;
+}
+
+.standard-gas-dropdown {
+  height: 50px;
+}

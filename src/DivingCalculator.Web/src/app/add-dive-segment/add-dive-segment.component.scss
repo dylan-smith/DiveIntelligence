@@ -6,7 +6,7 @@
   height: fit-content;
 }
 
-dive-current-stats, dive-new-depth-stats {
+dive-current-stats, dive-new-depth-stats, dive-new-gas-input {
   margin-top: 1rem;
   margin-left: 1rem;
   width: fit-content;
@@ -41,7 +41,7 @@ main {
   padding-left: 2rem;
 }
 
-.new-depth-row, .new-gas-row, .time-at-depth-row {
+.new-depth-row, .time-at-depth-row {
   display: flex;
 }
 
@@ -68,25 +68,6 @@ h1 {
   margin-bottom: 0rem;
 }
 
-.custom-gas-input {
-  width: 8rem;
-}
-
-.new-gas-row {
-  padding: 1rem;
-}
-
-.new-gas-col {
-  padding-left: 1rem;
-  padding-right: 1rem;
-  display: flex;
-  flex-direction: column;
-}
-
-.gas-description {
-  font-size: 0.8rem;
-}
-
 .gas-calculation-section {
   display: flex;
   width: 500px;
@@ -110,10 +91,6 @@ h1 {
 
 button {
   margin-right: 1rem;
-}
-
-mat-select {
-  height: 50px;
 }
 
 .warning-icon {
@@ -166,11 +143,6 @@ mat-select {
 .ceiling-chart {
   width: 400px;
   height: 200px;
-}
-
-#optimal-deco-gas-radio {
-  margin-top: 1rem;
-  width: 260px;
 }
 
 mat-divider {

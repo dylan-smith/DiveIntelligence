@@ -15,18 +15,9 @@ import { GraphDialogComponent } from '../graph-dialog/graph-dialog.component';
 export class AddDiveSegmentComponent implements OnInit {
   newDepth: number = this.divePlanner.getCurrentDepth();
   newGas: BreathingGas = this.divePlanner.getCurrentGas();
-  newGasSelectedOption = 'current';
-  standardGas: BreathingGas | undefined;
-  customGas: BreathingGas = BreathingGas.create(21, 0, 79, this.divePlanner.settings);
   timeAtDepth = 0;
-  currentGas: BreathingGas = this.divePlanner.getCurrentGas();
 
   // **************************
-
-  StandardGases: BreathingGas[] = BreathingGas.StandardGases;
-  optimalGas: BreathingGas = this.divePlanner.getOptimalDecoGas(this.newDepth);
-  isStandardGasDisabled: boolean = this.getStandardGasDisabled();
-  isCustomGasDisabled: boolean = this.getCustomGasDisabled();
 
   newGasPO2: number = this.getNewGasPO2();
   hasNewGasPO2Warning: boolean = this.getNewGasPO2WarningMessage() !== undefined;
@@ -61,45 +52,9 @@ export class AddDiveSegmentComponent implements OnInit {
   }
 
   onNewDepthInput(): void {
-    this.calculateNewGas();
     this.drawCeilingChart();
-
-    this.optimalGas = this.divePlanner.getOptimalDecoGas(this.newDepth);
-
     this.calculateNewGasStats();
-
     this.totalDiveDuration = this.getTotalDiveDuration();
-  }
-
-  onGasTypeChange(): void {
-    this.calculateNewGas();
-    this.drawCeilingChart();
-
-    this.isStandardGasDisabled = this.getStandardGasDisabled();
-    this.isCustomGasDisabled = this.getCustomGasDisabled();
-
-    this.calculateNewGasStats();
-  }
-
-  onStandardGasSelectionChange(): void {
-    this.calculateNewGas();
-    this.drawCeilingChart();
-
-    this.calculateNewGasStats();
-  }
-
-  onOxygenInput(): void {
-    this.updateCustomGasNitrogen();
-    this.drawCeilingChart();
-
-    this.calculateNewGasStats();
-  }
-
-  onHeliumInput(): void {
-    this.updateCustomGasNitrogen();
-    this.drawCeilingChart();
-
-    this.calculateNewGasStats();
   }
 
   onTimeAtDepthInput(): void {
@@ -110,6 +65,12 @@ export class AddDiveSegmentComponent implements OnInit {
   onSave(): void {
     this.divePlanner.addDiveSegment(this.newDepth, this.newGas, this.timeAtDepth * 60);
     this.router.navigate(['/dive-overview']);
+  }
+
+  onNewGasSelected(newGas: BreathingGas): void {
+    this.newGas = newGas;
+    this.drawCeilingChart();
+    this.calculateNewGasStats();
   }
 
   private calculateNewGasStats(): void {
@@ -209,37 +170,6 @@ export class AddDiveSegmentComponent implements OnInit {
       scrollZoom: false,
       editable: false,
     };
-  }
-
-  private calculateNewGas(): void {
-    // default it to current gas (e.g. standard is selected but no option picked in dropdown)
-    this.newGas = this.divePlanner.getCurrentGas();
-
-    if (this.newGasSelectedOption === 'standard' && this.standardGas !== undefined) {
-      this.newGas = this.standardGas;
-    }
-
-    if (this.newGasSelectedOption === 'custom') {
-      this.newGas = this.customGas;
-    }
-
-    if (this.newGasSelectedOption === 'optimal') {
-      this.newGas = this.optimalGas;
-    }
-  }
-
-  private getStandardGasDisabled(): boolean {
-    return this.newGasSelectedOption !== 'standard';
-  }
-
-  private getCustomGasDisabled(): boolean {
-    return this.newGasSelectedOption !== 'custom';
-  }
-
-  private updateCustomGasNitrogen() {
-    this.customGas.nitrogen = 100 - this.customGas.oxygen - this.customGas.helium;
-    this.customGas = BreathingGas.create(this.customGas.oxygen, this.customGas.helium, this.customGas.nitrogen, this.divePlanner.settings); // need this to recalculate the properties
-    this.calculateNewGas();
   }
 
   private getNewGasPO2(): number {
