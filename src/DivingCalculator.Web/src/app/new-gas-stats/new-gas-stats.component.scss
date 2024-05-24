@@ -1,0 +1,26 @@
+.new-gas-stats {
+  padding: 1rem;
+  display: flex;
+  width: 500px;
+  justify-content: space-between;
+}
+
+.dive-stat {
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
+  line-height: 28px; // this is needed because mat-icons are 24x24 (not sure why it needs to be 28 instead of 24 though)
+}
+
+.gas-calculation-chunk {
+  padding-right: 0rem;
+}
+
+.warning-icon {
+  font-size: 1.4rem;
+  margin-left: 0.5rem;
+}
+
+.error-icon {
+  font-size: 1.4rem;
+  margin-left: 0.5rem;
+}

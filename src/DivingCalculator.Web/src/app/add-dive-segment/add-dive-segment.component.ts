@@ -15,19 +15,9 @@ import { GraphDialogComponent } from '../graph-dialog/graph-dialog.component';
 export class AddDiveSegmentComponent implements OnInit {
   newDepth: number = this.divePlanner.getCurrentDepth();
   newGas: BreathingGas = this.divePlanner.getCurrentGas();
-  timeAtDepth = 0;
+  timeAtDepth: number = 0;
 
   // **************************
-
-  newGasPO2: number = this.getNewGasPO2();
-  hasNewGasPO2Warning: boolean = this.getNewGasPO2WarningMessage() !== undefined;
-  hasNewGasPO2Error: boolean = this.getNewGasPO2ErrorMessage() !== undefined;
-  newGasPO2Warning: string | undefined = this.getNewGasPO2WarningMessage();
-  newGasPO2Error: string | undefined = this.getNewGasPO2ErrorMessage();
-  newGasEND: number = this.getNewGasEND();
-  hasNewGasENDError: boolean = this.getNewGasENDErrorMessage() !== undefined;
-  newGasENDError: string | undefined = this.getNewGasENDErrorMessage();
-  noDecoLimit: string = this.getNoDecoLimit();
 
   totalDiveDuration: number = this.getTotalDiveDuration();
 
@@ -53,7 +43,6 @@ export class AddDiveSegmentComponent implements OnInit {
 
   onNewDepthInput(): void {
     this.drawCeilingChart();
-    this.calculateNewGasStats();
     this.totalDiveDuration = this.getTotalDiveDuration();
   }
 
@@ -70,19 +59,6 @@ export class AddDiveSegmentComponent implements OnInit {
   onNewGasSelected(newGas: BreathingGas): void {
     this.newGas = newGas;
     this.drawCeilingChart();
-    this.calculateNewGasStats();
-  }
-
-  private calculateNewGasStats(): void {
-    this.newGasPO2 = this.getNewGasPO2();
-    this.hasNewGasPO2Warning = this.getNewGasPO2WarningMessage() !== undefined;
-    this.hasNewGasPO2Error = this.getNewGasPO2ErrorMessage() !== undefined;
-    this.newGasPO2Warning = this.getNewGasPO2WarningMessage();
-    this.newGasPO2Error = this.getNewGasPO2ErrorMessage();
-    this.newGasEND = this.getNewGasEND();
-    this.hasNewGasENDError = this.getNewGasENDErrorMessage() !== undefined;
-    this.newGasENDError = this.getNewGasENDErrorMessage();
-    this.noDecoLimit = this.getNoDecoLimit();
   }
 
   private drawCeilingChart(): void {
@@ -170,36 +146,6 @@ export class AddDiveSegmentComponent implements OnInit {
       scrollZoom: false,
       editable: false,
     };
-  }
-
-  private getNewGasPO2(): number {
-    return this.newGas.getPO2(this.newDepth);
-  }
-
-  private getNewGasPO2WarningMessage(): string | undefined {
-    return this.divePlanner.getPO2WarningMessage(this.getNewGasPO2());
-  }
-
-  private getNewGasPO2ErrorMessage(): string | undefined {
-    return this.divePlanner.getPO2ErrorMessage(this.getNewGasPO2());
-  }
-
-  private getNewGasEND(): number {
-    return Math.ceil(this.newGas.getEND(this.newDepth));
-  }
-
-  private getNewGasENDErrorMessage(): string | undefined {
-    return this.divePlanner.getENDErrorMessage(this.getNewGasEND());
-  }
-
-  private getNoDecoLimit(): string {
-    const ndl = this.divePlanner.getNoDecoLimit(this.newDepth, this.newGas);
-
-    if (ndl === undefined) {
-      return '> 5 hours';
-    }
-
-    return this.humanDurationPipe.transform(ndl);
   }
 
   private getNewDecoCeiling(): number {

@@ -6,7 +6,7 @@
   height: fit-content;
 }
 
-dive-current-stats, dive-new-depth-stats, dive-new-gas-input {
+dive-current-stats, dive-new-depth-stats, dive-new-gas-input, dive-new-gas-stats {
   margin-top: 1rem;
   margin-left: 1rem;
   width: fit-content;
@@ -66,16 +66,6 @@ h1 {
   padding-left: 1rem;
   margin-top: 2rem;
   margin-bottom: 0rem;
-}
-
-.gas-calculation-section {
-  display: flex;
-  width: 500px;
-  justify-content: space-between;
-}
-
-.gas-calculation-chunk {
-  padding-right: 0rem;
 }
 
 .time-input {
