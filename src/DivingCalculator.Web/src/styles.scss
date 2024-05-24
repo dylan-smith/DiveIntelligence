@@ -69,6 +69,9 @@ $theme: mat.define-light-theme((
 @import './app/new-gas-stats/new-gas-stats.component.theme.scss';
 @include new-gas-stats-theme($theme);
 
+@import './app/new-time-stats/new-time-stats.component.theme.scss';
+@include new-time-stats-theme($theme);
+
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }

@@ -36,27 +36,7 @@
             <input matInput type="number" [(ngModel)]="timeAtDepth" (input)="onTimeAtDepthInput()" />
           </mat-form-field>
         </div>
-        <div class="calculation-section mat-elevation-z2">
-          <div class="dive-stat">
-            <span matTooltip="The deco ceiling after the ascent/descent time and time at depth has elapsed" matTooltipPosition="right">
-              Ceiling:
-              <strong>{{ newCeiling }}m</strong>
-            </span>
-          </div>
-          <div class="dive-stat">
-            <span matTooltip="Total dive runtime after adding in the time for ascent/descent and the time at depth" matTooltipPosition="right">
-              Total Dive Duration:
-              <strong>{{ totalDiveDuration | humanDuration }}</strong>
-            </span>
-          </div>
-          <mat-divider *ngIf="hasDecoMilestones"></mat-divider>
-          <div class="dive-stat" *ngFor="let milestone of decoMilestones">
-            <span [matTooltip]="milestone.tooltip" matTooltipPosition="right">
-              <strong>{{ milestone.duration | humanDuration }}</strong>
-              : {{ milestone.gas }} &#64; {{ milestone.depth }}m
-            </span>
-          </div>
-        </div>
+        <dive-new-time-stats class="mat-elevation-z2" [timeAtDepth]="timeAtDepth" [newDepth]="newDepth" [newGas]="newGas"></dive-new-time-stats>
       </div>
       <button (click)="onCeilingChartClick()" class="ceiling-chart calculation-section mat-elevation-z2">
         <div id="ceiling-chart" class="plotly-graph"></div>

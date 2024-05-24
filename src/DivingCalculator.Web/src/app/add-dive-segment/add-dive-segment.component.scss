@@ -6,11 +6,12 @@
   height: fit-content;
 }
 
-dive-current-stats, dive-new-depth-stats, dive-new-gas-input, dive-new-gas-stats {
+dive-current-stats, dive-new-depth-stats, dive-new-gas-input, dive-new-gas-stats, dive-new-time-stats {
   margin-top: 1rem;
   margin-left: 1rem;
   width: fit-content;
   height: fit-content;
+  display: flex;
 }
 
 main {
@@ -133,9 +134,4 @@ button {
 .ceiling-chart {
   width: 400px;
   height: 200px;
-}
-
-mat-divider {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
 }
