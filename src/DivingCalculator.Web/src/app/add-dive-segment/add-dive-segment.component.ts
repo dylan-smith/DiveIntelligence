@@ -3,8 +3,6 @@ import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
 import { BreathingGas } from '../dive-planner-service/BreathingGas';
 import { Router } from '@angular/router';
 
-import { MatDialog } from '@angular/material/dialog';
-
 @Component({
   selector: 'dive-add-dive-segment',
   templateUrl: './add-dive-segment.component.html',
@@ -17,8 +15,7 @@ export class AddDiveSegmentComponent {
 
   constructor(
     public divePlanner: DivePlannerService,
-    private router: Router,
-    public dialog: MatDialog
+    private router: Router
   ) {}
 
   onSave(): void {
