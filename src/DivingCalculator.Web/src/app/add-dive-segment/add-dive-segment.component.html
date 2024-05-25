@@ -13,7 +13,7 @@
       <div class="input-section mat-elevation-z2">
         <mat-form-field class="depth-input">
           <mat-label>New Depth (m)</mat-label>
-          <input matInput type="number" min="0" [(ngModel)]="newDepth" (input)="onNewDepthInput()" />
+          <input matInput type="number" min="0" [(ngModel)]="newDepth" />
         </mat-form-field>
       </div>
       <dive-new-depth-stats class="mat-elevation-z2" [newDepth]="newDepth"></dive-new-depth-stats>
@@ -33,14 +33,12 @@
         <div class="input-section mat-elevation-z2">
           <mat-form-field class="time-input">
             <mat-label>Time at Depth (mins)</mat-label>
-            <input matInput type="number" [(ngModel)]="timeAtDepth" (input)="onTimeAtDepthInput()" />
+            <input matInput type="number" [(ngModel)]="timeAtDepth" />
           </mat-form-field>
         </div>
         <dive-new-time-stats class="mat-elevation-z2" [timeAtDepth]="timeAtDepth" [newDepth]="newDepth" [newGas]="newGas"></dive-new-time-stats>
       </div>
-      <button (click)="onCeilingChartClick()" class="ceiling-chart calculation-section mat-elevation-z2">
-        <div id="ceiling-chart" class="plotly-graph"></div>
-      </button>
+      <dive-ceiling-chart class="mat-elevation-z2" [newDepth]="newDepth" [newGas]="newGas" [timeAtDepth]="timeAtDepth"></dive-ceiling-chart>
     </div>
     <div class="actions">
       <button mat-flat-button color="primary" (click)="onSave()">Save</button>

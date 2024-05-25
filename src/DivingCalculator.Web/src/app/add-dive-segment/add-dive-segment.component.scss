@@ -6,7 +6,7 @@
   height: fit-content;
 }
 
-dive-current-stats, dive-new-depth-stats, dive-new-gas-input, dive-new-gas-stats, dive-new-time-stats {
+dive-current-stats, dive-new-depth-stats, dive-new-gas-input, dive-new-gas-stats, dive-new-time-stats, dive-ceiling-chart {
   margin-top: 1rem;
   margin-left: 1rem;
   width: fit-content;
@@ -124,14 +124,4 @@ button {
   height: 380px;
   top: 600px;
   left: -38px;
-}
-
-.plotly-graph {
-  width: 100%;
-  height: 100%;
-}
-
-.ceiling-chart {
-  width: 400px;
-  height: 200px;
 }
