@@ -1,19 +1,3 @@
-.calculation-section {
-  padding: 1rem;
-  margin-top: 1rem;
-  margin-left: 1rem;
-  width: fit-content;
-  height: fit-content;
-}
-
-dive-current-stats, dive-new-depth-stats, dive-new-gas-input, dive-new-gas-stats, dive-new-time-stats, dive-ceiling-chart {
-  margin-top: 1rem;
-  margin-left: 1rem;
-  width: fit-content;
-  height: fit-content;
-  display: flex;
-}
-
 main {
   display: flex;
   justify-content: center;
@@ -26,24 +10,60 @@ main {
   padding-left: 6rem;
 }
 
+dive-current-stats, dive-new-depth-stats, dive-new-gas-input, dive-new-gas-stats, dive-new-time-stats, dive-ceiling-chart {
+  margin-top: 1rem;
+  margin-left: 1rem;
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+}
+
 .nav-line-container {
   position: relative;
   height: 0;
   width: 0;
 }
 
-.dive-stat, .gas-stat {
-  padding-top: 0.1rem;
-  padding-bottom: 0.1rem;
-  line-height: 28px; // this is needed because mat-icons are 24x24 (not sure why it needs to be 28 instead of 24 though)
+.nav-number {
+  margin-left: -70px;
+  margin-top: 1rem;
+  width: 70px;
+  height: 70px;
+  border-radius: 35px;
+  text-align: center;
+  line-height: 70px;
+  font-size: 40px;
+  font-weight: bold;
 }
 
-.gas-stat {
-  padding-left: 2rem;
+.nav-line-1 {
+  position: absolute;
+  width: 6px;
+  height: 180px;
+  top: 380px;
+  left: -38px;
+}
+
+.nav-line-2 {
+  position: absolute;
+  width: 6px;
+  height: 380px;
+  top: 600px;
+  left: -38px;
 }
 
 .new-depth-row, .time-at-depth-row {
   display: flex;
+}
+
+.header-row {
+  display: flex;
+}
+
+h1 {
+  padding-left: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 0rem;
 }
 
 .input-section {
@@ -63,12 +83,6 @@ main {
   width: 10rem;
 }
 
-h1 {
-  padding-left: 1rem;
-  margin-top: 2rem;
-  margin-bottom: 0rem;
-}
-
 .time-input {
   padding-bottom: 0;
   padding-top: 1rem;
@@ -82,46 +96,4 @@ h1 {
 
 button {
   margin-right: 1rem;
-}
-
-.warning-icon {
-  font-size: 1.4rem;
-  margin-left: 0.5rem;
-}
-
-.error-icon {
-  font-size: 1.4rem;
-  margin-left: 0.5rem;
-}
-
-.nav-number {
-  margin-left: -70px;
-  margin-top: 1rem;
-  width: 70px;
-  height: 70px;
-  border-radius: 35px;
-  text-align: center;
-  line-height: 70px;
-  font-size: 40px;
-  font-weight: bold;
-}
-
-.header-row {
-  display: flex;
-}
-
-.nav-line-1 {
-  position: absolute;
-  width: 6px;
-  height: 180px;
-  top: 380px;
-  left: -38px;
-}
-
-.nav-line-2 {
-  position: absolute;
-  width: 6px;
-  height: 380px;
-  top: 600px;
-  left: -38px;
 }
