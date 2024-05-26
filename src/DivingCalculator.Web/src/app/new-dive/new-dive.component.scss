@@ -11,10 +11,17 @@ h1 {
 
 mat-form-field {
   width: 8rem;
+  display: block;
 }
 
 .standard-gas, .custom-gas, .summary-data {
   padding: 2rem;
+}
+
+.custom-gas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .radio-button {
@@ -34,12 +41,6 @@ mat-form-field {
 }
 
 .custom-gas-col, .standard-gas {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.custom-gas {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -75,14 +76,6 @@ mat-form-field {
 
 .dive-settings-col {
   margin: 1rem;
-}
-
-mat-form-field {
-  display: block;
-}
-
-.custom-gas-inputs {
-  display: flex;
 }
 
 .toggle-label {

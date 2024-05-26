@@ -37,16 +37,12 @@ export class NewDiveComponent {
     return this.gasType === 'custom';
   }
 
-  onOxygenInput(): void {
-    this.updateCustomGasNitrogen();
-  }
-
-  onHeliumInput(): void {
-    this.updateCustomGasNitrogen();
-  }
-
   onStandardGasSelected(gas: BreathingGas): void {
     this.selectedStandardGas = gas;
+  }
+
+  onCustomGasChanged(gas: BreathingGas): void {
+    this.customGas = gas;
   }
 
   onDescentRateInput(): void {
@@ -88,10 +84,5 @@ export class NewDiveComponent {
   onSave() {
     this.divePlanner.startDive(this.getSelectedGas());
     this.router.navigate(['/dive-overview']);
-  }
-
-  private updateCustomGasNitrogen() {
-    this.customGas.nitrogen = 100 - this.customGas.oxygen - this.customGas.helium;
-    this.customGas = BreathingGas.create(this.customGas.oxygen, this.customGas.helium, this.customGas.nitrogen, this.divePlanner.settings);
   }
 }

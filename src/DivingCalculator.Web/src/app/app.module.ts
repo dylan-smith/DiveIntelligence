@@ -24,6 +24,7 @@ import { NewGasStatsComponent } from './new-gas-stats/new-gas-stats.component';
 import { NewTimeStatsComponent } from './new-time-stats/new-time-stats.component';
 import { CeilingChartComponent } from './ceiling-chart/ceiling-chart.component';
 import { StandardGasListComponent } from './standard-gas-list/standard-gas-list.component';
+import { CustomGasInputComponent } from './custom-gas-input/custom-gas-input.component';
 import { HumanDurationPipe } from './pipes/human-duration.pipe';
 import { ColonDurationPipe } from './pipes/colon-duration.pipe';
 
@@ -68,6 +69,7 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
     NewTimeStatsComponent,
     CeilingChartComponent,
     StandardGasListComponent,
+    CustomGasInputComponent,
   ],
   imports: [
     BrowserModule,
