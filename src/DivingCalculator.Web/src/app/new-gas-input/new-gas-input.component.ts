@@ -46,13 +46,9 @@ export class NewGasInputComponent implements OnChanges {
     this.newGasSelected.emit(this.newGas);
   }
 
-  onOxygenInput(): void {
-    this.updateCustomGasNitrogen();
-    this.newGasSelected.emit(this.newGas);
-  }
-
-  onHeliumInput(): void {
-    this.updateCustomGasNitrogen();
+  onCustomGasChanged(gas: BreathingGas): void {
+    this.customGas = gas;
+    this.calculateNewGas();
     this.newGasSelected.emit(this.newGas);
   }
 
@@ -71,15 +67,6 @@ export class NewGasInputComponent implements OnChanges {
     if (this.newGasSelectedOption === 'optimal') {
       this.newGas = this.optimalGas;
     }
-  }
-
-  private updateCustomGasNitrogen() {
-    this.customGas = BreathingGas.create(
-      this.customGas.oxygen,
-      this.customGas.helium,
-      100 - this.customGas.oxygen - this.customGas.helium,
-      this.divePlanner.settings
-    ); // need this to recalculate the properties
   }
 
   private getStandardGasDisabled(): boolean {
