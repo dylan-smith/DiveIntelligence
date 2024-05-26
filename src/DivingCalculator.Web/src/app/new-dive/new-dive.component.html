@@ -7,23 +7,10 @@
       <div class="radio-button">
         <mat-radio-button name="gasType" value="standard">Standard gas</mat-radio-button>
       </div>
-      <mat-selection-list
-        [multiple]="false"
-        hideSingleSelectionIndicator
-        (selectionChange)="onStandardGasChange($event)"
+      <dive-standard-gas-list
+        (gasSelected)="onStandardGasSelected($event)"
         [disabled]="getStandardGasDisabled()"
-        class="mat-elevation-z2">
-        <mat-list-option
-          *ngFor="let gas of standardGases"
-          [value]="gas"
-          [selected]="gas === selectedStandardGas"
-          matTooltipClass="tooltip-multiline tooltip-wide"
-          matTooltipPosition="left"
-          [matTooltip]="getGasTooltip(gas)">
-          <span matListItemTitle>{{ gas.name }}</span>
-          <span matListItemLine [innerHTML]="gas.compositionDescription"></span>
-        </mat-list-option>
-      </mat-selection-list>
+        class="mat-elevation-z2"></dive-standard-gas-list>
     </div>
     <div class="custom-gas-col">
       <div class="custom-gas">

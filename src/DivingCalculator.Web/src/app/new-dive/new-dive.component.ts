@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatSelectionListChange } from '@angular/material/list';
 import { BreathingGas } from '../dive-planner-service/BreathingGas';
 import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
 
@@ -15,8 +14,7 @@ export class NewDiveComponent {
     public divePlanner: DivePlannerService
   ) {}
 
-  standardGases: BreathingGas[] = this.divePlanner.getStandardGases();
-  selectedStandardGas: BreathingGas = this.standardGases[0];
+  selectedStandardGas: BreathingGas = BreathingGas.StandardGases[0];
   gasType = 'standard';
   customGas: BreathingGas = BreathingGas.create(21, 0, 79, this.divePlanner.settings);
   ascentRate = this.divePlanner.settings.ascentRate;
@@ -29,14 +27,6 @@ export class NewDiveComponent {
 
   isMinDepthError(): boolean {
     return this.getSelectedGas().minDepth > 0;
-  }
-
-  getSelectedGas() {
-    if (this.gasType === 'standard') {
-      return this.selectedStandardGas;
-    } else {
-      return this.customGas;
-    }
   }
 
   getCustomGasDisabled() {
@@ -55,17 +45,8 @@ export class NewDiveComponent {
     this.updateCustomGasNitrogen();
   }
 
-  updateCustomGasNitrogen() {
-    this.customGas.nitrogen = 100 - this.customGas.oxygen - this.customGas.helium;
-    this.customGas = BreathingGas.create(this.customGas.oxygen, this.customGas.helium, this.customGas.nitrogen, this.divePlanner.settings);
-  }
-
-  onStandardGasChange(event: MatSelectionListChange) {
-    this.selectedStandardGas = event.options[0].value;
-  }
-
-  getGasTooltip(gas: BreathingGas): string {
-    return `Max Depth (PO2): ${gas.maxDepthPO2}m (${gas.maxDepthPO2Deco}m deco)\nMax Depth (END): ${gas.maxDepthEND}m\nMin Depth (Hypoxia): ${gas.minDepth}m`;
+  onStandardGasSelected(gas: BreathingGas): void {
+    this.selectedStandardGas = gas;
   }
 
   onDescentRateInput(): void {
@@ -96,8 +77,21 @@ export class NewDiveComponent {
     this.divePlanner.settings.ENDErrorThreshold = this.ENDErrorThreshold;
   }
 
+  getSelectedGas() {
+    if (this.gasType === 'standard') {
+      return this.selectedStandardGas;
+    } else {
+      return this.customGas;
+    }
+  }
+
   onSave() {
     this.divePlanner.startDive(this.getSelectedGas());
     this.router.navigate(['/dive-overview']);
+  }
+
+  private updateCustomGasNitrogen() {
+    this.customGas.nitrogen = 100 - this.customGas.oxygen - this.customGas.helium;
+    this.customGas = BreathingGas.create(this.customGas.oxygen, this.customGas.helium, this.customGas.nitrogen, this.divePlanner.settings);
   }
 }

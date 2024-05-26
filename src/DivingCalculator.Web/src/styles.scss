@@ -75,6 +75,9 @@ $theme: mat.define-light-theme((
 @import './app/ceiling-chart/ceiling-chart.component.theme.scss';
 @include ceiling-chart-theme($theme);
 
+@import './app/standard-gas-list/standard-gas-list.component.theme.scss';
+@include standard-gas-list-theme($theme);
+
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }

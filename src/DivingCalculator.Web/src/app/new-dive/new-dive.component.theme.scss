@@ -1,12 +1,7 @@
 @mixin new-dive-theme($theme) {
   $color: map-get($theme, color);
-  $accent: map-get($color, accent);
   $warn: map-get($color, warn);
   $background: map-get($color, background);
-
-  mat-selection-list {
-    background-color: map-get($background, card);
-  }
 
   .gas-calculations, .dive-settings {
     background-color: map-get($background, card);
@@ -14,9 +9,5 @@
 
   .mat-icon.error {
     color: map-get($warn, error);
-  }
-
-  mat-list-option[aria-selected="true"] {
-    background: map-get($primary, 100) !important;
   }
 }
