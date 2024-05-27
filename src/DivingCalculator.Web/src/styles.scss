@@ -78,6 +78,9 @@ $theme: mat.define-light-theme((
 @import './app/standard-gas-list/standard-gas-list.component.theme.scss';
 @include standard-gas-list-theme($theme);
 
+@import './app/dive-settings/dive-settings.component.theme.scss';
+@include dive-settings-theme($theme);
+
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }

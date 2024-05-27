@@ -17,13 +17,6 @@ export class NewDiveComponent {
   selectedStandardGas: BreathingGas = BreathingGas.StandardGases[0];
   gasType = 'standard';
   customGas: BreathingGas = BreathingGas.create(21, 0, 79, this.divePlanner.settings);
-  ascentRate = this.divePlanner.settings.ascentRate;
-  descentRate = this.divePlanner.settings.descentRate;
-  isOxygenNarcotic = this.divePlanner.settings.isOxygenNarcotic;
-  workingPO2Maximum = this.divePlanner.settings.workingPO2Maximum;
-  decoPO2Maximum = this.divePlanner.settings.decoPO2Maximum;
-  pO2Minimum = this.divePlanner.settings.pO2Minimum;
-  ENDErrorThreshold = this.divePlanner.settings.ENDErrorThreshold;
 
   isMinDepthError(): boolean {
     return this.getSelectedGas().minDepth > 0;
@@ -43,34 +36,6 @@ export class NewDiveComponent {
 
   onCustomGasChanged(gas: BreathingGas): void {
     this.customGas = gas;
-  }
-
-  onDescentRateInput(): void {
-    this.divePlanner.settings.descentRate = this.descentRate;
-  }
-
-  onAscentRateInput(): void {
-    this.divePlanner.settings.ascentRate = this.ascentRate;
-  }
-
-  onOxygenNarcoticChange(): void {
-    this.divePlanner.settings.isOxygenNarcotic = this.isOxygenNarcotic;
-  }
-
-  onWorkingPO2MaximumInput(): void {
-    this.divePlanner.settings.workingPO2Maximum = this.workingPO2Maximum;
-  }
-
-  onDecoPO2MaximumInput(): void {
-    this.divePlanner.settings.decoPO2Maximum = this.decoPO2Maximum;
-  }
-
-  onPO2MinimumInput(): void {
-    this.divePlanner.settings.pO2Minimum = this.pO2Minimum;
-  }
-
-  onENDErrorThresholdInput(): void {
-    this.divePlanner.settings.ENDErrorThreshold = this.ENDErrorThreshold;
   }
 
   getSelectedGas() {
