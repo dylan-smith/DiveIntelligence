@@ -24,9 +24,6 @@ $theme: mat.define-light-theme((
 
 @include mat.typography-hierarchy($theme);
 
-@import './app/new-dive/new-dive.component.theme.scss';
-@include new-dive-theme($theme);
-
 @import './app/add-dive-segment/add-dive-segment.component.theme.scss';
 @include add-dive-segment-theme($theme);
 
@@ -80,6 +77,9 @@ $theme: mat.define-light-theme((
 
 @import './app/dive-settings/dive-settings.component.theme.scss';
 @include dive-settings-theme($theme);
+
+@import './app/start-gas-stats/start-gas-stats.component.theme.scss';
+@include start-gas-stats-theme($theme);
 
 /* You can add global styles to this file, and also import other style files */
 

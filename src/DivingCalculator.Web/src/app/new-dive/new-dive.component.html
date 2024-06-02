@@ -22,26 +22,7 @@
       <dive-dive-settings class="mat-elevation-z2"></dive-dive-settings>
     </div>
     <div class="summary-data">
-      <div class="gas-calculations mat-elevation-z2">
-        <div class="gas-calc" [matTooltip]="divePlanner.settings.MaxDepthPO2Tooltip" matTooltipPosition="right">
-          <!-- eslint-disable-next-line prettier/prettier -->
-          Max Depth (PO<sub>2</sub>):
-          <strong>{{ getSelectedGas().maxDepthPO2 }}m ({{ getSelectedGas().maxDepthPO2Deco }}m deco)</strong>
-        </div>
-        <div class="gas-calc" [matTooltip]="divePlanner.settings.MaxDepthENDTooltip" matTooltipPosition="right">
-          Max Depth (END):
-          <strong>{{ getSelectedGas().maxDepthEND }}m</strong>
-        </div>
-        <div class="gas-calc">
-          <span [matTooltip]="divePlanner.settings.MinDepthTooltip" matTooltipPosition="below">
-            Min Depth (Hypoxia):
-            <strong>{{ getSelectedGas().minDepth }}m</strong>
-          </span>
-          <mat-icon [class.hidden]="!isMinDepthError()" class="error" matTooltip="This gas cannot be breathed at the surface due to the hypoxic oxygen content">
-            error
-          </mat-icon>
-        </div>
-      </div>
+      <dive-start-gas-stats class="mat-elevation-z2" [gas]="getSelectedGas()"></dive-start-gas-stats>
       <div class="save-section">
         <button mat-flat-button color="primary" (click)="onSave()">Save</button>
       </div>

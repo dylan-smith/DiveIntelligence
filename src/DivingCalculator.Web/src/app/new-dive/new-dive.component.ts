@@ -18,10 +18,6 @@ export class NewDiveComponent {
   gasType = 'standard';
   customGas: BreathingGas = BreathingGas.create(21, 0, 79, this.divePlanner.settings);
 
-  isMinDepthError(): boolean {
-    return this.getSelectedGas().minDepth > 0;
-  }
-
   getCustomGasDisabled() {
     return this.gasType === 'standard';
   }

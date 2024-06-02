@@ -1,13 +1,13 @@
-@mixin new-dive-theme($theme) {
+@mixin start-gas-stats-theme($theme) {
   $color: map-get($theme, color);
   $warn: map-get($color, warn);
   $background: map-get($color, background);
 
-  .gas-calculations, .dive-settings {
+  .gas-calculations {
     background-color: map-get($background, card);
   }
 
-  .mat-icon.error {
+  .error {
     color: map-get($warn, error);
   }
 }
