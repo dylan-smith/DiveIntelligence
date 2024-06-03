@@ -27,7 +27,7 @@
     "@angular/youtube-player": "^18.0.1",
     "@microsoft/applicationinsights-angularplugin-js": "^15.2.0",
     "@microsoft/applicationinsights-web": "^3.2.1",
-    "plotly.js-basic-dist-min": "^2.32.0",
+    "plotly.js-basic-dist-min": "^2.33.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.6.2",
     "zone.js": "^0.14.6"
