@@ -222,6 +222,9 @@ export class DiveProfile {
   addSegment(segment: DiveSegment): void {
     this.segments.push(segment);
     this.algo.calculateForSegment(segment);
+
+    // TODO: only recalculate the relevant part of the array instead of the whole thing
+    this.pO2ByTime = null;
   }
 
   getLastSegment(): DiveSegment {
@@ -247,21 +250,44 @@ export class DiveProfile {
     return this.getGas(time).getPHe(this.getDepth(time));
   }
 
+  private pO2ByTime: { time: number; pO2: number }[] | null = null;
+
+  getPO2Data(): { time: number; pO2: number }[] {
+    if (!this.pO2ByTime) {
+      this.pO2ByTime = [];
+
+      for (let time = 0; time <= this.getTotalTime(); time++) {
+        this.pO2ByTime.push({ time, pO2: this.getPO2(time) });
+      }
+    }
+
+    return this.pO2ByTime;
+  }
+
   private removeLastSegment(): void {
     this.segments.pop();
     this.algo.discardAfterTime(this.getTotalTime());
+
+    // TODO: only recalculate the relevant part of the array instead of the whole thing
+    this.pO2ByTime = null;
   }
 
   private extendLastSegment(time: number): void {
     this.getLastSegment().EndTimestamp += time;
     // TODO: can improve perf by not recalculating whole segment, just the last bit of time
     this.algo.calculateForSegment(this.getLastSegment());
+
+    // TODO: only recalculate the relevant part of the array instead of the whole thing
+    this.pO2ByTime = null;
   }
 
   private shortenLastSegment(time: number): void {
     this.getLastSegment().EndTimestamp -= time;
     // TODO: can improve perf by not recalculating whole segment, just throwing away some of the values instead
     this.algo.calculateForSegment(this.getLastSegment());
+
+    // TODO: only recalculate the relevant part of the array instead of the whole thing
+    this.pO2ByTime = null;
   }
 
   private clone(): DiveProfile {
@@ -269,6 +295,7 @@ export class DiveProfile {
     result.algo = this.algo.clone();
     // TODO: is it a problem that we're doing a shallow copy here? segments are currently mutable
     result.segments = this.segments.slice();
+    result.pO2ByTime = this.pO2ByTime;
     return result;
   }
 

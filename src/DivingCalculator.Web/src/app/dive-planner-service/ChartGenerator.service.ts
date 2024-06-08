@@ -30,21 +30,13 @@ export class ChartGeneratorService {
   }
 
   getPO2ChartData(diveProfile: DiveProfile): { time: number; pO2: number; decoLimit: number; limit: number; min: number }[] {
-    const data: { time: number; pO2: number; decoLimit: number; limit: number; min: number }[] = [];
-
-    for (const segment of diveProfile.segments) {
-      for (let time = segment.StartTimestamp; time <= segment.EndTimestamp; time++) {
-        data.push({
-          time: time,
-          pO2: segment.Gas.getPO2(segment.getDepth(time)),
-          decoLimit: this.diveSettings.decoPO2Maximum,
-          limit: this.diveSettings.workingPO2Maximum,
-          min: this.diveSettings.pO2Minimum,
-        });
-      }
-    }
-
-    return data;
+    return diveProfile.getPO2Data().map(d => ({
+      time: d.time,
+      pO2: d.pO2,
+      decoLimit: this.diveSettings.decoPO2Maximum,
+      limit: this.diveSettings.workingPO2Maximum,
+      min: this.diveSettings.pO2Minimum,
+    }));
   }
 
   getENDChartData(diveProfile: DiveProfile): { time: number; end: number; errorLimit: number }[] {
