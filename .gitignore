@@ -364,3 +364,7 @@ FodyWeavers.xsd
 
 # nx
 .nx/
+
+# Playwright
+test-results/
+playwright-report/
