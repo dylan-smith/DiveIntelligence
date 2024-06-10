@@ -39,6 +39,8 @@ jobs:
       uses: github/codeql-action/analyze@v3
       with:
         category: "/language:javascript-typescript"
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
     - name: Run UI automation tests
       run: npm run playwright
       working-directory: src/DivingCalculator.Web
