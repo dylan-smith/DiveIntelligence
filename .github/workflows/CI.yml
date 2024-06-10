@@ -20,14 +20,15 @@ jobs:
     - name: Use Node.js 18.x
       uses: actions/setup-node@v4
       with:
-        node-version: 18.x
+        node-version: 20.14.0
     - run: npm ci
       working-directory: src/DivingCalculator.Web
     - run: npm run lint
       working-directory: src/DivingCalculator.Web
     - run: npm run build
       working-directory: src/DivingCalculator.Web
-    - run: npm run ci-test
+    - name: Run unit tests
+      run: npm run ci-test
       working-directory: src/DivingCalculator.Web
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
@@ -38,6 +39,15 @@ jobs:
       uses: github/codeql-action/analyze@v3
       with:
         category: "/language:javascript-typescript"
+    - name: Run UI automation tests
+      run: npm run playwright
+      working-directory: src/DivingCalculator.Web
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30
     - name: Copy staticwebapp.config.json
       run: cp src/DivingCalculator.Web/staticwebapp.config.json src/DivingCalculator.Web/dist/dive-intelligence/browser/staticwebapp.config.json
     - name: Set Instrumentation Key
