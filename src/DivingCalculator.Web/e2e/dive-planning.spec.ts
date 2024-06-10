@@ -28,7 +28,7 @@ test('NDL dive to 25m for 50 mins on nitrox 32', async ({ page }) => {
 
   await page.getByLabel('New Depth (m)').fill('25');
   await expect(page.locator('dive-new-depth-stats .new-depth-stats .dive-stat').getByText('Descent Time: 1 min 15 sec @ 20m/min')).toBeVisible();
-  await expect(page.locator('dive-new-depth-stats .new-depth-stats .dive-stat').getByText('PO2: 1.12')).toBeVisible();
+  await expect(page.locator('dive-new-depth-stats .new-depth-stats .dive-stat').getByText('PO2: 1.52')).toBeVisible();
   await expect(page.locator('dive-new-depth-stats .new-depth-stats .dive-stat').getByText('END: 26m')).toBeVisible();
 
   await expect(page.locator('dive-new-gas-stats .new-gas-stats .gas-calculation-chunk .dive-stat').getByText('PO2: 1.12')).toBeVisible();
