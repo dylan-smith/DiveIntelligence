@@ -6,7 +6,7 @@ test('shows homepage', async ({ page }) => {
   await expect(page).toHaveTitle(/DiveIntelligence/);
 });
 
-test('2 NDL dive to 25m for 50 mins on nitrox 32', async ({ page }) => {
+test('NDL dive to 25m for 50 mins on nitrox 32', async ({ page }) => {
   const homePage = await new HomePage(page).goto();
 
   const newDivePage = await homePage.planADive();
