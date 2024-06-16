@@ -37,4 +37,14 @@ export class DiveOverviewPage {
     content = content ?? '';
     return content.replace('Average Depth: ', '').trim();
   }
+
+  async getDiveErrors(): Promise<string[]> {
+    const errors = await this.page.locator('dive-error-list .plan-error .error-message').all();
+    const errorMessages = [];
+    for (const error of errors) {
+      const message = (await error.textContent()) ?? '';
+      errorMessages.push(message.trim());
+    }
+    return errorMessages;
+  }
 }

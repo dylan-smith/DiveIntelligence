@@ -46,6 +46,14 @@ export class AddDiveSegmentPage {
     return content.replace('PO2: ', '').trim();
   }
 
+  async isCurrentPO2Warning(): Promise<boolean> {
+    return this.page
+      .locator('dive-current-stats .current-stats div.dive-stat', { has: this.page.getByText(/\s*PO2:/) })
+      .locator('mat-icon')
+      .getByText('warning')
+      .isVisible();
+  }
+
   async getCurrentEND(): Promise<string> {
     let content = await this.page.locator('dive-current-stats .current-stats .dive-stat').getByText('END: ').textContent();
     content = content ?? '';
@@ -63,10 +71,24 @@ export class AddDiveSegmentPage {
     return content.replace('Descent Time: ', '').trim();
   }
 
+  async getAscentTime(): Promise<string> {
+    let content = await this.page.locator('dive-new-depth-stats .new-depth-stats .dive-stat').getByText('Ascent Time: ').textContent();
+    content = content ?? '';
+    return content.replace('Ascent Time: ', '').trim();
+  }
+
   async getNewDepthPO2(): Promise<string> {
     let content = await this.page.locator('dive-new-depth-stats .new-depth-stats .dive-stat').getByText('PO2: ').textContent();
     content = content ?? '';
     return content.replace('PO2: ', '').trim();
+  }
+
+  async isNewDepthPO2Warning(): Promise<boolean> {
+    return this.page
+      .locator('dive-new-depth-stats .new-depth-stats div.dive-stat', { has: this.page.getByText(/\s*PO2:/) })
+      .locator('mat-icon')
+      .getByText('warning')
+      .isVisible();
   }
 
   async getNewDepthEND(): Promise<string> {
@@ -75,10 +97,43 @@ export class AddDiveSegmentPage {
     return content.replace('END: ', '').trim();
   }
 
+  async getOptimalDecoGas(): Promise<string> {
+    let content = await this.page.locator('dive-new-gas-input mat-radio-button[value="optimal"] .gas-description').textContent();
+    content = content ?? '';
+    return content.trim();
+  }
+
+  async selectOptimalDecoGas(): Promise<AddDiveSegmentPage> {
+    await this.page.getByLabel('Optimal Deco Gas').click();
+    return this;
+  }
+
+  async selectStandardGas(gas: string): Promise<AddDiveSegmentPage> {
+    await this.page.getByLabel('Standard Gas').click();
+    await this.page.locator('div.new-gas-col .mat-mdc-form-field-type-mat-select .mat-mdc-text-field-wrapper').click();
+    await this.page.getByText(gas).click();
+    return this;
+  }
+
+  async selectCustomGas(oxygen: number, helium: number): Promise<AddDiveSegmentPage> {
+    await this.page.getByLabel('Custom Gas').click();
+    await this.page.getByLabel('Oxygen (%)').fill(oxygen.toString());
+    await this.page.getByLabel('Helium (%)').fill(helium.toString());
+    return this;
+  }
+
   async getNewGasPO2(): Promise<string> {
     let content = await this.page.locator('dive-new-gas-stats .new-gas-stats .gas-calculation-chunk .dive-stat').getByText('PO2: ').textContent();
     content = content ?? '';
     return content.replace('PO2: ', '').trim();
+  }
+
+  async isNewGasPO2Warning(): Promise<boolean> {
+    return this.page
+      .locator('dive-new-gas-stats .new-gas-stats div.dive-stat', { has: this.page.getByText(/\s*PO2:/) })
+      .locator('mat-icon')
+      .getByText('warning')
+      .isVisible();
   }
 
   async getNewGasEND(): Promise<string> {
@@ -129,6 +184,16 @@ export class AddDiveSegmentPage {
     let content = await this.page.locator('dive-new-time-stats .new-time-stats .dive-stat').getByText('Total Dive Duration: ').textContent();
     content = content ?? '';
     return content.replace('Total Dive Duration: ', '').trim();
+  }
+
+  async getDecoMilestones(): Promise<string[]> {
+    const milestones = await this.page.locator('.deco-milestone').all();
+    const milestoneDetails = [];
+    for (const milestone of milestones) {
+      const content = (await milestone.textContent()) ?? '';
+      milestoneDetails.push(content.trim());
+    }
+    return milestoneDetails;
   }
 
   async Save(): Promise<DiveOverviewPage> {

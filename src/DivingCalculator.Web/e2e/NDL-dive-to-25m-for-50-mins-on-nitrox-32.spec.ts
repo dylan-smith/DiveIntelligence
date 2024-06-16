@@ -1,11 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { HomePage } from './pages/home.page';
 
-test('shows homepage', async ({ page }) => {
-  await page.goto('/');
-  await expect(page).toHaveTitle(/DiveIntelligence/);
-});
-
 test('NDL dive to 25m for 50 mins on nitrox 32', async ({ page }) => {
   const homePage = await new HomePage(page).goto();
 

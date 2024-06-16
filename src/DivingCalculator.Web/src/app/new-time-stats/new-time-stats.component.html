@@ -12,7 +12,7 @@
     </span>
   </div>
   <mat-divider *ngIf="hasDecoMilestones"></mat-divider>
-  <div class="dive-stat" *ngFor="let milestone of decoMilestones">
+  <div class="dive-stat deco-milestone" *ngFor="let milestone of decoMilestones">
     <span [matTooltip]="milestone.tooltip" matTooltipPosition="right">
       <strong>{{ milestone.duration | humanDuration }}</strong>
       : {{ milestone.gas }} &#64; {{ milestone.depth }}m
