@@ -68,6 +68,10 @@ export class DivePlannerService {
     return this.diveProfile.getCurrentGas();
   }
 
+  getCurrentDiveTime(): number {
+    return this.diveProfile.getCurrentDiveTime();
+  }
+
   getNoDecoLimit(newDepth: number, newGas: BreathingGas): number | undefined {
     return this.diveProfile.getNoDecoLimit(newDepth, newGas);
   }
