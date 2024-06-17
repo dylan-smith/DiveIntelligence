@@ -66,6 +66,10 @@ export class DiveProfile {
     return this.getPreviousSegment().Gas;
   }
 
+  getCurrentDiveTime(): number {
+    return this.getPreviousSegment().EndTimestamp;
+  }
+
   getNoDecoLimit(newDepth: number, newGas: BreathingGas): number | undefined {
     const wipProfile = this.getCurrentProfile();
 

@@ -40,7 +40,7 @@ export class NewTimeStatsComponent implements OnChanges {
   }
 
   private getTotalDiveDuration(): number {
-    return this.divePlanner.getDiveDuration() + this.divePlanner.getTravelTime(this.newDepth) + this.timeAtDepth * 60;
+    return this.divePlanner.getCurrentDiveTime() + this.divePlanner.getTravelTime(this.newDepth) + this.timeAtDepth * 60;
   }
 
   private getDecoMilestones(data: { time: number; ceiling: number }[]): { duration: number; gas: string; depth: number; tooltip: string }[] {

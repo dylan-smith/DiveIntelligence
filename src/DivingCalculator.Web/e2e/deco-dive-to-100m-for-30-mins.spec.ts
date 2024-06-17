@@ -84,7 +84,7 @@ test('deco dive to 100m for 30 mins', async ({ page }) => {
 
   await addDiveSegmentPage.setTimeAtDepth(30);
   expect(await addDiveSegmentPage.getFinalCeiling()).toBe('49m');
-  expect(await addDiveSegmentPage.getTotalDiveDuration()).toBe('37 min 48 sec');
+  expect(await addDiveSegmentPage.getTotalDiveDuration()).toBe('36 min');
 
   diveOverviewPage = await addDiveSegmentPage.Save();
 
@@ -130,7 +130,7 @@ test('deco dive to 100m for 30 mins', async ({ page }) => {
 
   await addDiveSegmentPage.setTimeAtDepth(20);
   expect(await addDiveSegmentPage.getFinalCeiling()).toBe('23m');
-  expect(await addDiveSegmentPage.getTotalDiveDuration()).toBe('71 min 42 sec');
+  expect(await addDiveSegmentPage.getTotalDiveDuration()).toBe('61 min 42 sec');
 
   let decoMilestones = await addDiveSegmentPage.getDecoMilestones();
   expect(decoMilestones[0]).toBe('3 min 45 sec : Helitrox 35/25 @ 35m');
@@ -184,7 +184,7 @@ test('deco dive to 100m for 30 mins', async ({ page }) => {
 
   await addDiveSegmentPage.setTimeAtDepth(41);
   expect(await addDiveSegmentPage.getFinalCeiling()).toBe('7m');
-  expect(await addDiveSegmentPage.getTotalDiveDuration()).toBe('109 min 6 sec');
+  expect(await addDiveSegmentPage.getTotalDiveDuration()).toBe('104 min 48 sec');
 
   decoMilestones = await addDiveSegmentPage.getDecoMilestones();
   expect(decoMilestones[0]).toBe('41 min 39 sec : Oxygen @ 6m');
@@ -235,7 +235,7 @@ test('deco dive to 100m for 30 mins', async ({ page }) => {
 
   await addDiveSegmentPage.setTimeAtDepth(33);
   expect(await addDiveSegmentPage.getFinalCeiling()).toBe('1m');
-  expect(await addDiveSegmentPage.getTotalDiveDuration()).toBe('141 min 36 sec');
+  expect(await addDiveSegmentPage.getTotalDiveDuration()).toBe('139 min 24 sec');
 
   decoMilestones = await addDiveSegmentPage.getDecoMilestones();
   expect(decoMilestones[0]).toBe('33 min 3 sec : Deco complete @ 0m');
@@ -250,7 +250,7 @@ test('deco dive to 100m for 30 mins', async ({ page }) => {
   expect(diveSegments[10].heading).toBe('done 2:19:24 Surface');
   expect(diveSegments[10].details).toBe('Ascent time: 36 sec @ 10m/min');
 
-  expect(await diveOverviewPage.getDiveDuration()).toBe('140 min');
+  expect(await diveOverviewPage.getDiveDuration()).toBe('140 min'); // TODO: shouldn't this be at least 141 mins as per line 238
   expect(await diveOverviewPage.getMaxDepth()).toBe('100m');
   expect(await diveOverviewPage.getAverageDepth()).toBe('41m');
 
