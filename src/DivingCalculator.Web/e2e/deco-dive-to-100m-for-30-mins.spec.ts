@@ -135,7 +135,7 @@ test('deco dive to 100m for 30 mins', async ({ page }) => {
   let decoMilestones = await addDiveSegmentPage.getDecoMilestones();
   expect(decoMilestones[0]).toBe('3 min 45 sec : Helitrox 35/25 @ 35m');
   expect(decoMilestones[1]).toBe('8 min 8 sec : Air @ 30m');
-  expect(decoMilestones[2]).toBe('8 min 9 sec : Nitrox 32 @ 30m'); // TODO: this is a bug, should be the same time as air
+  expect(decoMilestones[2]).toBe('8 min 8 sec : Nitrox 32 @ 30m');
   expect(decoMilestones[3]).toBe('20 min 25 sec : Nitrox 50 @ 22m');
 
   diveOverviewPage = await addDiveSegmentPage.Save();

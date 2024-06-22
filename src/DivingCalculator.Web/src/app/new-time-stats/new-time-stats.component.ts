@@ -24,7 +24,7 @@ export class NewTimeStatsComponent implements OnChanges {
   ) {}
 
   ngOnChanges(): void {
-    // TODO: change this
+    // TODO: change this, shouldn't be getting chart data from diveplanner service, thats a UI thing
     const ceilingData = this.divePlanner.getCeilingChartData(this.newDepth, this.newGas);
     this.newCeiling = this.divePlanner.getNewCeiling(this.newDepth, this.newGas, this.timeAtDepth * 60);
 
@@ -50,14 +50,19 @@ export class NewTimeStatsComponent implements OnChanges {
     const milestones: { duration: number; gas: string; depth: number; tooltip: string }[] = [];
     let decoComplete = 0;
 
-    for (let t = 0; t < ceilingData.length; t++) {
+    for (let t = 0; t < ceilingData.length && decoComplete === 0; t++) {
+      const gasToRemove: BreathingGas[] = [];
       for (const gas of decoGases) {
         if (Math.ceil(ceilingData[t]) <= gas.maxDecoDepth) {
           const tooltip = `If you spend ${this.humanDurationPipe.transform(t)} at ${this.newDepth}m, the ceiling will rise to
                            ${ceilingData[t]}m which allow you to ascend and switch to ${gas.name}`;
           milestones.push({ duration: t, gas: gas.name, depth: ceilingData[t], tooltip: tooltip });
-          decoGases.splice(decoGases.indexOf(gas), 1);
+          gasToRemove.push(gas);
         }
+      }
+
+      for (const gas of gasToRemove) {
+        decoGases.splice(decoGases.indexOf(gas), 1);
       }
 
       if (ceilingData[t] === 0 && decoComplete === 0) {
