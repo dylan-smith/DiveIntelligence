@@ -250,7 +250,7 @@ test('deco dive to 100m for 30 mins', async ({ page }) => {
   expect(diveSegments[10].heading).toBe('done 2:19:24 Surface');
   expect(diveSegments[10].details).toBe('Ascent time: 36 sec @ 10m/min');
 
-  expect(await diveOverviewPage.getDiveDuration()).toBe('140 min'); // TODO: shouldn't this be at least 141 mins as per line 238
+  expect(await diveOverviewPage.getDiveDuration()).toBe('140 min');
   expect(await diveOverviewPage.getMaxDepth()).toBe('100m');
   expect(await diveOverviewPage.getAverageDepth()).toBe('41m');
 
