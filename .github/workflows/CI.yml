@@ -82,7 +82,7 @@ jobs:
       with:
         issue-number: ${{ github.event.pull_request.number }}
         body: |
-          The application has been deployed to a [preview site](https://kind-beach-03c93dc0f-pr-${{ github.event.pull_request.number }}.eastus2.3.azurestaticapps.net/) for you to test.
+          The application has been deployed to a [preview site](https://kind-beach-03c93dc0f-pr-${{ github.event.pull_request.number }}.eastus2.3.azurestaticapps.net/) for testing.
 
-          This site will automatically be deleted with the PR is merged.
+          This site will automatically be deleted when the PR is merged.
         
