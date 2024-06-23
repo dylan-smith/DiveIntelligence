@@ -73,7 +73,7 @@ jobs:
 
     - name: Deploy to Preview Site
       if: github.event_name == 'pull_request'
-      run: npm run deploy -- --env pr-${{ github.event.pull_request.number }} --deployment-token ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
+      run: npm run deploy -- --env "pr-${{ github.event.pull_request.number }}" --deployment-token ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
       working-directory: src/DivingCalculator.Web
 
     - name: Create PR comment with link to preview site
