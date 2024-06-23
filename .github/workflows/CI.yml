@@ -4,11 +4,13 @@ on:
   push:
     branches: [ "master" ]
   pull_request:
+    types: [opened, synchronize, reopened, closed]
     branches: [ "master" ]
   workflow_dispatch:
 
 jobs:
   build:
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     permissions:
       security-events: write
@@ -50,6 +52,7 @@ jobs:
         name: playwright-report
         path: src/DivingCalculator.Web/playwright-report/
         retention-days: 30
+      
     - name: Copy staticwebapp.config.json
       run: cp src/DivingCalculator.Web/staticwebapp.config.json src/DivingCalculator.Web/dist/dive-intelligence/browser/staticwebapp.config.json
     - name: Set Instrumentation Key
@@ -60,9 +63,15 @@ jobs:
         field: instrumentationKey
         value: ${{ vars.INSTRUMENTATION_KEY }}
     - name: Upload Source Maps
+      if: github.ref == 'refs/heads/master'
       run: az storage blob upload-batch --connection-string "${{ secrets.SOURCE_MAPS_CONNECTION_STRING}}" --source src/DivingCalculator.Web/dist/dive-intelligence/browser --destination sourcemaps --overwrite true
-      if: github.ref == 'refs/heads/master'
     - name: Deploy to Azure Static Web Apps
-      run: npm run deploy -- --env production --deployment-token ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
       if: github.ref == 'refs/heads/master'
+      run: npm run deploy -- --env production --deployment-token ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
       working-directory: src/DivingCalculator.Web
+
+    - name: Deploy to Preview Site
+      if: github.event_name == 'pull_request'
+      run: npm run deploy -- --env pr-${{ github.event.pull_request.number }} --deployment-token ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
+      working-directory: src/DivingCalculator.Web
+        
