@@ -25,10 +25,10 @@ test('NDL dive to 25m for 50 mins on nitrox 32', async ({ page }) => {
   await addDiveSegmentPage.setNewDepth(25);
   expect(await addDiveSegmentPage.getDescentTime()).toBe('1 min 15 sec @ 20m/min');
   expect(await addDiveSegmentPage.getNewDepthPO2()).toBe('1.12');
-  expect(await addDiveSegmentPage.getNewDepthEND()).toBe('26m');
+  expect(await addDiveSegmentPage.getNewDepthEND()).toBe('25m');
 
   expect(await addDiveSegmentPage.getNewGasPO2()).toBe('1.12');
-  expect(await addDiveSegmentPage.getNewGasEND()).toBe('26m');
+  expect(await addDiveSegmentPage.getNewGasEND()).toBe('25m');
   expect(await addDiveSegmentPage.getNewGasNoDecoLimit()).toBe('57 min 4 sec');
   expect(await addDiveSegmentPage.getNewGasMaxDepthPO2()).toBe('33m (40m deco)');
   expect(await addDiveSegmentPage.getNewGasMaxDepthEND()).toBe('30m');

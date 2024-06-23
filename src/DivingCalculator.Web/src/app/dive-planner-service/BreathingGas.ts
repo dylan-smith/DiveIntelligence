@@ -1,3 +1,4 @@
+import { ceilingWithThreshold, floorWithThreshold } from '../utility/utility';
 import { DiveSettingsService } from './DiveSettings.service';
 
 export class BreathingGas {
@@ -66,7 +67,7 @@ export class BreathingGas {
 
   static getOptimalDecoGas(depth: number, settings: DiveSettingsService): BreathingGas {
     const atm = depth / 10 + 1;
-    const oxygen = Math.min(100, Math.floor((settings.decoPO2Maximum * 100) / atm));
+    const oxygen = Math.min(100, floorWithThreshold((settings.decoPO2Maximum * 100) / atm));
 
     let targetPN2 = (settings.ENDErrorThreshold / 10 + 1) * 79;
 
@@ -76,7 +77,7 @@ export class BreathingGas {
     }
 
     let nitrogen = targetPN2 / atm;
-    const helium = Math.max(0, Math.ceil(100 - oxygen - nitrogen));
+    const helium = Math.max(0, ceilingWithThreshold(100 - oxygen - nitrogen));
     nitrogen = 100 - oxygen - helium;
 
     return BreathingGas.create(oxygen, helium, nitrogen, settings);
@@ -107,7 +108,7 @@ export class BreathingGas {
   }
 
   private calcMinDepth(): number {
-    return Math.max(0, Math.ceil((this.diveSettings.pO2Minimum * 1000) / this.oxygen - 10));
+    return Math.max(0, ceilingWithThreshold((this.diveSettings.pO2Minimum * 1000) / this.oxygen - 10));
   }
 
   private calcMaxDecoDepth(): number {

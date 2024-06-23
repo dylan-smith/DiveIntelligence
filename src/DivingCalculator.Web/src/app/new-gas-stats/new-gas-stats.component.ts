@@ -2,6 +2,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { BreathingGas } from '../dive-planner-service/BreathingGas';
 import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
 import { HumanDurationPipe } from '../pipes/human-duration.pipe';
+import { ceilingWithThreshold } from '../utility/utility';
 
 @Component({
   selector: 'dive-new-gas-stats',
@@ -56,7 +57,7 @@ export class NewGasStatsComponent implements OnChanges {
   }
 
   private getNewGasEND(): number {
-    return Math.ceil(this.newGas.getEND(this.newDepth));
+    return ceilingWithThreshold(this.newGas.getEND(this.newDepth));
   }
 
   private getNewGasENDErrorMessage(): string | undefined {

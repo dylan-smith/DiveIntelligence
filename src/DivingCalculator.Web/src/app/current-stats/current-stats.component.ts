@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
 import { BreathingGas } from '../dive-planner-service/BreathingGas';
+import { ceilingWithThreshold } from '../utility/utility';
 
 @Component({
   selector: 'dive-current-stats',
@@ -35,7 +36,7 @@ export class CurrentStatsComponent {
   }
 
   private getEND(): number {
-    return Math.ceil(this.divePlanner.getCurrentGas().getEND(this.currentDepth));
+    return ceilingWithThreshold(this.divePlanner.getCurrentGas().getEND(this.currentDepth));
   }
 
   private getENDErrorMessage(): string | undefined {

@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
+import { ceilingWithThreshold } from '../utility/utility';
 
 @Component({
   selector: 'dive-new-depth-stats',
@@ -60,7 +61,7 @@ export class NewDepthStatsComponent implements OnChanges {
   }
 
   private getEND(): number {
-    return Math.ceil(this.divePlanner.getCurrentGas().getEND(this.newDepth));
+    return ceilingWithThreshold(this.divePlanner.getCurrentGas().getEND(this.newDepth));
   }
 
   private getENDErrorMessage(): string | undefined {

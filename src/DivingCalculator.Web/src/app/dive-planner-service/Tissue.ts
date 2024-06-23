@@ -1,3 +1,4 @@
+import { ceilingWithThreshold } from '../utility/utility';
 import { BreathingGas } from './BreathingGas';
 import { DiveSegment } from './DiveSegment';
 
@@ -90,7 +91,7 @@ export class Tissue {
         maxNDL = time - 1;
       }
 
-      time = Math.ceil((maxNDL - minNDL) / 2) + minNDL;
+      time = ceilingWithThreshold((maxNDL - minNDL) / 2) + minNDL;
     }
 
     if (time >= this.MAX_NDL) {

@@ -1,3 +1,4 @@
+import { ceilingWithThreshold } from '../utility/utility';
 import { BreathingGas } from './BreathingGas';
 import { BuhlmannZHL16C } from './BuhlmannZHL16C';
 import { DiveSegment } from './DiveSegment';
@@ -59,7 +60,7 @@ export class DiveProfile {
   getCurrentCeiling(): number {
     const currentTime = this.getPreviousSegment().EndTimestamp;
 
-    return Math.ceil(this.algo.getCeiling(currentTime));
+    return ceilingWithThreshold(this.algo.getCeiling(currentTime));
   }
 
   getCurrentGas(): BreathingGas {
@@ -105,18 +106,18 @@ export class DiveProfile {
     }
 
     maxTime--;
-    let time = Math.ceil((maxTime - minTime) / 2) + minTime;
+    let time = ceilingWithThreshold((maxTime - minTime) / 2) + minTime;
 
     wipProfile.shortenLastSegment(maxTime + 1 - time);
 
     while (minTime < maxTime) {
       if (wipProfile.canSurfaceWithoutStops()) {
         minTime = time;
-        time = Math.ceil((maxTime - minTime) / 2) + minTime;
+        time = ceilingWithThreshold((maxTime - minTime) / 2) + minTime;
         wipProfile.extendLastSegment(time - minTime);
       } else {
         maxTime = time - 1;
-        time = Math.ceil((maxTime - minTime) / 2) + minTime;
+        time = ceilingWithThreshold((maxTime - minTime) / 2) + minTime;
         wipProfile.shortenLastSegment(maxTime + 1 - time);
       }
     }
@@ -220,7 +221,7 @@ export class DiveProfile {
 
     wipProfile.addSegment(this.diveSegmentFactory.createGasChangeSegment(wipProfile.getLastSegment().EndTimestamp, newGas, timeAtDepth, newDepth));
 
-    return Math.ceil(wipProfile.algo.getCeiling(wipProfile.getTotalTime()));
+    return ceilingWithThreshold(wipProfile.algo.getCeiling(wipProfile.getTotalTime()));
   }
 
   addSegment(segment: DiveSegment): void {
