@@ -73,10 +73,10 @@ test('deco dive to 100m for 30 mins', async ({ page }) => {
   await addDiveSegmentPage.setNewDepth(100);
   expect(await addDiveSegmentPage.getDescentTime()).toBe('4 min 6 sec @ 20m/min');
   expect(await addDiveSegmentPage.getNewDepthPO2()).toBe('1.10');
-  expect(await addDiveSegmentPage.getNewDepthEND()).toBe('24m');
+  expect(await addDiveSegmentPage.getNewDepthEND()).toBe('23m');
 
   expect(await addDiveSegmentPage.getNewGasPO2()).toBe('1.10');
-  expect(await addDiveSegmentPage.getNewGasEND()).toBe('24m');
+  expect(await addDiveSegmentPage.getNewGasEND()).toBe('23m');
   expect(await addDiveSegmentPage.getNewGasNoDecoLimit()).toBe('0 sec');
   expect(await addDiveSegmentPage.getNewGasMaxDepthPO2()).toBe('130m (150m deco)');
   expect(await addDiveSegmentPage.getNewGasMaxDepthEND()).toBe('123m');
@@ -111,7 +111,7 @@ test('deco dive to 100m for 30 mins', async ({ page }) => {
   expect(await addDiveSegmentPage.getCurrentMaxDepthEND()).toBe('123m');
   expect(await addDiveSegmentPage.getCurrentMinDepthHypoxia()).toBe('8m');
   expect(await addDiveSegmentPage.getCurrentPO2()).toBe('1.10');
-  expect(await addDiveSegmentPage.getCurrentEND()).toBe('24m');
+  expect(await addDiveSegmentPage.getCurrentEND()).toBe('23m');
 
   await addDiveSegmentPage.setNewDepth(43);
   expect(await addDiveSegmentPage.getAscentTime()).toBe('5 min 42 sec @ 10m/min');
@@ -170,7 +170,7 @@ test('deco dive to 100m for 30 mins', async ({ page }) => {
   await addDiveSegmentPage.setNewDepth(22);
   expect(await addDiveSegmentPage.getAscentTime()).toBe('2 min 6 sec @ 10m/min');
   expect(await addDiveSegmentPage.getNewDepthPO2()).toBe('0.96');
-  expect(await addDiveSegmentPage.getNewDepthEND()).toBe('15m');
+  expect(await addDiveSegmentPage.getNewDepthEND()).toBe('14m');
 
   expect(await addDiveSegmentPage.getOptimalDecoGas()).toBe('Nitrox 50 (O2: 50%, He: 0%, N2: 50%)');
   await addDiveSegmentPage.selectOptimalDecoGas();
@@ -221,13 +221,13 @@ test('deco dive to 100m for 30 mins', async ({ page }) => {
   await addDiveSegmentPage.setNewDepth(6);
   expect(await addDiveSegmentPage.getAscentTime()).toBe('1 min 36 sec @ 10m/min');
   expect(await addDiveSegmentPage.getNewDepthPO2()).toBe('0.80');
-  expect(await addDiveSegmentPage.getNewDepthEND()).toBe('7m');
+  expect(await addDiveSegmentPage.getNewDepthEND()).toBe('6m');
 
   expect(await addDiveSegmentPage.getOptimalDecoGas()).toBe('Oxygen (O2: 100%, He: 0%, N2: 0%)');
   await addDiveSegmentPage.selectCustomGas(100, 0);
   expect(await addDiveSegmentPage.getNewGasPO2()).toBe('1.60');
   expect(await addDiveSegmentPage.isNewGasPO2Warning()).toBe(true);
-  expect(await addDiveSegmentPage.getNewGasEND()).toBe('7m'); // TODO: this is a bug, should be 6m
+  expect(await addDiveSegmentPage.getNewGasEND()).toBe('6m');
   expect(await addDiveSegmentPage.getNewGasNoDecoLimit()).toBe('0 sec');
   expect(await addDiveSegmentPage.getNewGasMaxDepthPO2()).toBe('4m (6m deco)');
   expect(await addDiveSegmentPage.getNewGasMaxDepthEND()).toBe('30m');
