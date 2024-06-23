@@ -17,6 +17,7 @@ jobs:
       packages: read
       actions: read
       contents: read
+      pull-requests: write
     steps:
     - uses: actions/checkout@v4
     - name: Use Node.js 20.14.0
@@ -74,4 +75,14 @@ jobs:
       if: github.event_name == 'pull_request'
       run: npm run deploy -- --env pr-${{ github.event.pull_request.number }} --deployment-token ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
       working-directory: src/DivingCalculator.Web
+
+    - name: Create PR comment with link to preview site
+      if: github.event_name == 'pull_request'
+      uses: peter-evans/create-or-update-comment@v4
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        body: |
+          The application has been deployed to a [preview site](https://kind-beach-03c93dc0f-pr-${{ github.event.pull_request.number }}.eastus2.3.azurestaticapps.net/) for you to test.
+
+          This site will automatically be deleted with the PR is merged.
         
