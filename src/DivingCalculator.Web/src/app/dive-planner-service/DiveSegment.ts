@@ -14,6 +14,20 @@ export class DiveSegment {
     private settings: DiveSettingsService
   ) {}
 
+  clone(): DiveSegment {
+    return new DiveSegment(
+      this.StartTimestamp,
+      this.EndTimestamp,
+      this.Title,
+      this.Description,
+      this.StartDepth,
+      this.EndDepth,
+      this.Gas,
+      this.Icon,
+      this.settings
+    );
+  }
+
   getDuration(): number {
     return this.EndTimestamp - this.StartTimestamp;
   }
