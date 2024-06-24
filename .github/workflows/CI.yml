@@ -158,7 +158,6 @@ jobs:
         body: |
           :construction: :construction: The preview site for this PR is being deleted. :construction: :construction:
 
-
     - name: Delete preview site
       uses: azure/cli@v2
       with:
