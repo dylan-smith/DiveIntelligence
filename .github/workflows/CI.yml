@@ -73,7 +73,7 @@ jobs:
 
     - name: Deploy to Preview Site
       if: github.event_name == 'pull_request'
-      run: npm run deploy -- --env "pr-${{ github.event.pull_request.number }}" --deployment-token ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
+      run: npm run deploy -- --env "pr${{ github.event.pull_request.number }}" --deployment-token ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
       working-directory: src/DivingCalculator.Web
 
     - name: Create PR comment with link to preview site
@@ -82,7 +82,7 @@ jobs:
       with:
         issue-number: ${{ github.event.pull_request.number }}
         body: |
-          The application has been deployed to a [preview site](https://kind-beach-03c93dc0f-pr-${{ github.event.pull_request.number }}.eastus2.3.azurestaticapps.net/) for testing.
+          The application has been deployed to a [preview site](https://kind-beach-03c93dc0f-pr${{ github.event.pull_request.number }}.eastus2.3.azurestaticapps.net/) for testing.
 
           This site will automatically be deleted when the PR is merged.
         
