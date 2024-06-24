@@ -71,18 +71,40 @@ jobs:
       run: npm run deploy -- --env production --deployment-token ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
       working-directory: src/DivingCalculator.Web
 
-    - name: Deploy to Preview Site
+    - name: Find PR comment to update
       if: github.event_name == 'pull_request'
-      run: npm run deploy -- --env "pr${{ github.event.pull_request.number }}" --deployment-token ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
-      working-directory: src/DivingCalculator.Web
-
-    - name: Create PR comment with link to preview site
+      uses: peter-evans/find-comment@v3
+      id: find-comment
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        comment-author: 'github-actions[bot]'
+        body-includes: The application has been deployed to a [preview site](https://kind-beach-03c93dc0f-pr${{ github.event.pull_request.number }}.eastus2.3.azurestaticapps.net/) for testing.
+    - name: Create/update PR comment with link to preview site
       if: github.event_name == 'pull_request'
       uses: peter-evans/create-or-update-comment@v4
       with:
         issue-number: ${{ github.event.pull_request.number }}
+        comment-id: ${{ steps.find-comment.outputs.comment-id }}
+        body: |
+          :construction: :construction: The application is being deployed to a preview site. Please wait for the deployment to complete. :construction: :construction:
+    - name: Deploy to Preview Site
+      if: github.event_name == 'pull_request'
+      run: npm run deploy -- --env "pr${{ github.event.pull_request.number }}" --deployment-token ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
+      working-directory: src/DivingCalculator.Web
+    
+    - name: Get current date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+    - name: Create/update PR comment with link to preview site
+      if: github.event_name == 'pull_request'
+      uses: peter-evans/create-or-update-comment@v4
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        comment-id: ${{ steps.find-comment.outputs.comment-id }}
         body: |
           The application has been deployed to a [preview site](https://kind-beach-03c93dc0f-pr${{ github.event.pull_request.number }}.eastus2.3.azurestaticapps.net/) for testing.
 
           This site will automatically be deleted when the PR is merged.
+
+          Last deployed: ${{ steps.date.outputs.date }}
         
