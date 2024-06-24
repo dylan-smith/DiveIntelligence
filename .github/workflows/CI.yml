@@ -18,6 +18,7 @@ jobs:
       actions: read
       contents: read
       pull-requests: write
+      id-token: write
     steps:
     - uses: actions/checkout@v4
     - name: Use Node.js 20.14.0
@@ -110,4 +111,50 @@ jobs:
           This site will automatically be deleted when the PR is merged.
 
           Last deployed: ${{ steps.date.outputs.date }} (UTC)
-        
+
+  delete-preview-site:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      id-token: write
+    steps:
+    - name: Azure Login
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+    
+    - name: Find PR comment to update
+      uses: peter-evans/find-comment@v3
+      id: find-comment
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        comment-author: 'github-actions[bot]'
+        body-includes: The application has been deployed to a [preview site](https://kind-beach-03c93dc0f-pr${{ github.event.pull_request.number }}.eastus2.3.azurestaticapps.net/) for testing.
+
+    - name: Create/update PR comment with in progress message
+      if: github.event_name == 'pull_request'
+      uses: peter-evans/create-or-update-comment@v4
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        comment-id: ${{ steps.find-comment.outputs.comment-id }}
+        edit-mode: replace
+        body: |
+          :construction: :construction: The preview site for this PR is being deleted. :construction: :construction:
+
+    - name: Azure CLI script
+      uses: azure/cli@v2
+      with:
+        azcliversion: latest
+        inlineScript: az staticwebapp environment delete --name DiveIntelligence --environment-name "pr${{ github.event.pull_request.number }}" --resource-group DiveIntelligence --yes
+
+    - name: Create/update PR comment with link to preview site
+      uses: peter-evans/create-or-update-comment@v4
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        comment-id: ${{ steps.find-comment.outputs.comment-id }}
+        edit-mode: replace
+        body: |
+          :no_entry_sign: :no_entry_sign: The preview site for this PR has been deleted. :no_entry_sign: :no_entry_sign:
