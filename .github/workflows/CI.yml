@@ -96,7 +96,7 @@ jobs:
       working-directory: src/DivingCalculator.Web
     - name: Get current date
       id: date
-      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+      run: echo "::set-output name=date::$(date --utc +'%FT%TZ')"
     - name: Create/update PR comment with link to preview site
       if: github.event_name == 'pull_request'
       uses: peter-evans/create-or-update-comment@v4
