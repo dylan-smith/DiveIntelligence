@@ -99,6 +99,7 @@ jobs:
     - name: Create/update PR comment with in progress message
       if: github.event_name == 'pull_request'
       uses: peter-evans/create-or-update-comment@v4
+      id: wip-comment
       with:
         issue-number: ${{ github.event.pull_request.number }}
         comment-id: ${{ steps.find-comment.outputs.comment-id }}
@@ -115,12 +116,12 @@ jobs:
       id: date
       run: echo "::set-output name=date::$(date --utc +'%FT%TZ')"
 
-    - name: Create/update PR comment with link to preview site
+    - name: Update PR comment with link to preview site
       if: github.event_name == 'pull_request'
       uses: peter-evans/create-or-update-comment@v4
       with:
         issue-number: ${{ github.event.pull_request.number }}
-        comment-id: ${{ steps.find-comment.outputs.comment-id }}
+        comment-id: ${{ steps.wip-comment.outputs.comment-id }}
         edit-mode: replace
         body: |
           This PR has been deployed to a [preview site](https://kind-beach-03c93dc0f-pr${{ github.event.pull_request.number }}.eastus2.3.azurestaticapps.net/) for testing.
@@ -154,6 +155,7 @@ jobs:
     - name: Update PR comment with being deleted message
       if: github.event_name == 'pull_request'
       uses: peter-evans/create-or-update-comment@v4
+      id: deleting-comment
       with:
         issue-number: ${{ github.event.pull_request.number }}
         comment-id: ${{ steps.find-comment-2.outputs.comment-id }}
@@ -161,7 +163,7 @@ jobs:
         body: |
           :construction: :construction: The preview site for this PR is being deleted. :construction: :construction:
 
-            
+
     - name: Delete preview site
       uses: azure/cli@v2
       with:
@@ -172,7 +174,7 @@ jobs:
       uses: peter-evans/create-or-update-comment@v4
       with:
         issue-number: ${{ github.event.pull_request.number }}
-        comment-id: ${{ steps.find-comment-2.outputs.comment-id }}
+        comment-id: ${{ steps.deleting-comment.outputs.comment-id }}
         edit-mode: replace
         body: |
           :no_entry_sign: :no_entry_sign: The preview site for this PR has been deleted. :no_entry_sign: :no_entry_sign:
@@ -202,6 +204,7 @@ jobs:
     - name: Update PR comment with being deleted message
       if: github.event_name == 'pull_request'
       uses: peter-evans/create-or-update-comment@v4
+      id: deleting-comment
       with:
         issue-number: ${{ github.event.pull_request.number }}
         comment-id: ${{ steps.find-comment.outputs.comment-id }}
@@ -219,7 +222,7 @@ jobs:
       uses: peter-evans/create-or-update-comment@v4
       with:
         issue-number: ${{ github.event.pull_request.number }}
-        comment-id: ${{ steps.find-comment.outputs.comment-id }}
+        comment-id: ${{ steps.deleting-comment.outputs.comment-id }}
         edit-mode: replace
         body: |
           :no_entry_sign: :no_entry_sign: The preview site for this PR has been deleted. :no_entry_sign: :no_entry_sign:
