@@ -53,6 +53,7 @@ jobs:
 
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
+      working-directory: src/DivingCalculator.Web
 
     - name: Run UI automation tests
       run: npm run playwright
@@ -157,7 +158,7 @@ jobs:
         body: |
           :construction: :construction: The preview site for this PR is being deleted. :construction: :construction:
 
-            
+
     - name: Delete preview site
       uses: azure/cli@v2
       with:
