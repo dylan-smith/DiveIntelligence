@@ -81,7 +81,7 @@ jobs:
       with:
         issue-number: ${{ github.event.pull_request.number }}
         comment-author: 'github-actions[bot]'
-        body-includes: The application has been deployed to a [preview site](https://kind-beach-03c93dc0f-pr${{ github.event.pull_request.number }}.eastus2.3.azurestaticapps.net/) for testing.
+        body-includes: This PR has been deployed to a [preview site](https://kind-beach-03c93dc0f-pr${{ github.event.pull_request.number }}.eastus2.3.azurestaticapps.net/) for testing.
     - name: Create/update PR comment with in progress message
       if: github.event_name == 'pull_request'
       uses: peter-evans/create-or-update-comment@v4
@@ -132,7 +132,7 @@ jobs:
       with:
         issue-number: ${{ github.event.pull_request.number }}
         comment-author: 'github-actions[bot]'
-        body-includes: The application has been deployed to a [preview site](https://kind-beach-03c93dc0f-pr${{ github.event.pull_request.number }}.eastus2.3.azurestaticapps.net/) for testing.
+        body-includes: This PR has been deployed to a [preview site](https://kind-beach-03c93dc0f-pr${{ github.event.pull_request.number }}.eastus2.3.azurestaticapps.net/) for testing.
 
     - name: Create/update PR comment with in progress message
       if: github.event_name == 'pull_request'
