@@ -53,9 +53,10 @@ jobs:
         name: playwright-report
         path: src/DivingCalculator.Web/playwright-report/
         retention-days: 30
-      
     - name: Copy staticwebapp.config.json
       run: cp src/DivingCalculator.Web/staticwebapp.config.json src/DivingCalculator.Web/dist/dive-intelligence/browser/staticwebapp.config.json
+    
+    # deploy to production
     - name: Set Instrumentation Key
       if: github.ref == 'refs/heads/master'
       uses: jossef/action-set-json-field@v2.2
@@ -71,6 +72,7 @@ jobs:
       run: npm run deploy -- --env production --deployment-token ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
       working-directory: src/DivingCalculator.Web
 
+    # deploy PR to preview site
     - name: Find PR comment to update
       if: github.event_name == 'pull_request'
       uses: peter-evans/find-comment@v3
@@ -79,19 +81,19 @@ jobs:
         issue-number: ${{ github.event.pull_request.number }}
         comment-author: 'github-actions[bot]'
         body-includes: The application has been deployed to a [preview site](https://kind-beach-03c93dc0f-pr${{ github.event.pull_request.number }}.eastus2.3.azurestaticapps.net/) for testing.
-    - name: Create/update PR comment with link to preview site
+    - name: Create/update PR comment with in progress message
       if: github.event_name == 'pull_request'
       uses: peter-evans/create-or-update-comment@v4
       with:
         issue-number: ${{ github.event.pull_request.number }}
         comment-id: ${{ steps.find-comment.outputs.comment-id }}
+        edit-mode: replace
         body: |
           :construction: :construction: The application is being deployed to a preview site. Please wait for the deployment to complete. :construction: :construction:
     - name: Deploy to Preview Site
       if: github.event_name == 'pull_request'
       run: npm run deploy -- --env "pr${{ github.event.pull_request.number }}" --deployment-token ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
       working-directory: src/DivingCalculator.Web
-    
     - name: Get current date
       id: date
       run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
@@ -101,6 +103,7 @@ jobs:
       with:
         issue-number: ${{ github.event.pull_request.number }}
         comment-id: ${{ steps.find-comment.outputs.comment-id }}
+        edit-mode: replace
         body: |
           The application has been deployed to a [preview site](https://kind-beach-03c93dc0f-pr${{ github.event.pull_request.number }}.eastus2.3.azurestaticapps.net/) for testing.
 
