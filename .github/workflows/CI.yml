@@ -105,9 +105,9 @@ jobs:
         comment-id: ${{ steps.find-comment.outputs.comment-id }}
         edit-mode: replace
         body: |
-          The application has been deployed to a [preview site](https://kind-beach-03c93dc0f-pr${{ github.event.pull_request.number }}.eastus2.3.azurestaticapps.net/) for testing.
+          This PR has been deployed to a [preview site](https://kind-beach-03c93dc0f-pr${{ github.event.pull_request.number }}.eastus2.3.azurestaticapps.net/) for testing.
 
           This site will automatically be deleted when the PR is merged.
 
-          Last deployed: ${{ steps.date.outputs.date }}
+          Last deployed: ${{ steps.date.outputs.date }} (UTC)
         
