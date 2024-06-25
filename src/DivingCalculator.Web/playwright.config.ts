@@ -7,7 +7,7 @@ export default defineConfig({
   retries: process.env['CI'] ? 2 : 0,
   reporter: 'html',
   use: {
-    baseURL: 'http://localhost:4200',
+    baseURL: process.env['PLAYWRIGHT_BASE_URL'] ?? 'http://localhost:4200',
     trace: 'retain-on-failure',
     // headless: false,
     // launchOptions: {
