@@ -107,7 +107,7 @@ jobs:
         body: |
           :construction: :construction: The application is being deployed to a preview site. Please wait for the deployment to complete. :construction: :construction:
 
-    - name: Deploy to Preview Site
+    - name: Deploy to preview site
       if: github.event_name == 'pull_request'
       run: npm run deploy -- --env "pr${{ github.event.pull_request.number }}" --deployment-token ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
       working-directory: src/DivingCalculator.Web
@@ -129,6 +129,24 @@ jobs:
           This site will automatically be deleted when the PR is merged.
 
           Last deployed: ${{ steps.date.outputs.date }} (UTC)
+
+    - name: Delete previous playwright report
+      if: github.event_name == 'pull_request'
+      run: rm -rf src/DivingCalculator.Web/playwright-report/
+
+    - name: Run UI automation tests on preview site
+      if: github.event_name == 'pull_request'
+      run: npm run playwright
+      working-directory: src/DivingCalculator.Web
+      env:
+        PLAYWRIGHT_BASE_URL: 'https://kind-beach-03c93dc0f-pr${{ github.event.pull_request.number }}.eastus2.3.azurestaticapps.net'
+
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: playwright-staging-report
+        path: src/DivingCalculator.Web/playwright-report/
+        retention-days: 30
     
   delete-preview-site:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
