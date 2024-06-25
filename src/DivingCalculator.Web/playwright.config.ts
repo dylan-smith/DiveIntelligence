@@ -8,7 +8,7 @@ export default defineConfig({
   reporter: 'html',
   use: {
     baseURL: process.env['PLAYWRIGHT_BASE_URL'] ?? 'http://localhost:4200',
-    trace: 'on',
+    trace: 'retain-on-failure',
     // headless: false,
     // launchOptions: {
     //   args: ['--remote-debugging-port=9222'],
