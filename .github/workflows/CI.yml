@@ -4,54 +4,71 @@ on:
   push:
     branches: [ "master" ]
   pull_request:
+    types: [opened, synchronize, reopened, closed]
     branches: [ "master" ]
   workflow_dispatch:
 
 jobs:
   build:
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     permissions:
       security-events: write
       packages: read
       actions: read
       contents: read
+      pull-requests: write
     steps:
     - uses: actions/checkout@v4
+
     - name: Use Node.js 20.14.0
       uses: actions/setup-node@v4
       with:
         node-version: 20.14.0
+
     - run: npm ci
       working-directory: src/DivingCalculator.Web
+
     - run: npm run lint
       working-directory: src/DivingCalculator.Web
+
     - run: npm run build
       working-directory: src/DivingCalculator.Web
+
     - name: Run unit tests
       run: npm run ci-test
       working-directory: src/DivingCalculator.Web
+
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
       with:
         languages: javascript-typescript
         build-mode: none
+
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
       with:
         category: "/language:javascript-typescript"
+
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
+      working-directory: src/DivingCalculator.Web
+
     - name: Run UI automation tests
       run: npm run playwright
       working-directory: src/DivingCalculator.Web
+
     - uses: actions/upload-artifact@v4
       if: always()
       with:
         name: playwright-report
         path: src/DivingCalculator.Web/playwright-report/
         retention-days: 30
+
     - name: Copy staticwebapp.config.json
       run: cp src/DivingCalculator.Web/staticwebapp.config.json src/DivingCalculator.Web/dist/dive-intelligence/browser/staticwebapp.config.json
+    
+    # deploy to production
     - name: Set Instrumentation Key
       if: github.ref == 'refs/heads/master'
       uses: jossef/action-set-json-field@v2.2
@@ -59,10 +76,104 @@ jobs:
         file: src/DivingCalculator.Web/dist/dive-intelligence/browser/assets/config.json
         field: instrumentationKey
         value: ${{ vars.INSTRUMENTATION_KEY }}
+
     - name: Upload Source Maps
+      if: github.ref == 'refs/heads/master'
       run: az storage blob upload-batch --connection-string "${{ secrets.SOURCE_MAPS_CONNECTION_STRING}}" --source src/DivingCalculator.Web/dist/dive-intelligence/browser --destination sourcemaps --overwrite true
-      if: github.ref == 'refs/heads/master'
+
     - name: Deploy to Azure Static Web Apps
-      run: npm run deploy -- --env production --deployment-token ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
       if: github.ref == 'refs/heads/master'
+      run: npm run deploy -- --env production --deployment-token ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
       working-directory: src/DivingCalculator.Web
+
+    # deploy PR to preview site
+    - name: Find PR comment to update
+      if: github.event_name == 'pull_request'
+      uses: peter-evans/find-comment@v3
+      id: find-comment
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        comment-author: 'github-actions[bot]'
+        body-includes: This PR has been deployed to a [preview site](https://kind-beach-03c93dc0f-pr${{ github.event.pull_request.number }}.eastus2.3.azurestaticapps.net/) for testing.
+
+    - name: Create/update PR comment with in progress message
+      if: github.event_name == 'pull_request'
+      uses: peter-evans/create-or-update-comment@v4
+      id: wip-comment
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        comment-id: ${{ steps.find-comment.outputs.comment-id }}
+        edit-mode: replace
+        body: |
+          :construction: :construction: The application is being deployed to a preview site. Please wait for the deployment to complete. :construction: :construction:
+
+    - name: Deploy to Preview Site
+      if: github.event_name == 'pull_request'
+      run: npm run deploy -- --env "pr${{ github.event.pull_request.number }}" --deployment-token ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
+      working-directory: src/DivingCalculator.Web
+
+    - name: Get current date
+      id: date
+      run: echo "date=$(date --utc +'%FT%TZ')" >> $GITHUB_OUTPUT
+
+    - name: Update PR comment with link to preview site
+      if: github.event_name == 'pull_request'
+      uses: peter-evans/create-or-update-comment@v4
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        comment-id: ${{ steps.wip-comment.outputs.comment-id }}
+        edit-mode: replace
+        body: |
+          This PR has been deployed to a [preview site](https://kind-beach-03c93dc0f-pr${{ github.event.pull_request.number }}.eastus2.3.azurestaticapps.net/) for testing.
+
+          This site will automatically be deleted when the PR is merged.
+
+          Last deployed: ${{ steps.date.outputs.date }} (UTC)
+    
+  delete-preview-site:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      id-token: write
+    steps:
+    - name: Azure Login
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+    
+    - name: Find PR comment to update
+      uses: peter-evans/find-comment@v3
+      id: find-comment
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        comment-author: 'github-actions[bot]'
+        body-includes: This PR has been deployed to a [preview site](https://kind-beach-03c93dc0f-pr${{ github.event.pull_request.number }}.eastus2.3.azurestaticapps.net/) for testing.
+
+    - name: Update PR comment with being deleted message
+      if: github.event_name == 'pull_request'
+      uses: peter-evans/create-or-update-comment@v4
+      id: deleting-comment
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        comment-id: ${{ steps.find-comment.outputs.comment-id }}
+        edit-mode: replace
+        body: |
+          :construction: :construction: The preview site for this PR is being deleted. :construction: :construction:
+
+    - name: Delete preview site
+      uses: azure/cli@v2
+      with:
+        azcliversion: latest
+        inlineScript: az staticwebapp environment delete --name DiveIntelligence --environment-name "pr${{ github.event.pull_request.number }}" --resource-group DiveIntelligence --yes
+
+    - name: Update PR comment to indicate site has been deleted
+      uses: peter-evans/create-or-update-comment@v4
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        comment-id: ${{ steps.deleting-comment.outputs.comment-id }}
+        edit-mode: replace
+        body: |
+          :no_entry_sign: :no_entry_sign: The preview site for this PR has been deleted. :no_entry_sign: :no_entry_sign:
