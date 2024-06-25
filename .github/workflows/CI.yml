@@ -64,7 +64,6 @@ jobs:
       with:
         name: playwright-report
         path: src/DivingCalculator.Web/playwright-report/
-        retention-days: 30
 
     - name: Copy staticwebapp.config.json
       run: cp src/DivingCalculator.Web/staticwebapp.config.json src/DivingCalculator.Web/dist/dive-intelligence/browser/staticwebapp.config.json
@@ -148,7 +147,6 @@ jobs:
       with:
         name: playwright-staging-report
         path: src/DivingCalculator.Web/playwright-report/
-        retention-days: 30
     
   delete-preview-site:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
