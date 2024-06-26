@@ -35,7 +35,7 @@ module.exports = function (config) {
     },
     reporters: ['progress', 'kjhtml', 'junit'],
     junitReporter: {
-      outputDir: 'test-results', // results will be saved as $outputDir/$browserName.xml
+      outputDir: 'test-results/unit-tests', // results will be saved as $outputDir/$browserName.xml
     },
     browsers: ['ChromeHeadlessNoSandbox'],
     customLaunchers: {
