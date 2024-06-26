@@ -39,6 +39,13 @@ jobs:
       run: npm run ci-test
       working-directory: src/DivingCalculator.Web
 
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v2
+      if: always()
+      with:
+        files: |
+          src/DivingCalculator.Web/test-results/**/*.xml
+
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
       with:
