@@ -50,41 +50,8 @@ jobs:
       with:
         category: "/language:javascript-typescript"
 
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
-      working-directory: src/DivingCalculator.Web
-
-    - name: Run UI automation tests
-      run: npm run playwright
-      working-directory: src/DivingCalculator.Web
-
-    - name: Upload Playwright report
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: playwright-report
-        path: src/DivingCalculator.Web/playwright-report/
-
     - name: Copy staticwebapp.config.json
       run: cp src/DivingCalculator.Web/staticwebapp.config.json src/DivingCalculator.Web/dist/dive-intelligence/browser/staticwebapp.config.json
-    
-    # deploy to production
-    - name: Set Instrumentation Key
-      if: github.ref == 'refs/heads/master'
-      uses: jossef/action-set-json-field@v2.2
-      with:
-        file: src/DivingCalculator.Web/dist/dive-intelligence/browser/assets/config.json
-        field: instrumentationKey
-        value: ${{ vars.INSTRUMENTATION_KEY }}
-
-    - name: Upload Source Maps
-      if: github.ref == 'refs/heads/master'
-      run: az storage blob upload-batch --connection-string "${{ secrets.SOURCE_MAPS_CONNECTION_STRING}}" --source src/DivingCalculator.Web/dist/dive-intelligence/browser --destination sourcemaps --overwrite true
-
-    - name: Deploy to Azure Static Web Apps
-      if: github.ref == 'refs/heads/master'
-      run: npm run deploy -- --env production --deployment-token ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
-      working-directory: src/DivingCalculator.Web
 
     # deploy PR to preview site
     - name: Find PR comment to update
@@ -113,6 +80,7 @@ jobs:
       working-directory: src/DivingCalculator.Web
 
     - name: Get current date
+      if: github.event_name == 'pull_request'
       id: date
       run: echo "date=$(date --utc +'%FT%TZ')" >> $GITHUB_OUTPUT
 
@@ -130,9 +98,9 @@ jobs:
 
           Last deployed: ${{ steps.date.outputs.date }} (UTC)
 
-    - name: Delete previous playwright report
-      if: github.event_name == 'pull_request'
-      run: rm -rf src/DivingCalculator.Web/playwright-report/
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+      working-directory: src/DivingCalculator.Web
 
     - name: Run UI automation tests on preview site
       if: github.event_name == 'pull_request'
@@ -141,13 +109,36 @@ jobs:
       env:
         PLAYWRIGHT_BASE_URL: 'https://kind-beach-03c93dc0f-pr${{ github.event.pull_request.number }}.eastus2.3.azurestaticapps.net'
 
-    - name: Upload Playwright staging report
+    - name: Run UI automation tests locally
+      if: github.event_name != 'pull_request'
+      run: npm run playwright
+      working-directory: src/DivingCalculator.Web
+
+    - name: Upload Playwright report
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: playwright-staging-report
+        name: playwright-report
         path: src/DivingCalculator.Web/playwright-report/
     
+    # deploy to production
+    - name: Set Instrumentation Key
+      if: github.ref == 'refs/heads/master'
+      uses: jossef/action-set-json-field@v2.2
+      with:
+        file: src/DivingCalculator.Web/dist/dive-intelligence/browser/assets/config.json
+        field: instrumentationKey
+        value: ${{ vars.INSTRUMENTATION_KEY }}
+
+    - name: Upload Source Maps
+      if: github.ref == 'refs/heads/master'
+      run: az storage blob upload-batch --connection-string "${{ secrets.SOURCE_MAPS_CONNECTION_STRING}}" --source src/DivingCalculator.Web/dist/dive-intelligence/browser --destination sourcemaps --overwrite true
+
+    - name: Deploy to Azure Static Web Apps
+      if: github.ref == 'refs/heads/master'
+      run: npm run deploy -- --env production --deployment-token ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
+      working-directory: src/DivingCalculator.Web
+
   delete-preview-site:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
