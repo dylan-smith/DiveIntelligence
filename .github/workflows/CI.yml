@@ -44,7 +44,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v2
       if: always()
       with:
-        comment_title: Unit Test Results
+        check_name: Unit Test Results
         files: |
           src/DivingCalculator.Web/test-results/unit-tests/*.xml
 
@@ -128,7 +128,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v2
       if: always()
       with:
-        comment_title: UI Test Results
+        check_name: UI Test Results
         files: |
           src/DivingCalculator.Web/test-results/playwright/*.xml
 
