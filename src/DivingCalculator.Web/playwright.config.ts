@@ -5,7 +5,7 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env['CI'],
   retries: process.env['CI'] ? 2 : 0,
-  reporter: 'html',
+  reporter: [['list'], ['html'], ['junit', { outputFile: 'test-results/playwright/playwright.xml' }]],
   use: {
     baseURL: process.env['PLAYWRIGHT_BASE_URL'] ?? 'http://localhost:4200',
     trace: 'retain-on-failure',
