@@ -1,23 +1,28 @@
 import { defineConfig, devices } from '@playwright/test';
+import path from 'path';
+
+const _testsDir = path.resolve('./e2e');
+const _testResultsDir = path.resolve('./test-results/playwright');
+const _codeCoverageDir = path.resolve(_testResultsDir, 'code-coverage');
 
 export default defineConfig({
-  testDir: './e2e',
-  outputDir: './test-results/playwright',
+  testDir: _testsDir,
+  outputDir: _testResultsDir,
   fullyParallel: true,
   forbidOnly: !!process.env['CI'],
   retries: process.env['CI'] ? 2 : 0,
   globalSetup: require.resolve('./playwright.global-setup.ts'),
   reporter: [
     ['list'],
-    ['junit', { outputFile: 'test-results/playwright/playwright.xml' }],
+    ['junit', { outputFile: path.resolve(_testResultsDir, 'playwright.xml') }],
     [
       'monocart-reporter',
       {
         name: 'Playwright code coverage',
-        outputFile: 'test-results/playwright/mono-cart-report.html',
+        outputFile: path.resolve(_testResultsDir, 'monocart-report.html'),
         coverage: {
-          outputDir: 'test-results/playwright/coverage',
-          reportPath: 'test-results/playwright/coverage/v8/index.html',
+          outputDir: _codeCoverageDir,
+          reportPath: path.resolve(_codeCoverageDir, 'v8/index.html'),
           reports: [
             ['v8', { outputFile: 'v8/index.html', inline: true, metrics: ['lines'] }],
             ['console-summary', { metrics: ['lines'] }],
@@ -25,6 +30,12 @@ export default defineConfig({
             ['cobertura', { file: 'cobertura/code-coverage.cobertura.xml' }],
             ['lcovonly', { file: 'lcov/code-coverage.lcov.info' }],
           ],
+          entryFilter: (entry: any) => {
+            const url = entry.url as string;
+            return (
+              !url.includes('@fs') && !url.includes('fonts.googleapis.com') && !url.includes('www.youtube.com') && url !== 'http://localhost:4200/styles.css'
+            );
+          },
           sourceFilter: (sourcePath: string) => {
             return sourcePath.search(/src\//u) !== -1;
           },
