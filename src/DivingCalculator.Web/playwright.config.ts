@@ -31,9 +31,12 @@ export default defineConfig({
             ['lcovonly', { file: 'lcov/code-coverage.lcov.info' }],
           ],
           entryFilter: (entry: any) => {
-            const url = entry.url as string;
+            const url = new URL(entry.url as string);
             return (
-              !url.includes('@fs') && !url.includes('fonts.googleapis.com') && !url.includes('www.youtube.com') && url !== 'http://localhost:4200/styles.css'
+              !url.toString().includes('@fs') &&
+              url.host !== 'fonts.googleapis.com' &&
+              url.host !== 'www.youtube.com' &&
+              url.toString() !== 'http://localhost:4200/styles.css'
             );
           },
           sourceFilter: (sourcePath: string) => {
