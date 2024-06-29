@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from 'e2e/_shared/app-fixtures';
 import { HomePage } from './pages/home.page';
 
 test('deco dive to 100m for 30 mins', async ({ page }) => {
