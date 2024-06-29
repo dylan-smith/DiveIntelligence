@@ -1,11 +1,51 @@
 import { defineConfig, devices } from '@playwright/test';
+import path from 'path';
+
+const _testsDir = path.resolve('./e2e');
+const _testResultsDir = path.resolve('./test-results/playwright');
+const _codeCoverageDir = path.resolve(_testResultsDir, 'code-coverage');
 
 export default defineConfig({
-  testDir: './e2e',
+  testDir: _testsDir,
+  outputDir: _testResultsDir,
   fullyParallel: true,
   forbidOnly: !!process.env['CI'],
   retries: process.env['CI'] ? 2 : 0,
-  reporter: [['list'], ['html'], ['junit', { outputFile: 'test-results/playwright/playwright.xml' }]],
+  globalSetup: require.resolve('./playwright.global-setup.ts'),
+  reporter: [
+    ['list'],
+    ['junit', { outputFile: path.resolve(_testResultsDir, 'playwright.xml') }],
+    [
+      'monocart-reporter',
+      {
+        name: 'Playwright code coverage',
+        outputFile: path.resolve(_testResultsDir, 'monocart-report.html'),
+        coverage: {
+          outputDir: _codeCoverageDir,
+          reportPath: path.resolve(_codeCoverageDir, 'v8/index.html'),
+          reports: [
+            ['v8', { outputFile: 'v8/index.html', inline: true, metrics: ['lines'] }],
+            ['console-summary', { metrics: ['lines'] }],
+            ['html-spa', { subdir: 'html-spa' }],
+            ['cobertura', { file: 'cobertura/code-coverage.cobertura.xml' }],
+            ['lcovonly', { file: 'lcov/code-coverage.lcov.info' }],
+          ],
+          entryFilter: (entry: any) => {
+            const url = new URL(entry.url as string);
+            return (
+              !url.toString().includes('@fs') &&
+              url.host !== 'fonts.googleapis.com' &&
+              url.host !== 'www.youtube.com' &&
+              url.toString() !== 'http://localhost:4200/styles.css'
+            );
+          },
+          sourceFilter: (sourcePath: string) => {
+            return sourcePath.search(/src\//u) !== -1;
+          },
+        },
+      },
+    ],
+  ],
   use: {
     baseURL: process.env['PLAYWRIGHT_BASE_URL'] ?? 'http://localhost:4200',
     trace: 'retain-on-failure',

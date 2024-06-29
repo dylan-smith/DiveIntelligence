@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from 'e2e/_shared/app-fixtures';
 import { HomePage } from './pages/home.page';
 
 test('NDL dive to 25m for 50 mins on nitrox 32', async ({ page }) => {
