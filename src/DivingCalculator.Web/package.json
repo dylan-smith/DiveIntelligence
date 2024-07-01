@@ -42,7 +42,7 @@
     "@angular-eslint/template-parser": "18.0.1",
     "@angular/cli": "~18.0.5",
     "@angular/compiler-cli": "^18.0.4",
-    "@azure/static-web-apps-cli": "^1.1.9",
+    "@azure/static-web-apps-cli": "^1.1.10",
     "@playwright/test": "^1.44.1",
     "@types/jasmine": "~5.1.4",
     "@types/node": "^20.14.8",
