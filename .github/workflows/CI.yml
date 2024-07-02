@@ -60,7 +60,7 @@ jobs:
 
     - name: Add title to coverage report
       run: |
-        $content = Get-Content -Path $filePath
+        $content = Get-Content -Path code-coverage-results.md
         "Unit Tests Code Coverage" | Set-Content -Path code-coverage-results.md
         $content | Add-Content -Path code-coverage-results.md
       shell: pwsh
