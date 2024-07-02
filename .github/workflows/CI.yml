@@ -57,6 +57,12 @@ jobs:
         format: 'markdown'
         output: 'both'
         hide_complexity: true
+
+    - name: Add title to coverage report
+      run: |
+        $content = Get-Content -Path $filePath
+        "Unit Tests Code Coverage" | Set-Content -Path code-coverage-results.md
+        $content | Add-Content -Path code-coverage-results.md
     
     - name: Add Coverage PR Comment
       uses: marocchino/sticky-pull-request-comment@v2
