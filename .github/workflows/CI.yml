@@ -16,7 +16,7 @@ jobs:
       security-events: write
       packages: read
       actions: read
-      contents: read
+      contents: write
       pull-requests: write
       checks: write
     steps:
