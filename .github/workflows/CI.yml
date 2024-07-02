@@ -63,6 +63,7 @@ jobs:
         $content = Get-Content -Path $filePath
         "Unit Tests Code Coverage" | Set-Content -Path code-coverage-results.md
         $content | Add-Content -Path code-coverage-results.md
+      shell: pwsh
     
     - name: Add Coverage PR Comment
       uses: marocchino/sticky-pull-request-comment@v2
