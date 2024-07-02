@@ -11,7 +11,8 @@ module.exports = function (config) {
       require('karma-jasmine-html-reporter'),
       require('karma-coverage'),
       require('@angular-devkit/build-angular/plugins/karma'),
-      require('karma-junit-reporter')
+      require('karma-junit-reporter'),
+      require('karma-sabarivka-reporter'),
     ],
     client: {
       jasmine: {
@@ -26,14 +27,15 @@ module.exports = function (config) {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/dive-intelligence'),
-      subdir: '.',
+      include: 'src/**/!(*.spec|*.module|environment*|main).(ts|js)',
+      dir: require('path').join(__dirname, './test-results/unit-tests/code-coverage'),
       reporters: [
-        { type: 'html' },
-        { type: 'text-summary' }
+        { type: 'html', includeAllSources: true, subdir: 'html'},
+        { type: 'text-summary', includeAllSources: true },
+        { type: 'cobertura', includeAllSources: true, subdir: 'cobertura' }
       ]
     },
-    reporters: ['progress', 'kjhtml', 'junit'],
+    reporters: ['sabarivka', 'progress', 'kjhtml', 'junit'],
     junitReporter: {
       outputDir: 'test-results/unit-tests', // results will be saved as $outputDir/$browserName.xml
     },
