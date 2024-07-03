@@ -25,7 +25,6 @@ export class NewTimeStatsComponent implements OnChanges {
   ) {}
 
   ngOnChanges(): void {
-    // TODO: change this, shouldn't be getting chart data from diveplanner service, thats a UI thing
     const ceilingData = this.divePlanner.getCeilingChartData(this.newDepth, this.newGas);
     this.newCeiling = this.divePlanner.getNewCeiling(this.newDepth, this.newGas, this.timeAtDepth * 60);
 

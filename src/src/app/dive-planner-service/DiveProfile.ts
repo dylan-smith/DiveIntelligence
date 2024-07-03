@@ -272,8 +272,6 @@ export class DiveProfile {
   private clone(): DiveProfile {
     const result = new DiveProfile(this.diveSettings, this.diveSegmentFactory);
     result.algo = this.algo.clone();
-    // TODO: is it a problem that we're doing a shallow copy here? segments are currently mutable
-    // result.segments = this.segments.slice();
     result.segments = this.segments.map(x => x.clone());
     return result;
   }
