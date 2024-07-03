@@ -1,0 +1,8 @@
+@mixin dive-summary-theme($theme) {
+  $color: map-get($theme, color);
+  $background: map-get($color, background);
+
+  .dive-stats {
+    background-color: map-get($background, card);
+  }
+}

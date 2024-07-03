@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/dive-plan/dive-plan.component.scss"],
+  "sourcesContent": [".add-segment-button {\n  align-self: flex-end;\n}\n\n.add-segment-button {\n  margin-top: 0.3rem;\n  margin-bottom: 1rem;\n}\n\nmat-list {\n  width: fit-content;\n}\n\n.dive-plan-list-section {\n  width: fit-content;\n  display: flex;\n  flex-direction: column;\n}\n\nmat-selection-list {\n  padding: 0px;\n}\n\n.segment-icon {\n  padding-right: 0.5rem;\n}\n\n.segment-description {\n  padding-left: 2.3rem;\n}\n"],
+  "mappings": "AAAA,CAAA,mBACE,WAAA,SAGF,CAJA,mBAKE,WAAA,MACA,cAAA,KAGF,SACE,MAAA,YAGF,CAAA,uBACE,MAAA,YACA,QAAA,KACA,eAAA,OAGF,mBAnBA,QAoBE,EAGF,CAAA,aACE,cAAA,MAGF,CAAA,oBACE,aAAA",
+  "names": []
+}

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/dive-settings/dive-settings.component.scss"],
+  "sourcesContent": ["mat-form-field {\n  width: 8rem;\n  display: block;\n}\n\nmat-icon {\n  font-size: 1.4em;\n  height: auto;\n  width: auto;\n}\n\n.settings-input {\n  width: 200px;\n}\n\n.dive-settings {\n  padding: 1.5rem;\n}\n\n.dive-settings-row {\n  display: flex;\n}\n\n.dive-settings-col {\n  margin: 1rem;\n}\n\n.toggle-label {\n  padding: 1rem;\n}\n\nmat-slide-toggle {\n  margin-top: 1rem;\n  margin-bottom: 1rem;\n}\n"],
+  "mappings": "AAAA,eACE,MAAA,KACA,QAAA,MAGF,SACE,UAAA,MACA,OAAA,KACA,MAAA,KAGF,CAAA,eACE,MAAA,MAGF,CAAA,cAfA,QAgBE,OAGF,CAAA,kBACE,QAAA,KAGF,CAAA,kBAvBA,OAwBE,KAGF,CAAA,aA3BA,QA4BE,KAGF,iBACE,WAAA,KACA,cAAA",
+  "names": []
+}

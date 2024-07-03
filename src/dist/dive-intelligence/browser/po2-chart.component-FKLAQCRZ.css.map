@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/po2-chart/po2-chart.component.scss"],
+  "sourcesContent": [".graph {\n  height: 340px;\n  width: 840px;\n  margin: 1rem;\n  justify-content: center;\n  align-items: center;\n  display: flex;\n  border-style: none;\n}\n\n.plotly-graph {\n  width: 100%;\n  height: 100%;\n}\n"],
+  "mappings": "AAAA,CAAA,MACE,OAAA,MACA,MAAA,MAFF,OAGE,KACA,gBAAA,OACA,YAAA,OACA,QAAA,KACA,aAAA,KAGF,CAAA,aACE,MAAA,KACA,OAAA",
+  "names": []
+}

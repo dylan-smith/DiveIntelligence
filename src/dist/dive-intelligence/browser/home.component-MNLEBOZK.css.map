@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/home/home.component.scss"],
+  "sourcesContent": ["main {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  height: 100%;\n}\n\n.top-section {\n  height: 50%;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border-bottom-width: 5px;\n  border-top-width: 0px;\n  border-right-width: 0px;\n  border-left-width: 0px;\n  border-color: lightgrey;\n  border-style: solid;\n  width: 85%;\n}\n\n#plan-dive {\n  width: 300px !important;\n  height: 150px !important;\n  font-size: 36px;\n}\n\n.help {\n  display: flex;\n  justify-content: space-evenly;\n  width: 100%;\n  align-items: center;\n  height: 50%;\n  flex-wrap: wrap;\n}\n\n.discussions, .issues {\n  height: fit-content;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  width: 450px;\n  height: 200px;\n}\n\n.help-button-text {\n  font-size: 24px;\n  margin-bottom: 30px;\n}\n\n.help-link {\n  width: fit-content !important;\n  height: fit-content !important;\n}\n"],
+  "mappings": "AAAA,KACE,QAAA,KACA,eAAA,OACA,gBAAA,OACA,YAAA,OACA,OAAA,KAGF,CAAA,YACE,OAAA,IACA,QAAA,KACA,gBAAA,OACA,YAAA,OACA,oBAAA,IACA,iBAAA,IACA,mBAAA,IACA,kBAAA,IACA,aAAA,QACA,aAAA,MACA,MAAA,IAGF,CAAA,UACE,MAAA,gBACA,OAAA,gBACA,UAAA,KAGF,CAAA,KACE,QAAA,KACA,gBAAA,aACA,MAAA,KACA,YAAA,OACA,OAAA,IACA,UAAA,KAGF,CAAA,YAAA,CAAA,OACE,OAAA,YACA,QAAA,KACA,eAAA,OACA,YAAA,OACA,gBAAA,OACA,MAAA,MACA,OAAA,MAGF,CAAA,iBACE,UAAA,KACA,cAAA,KAGF,CAAA,UACE,MAAA,sBACA,OAAA",
+  "names": []
+}

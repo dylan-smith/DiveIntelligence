@@ -1,0 +1,26 @@
+@mixin add-dive-segment-theme($theme) {
+  $color: map-get($theme, color);
+  $primary: map-get($color, primary);
+  $background: map-get($color, background);
+
+  $nav-color: map-get($primary, A100);
+  $nav-text: map-get(map-get($primary, contrast), A200);
+
+  .input-section {
+    border-color: $nav-color;
+    background-color: map-get($background, card);
+  }
+
+  .nav-number {
+    background-color:$nav-color;
+    color: $nav-text;
+  }
+
+  .nav-line-1 {
+    background-color: $nav-color;
+  }
+
+  .nav-line-2 {
+    background-color: $nav-color;
+  }
+}

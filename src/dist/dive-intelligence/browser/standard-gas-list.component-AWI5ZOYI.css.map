@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/standard-gas-list/standard-gas-list.component.scss"],
+  "sourcesContent": ["mat-selection-list {\n  padding: 0px;\n}\n"],
+  "mappings": "AAAA,2BACE",
+  "names": []
+}

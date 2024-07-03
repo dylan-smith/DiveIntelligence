@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/error-list/error-list.component.scss"],
+  "sourcesContent": [".plan-error {\n  border-width: 2px;\n  border-style: solid;\n  padding: 0.3rem;\n  margin-bottom: 1rem;\n  width: fit-content;\n}\n\n.errors {\n  margin-top: 1rem;\n  margin-bottom: 1rem;\n  margin-left: 1rem;\n}\n"],
+  "mappings": "AAAA,CAAA,WACE,aAAA,IACA,aAAA,MAFF,QAGE,MACA,cAAA,KACA,MAAA,YAGF,CAAA,OACE,WAAA,KACA,cAAA,KACA,YAAA",
+  "names": []
+}

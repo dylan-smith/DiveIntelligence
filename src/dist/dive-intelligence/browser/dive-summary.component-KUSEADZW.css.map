@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/dive-summary/dive-summary.component.scss"],
+  "sourcesContent": [".dive-stats {\n  margin-top: 1rem;\n  margin-bottom: 1rem;\n  width: fit-content;\n  padding: 1rem;\n}\n\n.dive-stat {\n  padding-top: 0.1rem;\n  padding-bottom: 0.1rem;\n}\n"],
+  "mappings": "AAAA,CAAA,WACE,WAAA,KACA,cAAA,KACA,MAAA,YAHF,QAIE,KAGF,CAAA,UACE,YAAA,MACA,eAAA",
+  "names": []
+}

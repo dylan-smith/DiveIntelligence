@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/custom-gas-input/custom-gas-input.component.scss"],
+  "sourcesContent": ["mat-form-field {\n  width: 8rem;\n  display: block;\n}\n\n.custom-gas-input {\n  display: flex;\n}\n"],
+  "mappings": "AAAA,eACE,MAAA,KACA,QAAA,MAGF,CAAA,iBACE,QAAA",
+  "names": []
+}

@@ -1,0 +1,21 @@
+<div class="new-time-stats">
+  <div class="dive-stat">
+    <span matTooltip="The deco ceiling after the ascent/descent time and time at depth has elapsed" matTooltipPosition="right">
+      Ceiling:
+      <strong>{{ newCeiling }}m</strong>
+    </span>
+  </div>
+  <div class="dive-stat">
+    <span matTooltip="Total dive runtime after adding in the time for ascent/descent and the time at depth" matTooltipPosition="right">
+      Total Dive Duration:
+      <strong>{{ totalDiveDuration | humanDuration }}</strong>
+    </span>
+  </div>
+  <mat-divider *ngIf="hasDecoMilestones"></mat-divider>
+  <div class="dive-stat deco-milestone" *ngFor="let milestone of decoMilestones">
+    <span [matTooltip]="milestone.tooltip" matTooltipPosition="right">
+      <strong>{{ milestone.duration | humanDuration }}</strong>
+      : {{ milestone.gas }} &#64; {{ milestone.depth }}m
+    </span>
+  </div>
+</div>

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/graph-dialog/graph-dialog.component.scss"],
+  "sourcesContent": [".graph {\n  height: 100%;\n  width: 100%;\n}\n\n.plotly-graph {\n  width: 100%;\n  height: 100%;\n}\n"],
+  "mappings": "AAAA,CAAA,MACE,OAAA,KACA,MAAA,KAGF,CAAA,aACE,MAAA,KACA,OAAA",
+  "names": []
+}

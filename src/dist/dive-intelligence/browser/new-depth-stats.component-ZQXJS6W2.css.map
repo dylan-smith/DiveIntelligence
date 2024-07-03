@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/new-depth-stats/new-depth-stats.component.scss"],
+  "sourcesContent": [".new-depth-stats {\n  padding: 1rem;\n}\n\n.dive-stat {\n  padding-top: 0.1rem;\n  padding-bottom: 0.1rem;\n  line-height: 28px; // this is needed because mat-icons are 24x24 (not sure why it needs to be 28 instead of 24 though)\n}\n\n.warning-icon {\n  font-size: 1.4rem;\n  margin-left: 0.5rem;\n}\n\n.error-icon {\n  font-size: 1.4rem;\n  margin-left: 0.5rem;\n}\n"],
+  "mappings": "AAAA,CAAA,gBAAA,QACE,KAGF,CAAA,UACE,YAAA,MACA,eAAA,MACA,YAAA,KAGF,CAAA,aAKA,CAAA,WAJE,UAAA,OACA,YAAA",
+  "names": []
+}

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/new-dive/new-dive.component.scss"],
+  "sourcesContent": ["mat-radio-group {\n  display: flex;\n  justify-content: center;\n}\n\nh1 {\n  display: flex;\n  justify-content: center;\n  margin-top: 20px;\n}\n\n.standard-gas, .custom-gas, .summary-data {\n  padding: 2rem;\n}\n\n.custom-gas {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n\n.radio-button {\n  padding-bottom: 1rem;\n  padding-right: 1rem;\n}\n\n.save-section {\n  display: flex;\n  justify-content: right;\n}\n\n.custom-gas-col, .standard-gas {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n\ndive-start-gas-stats {\n  display: flex;\n  margin-bottom: 1rem;\n}\n\n::ng-deep .tooltip-multiline {\n  white-space: pre-line;\n}\n"],
+  "mappings": "AAAA,gBACE,QAAA,KACA,gBAAA,OAGF,GACE,QAAA,KACA,gBAAA,OACA,WAAA,KAGF,CAAA,aAAA,CAAA,WAAA,CAAA,aAXA,QAYE,KAGF,CAJA,WAKE,QAAA,KACA,eAAA,OACA,YAAA,OAGF,CAAA,aACE,eAAA,KACA,cAAA,KAGF,CAAA,aACE,QAAA,KACA,gBAAA,MAGF,CAAA,eAAA,CApBA,aAqBE,QAAA,KACA,eAAA,OACA,YAAA,OAGF,qBACE,QAAA,KACA,cAAA,KAGF,UAAA,CAAA,kBACE,YAAA",
+  "names": []
+}

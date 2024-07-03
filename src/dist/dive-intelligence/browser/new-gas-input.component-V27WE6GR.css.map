@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/new-gas-input/new-gas-input.component.scss"],
+  "sourcesContent": [".new-gas-input {\n  border-style: solid;\n  border-width: 4px;\n  padding: 1rem;\n  display: flex;\n}\n\n.new-gas-col {\n  padding-left: 1rem;\n  padding-right: 1rem;\n  display: flex;\n  flex-direction: column;\n}\n\n.gas-description {\n  font-size: 0.8rem;\n}\n\n#optimal-deco-gas-radio {\n  margin-top: 1rem;\n  width: 260px;\n}\n\n.standard-gas-dropdown {\n  height: 50px;\n}\n"],
+  "mappings": "AAAA,CAAA,cACE,aAAA,MACA,aAAA,IAFF,QAGE,KACA,QAAA,KAGF,CAAA,YACE,aAAA,KACA,cAAA,KACA,QAAA,KACA,eAAA,OAGF,CAAA,gBACE,UAAA,MAGF,CAAA,uBACE,WAAA,KACA,MAAA,MAGF,CAAA,sBACE,OAAA",
+  "names": []
+}

@@ -6,10 +6,10 @@
             "request": "launch",
             "name": "Launch Chrome against localhost",
             "url": "http://localhost:4200",
-            "webRoot": "${workspaceFolder}/src/DivingCalculator.Web",
+            "webRoot": "${workspaceFolder}/src",
             "pathMapping": {
-                "/": "${workspaceRoot}/src/DivingCalculator.Web",
-                "/base/": "${workspaceRoot}/src/DivingCalculator.Web"
+                "/": "${workspaceRoot}/src",
+                "/base/": "${workspaceRoot}/src"
             }
         },
         {
@@ -18,10 +18,10 @@
             "name": "Attach Karma Chrome",
             "address": "localhost",
             "port": 9333,
-            "webRoot": "${workspaceFolder}/src/DivingCalculator.Web",
+            "webRoot": "${workspaceFolder}/src",
             "pathMapping": {
-                "/": "${workspaceRoot}/src/DivingCalculator.Web",
-                "/base/": "${workspaceRoot}/src/DivingCalculator.Web"
+                "/": "${workspaceRoot}/src",
+                "/base/": "${workspaceRoot}/src"
             }
         },
         {
@@ -30,11 +30,25 @@
             "name": "Attach Playwright Chrome",
             "address": "localhost",
             "port": 9222,
-            "webRoot": "${workspaceFolder}/src/DivingCalculator.Web",
+            "webRoot": "${workspaceFolder}/src",
             "pathMapping": {
-                "/": "${workspaceRoot}/src/DivingCalculator.Web",
-                "/base/": "${workspaceRoot}/src/DivingCalculator.Web"
+                "/": "${workspaceRoot}/src",
+                "/base/": "${workspaceRoot}/src"
             }
         },
+        {
+            "name": "ng serve",
+            "type": "chrome",
+            "request": "launch",
+            "preLaunchTask": "npm: start",
+            "url": "http://localhost:4200/"
+          },
+          {
+            "name": "ng test",
+            "type": "chrome",
+            "request": "launch",
+            "preLaunchTask": "npm: test",
+            "url": "http://localhost:9876/debug.html"
+          },
     ]
 }

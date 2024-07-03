@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/start-gas-stats/start-gas-stats.component.scss"],
+  "sourcesContent": [".error {\n  font-size: 1.4rem;\n  margin-left: 0.5rem;\n}\n\n.gas-calculations {\n  padding: 1rem;\n  width: 15rem;\n}\n\n.gas-calc {\n  padding-top: 0.1rem;\n  padding-bottom: 0.1rem;\n}\n"],
+  "mappings": "AAAA,CAAA,MACE,UAAA,OACA,YAAA,MAGF,CAAA,iBALA,QAME,KACA,MAAA,MAGF,CAAA,SACE,YAAA,MACA,eAAA",
+  "names": []
+}

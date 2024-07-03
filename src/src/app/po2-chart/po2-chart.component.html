@@ -1,0 +1,4 @@
+<button (click)="onPO2ChartClick()" class="graph mat-elevation-z2">
+  <div id="po2-chart" class="plotly-graph" [class]="getGraphClass()"></div>
+  <div *ngIf="!getShowGraphs()">Create dive segements to populate graphs</div>
+</button>

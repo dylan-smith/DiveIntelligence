@@ -1,0 +1,8 @@
+@mixin dive-plan-theme($theme) {
+  $color: map-get($theme, color);
+  $background: map-get($color, background);
+
+  mat-list {
+    background-color: map-get($background, card);
+  }
+}

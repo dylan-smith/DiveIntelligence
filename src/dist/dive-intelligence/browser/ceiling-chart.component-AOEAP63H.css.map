@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/ceiling-chart/ceiling-chart.component.scss"],
+  "sourcesContent": [".ceiling-chart {\n  padding: 1rem;\n  width: 400px;\n  height: 200px;\n}\n\n.plotly-graph {\n  width: 100%;\n  height: 100%;\n}\n"],
+  "mappings": "AAAA,CAAA,cAAA,QACE,KACA,MAAA,MACA,OAAA,MAGF,CAAA,aACE,MAAA,KACA,OAAA",
+  "names": []
+}
