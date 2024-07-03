@@ -17,31 +17,24 @@ export class DiveProfile {
   addDiveSegment(newDepth: number, newGas: BreathingGas, timeAtDepth: number): void {
     this.removeLastSegment();
 
-    let previousSegment = this.getLastSegment();
+    const previousSegment = this.getLastSegment();
     let startTime = previousSegment.EndTimestamp;
 
-    if (newDepth === previousSegment.EndDepth && previousSegment.Gas.isEquivalent(newGas) && timeAtDepth > 0) {
-      this.extendLastSegment(timeAtDepth);
-    }
-
     if (newDepth !== previousSegment.EndDepth) {
-      if (previousSegment.Gas.isEquivalent(newGas)) {
-        this.addSegment(this.diveSegmentFactory.createDepthChangeSegment(startTime, previousSegment.EndDepth, newDepth, timeAtDepth, previousSegment.Gas));
-      } else {
-        this.addSegment(this.diveSegmentFactory.createDepthChangeSegment(startTime, previousSegment.EndDepth, newDepth, 0, previousSegment.Gas));
-      }
+      this.addSegment(this.diveSegmentFactory.createDepthChangeSegment(startTime, previousSegment.EndDepth, newDepth, previousSegment.Gas));
+      startTime = this.getTotalTime();
     }
-
-    previousSegment = this.getLastSegment();
-    startTime = previousSegment.EndTimestamp;
 
     if (!previousSegment.Gas.isEquivalent(newGas)) {
-      this.addSegment(this.diveSegmentFactory.createGasChangeSegment(startTime, newGas, timeAtDepth, newDepth));
+      this.addSegment(this.diveSegmentFactory.createGasChangeSegment(startTime, newGas, newDepth));
     }
 
-    const endTime = this.getLastSegment().EndTimestamp;
+    if (timeAtDepth > 0) {
+      this.addSegment(this.diveSegmentFactory.createMaintainDepthSegment(startTime, newDepth, timeAtDepth, newGas));
+      startTime = this.getTotalTime();
+    }
 
-    this.addSegment(this.diveSegmentFactory.createEndDiveSegment(endTime, newDepth, newGas));
+    this.addSegment(this.diveSegmentFactory.createEndDiveSegment(startTime, newDepth, newGas));
   }
 
   getCurrentDepth(): number {
@@ -79,12 +72,11 @@ export class DiveProfile {
         wipProfile.getLastSegment().EndTimestamp,
         wipProfile.getLastSegment().EndDepth,
         newDepth,
-        0,
         this.segments[this.segments.length - 2].Gas
       )
     );
 
-    wipProfile.addSegment(this.diveSegmentFactory.createGasChangeSegment(wipProfile.getTotalTime(), newGas, 0, newDepth));
+    wipProfile.addSegment(this.diveSegmentFactory.createGasChangeSegment(wipProfile.getTotalTime(), newGas, newDepth));
 
     const ndl = wipProfile.algo.getTimeToCeiling(newDepth, newGas);
 
@@ -92,7 +84,7 @@ export class DiveProfile {
       return undefined;
     }
 
-    wipProfile.addSegment(this.diveSegmentFactory.createDepthChangeSegment(wipProfile.getTotalTime(), newDepth, newDepth, ndl, newGas));
+    wipProfile.addSegment(this.diveSegmentFactory.createMaintainDepthSegment(wipProfile.getTotalTime(), newDepth, ndl, newGas));
 
     let minTime = 0;
     let maxTime = 200;
@@ -210,16 +202,11 @@ export class DiveProfile {
     const wipProfile = this.getCurrentProfile();
 
     wipProfile.addSegment(
-      this.diveSegmentFactory.createDepthChangeSegment(
-        wipProfile.getLastSegment().EndTimestamp,
-        wipProfile.getLastSegment().EndDepth,
-        newDepth,
-        0,
-        this.getCurrentGas()
-      )
+      this.diveSegmentFactory.createDepthChangeSegment(wipProfile.getTotalTime(), wipProfile.getLastSegment().EndDepth, newDepth, this.getCurrentGas())
     );
 
-    wipProfile.addSegment(this.diveSegmentFactory.createGasChangeSegment(wipProfile.getLastSegment().EndTimestamp, newGas, timeAtDepth, newDepth));
+    wipProfile.addSegment(this.diveSegmentFactory.createGasChangeSegment(wipProfile.getTotalTime(), newGas, newDepth));
+    wipProfile.addSegment(this.diveSegmentFactory.createMaintainDepthSegment(wipProfile.getTotalTime(), newDepth, timeAtDepth, newGas));
 
     return ceilingWithThreshold(wipProfile.algo.getCeiling(wipProfile.getTotalTime()));
   }

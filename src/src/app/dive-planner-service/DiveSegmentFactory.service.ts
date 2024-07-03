@@ -35,9 +35,9 @@ export class DiveSegmentFactoryService {
     return new DiveSegment(0, 0, 'Start Dive', gas.description, 0, 0, gas, 'scuba_diving', this.settings);
   }
 
-  createDepthChangeSegment(startTime: number, previousDepth: number, newDepth: number, duration: number, gas: BreathingGas) {
+  createDepthChangeSegment(startTime: number, previousDepth: number, newDepth: number, gas: BreathingGas) {
     const travelTime = this.getTravelTime(previousDepth, newDepth);
-    const endTime = startTime + travelTime + duration;
+    const endTime = startTime + travelTime;
     const title = newDepth > previousDepth ? `Descend to ${newDepth}m` : `Ascend to ${newDepth}m`;
     const description =
       newDepth > previousDepth
@@ -48,12 +48,20 @@ export class DiveSegmentFactoryService {
     return new DiveSegment(startTime, endTime, title, description, previousDepth, newDepth, gas, icon, this.settings);
   }
 
-  createGasChangeSegment(startTime: number, newGas: BreathingGas, duration: number, depth: number) {
-    const endTime = startTime + duration;
+  createGasChangeSegment(startTime: number, newGas: BreathingGas, depth: number) {
     const title = 'Switch Gas';
     const description = newGas.description;
 
-    return new DiveSegment(startTime, endTime, title, description, depth, depth, newGas, 'air', this.settings);
+    return new DiveSegment(startTime, startTime, title, description, depth, depth, newGas, 'air', this.settings);
+  }
+
+  createMaintainDepthSegment(startTime: number, depth: number, duration: number, gas: BreathingGas) {
+    const endTime = startTime + duration;
+    const title = `Maintain Depth at ${depth}m`;
+    const description = `Time: ${this.humanDurationPipe.transform(duration)}`;
+    const icon = 'arrow_forward';
+
+    return new DiveSegment(startTime, endTime, title, description, depth, depth, gas, icon, this.settings);
   }
 
   getTravelTime(previousDepth: number, newDepth: number): number {
