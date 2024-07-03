@@ -60,7 +60,7 @@ jobs:
 
     - name: Add title to coverage report
       run: |
-        "Unit Tests Code Coverage" | Set-Content -Path unit-tests-code-coverage-results.md
+        "# Unit Tests Code Coverage" | Set-Content -Path unit-tests-code-coverage-results.md
         Get-Content -Path code-coverage-results.md | Add-Content -Path unit-tests-code-coverage-results.md
       shell: pwsh
     
