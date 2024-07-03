@@ -60,10 +60,8 @@ jobs:
 
     - name: Add title to coverage report
       run: |
-        $content = Get-Content -Path code-coverage-results.md
-        Write-Output $content
-        "Unit Tests Code Coverage" | Set-Content -Path code-coverage-results2.md
-        $content | Add-Content -Path code-coverage-results2.md
+        "Unit Tests Code Coverage" | Set-Content -Path unit-tests-code-coverage-results.md
+        Get-Content -Path code-coverage-results.md | Add-Content -Path unit-tests-code-coverage-results.md
       shell: pwsh
     
     - name: Add Coverage PR Comment
@@ -72,7 +70,7 @@ jobs:
       with:
         recreate: true
         header: Unit Tests Code Coverage
-        path: code-coverage-results.md
+        path: unit-tests-code-coverage-results.md
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
