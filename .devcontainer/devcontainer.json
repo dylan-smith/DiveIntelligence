@@ -31,7 +31,7 @@
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"onCreateCommand": "cd /workspaces/DiveIntelligence/src/DivingCalculator.Web && npm ci && ng build"
+	"onCreateCommand": "cd /workspaces/DiveIntelligence/src && npm ci && ng build"
 
 	// Configure tool-specific properties.
 	// "customizations": {},
