@@ -53,6 +53,16 @@ export class DiveProfile {
     this.addSegment(this.diveSegmentFactory.createEndDiveSegment(this.getTotalTime(), previousSegment.EndDepth, newGas));
   }
 
+  addMaintainDepthSegment(timeAtDepth: number): void {
+    this.removeLastSegment();
+    const previousSegment = this.getLastSegment();
+
+    this.addSegment(
+      this.diveSegmentFactory.createMaintainDepthSegment(previousSegment.EndTimestamp, previousSegment.EndDepth, timeAtDepth, previousSegment.Gas)
+    );
+    this.addSegment(this.diveSegmentFactory.createEndDiveSegment(this.getTotalTime(), previousSegment.EndDepth, previousSegment.Gas));
+  }
+
   getCurrentDepth(): number {
     return this.getPreviousSegment().EndDepth;
   }

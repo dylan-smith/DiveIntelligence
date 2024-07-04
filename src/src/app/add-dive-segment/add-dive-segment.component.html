@@ -34,9 +34,7 @@
             <input matInput type="number" [(ngModel)]="timeAtDepth" />
           </mat-form-field>
         </div>
-        <dive-new-time-stats class="mat-elevation-z2" [timeAtDepth]="timeAtDepth" [newDepth]="newDepth" [newGas]="newGas"></dive-new-time-stats>
       </div>
-      <dive-ceiling-chart class="mat-elevation-z2" [newDepth]="newDepth" [newGas]="newGas" [timeAtDepth]="timeAtDepth"></dive-ceiling-chart>
     </div>
     <div class="actions">
       <button mat-flat-button color="primary" (click)="onSave()">Save</button>

@@ -11,9 +11,10 @@ import * as Plotly from 'plotly.js-basic-dist-min';
   styleUrl: './ceiling-chart.component.scss',
 })
 export class CeilingChartComponent implements OnChanges {
-  @Input() newDepth: number = 0;
-  @Input() newGas: BreathingGas = this.divePlanner.getCurrentGas();
   @Input() timeAtDepth: number = 0;
+
+  currentDepth: number = this.divePlanner.getCurrentDepth();
+  currentGas: BreathingGas = this.divePlanner.getCurrentGas();
 
   private readonly NEW_DEPTH_COLOR = 'red';
   private readonly PRIMARY_COLOR = '#3F51B5'; // Indigo 500
@@ -24,12 +25,12 @@ export class CeilingChartComponent implements OnChanges {
   ) {}
 
   ngOnChanges(): void {
-    const ceilingData = this.divePlanner.getCeilingChartData(this.newDepth, this.newGas);
+    const ceilingData = this.divePlanner.getCeilingChartData(this.currentDepth, this.currentGas);
     Plotly.react('ceiling-chart', this.getCeilingChartData(ceilingData), this.getCeilingChartLayout(), this.getCeilingChartOptions());
   }
 
   public onCeilingChartClick(): void {
-    const ceilingData = this.divePlanner.getCeilingChartData(this.newDepth, this.newGas);
+    const ceilingData = this.divePlanner.getCeilingChartData(this.currentDepth, this.currentGas);
 
     this.dialog.open(GraphDialogComponent, {
       data: { trace: this.getCeilingChartData(ceilingData), layout: this.getCeilingChartLayout(), options: this.getCeilingChartOptions() },
