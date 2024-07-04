@@ -18,6 +18,8 @@ export class CeilingChartComponent implements OnChanges {
 
   private readonly NEW_DEPTH_COLOR = 'red';
   private readonly PRIMARY_COLOR = '#3F51B5'; // Indigo 500
+  private ceilingData = this.divePlanner.getCeilingChartData(this.currentDepth, this.currentGas);
+  private ceilingChartData = this.getCeilingChartData(this.ceilingData);
 
   constructor(
     private divePlanner: DivePlannerService,
@@ -25,8 +27,7 @@ export class CeilingChartComponent implements OnChanges {
   ) {}
 
   ngOnChanges(): void {
-    const ceilingData = this.divePlanner.getCeilingChartData(this.currentDepth, this.currentGas);
-    Plotly.react('ceiling-chart', this.getCeilingChartData(ceilingData), this.getCeilingChartLayout(), this.getCeilingChartOptions());
+    Plotly.react('ceiling-chart', this.ceilingChartData, this.getCeilingChartLayout(), this.getCeilingChartOptions());
   }
 
   public onCeilingChartClick(): void {
