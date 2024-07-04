@@ -45,8 +45,10 @@ test('NDL dive to 25m for 50 mins on nitrox 32', async ({ page }) => {
   expect(diveSegments[0].details).toBe('Nitrox 32 (O2: 32%, He: 0%, N2: 68%)');
   expect(diveSegments[1].heading).toBe('arrow_downward 0:00 Descend to 25m');
   expect(diveSegments[1].details).toBe('Descent time: 1 min 15 sec @ 20m/min');
-  expect(diveSegments[2].heading).toBe('done 51:15 Surface');
-  expect(diveSegments[2].details).toBe('Ascent time: 2 min 30 sec @ 10m/min');
+  expect(diveSegments[2].heading).toBe('arrow_forward 1:15 Maintain Depth at 25m');
+  expect(diveSegments[2].details).toBe('Time: 50 min');
+  expect(diveSegments[3].heading).toBe('done 51:15 Surface');
+  expect(diveSegments[3].details).toBe('Ascent time: 2 min 30 sec @ 10m/min');
 
   expect(await diveOverviewPage.getDiveDuration()).toBe('53 min 45 sec');
   expect(await diveOverviewPage.getMaxDepth()).toBe('25m');

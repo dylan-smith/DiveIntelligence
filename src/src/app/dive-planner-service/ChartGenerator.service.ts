@@ -140,13 +140,13 @@ export class ChartGeneratorService {
     const wipProfile = diveProfile.getCurrentProfile();
 
     wipProfile.addSegment(
-      this.diveSegmentFactory.createDepthChangeSegment(wipProfile.getTotalTime(), diveProfile.getCurrentDepth(), newDepth, 0, diveProfile.getCurrentGas())
+      this.diveSegmentFactory.createDepthChangeSegment(wipProfile.getTotalTime(), diveProfile.getCurrentDepth(), newDepth, diveProfile.getCurrentGas())
     );
 
     const startTime = wipProfile.getTotalTime();
     const chartDuration = 3600 * 2; // 2 hours
 
-    wipProfile.addSegment(this.diveSegmentFactory.createGasChangeSegment(wipProfile.getLastSegment().EndTimestamp, newGas, chartDuration, newDepth));
+    wipProfile.addSegment(this.diveSegmentFactory.createMaintainDepthSegment(wipProfile.getTotalTime(), newDepth, chartDuration, newGas));
 
     for (let time = startTime; time < startTime + chartDuration; time++) {
       data.push({ time: time - startTime, ceiling: wipProfile.algo.getCeiling(time) });
