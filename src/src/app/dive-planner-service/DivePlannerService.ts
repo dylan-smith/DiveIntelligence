@@ -87,6 +87,10 @@ export class DivePlannerService {
     });
   }
 
+  addChangeDepthSegment(newDepth: number): void {
+    this.diveProfile.addChangeDepthSegment(newDepth);
+  }
+
   getTravelTime(newDepth: number): number {
     return this.diveProfile.getTravelTime(newDepth);
   }
