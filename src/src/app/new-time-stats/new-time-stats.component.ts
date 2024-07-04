@@ -16,8 +16,9 @@ export class NewTimeStatsComponent implements OnChanges {
   currentGas: BreathingGas = this.divePlanner.getCurrentGas();
   totalDiveDuration: number = this.getTotalDiveDuration();
   newCeiling: number = this.getNewDecoCeiling();
-  decoMilestones!: { duration: number; gas: string; depth: number; tooltip: string }[];
-  hasDecoMilestones!: boolean;
+  ceilingData = this.divePlanner.getCeilingChartData(this.currentDepth, this.currentGas);
+  decoMilestones = this.getDecoMilestones(this.ceilingData);
+  hasDecoMilestones = this.decoMilestones.length > 0;
 
   constructor(
     private divePlanner: DivePlannerService,
@@ -25,14 +26,8 @@ export class NewTimeStatsComponent implements OnChanges {
   ) {}
 
   ngOnChanges(): void {
-    const ceilingData = this.divePlanner.getCeilingChartData(this.currentDepth, this.currentGas);
-    this.newCeiling = this.divePlanner.getNewCeiling(this.currentDepth, this.currentGas, this.timeAtDepth * 60);
-
+    this.newCeiling = this.getNewDecoCeiling();
     this.totalDiveDuration = this.getTotalDiveDuration();
-
-    const milestones = this.getDecoMilestones(ceilingData);
-    this.decoMilestones = milestones;
-    this.hasDecoMilestones = milestones.length > 0;
   }
 
   private getNewDecoCeiling(): number {
