@@ -11,7 +11,7 @@ import { ceilingWithThreshold } from '../utility/utility';
 })
 export class NewGasStatsComponent implements OnChanges {
   @Input() newGas: BreathingGas = this.divePlanner.getCurrentGas();
-  @Input() newDepth: number = 0;
+  currentDepth: number = this.divePlanner.getCurrentDepth();
 
   newGasPO2: number = this.getNewGasPO2();
   hasNewGasPO2Warning: boolean = this.getNewGasPO2WarningMessage() !== undefined;
@@ -45,7 +45,7 @@ export class NewGasStatsComponent implements OnChanges {
   }
 
   private getNewGasPO2(): number {
-    return this.newGas.getPO2(this.newDepth);
+    return this.newGas.getPO2(this.currentDepth);
   }
 
   private getNewGasPO2WarningMessage(): string | undefined {
@@ -57,7 +57,7 @@ export class NewGasStatsComponent implements OnChanges {
   }
 
   private getNewGasEND(): number {
-    return ceilingWithThreshold(this.newGas.getEND(this.newDepth));
+    return ceilingWithThreshold(this.newGas.getEND(this.currentDepth));
   }
 
   private getNewGasENDErrorMessage(): string | undefined {
@@ -65,7 +65,7 @@ export class NewGasStatsComponent implements OnChanges {
   }
 
   private getNoDecoLimit(): string {
-    const ndl = this.divePlanner.getNoDecoLimit(this.newDepth, this.newGas);
+    const ndl = this.divePlanner.getNoDecoLimit(this.currentDepth, this.newGas);
 
     if (ndl === undefined) {
       return '> 5 hours';

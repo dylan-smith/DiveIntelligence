@@ -28,6 +28,7 @@ import { CustomGasInputComponent } from './custom-gas-input/custom-gas-input.com
 import { DiveSettingsComponent } from './dive-settings/dive-settings.component';
 import { StartGasStatsComponent } from './start-gas-stats/start-gas-stats.component';
 import { ChangeDepthComponent } from './change-depth/change-depth.component';
+import { ChangeGasComponent } from './change-gas/change-gas.component';
 import { HumanDurationPipe } from './pipes/human-duration.pipe';
 import { ColonDurationPipe } from './pipes/colon-duration.pipe';
 
@@ -76,6 +77,7 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
     DiveSettingsComponent,
     StartGasStatsComponent,
     ChangeDepthComponent,
+    ChangeGasComponent,
   ],
   imports: [
     BrowserModule,

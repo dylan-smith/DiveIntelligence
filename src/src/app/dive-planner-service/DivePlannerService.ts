@@ -91,6 +91,10 @@ export class DivePlannerService {
     this.diveProfile.addChangeDepthSegment(newDepth);
   }
 
+  addChangeGasSegment(newGas: BreathingGas): void {
+    this.diveProfile.addChangeGasSegment(newGas);
+  }
+
   getTravelTime(newDepth: number): number {
     return this.diveProfile.getTravelTime(newDepth);
   }

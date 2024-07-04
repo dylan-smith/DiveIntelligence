@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { Component, EventEmitter, OnChanges, Output } from '@angular/core';
 import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
 import { BreathingGas } from '../dive-planner-service/BreathingGas';
 
@@ -8,23 +8,23 @@ import { BreathingGas } from '../dive-planner-service/BreathingGas';
   styleUrl: './new-gas-input.component.scss',
 })
 export class NewGasInputComponent implements OnChanges {
-  @Input() newDepth: number = 0;
   @Output() newGasSelected = new EventEmitter<BreathingGas>();
 
   newGasSelectedOption = 'current';
   currentGas: BreathingGas = this.divePlanner.getCurrentGas();
+  currentDepth: number = this.divePlanner.getCurrentDepth();
   standardGas: BreathingGas | undefined;
   customGas: BreathingGas = BreathingGas.create(21, 0, 79, this.divePlanner.settings);
   newGas: BreathingGas = this.divePlanner.getCurrentGas();
   StandardGases: BreathingGas[] = BreathingGas.StandardGases;
-  optimalGas: BreathingGas = this.divePlanner.getOptimalDecoGas(this.newDepth);
+  optimalGas: BreathingGas = this.divePlanner.getOptimalDecoGas(this.currentDepth);
   isStandardGasDisabled: boolean = this.getStandardGasDisabled();
   isCustomGasDisabled: boolean = this.getCustomGasDisabled();
 
   constructor(public divePlanner: DivePlannerService) {}
 
   ngOnChanges(): void {
-    this.optimalGas = this.divePlanner.getOptimalDecoGas(this.newDepth);
+    this.optimalGas = this.divePlanner.getOptimalDecoGas(this.currentDepth);
 
     if (this.newGasSelectedOption === 'optimal') {
       this.newGas = this.optimalGas;
