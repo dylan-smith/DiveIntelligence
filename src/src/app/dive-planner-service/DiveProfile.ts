@@ -224,15 +224,12 @@ export class DiveProfile {
     return this.getLastSegment().EndTimestamp;
   }
 
-  getNewCeiling(newDepth: number, newGas: BreathingGas, timeAtDepth: number): number {
+  getNewCeiling(timeAtDepth: number): number {
     const wipProfile = this.getCurrentProfile();
 
     wipProfile.addSegment(
-      this.diveSegmentFactory.createDepthChangeSegment(wipProfile.getTotalTime(), wipProfile.getLastSegment().EndDepth, newDepth, this.getCurrentGas())
+      this.diveSegmentFactory.createMaintainDepthSegment(wipProfile.getTotalTime(), wipProfile.getCurrentDepth(), timeAtDepth, wipProfile.getCurrentGas())
     );
-
-    wipProfile.addSegment(this.diveSegmentFactory.createGasChangeSegment(wipProfile.getTotalTime(), newGas, newDepth));
-    wipProfile.addSegment(this.diveSegmentFactory.createMaintainDepthSegment(wipProfile.getTotalTime(), newDepth, timeAtDepth, newGas));
 
     return ceilingWithThreshold(wipProfile.algo.getCeiling(wipProfile.getTotalTime()));
   }

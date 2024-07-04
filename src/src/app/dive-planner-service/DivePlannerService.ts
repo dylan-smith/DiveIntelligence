@@ -131,8 +131,8 @@ export class DivePlannerService {
     return this.chartGenerator.getCeilingChartData(newDepth, newGas, this.diveProfile);
   }
 
-  getNewCeiling(newDepth: number, newGas: BreathingGas, timeAtDepth: number): number {
-    return this.diveProfile.getNewCeiling(newDepth, newGas, timeAtDepth);
+  getNewCeiling(timeAtDepth: number): number {
+    return this.diveProfile.getNewCeiling(timeAtDepth);
   }
 
   getCeilingError(): { amount: number; duration: number } {

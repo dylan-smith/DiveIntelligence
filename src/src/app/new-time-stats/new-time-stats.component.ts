@@ -13,10 +13,9 @@ export class NewTimeStatsComponent implements OnChanges {
   @Input() timeAtDepth: number = 0;
 
   currentDepth: number = this.divePlanner.getCurrentDepth();
-  currentGas: BreathingGas = this.divePlanner.getCurrentGas();
   totalDiveDuration: number = this.getTotalDiveDuration();
   newCeiling: number = this.getNewDecoCeiling();
-  ceilingData = this.divePlanner.getCeilingChartData(this.currentDepth, this.currentGas);
+  ceilingData = this.divePlanner.getCeilingChartData(this.currentDepth, this.divePlanner.getCurrentGas());
   decoMilestones = this.getDecoMilestones(this.ceilingData);
   hasDecoMilestones = this.decoMilestones.length > 0;
 
@@ -31,11 +30,11 @@ export class NewTimeStatsComponent implements OnChanges {
   }
 
   private getNewDecoCeiling(): number {
-    return this.divePlanner.getNewCeiling(this.currentDepth, this.currentGas, this.timeAtDepth * 60);
+    return this.divePlanner.getNewCeiling(this.timeAtDepth * 60);
   }
 
   private getTotalDiveDuration(): number {
-    return this.divePlanner.getCurrentDiveTime() + this.divePlanner.getTravelTime(this.currentDepth) + this.timeAtDepth * 60;
+    return this.divePlanner.getCurrentDiveTime() + this.timeAtDepth * 60;
   }
 
   private getDecoMilestones(data: { time: number; ceiling: number }[]): { duration: number; gas: string; depth: number; tooltip: string }[] {
