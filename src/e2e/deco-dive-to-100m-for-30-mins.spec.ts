@@ -49,8 +49,10 @@ test('deco dive to 100m for 30 mins', async ({ page }) => {
   expect(diveSegments[1].details).toBe('Descent time: 54 sec @ 20m/min');
   expect(diveSegments[2].heading).toBe('air 0:54 Switch Gas');
   expect(diveSegments[2].details).toBe('Trimix 10/70 (O2: 10%, He: 70%, N2: 20%)');
-  expect(diveSegments[3].heading).toBe('done 1:54 Surface');
-  expect(diveSegments[3].details).toBe('Ascent time: 1 min 48 sec @ 10m/min');
+  expect(diveSegments[3].heading).toBe('arrow_forward 0:54 Maintain Depth at 18m');
+  expect(diveSegments[3].details).toBe('Time: 1 min');
+  expect(diveSegments[4].heading).toBe('done 1:54 Surface');
+  expect(diveSegments[4].details).toBe('Ascent time: 1 min 48 sec @ 10m/min');
 
   expect(await diveOverviewPage.getDiveDuration()).toBe('3 min 42 sec');
   expect(await diveOverviewPage.getMaxDepth()).toBe('18m');
@@ -89,10 +91,12 @@ test('deco dive to 100m for 30 mins', async ({ page }) => {
   diveOverviewPage = await addDiveSegmentPage.Save();
 
   diveSegments = await diveOverviewPage.getDiveSegments();
-  expect(diveSegments[3].heading).toBe('arrow_downward 1:54 Descend to 100m');
-  expect(diveSegments[3].details).toBe('Descent time: 4 min 6 sec @ 20m/min');
-  expect(diveSegments[4].heading).toBe('done 36:00 Surface');
-  expect(diveSegments[4].details).toBe('Ascent time: 10 min @ 10m/min');
+  expect(diveSegments[4].heading).toBe('arrow_downward 1:54 Descend to 100m');
+  expect(diveSegments[4].details).toBe('Descent time: 4 min 6 sec @ 20m/min');
+  expect(diveSegments[5].heading).toBe('arrow_forward 6:00 Maintain Depth at 100m')
+  expect(diveSegments[5].details).toBe('Time: 30 min');
+  expect(diveSegments[6].heading).toBe('done 36:00 Surface');
+  expect(diveSegments[6].details).toBe('Ascent time: 10 min @ 10m/min');
 
   expect(await diveOverviewPage.getDiveDuration()).toBe('46 min');
   expect(await diveOverviewPage.getMaxDepth()).toBe('100m');
@@ -141,12 +145,14 @@ test('deco dive to 100m for 30 mins', async ({ page }) => {
   diveOverviewPage = await addDiveSegmentPage.Save();
 
   diveSegments = await diveOverviewPage.getDiveSegments();
-  expect(diveSegments[4].heading).toBe('arrow_upward 36:00 Ascend to 43m');
-  expect(diveSegments[4].details).toBe('Ascent time: 5 min 42 sec @ 10m/min');
-  expect(diveSegments[5].heading).toBe('air 41:42 Switch Gas');
-  expect(diveSegments[5].details).toBe('Custom (O2: 30%, He: 25%, N2: 45%)');
-  expect(diveSegments[6].heading).toBe('done 1:01:42 Surface');
-  expect(diveSegments[6].details).toBe('Ascent time: 4 min 18 sec @ 10m/min');
+  expect(diveSegments[6].heading).toBe('arrow_upward 36:00 Ascend to 43m');
+  expect(diveSegments[6].details).toBe('Ascent time: 5 min 42 sec @ 10m/min');
+  expect(diveSegments[7].heading).toBe('air 41:42 Switch Gas');
+  expect(diveSegments[7].details).toBe('Custom (O2: 30%, He: 25%, N2: 45%)');
+  expect(diveSegments[8].heading).toBe('arrow_forward 41:42 Maintain Depth at 43m');
+  expect(diveSegments[8].details).toBe('Time: 20 min');
+  expect(diveSegments[9].heading).toBe('done 1:01:42 Surface');
+  expect(diveSegments[9].details).toBe('Ascent time: 4 min 18 sec @ 10m/min');
 
   expect(await diveOverviewPage.getDiveDuration()).toBe('66 min');
   expect(await diveOverviewPage.getMaxDepth()).toBe('100m');
@@ -192,12 +198,14 @@ test('deco dive to 100m for 30 mins', async ({ page }) => {
   diveOverviewPage = await addDiveSegmentPage.Save();
 
   diveSegments = await diveOverviewPage.getDiveSegments();
-  expect(diveSegments[6].heading).toBe('arrow_upward 1:01:42 Ascend to 22m');
-  expect(diveSegments[6].details).toBe('Ascent time: 2 min 6 sec @ 10m/min');
-  expect(diveSegments[7].heading).toBe('air 1:03:48 Switch Gas');
-  expect(diveSegments[7].details).toBe('Nitrox 50 (O2: 50%, He: 0%, N2: 50%)');
-  expect(diveSegments[8].heading).toBe('done 1:44:48 Surface');
-  expect(diveSegments[8].details).toBe('Ascent time: 2 min 12 sec @ 10m/min');
+  expect(diveSegments[9].heading).toBe('arrow_upward 1:01:42 Ascend to 22m');
+  expect(diveSegments[9].details).toBe('Ascent time: 2 min 6 sec @ 10m/min');
+  expect(diveSegments[10].heading).toBe('air 1:03:48 Switch Gas');
+  expect(diveSegments[10].details).toBe('Nitrox 50 (O2: 50%, He: 0%, N2: 50%)');
+  expect(diveSegments[11].heading).toBe('arrow_forward 1:03:48 Maintain Depth at 22m');
+  expect(diveSegments[11].details).toBe('Time: 41 min');
+  expect(diveSegments[12].heading).toBe('done 1:44:48 Surface');
+  expect(diveSegments[12].details).toBe('Ascent time: 2 min 12 sec @ 10m/min');
 
   expect(await diveOverviewPage.getDiveDuration()).toBe('107 min');
   expect(await diveOverviewPage.getMaxDepth()).toBe('100m');
@@ -243,12 +251,14 @@ test('deco dive to 100m for 30 mins', async ({ page }) => {
   diveOverviewPage = await addDiveSegmentPage.Save();
 
   diveSegments = await diveOverviewPage.getDiveSegments();
-  expect(diveSegments[8].heading).toBe('arrow_upward 1:44:48 Ascend to 6m');
-  expect(diveSegments[8].details).toBe('Ascent time: 1 min 36 sec @ 10m/min');
-  expect(diveSegments[9].heading).toBe('air 1:46:24 Switch Gas');
-  expect(diveSegments[9].details).toBe('Oxygen (O2: 100%, He: 0%, N2: 0%)');
-  expect(diveSegments[10].heading).toBe('done 2:19:24 Surface');
-  expect(diveSegments[10].details).toBe('Ascent time: 36 sec @ 10m/min');
+  expect(diveSegments[12].heading).toBe('arrow_upward 1:44:48 Ascend to 6m');
+  expect(diveSegments[12].details).toBe('Ascent time: 1 min 36 sec @ 10m/min');
+  expect(diveSegments[13].heading).toBe('air 1:46:24 Switch Gas');
+  expect(diveSegments[13].details).toBe('Oxygen (O2: 100%, He: 0%, N2: 0%)');
+  expect(diveSegments[14].heading).toBe('arrow_forward 1:46:24 Maintain Depth at 6m');
+  expect(diveSegments[14].details).toBe('Time: 33 min');
+  expect(diveSegments[15].heading).toBe('done 2:19:24 Surface');
+  expect(diveSegments[15].details).toBe('Ascent time: 36 sec @ 10m/min');
 
   expect(await diveOverviewPage.getDiveDuration()).toBe('140 min');
   expect(await diveOverviewPage.getMaxDepth()).toBe('100m');
