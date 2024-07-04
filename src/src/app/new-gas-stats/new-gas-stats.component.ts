@@ -11,8 +11,8 @@ import { ceilingWithThreshold } from '../utility/utility';
 })
 export class NewGasStatsComponent implements OnChanges {
   @Input() newGas: BreathingGas = this.divePlanner.getCurrentGas();
-  currentDepth: number = this.divePlanner.getCurrentDepth();
 
+  currentDepth: number = this.divePlanner.getCurrentDepth();
   newGasPO2: number = this.getNewGasPO2();
   hasNewGasPO2Warning: boolean = this.getNewGasPO2WarningMessage() !== undefined;
   hasNewGasPO2Error: boolean = this.getNewGasPO2ErrorMessage() !== undefined;
