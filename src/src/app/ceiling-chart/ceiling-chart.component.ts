@@ -31,10 +31,8 @@ export class CeilingChartComponent implements OnChanges {
   }
 
   public onCeilingChartClick(): void {
-    const ceilingData = this.divePlanner.getCeilingChartData(this.currentDepth, this.currentGas);
-
     this.dialog.open(GraphDialogComponent, {
-      data: { trace: this.getCeilingChartData(ceilingData), layout: this.getCeilingChartLayout(), options: this.getCeilingChartOptions() },
+      data: { trace: this.ceilingChartData, layout: this.getCeilingChartLayout(), options: this.getCeilingChartOptions() },
       height: '80%',
       width: '80%',
     });
