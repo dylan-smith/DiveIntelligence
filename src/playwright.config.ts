@@ -1,12 +1,11 @@
 import { defineConfig, devices } from '@playwright/test';
 import path from 'path';
 
-const _testsDir = path.resolve('./e2e');
 const _testResultsDir = path.resolve('./test-results/playwright');
 const _codeCoverageDir = path.resolve(_testResultsDir, 'code-coverage');
 
 export default defineConfig({
-  testDir: _testsDir,
+  testDir: './e2e',
   outputDir: _testResultsDir,
   fullyParallel: true,
   forbidOnly: !!process.env['CI'],
