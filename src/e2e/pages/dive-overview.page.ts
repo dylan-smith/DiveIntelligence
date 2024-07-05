@@ -1,12 +1,24 @@
 import { Page } from '@playwright/test';
-import { AddDiveSegmentPage } from './add-dive-segment.page';
+import { ChangeDepthPage } from './change-depth.page';
+import { ChangeGasPage } from './change-gas.page';
+import { MaintainDepthPage } from './maintain-depth.page';
 
 export class DiveOverviewPage {
   constructor(private page: Page) {}
 
-  async addSegment(): Promise<AddDiveSegmentPage> {
-    await this.page.locator('button').filter({ hasText: 'add' }).click();
-    return new AddDiveSegmentPage(this.page);
+  async addChangeDepthSegment(): Promise<ChangeDepthPage> {
+    await this.page.locator('button').filter({ hasText: 'height' }).click();
+    return new ChangeDepthPage(this.page);
+  }
+
+  async addChangeGasSegment(): Promise<ChangeGasPage> {
+    await this.page.locator('button').filter({ hasText: 'air' }).click();
+    return new ChangeGasPage(this.page);
+  }
+
+  async addMaintainDepthSegment(): Promise<MaintainDepthPage> {
+    await this.page.locator('button').filter({ hasText: 'arrow_forward' }).click();
+    return new MaintainDepthPage(this.page);
   }
 
   async getDiveSegments(): Promise<{ heading: string; details: string }[]> {
