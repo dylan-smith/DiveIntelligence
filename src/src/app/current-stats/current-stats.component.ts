@@ -49,7 +49,7 @@ export class CurrentStatsComponent {
   }
 
   private getNoDecoLimit(): string {
-    const ndl = this.divePlanner.getNoDecoLimit(this.currentDepth, this.currentGas);
+    const ndl = this.divePlanner.getNoDecoLimit(this.currentDepth, this.currentGas, 0);
 
     if (ndl === undefined) {
       return '> 5 hours';

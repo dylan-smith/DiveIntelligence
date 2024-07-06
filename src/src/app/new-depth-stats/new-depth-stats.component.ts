@@ -77,7 +77,7 @@ export class NewDepthStatsComponent implements OnChanges {
   }
 
   private getNoDecoLimit(): string {
-    const ndl = this.divePlanner.getNoDecoLimit(this.newDepth, this.divePlanner.getCurrentGas());
+    const ndl = this.divePlanner.getNoDecoLimit(this.newDepth, this.divePlanner.getCurrentGas(), 0);
 
     if (ndl === undefined) {
       return '> 5 hours';

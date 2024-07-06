@@ -18,6 +18,7 @@ export class NewTimeStatsComponent implements OnChanges {
   ceilingData = this.divePlanner.getCeilingChartData(this.currentDepth, this.divePlanner.getCurrentGas());
   decoMilestones = this.getDecoMilestones(this.ceilingData);
   hasDecoMilestones = this.decoMilestones.length > 0;
+  noDecoLimit = this.getNoDecoLimit();
 
   constructor(
     private divePlanner: DivePlannerService,
@@ -27,6 +28,7 @@ export class NewTimeStatsComponent implements OnChanges {
   ngOnChanges(): void {
     this.newCeiling = this.getNewDecoCeiling();
     this.totalDiveDuration = this.getTotalDiveDuration();
+    this.noDecoLimit = this.getNoDecoLimit();
   }
 
   private getNewDecoCeiling(): number {
@@ -71,5 +73,15 @@ export class NewTimeStatsComponent implements OnChanges {
     }
 
     return milestones;
+  }
+
+  private getNoDecoLimit(): string {
+    const ndl = this.divePlanner.getNoDecoLimit(this.currentDepth, this.divePlanner.getCurrentGas(), this.timeAtDepth * 60);
+
+    if (ndl === undefined) {
+      return '> 5 hours';
+    }
+
+    return this.humanDurationPipe.transform(ndl);
   }
 }
