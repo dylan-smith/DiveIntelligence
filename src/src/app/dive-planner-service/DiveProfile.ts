@@ -93,16 +93,20 @@ export class DiveProfile {
   getNoDecoLimit(newDepth: number, newGas: BreathingGas): number | undefined {
     const wipProfile = this.getCurrentProfile();
 
-    wipProfile.addSegment(
-      this.diveSegmentFactory.createDepthChangeSegment(
-        wipProfile.getLastSegment().EndTimestamp,
-        wipProfile.getLastSegment().EndDepth,
-        newDepth,
-        this.segments[this.segments.length - 2].Gas
-      )
-    );
+    if (newDepth !== wipProfile.getLastSegment().EndDepth) {
+      wipProfile.addSegment(
+        this.diveSegmentFactory.createDepthChangeSegment(
+          wipProfile.getLastSegment().EndTimestamp,
+          wipProfile.getLastSegment().EndDepth,
+          newDepth,
+          this.segments[this.segments.length - 2].Gas
+        )
+      );
+    }
 
-    wipProfile.addSegment(this.diveSegmentFactory.createGasChangeSegment(wipProfile.getTotalTime(), newGas, newDepth));
+    if (newGas !== wipProfile.getLastSegment().Gas) {
+      wipProfile.addSegment(this.diveSegmentFactory.createGasChangeSegment(wipProfile.getTotalTime(), newGas, newDepth));
+    }
 
     const ndl = wipProfile.algo.getTimeToCeiling(newDepth, newGas);
 
