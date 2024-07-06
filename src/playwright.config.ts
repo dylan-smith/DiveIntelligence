@@ -30,6 +30,10 @@ export default defineConfig({
             ['lcovonly', { file: 'lcov/code-coverage.lcov.info' }],
           ],
           entryFilter: (entry: any) => {
+            if (!URL.canParse(entry.url as string)) {
+              return false;
+            }
+
             const url = new URL(entry.url as string);
             return (
               !url.toString().includes('@fs') &&
