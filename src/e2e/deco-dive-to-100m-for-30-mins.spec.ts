@@ -167,7 +167,7 @@ test('deco dive to 100m for 30 mins', async ({ page }) => {
   expect(await maintainDepthPage.currentStats.getCurrentEND()).toBe('23m');
 
   await maintainDepthPage.setTimeAtDepth(30);
-  expect(await maintainDepthPage.getFinalCeiling()).toBe('1m'); // TODO: [BUG] this should be 49m
+  expect(await maintainDepthPage.getFinalCeiling()).toBe('49m');
   expect(await maintainDepthPage.getTotalDiveDuration()).toBe('36 min');
 
   diveOverviewPage = await maintainDepthPage.Save();
@@ -270,7 +270,7 @@ test('deco dive to 100m for 30 mins', async ({ page }) => {
   expect(await maintainDepthPage.currentStats.getCurrentEND()).toBe('30m');
 
   await maintainDepthPage.setTimeAtDepth(20);
-  expect(await maintainDepthPage.getFinalCeiling()).toBe('30m'); // TODO: [BUG] Should be 23m
+  expect(await maintainDepthPage.getFinalCeiling()).toBe('23m');
   expect(await maintainDepthPage.getTotalDiveDuration()).toBe('61 min 42 sec');
 
   let decoMilestones = await maintainDepthPage.getDecoMilestones();
@@ -379,7 +379,7 @@ test('deco dive to 100m for 30 mins', async ({ page }) => {
   expect(await maintainDepthPage.currentStats.getCurrentEND()).toBe('22m');
 
   await maintainDepthPage.setTimeAtDepth(41);
-  expect(await maintainDepthPage.getFinalCeiling()).toBe('10m'); // TODO: [BUG] Should be 7m
+  expect(await maintainDepthPage.getFinalCeiling()).toBe('7m');
   expect(await maintainDepthPage.getTotalDiveDuration()).toBe('104 min 48 sec');
 
   decoMilestones = await maintainDepthPage.getDecoMilestones();
@@ -485,7 +485,7 @@ test('deco dive to 100m for 30 mins', async ({ page }) => {
   expect(await maintainDepthPage.currentStats.getCurrentEND()).toBe('6m');
 
   await maintainDepthPage.setTimeAtDepth(33);
-  expect(await maintainDepthPage.getFinalCeiling()).toBe('2m'); // TODO: [BUG] Should be 1m
+  expect(await maintainDepthPage.getFinalCeiling()).toBe('1m');
   expect(await maintainDepthPage.getTotalDiveDuration()).toBe('139 min 24 sec');
 
   decoMilestones = await maintainDepthPage.getDecoMilestones();

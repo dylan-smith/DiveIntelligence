@@ -228,7 +228,12 @@ export class DiveProfile {
     const wipProfile = this.getCurrentProfile();
 
     wipProfile.addSegment(
-      this.diveSegmentFactory.createMaintainDepthSegment(wipProfile.getTotalTime(), wipProfile.getCurrentDepth(), timeAtDepth, wipProfile.getCurrentGas())
+      this.diveSegmentFactory.createMaintainDepthSegment(
+        wipProfile.getTotalTime(),
+        wipProfile.getLastSegment().EndDepth,
+        timeAtDepth,
+        wipProfile.getLastSegment().Gas
+      )
     );
 
     return ceilingWithThreshold(wipProfile.algo.getCeiling(wipProfile.getTotalTime()));
