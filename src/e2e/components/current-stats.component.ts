@@ -9,6 +9,12 @@ export class CurrentStatsComponent {
     return content.replace('Current Depth: ', '').trim();
   }
 
+  async getNoDecoLimit(): Promise<string> {
+    let content = await this.host.locator('.current-stats .dive-stat').getByText('No Deco Limit: ').textContent();
+    content = content ?? '';
+    return content.replace('No Deco Limit: ', '').trim();
+  }
+
   async getCurrentCeiling(): Promise<string> {
     let content = await this.host.locator('.current-stats .dive-stat').getByText('Current Ceiling: ').textContent();
     content = content ?? '';

@@ -14,6 +14,7 @@ test('NDL dive to 25m for 50 mins on nitrox 32', async ({ page }) => {
   let diveOverviewPage = await newDivePage.Save();
   const changeDepthPage = await diveOverviewPage.addChangeDepthSegment();
   expect(await changeDepthPage.currentStats.getCurrentDepth()).toBe('0m');
+  expect(await changeDepthPage.currentStats.getNoDecoLimit()).toBe('> 5 hours');
   expect(await changeDepthPage.currentStats.getCurrentCeiling()).toBe('0m');
   expect(await changeDepthPage.currentStats.getCurrentGas()).toBe('Nitrox 32 (O2: 32%, He: 0%, N2: 68%)');
   expect(await changeDepthPage.currentStats.getCurrentMaxDepthPO2()).toBe('33m (40m deco)');
@@ -31,6 +32,7 @@ test('NDL dive to 25m for 50 mins on nitrox 32', async ({ page }) => {
 
   const maintainDepthPage = await diveOverviewPage.addMaintainDepthSegment();
   expect(await maintainDepthPage.currentStats.getCurrentDepth()).toBe('25m');
+  expect(await maintainDepthPage.currentStats.getNoDecoLimit()).toBe('57 min 4 sec');
   expect(await maintainDepthPage.currentStats.getCurrentCeiling()).toBe('0m');
   expect(await maintainDepthPage.currentStats.getCurrentGas()).toBe('Nitrox 32 (O2: 32%, He: 0%, N2: 68%)');
   expect(await maintainDepthPage.currentStats.getCurrentMaxDepthPO2()).toBe('33m (40m deco)');

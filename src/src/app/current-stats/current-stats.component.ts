@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
 import { BreathingGas } from '../dive-planner-service/BreathingGas';
 import { ceilingWithThreshold } from '../utility/utility';
+import { HumanDurationPipe } from '../pipes/human-duration.pipe';
 
 @Component({
   selector: 'dive-current-stats',
@@ -10,8 +11,9 @@ import { ceilingWithThreshold } from '../utility/utility';
 })
 export class CurrentStatsComponent {
   currentDepth: number = this.divePlanner.getCurrentDepth();
-  currentCeiling: number = this.divePlanner.getCurrentCeiling();
   currentGas: BreathingGas = this.divePlanner.getCurrentGas();
+  noDecoLimit: string = this.getNoDecoLimit();
+  currentCeiling: number = this.divePlanner.getCurrentCeiling();
   currentPO2: number = this.getPO2();
   hasCurrentPO2Warning: boolean = this.getPO2WarningMessage() !== undefined;
   hasCurrentPO2Error: boolean = this.getPO2ErrorMessage() !== undefined;
@@ -21,10 +23,13 @@ export class CurrentStatsComponent {
   hasCurrentENDError: boolean = this.getENDErrorMessage() !== undefined;
   currentENDError: string | undefined = this.getENDErrorMessage();
 
-  constructor(public divePlanner: DivePlannerService) {}
+  constructor(
+    public divePlanner: DivePlannerService,
+    private humanDurationPipe: HumanDurationPipe
+  ) {}
 
   private getPO2(): number {
-    return this.divePlanner.getCurrentGas().getPO2(this.currentDepth);
+    return this.currentGas.getPO2(this.currentDepth);
   }
 
   private getPO2WarningMessage(): string | undefined {
@@ -36,10 +41,20 @@ export class CurrentStatsComponent {
   }
 
   private getEND(): number {
-    return ceilingWithThreshold(this.divePlanner.getCurrentGas().getEND(this.currentDepth));
+    return ceilingWithThreshold(this.currentGas.getEND(this.currentDepth));
   }
 
   private getENDErrorMessage(): string | undefined {
     return this.divePlanner.getENDErrorMessage(this.getEND());
+  }
+
+  private getNoDecoLimit(): string {
+    const ndl = this.divePlanner.getNoDecoLimit(this.currentDepth, this.currentGas);
+
+    if (ndl === undefined) {
+      return '> 5 hours';
+    }
+
+    return this.humanDurationPipe.transform(ndl);
   }
 }
