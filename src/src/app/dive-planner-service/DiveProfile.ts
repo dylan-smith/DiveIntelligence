@@ -228,17 +228,30 @@ export class DiveProfile {
     return this.getLastSegment().EndTimestamp;
   }
 
-  getNewCeiling(timeAtDepth: number): number {
+  getNewCeiling(newDepth: number, timeAtDepth: number): number {
     const wipProfile = this.getCurrentProfile();
 
-    wipProfile.addSegment(
-      this.diveSegmentFactory.createMaintainDepthSegment(
-        wipProfile.getTotalTime(),
-        wipProfile.getLastSegment().EndDepth,
-        timeAtDepth,
-        wipProfile.getLastSegment().Gas
-      )
-    );
+    if (newDepth !== wipProfile.getLastSegment().EndDepth) {
+      wipProfile.addSegment(
+        this.diveSegmentFactory.createDepthChangeSegment(
+          wipProfile.getLastSegment().EndTimestamp,
+          wipProfile.getLastSegment().EndDepth,
+          newDepth,
+          wipProfile.getLastSegment().Gas
+        )
+      );
+    }
+
+    if (timeAtDepth > 0) {
+      wipProfile.addSegment(
+        this.diveSegmentFactory.createMaintainDepthSegment(
+          wipProfile.getTotalTime(),
+          wipProfile.getLastSegment().EndDepth,
+          timeAtDepth,
+          wipProfile.getLastSegment().Gas
+        )
+      );
+    }
 
     return ceilingWithThreshold(wipProfile.algo.getCeiling(wipProfile.getTotalTime()));
   }
