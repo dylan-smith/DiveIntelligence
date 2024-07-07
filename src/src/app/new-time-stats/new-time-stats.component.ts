@@ -30,7 +30,7 @@ export class NewTimeStatsComponent implements OnChanges {
   }
 
   private getNewDecoCeiling(): number {
-    return this.divePlanner.getNewCeiling(this.timeAtDepth * 60);
+    return this.divePlanner.getNewCeiling(this.currentDepth, this.timeAtDepth * 60);
   }
 
   private getTotalDiveDuration(): number {

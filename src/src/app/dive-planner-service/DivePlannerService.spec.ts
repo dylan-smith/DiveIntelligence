@@ -85,7 +85,7 @@ describe('DivePlannerService', () => {
     expect(svc.getTravelTime(53)).toBe(69);
     expect(svc.getTravelTime(12)).toBe(108);
 
-    expect(svc.getNewCeiling(42 * 60)).toBe(4);
+    expect(svc.getNewCeiling(30, 42 * 60)).toBe(4);
   });
 
   it('deco dive breaking the limits', () => {
