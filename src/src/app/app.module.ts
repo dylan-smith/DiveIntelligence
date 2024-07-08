@@ -27,6 +27,9 @@ import { StandardGasListComponent } from './standard-gas-list/standard-gas-list.
 import { CustomGasInputComponent } from './custom-gas-input/custom-gas-input.component';
 import { DiveSettingsComponent } from './dive-settings/dive-settings.component';
 import { StartGasStatsComponent } from './start-gas-stats/start-gas-stats.component';
+import { ChangeDepthComponent } from './change-depth/change-depth.component';
+import { ChangeGasComponent } from './change-gas/change-gas.component';
+import { MaintainDepthComponent } from './maintain-depth/maintain-depth.component';
 import { HumanDurationPipe } from './pipes/human-duration.pipe';
 import { ColonDurationPipe } from './pipes/colon-duration.pipe';
 
@@ -41,7 +44,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { AddDiveSegmentComponent } from './add-dive-segment/add-dive-segment.component';
 import { APP_CONFIG, AppConfig } from 'src/app.config';
 import { ApplicationInsightsModule } from './application-insights.module';
 import { YouTubePlayerModule } from '@angular/youtube-player';
@@ -63,7 +65,6 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
     TissuesPHeChartComponent,
     HumanDurationPipe,
     ColonDurationPipe,
-    AddDiveSegmentComponent,
     CurrentStatsComponent,
     NewDepthStatsComponent,
     NewGasInputComponent,
@@ -74,6 +75,9 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
     CustomGasInputComponent,
     DiveSettingsComponent,
     StartGasStatsComponent,
+    ChangeDepthComponent,
+    ChangeGasComponent,
+    MaintainDepthComponent,
   ],
   imports: [
     BrowserModule,

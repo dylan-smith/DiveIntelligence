@@ -1,0 +1,19 @@
+<main>
+  <div class="main-content">
+    <dive-current-stats class="mat-elevation-z2"></dive-current-stats>
+    <h1>Select new depth</h1>
+    <div class="new-depth-row">
+      <div class="input-section mat-elevation-z2">
+        <mat-form-field class="depth-input">
+          <mat-label>New Depth (m)</mat-label>
+          <input matInput type="number" min="0" [(ngModel)]="newDepth" />
+        </mat-form-field>
+      </div>
+    </div>
+    <dive-new-depth-stats class="mat-elevation-z2" [newDepth]="newDepth"></dive-new-depth-stats>
+    <div class="actions">
+      <button mat-flat-button color="primary" (click)="onSave()">Save</button>
+      <button mat-stroked-button color="secondary" routerLink="/dive-overview">Cancel</button>
+    </div>
+  </div>
+</main>

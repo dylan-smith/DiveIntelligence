@@ -38,12 +38,12 @@ export class BuhlmannZHL16C {
     this.tissues.forEach(t => t.calculateForSegment(segment));
   }
 
-  getCeiling(time: number): number {
-    return Math.max(...this.tissues.map(t => t.getCeiling(time)));
+  getInstantCeiling(time: number): number {
+    return Math.max(...this.tissues.map(t => t.getInstantCeiling(time)));
   }
 
-  getTimeToCeiling(depth: number, gas: BreathingGas): number | undefined {
-    const tissueNdls = this.tissues.map(t => t.getTimeToCeiling(depth, gas));
+  getTimeToInstantCeiling(depth: number, gas: BreathingGas): number | undefined {
+    const tissueNdls = this.tissues.map(t => t.getTimeToInstantCeiling(depth, gas));
     const validNdls = tissueNdls.filter(x => x !== undefined) as number[];
 
     if (validNdls.length === 0) return undefined;
@@ -51,8 +51,8 @@ export class BuhlmannZHL16C {
     return Math.min(...validNdls);
   }
 
-  getTissueCeiling(time: number, tissue: number): number {
-    return this.tissues[tissue - 1].getCeiling(time);
+  getTissueInstantCeiling(time: number, tissue: number): number {
+    return this.tissues[tissue - 1].getInstantCeiling(time);
   }
 
   getTissuePN2(time: number, tissue: number): number {

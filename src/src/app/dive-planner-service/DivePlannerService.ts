@@ -64,6 +64,10 @@ export class DivePlannerService {
     return this.diveProfile.getCurrentCeiling();
   }
 
+  getCurrentInstantCeiling(): number {
+    return this.diveProfile.getCurrentInstantCeiling();
+  }
+
   getCurrentGas(): BreathingGas {
     return this.diveProfile.getCurrentGas();
   }
@@ -72,8 +76,8 @@ export class DivePlannerService {
     return this.diveProfile.getCurrentDiveTime();
   }
 
-  getNoDecoLimit(newDepth: number, newGas: BreathingGas): number | undefined {
-    return this.diveProfile.getNoDecoLimit(newDepth, newGas);
+  getNoDecoLimit(newDepth: number, newGas: BreathingGas, timeAtDepth: number): number | undefined {
+    return this.diveProfile.getNoDecoLimit(newDepth, newGas, timeAtDepth);
   }
 
   addDiveSegment(newDepth: number, newGas: BreathingGas, timeAtDepth: number): void {
@@ -85,6 +89,18 @@ export class DivePlannerService {
       newGas: { description: newGas.description, oxygen: newGas.oxygen, helium: newGas.helium, nitrogen: newGas.nitrogen },
       timeAtDepth,
     });
+  }
+
+  addChangeDepthSegment(newDepth: number): void {
+    this.diveProfile.addChangeDepthSegment(newDepth);
+  }
+
+  addChangeGasSegment(newGas: BreathingGas): void {
+    this.diveProfile.addChangeGasSegment(newGas);
+  }
+
+  addMaintainDepthSegment(timeAtDepth: number): void {
+    this.diveProfile.addMaintainDepthSegment(timeAtDepth);
   }
 
   getTravelTime(newDepth: number): number {
@@ -119,8 +135,12 @@ export class DivePlannerService {
     return this.chartGenerator.getCeilingChartData(newDepth, newGas, this.diveProfile);
   }
 
-  getNewCeiling(newDepth: number, newGas: BreathingGas, timeAtDepth: number): number {
-    return this.diveProfile.getNewCeiling(newDepth, newGas, timeAtDepth);
+  getNewCeiling(newDepth: number, timeAtDepth: number): number {
+    return this.diveProfile.getNewCeiling(newDepth, timeAtDepth);
+  }
+
+  getNewInstantCeiling(newDepth: number, timeAtDepth: number): number {
+    return this.diveProfile.getNewInstantCeiling(newDepth, timeAtDepth);
   }
 
   getCeilingError(): { amount: number; duration: number } {

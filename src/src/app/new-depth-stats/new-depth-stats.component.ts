@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
 import { ceilingWithThreshold } from '../utility/utility';
+import { HumanDurationPipe } from '../pipes/human-duration.pipe';
 
 @Component({
   selector: 'dive-new-depth-stats',
@@ -23,8 +24,14 @@ export class NewDepthStatsComponent implements OnChanges {
   END: number = this.getEND();
   hasENDError: boolean = this.getENDErrorMessage() !== undefined;
   ENDErrorMessage: string | undefined = this.getENDErrorMessage();
+  noDecoLimit: string = this.getNoDecoLimit();
+  ceiling: number = this.divePlanner.getNewCeiling(this.newDepth, 0);
+  instantCeiling: number = this.divePlanner.getNewInstantCeiling(this.newDepth, 0);
 
-  constructor(public divePlanner: DivePlannerService) {}
+  constructor(
+    public divePlanner: DivePlannerService,
+    private humanDurationPipe: HumanDurationPipe
+  ) {}
 
   ngOnChanges(): void {
     this.calculateNewDepthStats();
@@ -42,6 +49,9 @@ export class NewDepthStatsComponent implements OnChanges {
     this.END = this.getEND();
     this.hasENDError = this.getENDErrorMessage() !== undefined;
     this.ENDErrorMessage = this.getENDErrorMessage();
+    this.noDecoLimit = this.getNoDecoLimit();
+    this.ceiling = this.divePlanner.getNewCeiling(this.newDepth, 0);
+    this.instantCeiling = this.divePlanner.getNewInstantCeiling(this.newDepth, 0);
   }
 
   private isNewDepthDescent(): boolean {
@@ -66,5 +76,15 @@ export class NewDepthStatsComponent implements OnChanges {
 
   private getENDErrorMessage(): string | undefined {
     return this.divePlanner.getENDErrorMessage(this.getEND());
+  }
+
+  private getNoDecoLimit(): string {
+    const ndl = this.divePlanner.getNoDecoLimit(this.newDepth, this.divePlanner.getCurrentGas(), 0);
+
+    if (ndl === undefined) {
+      return '> 5 hours';
+    }
+
+    return this.humanDurationPipe.transform(ndl);
   }
 }
