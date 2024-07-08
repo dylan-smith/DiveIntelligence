@@ -14,6 +14,7 @@ export class CurrentStatsComponent {
   currentGas: BreathingGas = this.divePlanner.getCurrentGas();
   noDecoLimit: string = this.getNoDecoLimit();
   currentCeiling: number = this.divePlanner.getCurrentCeiling();
+  instantCeiling: number = this.divePlanner.getCurrentInstantCeiling();
   currentPO2: number = this.getPO2();
   hasCurrentPO2Warning: boolean = this.getPO2WarningMessage() !== undefined;
   hasCurrentPO2Error: boolean = this.getPO2ErrorMessage() !== undefined;

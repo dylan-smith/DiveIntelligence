@@ -85,7 +85,7 @@ describe('DivePlannerService', () => {
     expect(svc.getTravelTime(53)).toBe(69);
     expect(svc.getTravelTime(12)).toBe(108);
 
-    expect(svc.getNewCeiling(30, 42 * 60)).toBe(4);
+    expect(svc.getNewInstantCeiling(30, 42 * 60)).toBe(4);
   });
 
   it('deco dive breaking the limits', () => {
@@ -109,7 +109,8 @@ describe('DivePlannerService', () => {
     svc.addDiveSegment(6, oxygen, 35 * 60);
 
     expect(svc.getCurrentDepth()).toBe(6);
-    expect(svc.getCurrentCeiling()).toBe(1);
+    expect(svc.getCurrentInstantCeiling()).toBe(1);
+    expect(svc.getCurrentCeiling()).toBe(0);
     expect(svc.getCurrentGas()).toBe(oxygen);
     expect(svc.getCurrentGas().maxDepthPO2).toBe(4);
     expect(svc.getCurrentGas().maxDepthPO2Deco).toBe(6);

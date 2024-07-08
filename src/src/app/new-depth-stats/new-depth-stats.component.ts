@@ -26,6 +26,7 @@ export class NewDepthStatsComponent implements OnChanges {
   ENDErrorMessage: string | undefined = this.getENDErrorMessage();
   noDecoLimit: string = this.getNoDecoLimit();
   ceiling: number = this.divePlanner.getNewCeiling(this.newDepth, 0);
+  instantCeiling: number = this.divePlanner.getNewInstantCeiling(this.newDepth, 0);
 
   constructor(
     public divePlanner: DivePlannerService,
@@ -50,6 +51,7 @@ export class NewDepthStatsComponent implements OnChanges {
     this.ENDErrorMessage = this.getENDErrorMessage();
     this.noDecoLimit = this.getNoDecoLimit();
     this.ceiling = this.divePlanner.getNewCeiling(this.newDepth, 0);
+    this.instantCeiling = this.divePlanner.getNewInstantCeiling(this.newDepth, 0);
   }
 
   private isNewDepthDescent(): boolean {

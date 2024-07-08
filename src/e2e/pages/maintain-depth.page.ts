@@ -12,12 +12,6 @@ export class MaintainDepthPage {
     return this;
   }
 
-  async getFinalCeiling(): Promise<string> {
-    let content = await this.page.locator('dive-new-time-stats .new-time-stats .dive-stat').getByText('Ceiling: ').textContent();
-    content = content ?? '';
-    return content.replace('Ceiling: ', '').trim();
-  }
-
   async getTotalDiveDuration(): Promise<string> {
     let content = await this.page.locator('dive-new-time-stats .new-time-stats .dive-stat').getByText('Total Dive Duration: ').textContent();
     content = content ?? '';

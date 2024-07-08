@@ -8,9 +8,13 @@
     </span>
   </div>
   <div class="dive-stat">
-    <span matTooltip="The deco ceiling after the time at depth has elapsed" matTooltipPosition="right">
+    <span
+      matTooltip="The shallowest depth you can safely ascend directly to. This takes into account any on/off-gassing that may occur during the ascent. (Instantaneous Ceiling = {{
+        instantCeiling
+      }}m)"
+      matTooltipPosition="right">
       Ceiling:
-      <strong>{{ newCeiling }}m</strong>
+      <strong>{{ ceiling }}m</strong>
     </span>
   </div>
   <div class="dive-stat">
