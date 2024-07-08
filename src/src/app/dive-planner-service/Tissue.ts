@@ -55,19 +55,19 @@ export class Tissue {
     return clone;
   }
 
-  getCeiling(time: number): number {
+  getInstantCeiling(time: number): number {
     const result = (this.getMValue(time) - 1) * 10;
     return result < 0 ? 0 : result;
   }
 
-  getTimeToCeiling(depth: number, gas: BreathingGas): number | undefined {
-    const ceiling = this.getCeiling(this.tissueByTime.size - 1);
+  getTimeToInstantCeiling(depth: number, gas: BreathingGas): number | undefined {
+    const ceiling = this.getInstantCeiling(this.tissueByTime.size - 1);
 
     if (ceiling > 0) {
       return 0;
     }
 
-    const minCeiling = this.getCeilingByPressures(gas.getPN2(depth), gas.getPHe(depth));
+    const minCeiling = this.getInstantCeilingByPressures(gas.getPN2(depth), gas.getPHe(depth));
 
     if (minCeiling === 0 || isNaN(minCeiling)) {
       return undefined;
@@ -83,7 +83,7 @@ export class Tissue {
     while (minNDL < maxNDL) {
       const newPN2 = pN2 + this.getPN2DeltaByTime(pN2, gas.getPN2(depth), time);
       const newPHe = pHe + this.getPHeDeltaByTime(pHe, gas.getPHe(depth), time);
-      const newCeiling = this.getCeilingByPressures(newPN2, newPHe);
+      const newCeiling = this.getInstantCeilingByPressures(newPN2, newPHe);
 
       if (newCeiling <= 0) {
         minNDL = time;
@@ -109,7 +109,7 @@ export class Tissue {
     return this.getTissueByTime(time).PHe;
   }
 
-  private getCeilingByPressures(pN2: number, pHe: number): number {
+  private getInstantCeilingByPressures(pN2: number, pHe: number): number {
     const result = (this.getMValueByPressures(pN2, pHe) - 1) * 10;
     return result < 0 ? 0 : result;
   }

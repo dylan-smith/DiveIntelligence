@@ -12,33 +12,43 @@ test('NDL dive to 25m for 50 mins on nitrox 32', async ({ page }) => {
   expect(await newDivePage.getMinDepthHypoxia()).toBe('0m');
 
   let diveOverviewPage = await newDivePage.Save();
-  const addDiveSegmentPage = await diveOverviewPage.addSegment();
-  expect(await addDiveSegmentPage.getCurrentDepth()).toBe('0m');
-  expect(await addDiveSegmentPage.getCurrentCeiling()).toBe('0m');
-  expect(await addDiveSegmentPage.getCurrentGas()).toBe('Nitrox 32 (O2: 32%, He: 0%, N2: 68%)');
-  expect(await addDiveSegmentPage.getCurrentMaxDepthPO2()).toBe('33m (40m deco)');
-  expect(await addDiveSegmentPage.getCurrentMaxDepthEND()).toBe('30m');
-  expect(await addDiveSegmentPage.getCurrentMinDepthHypoxia()).toBe('0m');
-  expect(await addDiveSegmentPage.getCurrentPO2()).toBe('0.32');
-  expect(await addDiveSegmentPage.getCurrentEND()).toBe('0m');
+  const changeDepthPage = await diveOverviewPage.addChangeDepthSegment();
+  expect(await changeDepthPage.currentStats.getCurrentDepth()).toBe('0m');
+  expect(await changeDepthPage.currentStats.getNoDecoLimit()).toBe('> 5 hours');
+  expect(await changeDepthPage.currentStats.getCurrentCeiling()).toBe('0m');
+  expect(await changeDepthPage.currentStats.getCurrentGas()).toBe('Nitrox 32 (O2: 32%, He: 0%, N2: 68%)');
+  expect(await changeDepthPage.currentStats.getCurrentMaxDepthPO2()).toBe('33m (40m deco)');
+  expect(await changeDepthPage.currentStats.getCurrentMaxDepthEND()).toBe('30m');
+  expect(await changeDepthPage.currentStats.getCurrentMinDepthHypoxia()).toBe('0m');
+  expect(await changeDepthPage.currentStats.getCurrentPO2()).toBe('0.32');
+  expect(await changeDepthPage.currentStats.getCurrentEND()).toBe('0m');
 
-  await addDiveSegmentPage.setNewDepth(25);
-  expect(await addDiveSegmentPage.getDescentTime()).toBe('1 min 15 sec @ 20m/min');
-  expect(await addDiveSegmentPage.getNewDepthPO2()).toBe('1.12');
-  expect(await addDiveSegmentPage.getNewDepthEND()).toBe('25m');
+  await changeDepthPage.setNewDepth(25);
+  expect(await changeDepthPage.getDescentTime()).toBe('1 min 15 sec @ 20m/min');
+  expect(await changeDepthPage.getNewDepthPO2()).toBe('1.12');
+  expect(await changeDepthPage.getNewDepthEND()).toBe('25m');
+  expect(await changeDepthPage.getNewDepthNDL()).toBe('57 min 4 sec');
+  expect(await changeDepthPage.getNewDepthCeiling()).toBe('0m');
 
-  expect(await addDiveSegmentPage.getNewGasPO2()).toBe('1.12');
-  expect(await addDiveSegmentPage.getNewGasEND()).toBe('25m');
-  expect(await addDiveSegmentPage.getNewGasNoDecoLimit()).toBe('57 min 4 sec');
-  expect(await addDiveSegmentPage.getNewGasMaxDepthPO2()).toBe('33m (40m deco)');
-  expect(await addDiveSegmentPage.getNewGasMaxDepthEND()).toBe('30m');
-  expect(await addDiveSegmentPage.getNewGasMinDepthHypoxia()).toBe('0m');
+  diveOverviewPage = await changeDepthPage.Save();
 
-  await addDiveSegmentPage.setTimeAtDepth(50);
-  expect(await addDiveSegmentPage.getFinalCeiling()).toBe('0m');
-  expect(await addDiveSegmentPage.getTotalDiveDuration()).toBe('51 min 15 sec');
+  const maintainDepthPage = await diveOverviewPage.addMaintainDepthSegment();
+  expect(await maintainDepthPage.currentStats.getCurrentDepth()).toBe('25m');
+  expect(await maintainDepthPage.currentStats.getNoDecoLimit()).toBe('57 min 4 sec');
+  expect(await maintainDepthPage.currentStats.getCurrentCeiling()).toBe('0m');
+  expect(await maintainDepthPage.currentStats.getCurrentGas()).toBe('Nitrox 32 (O2: 32%, He: 0%, N2: 68%)');
+  expect(await maintainDepthPage.currentStats.getCurrentMaxDepthPO2()).toBe('33m (40m deco)');
+  expect(await maintainDepthPage.currentStats.getCurrentMaxDepthEND()).toBe('30m');
+  expect(await maintainDepthPage.currentStats.getCurrentMinDepthHypoxia()).toBe('0m');
+  expect(await maintainDepthPage.currentStats.getCurrentPO2()).toBe('1.12');
+  expect(await maintainDepthPage.currentStats.getCurrentEND()).toBe('25m');
 
-  diveOverviewPage = await addDiveSegmentPage.Save();
+  await maintainDepthPage.setTimeAtDepth(50);
+  expect(await maintainDepthPage.getTotalDiveDuration()).toBe('51 min 15 sec');
+  expect(await maintainDepthPage.getNewNDL()).toBe('7 min 4 sec');
+  expect(await maintainDepthPage.getNewCeiling()).toBe('0m');
+
+  diveOverviewPage = await maintainDepthPage.Save();
 
   const diveSegments = await diveOverviewPage.getDiveSegments();
   expect(diveSegments[0].heading).toBe('scuba_diving 0:00 Start Dive');

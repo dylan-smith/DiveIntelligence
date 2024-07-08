@@ -8,7 +8,15 @@
       <span matListItemLine [innerHTML]="planEvent.Description" class="segment-description"></span>
     </mat-list-item>
   </mat-selection-list>
-  <button mat-fab color="primary" routerLink="/add-dive-segment" class="add-segment-button">
-    <mat-icon>add</mat-icon>
-  </button>
+  <div class="segment-buttons">
+    <button mat-fab color="primary" routerLink="/change-depth" class="add-segment-button" matTooltip="Ascend/Descend">
+      <mat-icon>height</mat-icon>
+    </button>
+    <button mat-fab color="primary" routerLink="/change-gas" class="add-segment-button" matTooltip="Change Gas">
+      <mat-icon>air</mat-icon>
+    </button>
+    <button mat-fab color="primary" routerLink="/maintain-depth" class="add-segment-button" matTooltip="Maintain Depth">
+      <mat-icon>arrow_forward</mat-icon>
+    </button>
+  </div>
 </div>
