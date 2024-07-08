@@ -55,7 +55,8 @@ describe('DivePlannerService', () => {
     const air = svc.getStandardGases().filter(gas => gas.name === 'Air')[0];
 
     svc.startDive(nitrox32);
-    svc.addDiveSegment(30, nitrox32, 25 * 60);
+    svc.addChangeDepthSegment(30);
+    svc.addMaintainDepthSegment(25 * 60);
 
     expect(svc.getCurrentDepth()).toBe(30);
     expect(svc.getCurrentCeiling()).toBe(0);
@@ -102,11 +103,20 @@ describe('DivePlannerService', () => {
     const oxygen = svc.getStandardGases().filter(gas => gas.oxygen === 100)[0];
 
     svc.startDive(trimix1555);
-    svc.addDiveSegment(50, trimix1070, 1 * 60);
-    svc.addDiveSegment(100, trimix1070, 30 * 60);
-    svc.addDiveSegment(40, nitrox50, 10 * 60);
-    svc.addDiveSegment(20, custom3030, 60 * 60);
-    svc.addDiveSegment(6, oxygen, 35 * 60);
+    svc.addChangeDepthSegment(50);
+    svc.addChangeGasSegment(trimix1070);
+    svc.addMaintainDepthSegment(1 * 60);
+    svc.addChangeDepthSegment(100);
+    svc.addMaintainDepthSegment(30 * 60);
+    svc.addChangeDepthSegment(40);
+    svc.addChangeGasSegment(nitrox50);
+    svc.addMaintainDepthSegment(10 * 60);
+    svc.addChangeDepthSegment(20);
+    svc.addChangeGasSegment(custom3030);
+    svc.addMaintainDepthSegment(60 * 60);
+    svc.addChangeDepthSegment(6);
+    svc.addChangeGasSegment(oxygen);
+    svc.addMaintainDepthSegment(35 * 60);
 
     expect(svc.getCurrentDepth()).toBe(6);
     expect(svc.getCurrentInstantCeiling()).toBe(1);
