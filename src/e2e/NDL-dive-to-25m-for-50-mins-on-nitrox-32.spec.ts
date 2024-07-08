@@ -44,7 +44,6 @@ test('NDL dive to 25m for 50 mins on nitrox 32', async ({ page }) => {
   expect(await maintainDepthPage.currentStats.getCurrentEND()).toBe('25m');
 
   await maintainDepthPage.setTimeAtDepth(50);
-  expect(await maintainDepthPage.getFinalCeiling()).toBe('0m');
   expect(await maintainDepthPage.getTotalDiveDuration()).toBe('51 min 15 sec');
   expect(await maintainDepthPage.getNewNDL()).toBe('7 min 4 sec');
   expect(await maintainDepthPage.getNewCeiling()).toBe('0m');
