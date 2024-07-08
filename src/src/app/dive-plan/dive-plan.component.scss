@@ -17,6 +17,12 @@ mat-list {
   flex-direction: column;
 }
 
+.segment-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
 mat-selection-list {
   padding: 0px;
 }

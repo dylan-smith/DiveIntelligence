@@ -9,6 +9,8 @@ export class DiveProfile {
   public segments: DiveSegment[] = [];
   public algo: BuhlmannZHL16C = new BuhlmannZHL16C();
 
+  readonly MAX_NDL = 3600 * 5;
+
   constructor(
     private diveSettings: DiveSettingsService,
     private diveSegmentFactory: DiveSegmentFactoryService
@@ -35,6 +37,32 @@ export class DiveProfile {
     }
 
     this.addSegment(this.diveSegmentFactory.createEndDiveSegment(startTime, newDepth, newGas));
+  }
+
+  addChangeDepthSegment(newDepth: number): void {
+    this.removeLastSegment();
+    const previousSegment = this.getLastSegment();
+
+    this.addSegment(this.diveSegmentFactory.createDepthChangeSegment(previousSegment.EndTimestamp, previousSegment.EndDepth, newDepth, previousSegment.Gas));
+    this.addSegment(this.diveSegmentFactory.createEndDiveSegment(this.getTotalTime(), newDepth, previousSegment.Gas));
+  }
+
+  addChangeGasSegment(newGas: BreathingGas): void {
+    this.removeLastSegment();
+    const previousSegment = this.getLastSegment();
+
+    this.addSegment(this.diveSegmentFactory.createGasChangeSegment(previousSegment.EndTimestamp, newGas, previousSegment.EndDepth));
+    this.addSegment(this.diveSegmentFactory.createEndDiveSegment(this.getTotalTime(), previousSegment.EndDepth, newGas));
+  }
+
+  addMaintainDepthSegment(timeAtDepth: number): void {
+    this.removeLastSegment();
+    const previousSegment = this.getLastSegment();
+
+    this.addSegment(
+      this.diveSegmentFactory.createMaintainDepthSegment(previousSegment.EndTimestamp, previousSegment.EndDepth, timeAtDepth, previousSegment.Gas)
+    );
+    this.addSegment(this.diveSegmentFactory.createEndDiveSegment(this.getTotalTime(), previousSegment.EndDepth, previousSegment.Gas));
   }
 
   getCurrentDepth(): number {
@@ -64,19 +92,27 @@ export class DiveProfile {
     return this.getPreviousSegment().EndTimestamp;
   }
 
-  getNoDecoLimit(newDepth: number, newGas: BreathingGas): number | undefined {
+  getNoDecoLimit(newDepth: number, newGas: BreathingGas, timeAtDepth: number): number | undefined {
     const wipProfile = this.getCurrentProfile();
 
-    wipProfile.addSegment(
-      this.diveSegmentFactory.createDepthChangeSegment(
-        wipProfile.getLastSegment().EndTimestamp,
-        wipProfile.getLastSegment().EndDepth,
-        newDepth,
-        this.segments[this.segments.length - 2].Gas
-      )
-    );
+    if (newDepth !== wipProfile.getLastSegment().EndDepth) {
+      wipProfile.addSegment(
+        this.diveSegmentFactory.createDepthChangeSegment(
+          wipProfile.getLastSegment().EndTimestamp,
+          wipProfile.getLastSegment().EndDepth,
+          newDepth,
+          wipProfile.getLastSegment().Gas
+        )
+      );
+    }
 
-    wipProfile.addSegment(this.diveSegmentFactory.createGasChangeSegment(wipProfile.getTotalTime(), newGas, newDepth));
+    if (newGas !== wipProfile.getLastSegment().Gas) {
+      wipProfile.addSegment(this.diveSegmentFactory.createGasChangeSegment(wipProfile.getTotalTime(), newGas, newDepth));
+    }
+
+    if (timeAtDepth > 0) {
+      wipProfile.addSegment(this.diveSegmentFactory.createMaintainDepthSegment(wipProfile.getTotalTime(), newDepth, timeAtDepth, newGas));
+    }
 
     const ndl = wipProfile.algo.getTimeToCeiling(newDepth, newGas);
 
@@ -91,10 +127,14 @@ export class DiveProfile {
 
     wipProfile.extendLastSegment(maxTime);
 
-    while (wipProfile.canSurfaceWithoutStops()) {
+    while (wipProfile.canSurfaceWithoutStops() && maxTime <= this.MAX_NDL) {
       minTime = maxTime;
       wipProfile.extendLastSegment(maxTime);
       maxTime *= 2;
+    }
+
+    if (maxTime > this.MAX_NDL) {
+      return undefined;
     }
 
     maxTime--;
@@ -198,15 +238,30 @@ export class DiveProfile {
     return this.getLastSegment().EndTimestamp;
   }
 
-  getNewCeiling(newDepth: number, newGas: BreathingGas, timeAtDepth: number): number {
+  getNewCeiling(newDepth: number, timeAtDepth: number): number {
     const wipProfile = this.getCurrentProfile();
 
-    wipProfile.addSegment(
-      this.diveSegmentFactory.createDepthChangeSegment(wipProfile.getTotalTime(), wipProfile.getLastSegment().EndDepth, newDepth, this.getCurrentGas())
-    );
+    if (newDepth !== wipProfile.getLastSegment().EndDepth) {
+      wipProfile.addSegment(
+        this.diveSegmentFactory.createDepthChangeSegment(
+          wipProfile.getLastSegment().EndTimestamp,
+          wipProfile.getLastSegment().EndDepth,
+          newDepth,
+          wipProfile.getLastSegment().Gas
+        )
+      );
+    }
 
-    wipProfile.addSegment(this.diveSegmentFactory.createGasChangeSegment(wipProfile.getTotalTime(), newGas, newDepth));
-    wipProfile.addSegment(this.diveSegmentFactory.createMaintainDepthSegment(wipProfile.getTotalTime(), newDepth, timeAtDepth, newGas));
+    if (timeAtDepth > 0) {
+      wipProfile.addSegment(
+        this.diveSegmentFactory.createMaintainDepthSegment(
+          wipProfile.getTotalTime(),
+          wipProfile.getLastSegment().EndDepth,
+          timeAtDepth,
+          wipProfile.getLastSegment().Gas
+        )
+      );
+    }
 
     return ceilingWithThreshold(wipProfile.algo.getCeiling(wipProfile.getTotalTime()));
   }

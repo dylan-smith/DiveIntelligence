@@ -1,12 +1,20 @@
 <div class="new-time-stats">
   <div class="dive-stat">
-    <span matTooltip="The deco ceiling after the ascent/descent time and time at depth has elapsed" matTooltipPosition="right">
+    <span
+      matTooltip="The amount of additional time you can stay at the current depth on the current gas and safely ascend directly to the surface (Note: this takes into account off-gassing that occurs during ascent)"
+      matTooltipPosition="right">
+      No Deco Limit:
+      <strong>{{ noDecoLimit }}</strong>
+    </span>
+  </div>
+  <div class="dive-stat">
+    <span matTooltip="The deco ceiling after the time at depth has elapsed" matTooltipPosition="right">
       Ceiling:
       <strong>{{ newCeiling }}m</strong>
     </span>
   </div>
   <div class="dive-stat">
-    <span matTooltip="Total dive runtime after adding in the time for ascent/descent and the time at depth" matTooltipPosition="right">
+    <span matTooltip="Total dive runtime after the time at depth" matTooltipPosition="right">
       Total Dive Duration:
       <strong>{{ totalDiveDuration | humanDuration }}</strong>
     </span>

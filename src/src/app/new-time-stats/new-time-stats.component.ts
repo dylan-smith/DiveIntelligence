@@ -10,14 +10,15 @@ import { ceilingWithThreshold } from '../utility/utility';
   styleUrl: './new-time-stats.component.scss',
 })
 export class NewTimeStatsComponent implements OnChanges {
-  @Input() newDepth: number = 0;
-  @Input() newGas: BreathingGas = this.divePlanner.getCurrentGas();
   @Input() timeAtDepth: number = 0;
 
+  currentDepth: number = this.divePlanner.getCurrentDepth();
   totalDiveDuration: number = this.getTotalDiveDuration();
   newCeiling: number = this.getNewDecoCeiling();
-  decoMilestones!: { duration: number; gas: string; depth: number; tooltip: string }[];
-  hasDecoMilestones!: boolean;
+  ceilingData = this.divePlanner.getCeilingChartData(this.currentDepth, this.divePlanner.getCurrentGas());
+  decoMilestones = this.getDecoMilestones(this.ceilingData);
+  hasDecoMilestones = this.decoMilestones.length > 0;
+  noDecoLimit = this.getNoDecoLimit();
 
   constructor(
     private divePlanner: DivePlannerService,
@@ -25,22 +26,17 @@ export class NewTimeStatsComponent implements OnChanges {
   ) {}
 
   ngOnChanges(): void {
-    const ceilingData = this.divePlanner.getCeilingChartData(this.newDepth, this.newGas);
-    this.newCeiling = this.divePlanner.getNewCeiling(this.newDepth, this.newGas, this.timeAtDepth * 60);
-
+    this.newCeiling = this.getNewDecoCeiling();
     this.totalDiveDuration = this.getTotalDiveDuration();
-
-    const milestones = this.getDecoMilestones(ceilingData);
-    this.decoMilestones = milestones;
-    this.hasDecoMilestones = milestones.length > 0;
+    this.noDecoLimit = this.getNoDecoLimit();
   }
 
   private getNewDecoCeiling(): number {
-    return this.divePlanner.getNewCeiling(this.newDepth, this.newGas, this.timeAtDepth * 60);
+    return this.divePlanner.getNewCeiling(this.currentDepth, this.timeAtDepth * 60);
   }
 
   private getTotalDiveDuration(): number {
-    return this.divePlanner.getCurrentDiveTime() + this.divePlanner.getTravelTime(this.newDepth) + this.timeAtDepth * 60;
+    return this.divePlanner.getCurrentDiveTime() + this.timeAtDepth * 60;
   }
 
   private getDecoMilestones(data: { time: number; ceiling: number }[]): { duration: number; gas: string; depth: number; tooltip: string }[] {
@@ -54,7 +50,7 @@ export class NewTimeStatsComponent implements OnChanges {
       const gasToRemove: BreathingGas[] = [];
       for (const gas of decoGases) {
         if (ceilingWithThreshold(ceilingData[t]) <= gas.maxDecoDepth) {
-          const tooltip = `If you spend ${this.humanDurationPipe.transform(t)} at ${this.newDepth}m, the ceiling will rise to
+          const tooltip = `If you spend ${this.humanDurationPipe.transform(t)} at ${this.currentDepth}m, the ceiling will rise to
                            ${ceilingData[t]}m which allow you to ascend and switch to ${gas.name}`;
           milestones.push({ duration: t, gas: gas.name, depth: ceilingData[t], tooltip: tooltip });
           gasToRemove.push(gas);
@@ -72,10 +68,20 @@ export class NewTimeStatsComponent implements OnChanges {
 
     if (ceilingData[0] > 0 && decoComplete > 0) {
       const tooltip = `If you spend ${this.humanDurationPipe.transform(decoComplete)} at
-                       ${this.newDepth}m your decompression will be complete and you can ascend directly to the surface`;
+                       ${this.currentDepth}m your decompression will be complete and you can ascend directly to the surface`;
       milestones.push({ duration: decoComplete, gas: 'Deco complete', depth: 0, tooltip: tooltip });
     }
 
     return milestones;
+  }
+
+  private getNoDecoLimit(): string {
+    const ndl = this.divePlanner.getNoDecoLimit(this.currentDepth, this.divePlanner.getCurrentGas(), this.timeAtDepth * 60);
+
+    if (ndl === undefined) {
+      return '> 5 hours';
+    }
+
+    return this.humanDurationPipe.transform(ndl);
   }
 }
