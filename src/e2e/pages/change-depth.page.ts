@@ -44,6 +44,18 @@ export class ChangeDepthPage {
     return content.replace('END: ', '').trim();
   }
 
+  async getNewDepthNDL(): Promise<string> {
+    let content = await this.page.locator('dive-new-depth-stats .new-depth-stats .dive-stat').getByText('No Deco Limit: ').textContent();
+    content = content ?? '';
+    return content.replace('No Deco Limit: ', '').trim();
+  }
+
+  async getNewDepthCeiling(): Promise<string> {
+    let content = await this.page.locator('dive-new-depth-stats .new-depth-stats .dive-stat').getByText('Ceiling: ').textContent();
+    content = content ?? '';
+    return content.replace('Ceiling: ', '').trim();
+  }
+
   async Save(): Promise<DiveOverviewPage> {
     await this.page.getByRole('button', { name: 'Save' }).click();
     return new DiveOverviewPage(this.page);
