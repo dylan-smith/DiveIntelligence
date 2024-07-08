@@ -28,6 +28,7 @@ export class NewTimeStatsComponent implements OnChanges {
   ngOnChanges(): void {
     this.newCeiling = this.getNewDecoCeiling();
     this.totalDiveDuration = this.getTotalDiveDuration();
+    this.noDecoLimit = this.getNoDecoLimit();
   }
 
   private getNewDecoCeiling(): number {

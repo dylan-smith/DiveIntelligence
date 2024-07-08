@@ -208,6 +208,7 @@ test('deco dive to 100m for 30 mins', async ({ page }) => {
   expect(await changeDepthPage.getAscentTime()).toBe('5 min 42 sec @ 10m/min');
   expect(await changeDepthPage.getNewDepthPO2()).toBe('0.53');
   expect(await changeDepthPage.getNewDepthEND()).toBe('6m');
+  // TODO: Why is the ceiling showing as 35m when the next segment current ceiling shows as 43m
 
   diveOverviewPage = await changeDepthPage.Save();
 

@@ -9,6 +9,8 @@ export class DiveProfile {
   public segments: DiveSegment[] = [];
   public algo: BuhlmannZHL16C = new BuhlmannZHL16C();
 
+  readonly MAX_NDL = 3600 * 5;
+
   constructor(
     private diveSettings: DiveSettingsService,
     private diveSegmentFactory: DiveSegmentFactoryService
@@ -125,10 +127,14 @@ export class DiveProfile {
 
     wipProfile.extendLastSegment(maxTime);
 
-    while (wipProfile.canSurfaceWithoutStops()) {
+    while (wipProfile.canSurfaceWithoutStops() && maxTime <= this.MAX_NDL) {
       minTime = maxTime;
       wipProfile.extendLastSegment(maxTime);
       maxTime *= 2;
+    }
+
+    if (maxTime > this.MAX_NDL) {
+      return undefined;
     }
 
     maxTime--;
