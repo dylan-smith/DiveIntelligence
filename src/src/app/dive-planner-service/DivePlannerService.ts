@@ -64,6 +64,10 @@ export class DivePlannerService {
     return this.diveProfile.getCurrentCeiling();
   }
 
+  getCurrentInstantCeiling(): number {
+    return this.diveProfile.getCurrentInstantCeiling();
+  }
+
   getCurrentGas(): BreathingGas {
     return this.diveProfile.getCurrentGas();
   }
@@ -133,6 +137,10 @@ export class DivePlannerService {
 
   getNewCeiling(newDepth: number, timeAtDepth: number): number {
     return this.diveProfile.getNewCeiling(newDepth, timeAtDepth);
+  }
+
+  getNewInstantCeiling(newDepth: number, timeAtDepth: number): number {
+    return this.diveProfile.getNewInstantCeiling(newDepth, timeAtDepth);
   }
 
   getCeilingError(): { amount: number; duration: number } {

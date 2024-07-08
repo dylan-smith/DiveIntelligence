@@ -78,18 +78,84 @@ export class DiveProfile {
     this.addSegment(this.diveSegmentFactory.createEndDiveSegment(0, 0, startGas));
   }
 
-  getCurrentCeiling(): number {
-    const currentTime = this.getPreviousSegment().EndTimestamp;
-
-    return ceilingWithThreshold(this.algo.getCeiling(currentTime));
-  }
-
   getCurrentGas(): BreathingGas {
     return this.getPreviousSegment().Gas;
   }
 
   getCurrentDiveTime(): number {
     return this.getPreviousSegment().EndTimestamp;
+  }
+
+  getCurrentInstantCeiling(): number {
+    const currentTime = this.getPreviousSegment().EndTimestamp;
+
+    return ceilingWithThreshold(this.algo.getInstantCeiling(currentTime));
+  }
+
+  getCurrentCeiling(): number {
+    const instantCeiling = this.getCurrentInstantCeiling();
+
+    if (this.getCurrentDepth() <= instantCeiling) {
+      return instantCeiling;
+    }
+
+    for (let t = this.getPreviousSegment().EndTimestamp; t <= this.getTotalTime(); t++) {
+      const ceiling = this.algo.getInstantCeiling(t);
+      const depth = this.getDepth(t);
+
+      if (depth < ceiling) {
+        return ceilingWithThreshold(this.getDepth(t - 1));
+      }
+    }
+
+    return 0;
+  }
+
+  getNewCeiling(newDepth: number, timeAtDepth: number): number {
+    const wipProfile = this.getCurrentProfile();
+    const gas = wipProfile.getLastSegment().Gas;
+    let depth = wipProfile.getLastSegment().EndDepth;
+
+    if (newDepth !== depth) {
+      wipProfile.addSegment(this.diveSegmentFactory.createDepthChangeSegment(wipProfile.getTotalTime(), depth, newDepth, gas));
+      depth = newDepth;
+    }
+
+    if (timeAtDepth > 0) {
+      wipProfile.addSegment(this.diveSegmentFactory.createMaintainDepthSegment(wipProfile.getTotalTime(), depth, timeAtDepth, gas));
+    }
+
+    wipProfile.addSegment(this.diveSegmentFactory.createEndDiveSegment(wipProfile.getTotalTime(), newDepth, gas));
+
+    return wipProfile.getCurrentCeiling();
+  }
+
+  getNewInstantCeiling(newDepth: number, timeAtDepth: number): number {
+    const wipProfile = this.getCurrentProfile();
+
+    if (newDepth !== wipProfile.getLastSegment().EndDepth) {
+      wipProfile.addSegment(
+        this.diveSegmentFactory.createDepthChangeSegment(
+          wipProfile.getLastSegment().EndTimestamp,
+          wipProfile.getLastSegment().EndDepth,
+          newDepth,
+          wipProfile.getLastSegment().Gas
+        )
+      );
+    }
+
+    if (timeAtDepth > 0) {
+      wipProfile.addSegment(
+        this.diveSegmentFactory.createMaintainDepthSegment(
+          wipProfile.getTotalTime(),
+          wipProfile.getLastSegment().EndDepth,
+          timeAtDepth,
+          wipProfile.getLastSegment().Gas
+        )
+      );
+    }
+
+    return ceilingWithThreshold(wipProfile.algo.getInstantCeiling(wipProfile.getTotalTime()));
   }
 
   getNoDecoLimit(newDepth: number, newGas: BreathingGas, timeAtDepth: number): number | undefined {
@@ -114,7 +180,7 @@ export class DiveProfile {
       wipProfile.addSegment(this.diveSegmentFactory.createMaintainDepthSegment(wipProfile.getTotalTime(), newDepth, timeAtDepth, newGas));
     }
 
-    const ndl = wipProfile.algo.getTimeToCeiling(newDepth, newGas);
+    const ndl = wipProfile.algo.getTimeToInstantCeiling(newDepth, newGas);
 
     if (ndl === undefined) {
       return undefined;
@@ -163,7 +229,7 @@ export class DiveProfile {
     let duration = 0;
 
     for (let t = 0; t < this.getTotalTime(); t++) {
-      const ceiling = this.algo.getCeiling(t);
+      const ceiling = this.algo.getInstantCeiling(t);
       const depth = this.getDepth(t);
 
       if (depth < ceiling) {
@@ -236,34 +302,6 @@ export class DiveProfile {
     if (this.segments.length === 0) return 0;
 
     return this.getLastSegment().EndTimestamp;
-  }
-
-  getNewCeiling(newDepth: number, timeAtDepth: number): number {
-    const wipProfile = this.getCurrentProfile();
-
-    if (newDepth !== wipProfile.getLastSegment().EndDepth) {
-      wipProfile.addSegment(
-        this.diveSegmentFactory.createDepthChangeSegment(
-          wipProfile.getLastSegment().EndTimestamp,
-          wipProfile.getLastSegment().EndDepth,
-          newDepth,
-          wipProfile.getLastSegment().Gas
-        )
-      );
-    }
-
-    if (timeAtDepth > 0) {
-      wipProfile.addSegment(
-        this.diveSegmentFactory.createMaintainDepthSegment(
-          wipProfile.getTotalTime(),
-          wipProfile.getLastSegment().EndDepth,
-          timeAtDepth,
-          wipProfile.getLastSegment().Gas
-        )
-      );
-    }
-
-    return ceilingWithThreshold(wipProfile.algo.getCeiling(wipProfile.getTotalTime()));
   }
 
   addSegment(segment: DiveSegment): void {
