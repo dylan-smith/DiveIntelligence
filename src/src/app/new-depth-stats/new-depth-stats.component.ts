@@ -48,6 +48,8 @@ export class NewDepthStatsComponent implements OnChanges {
     this.END = this.getEND();
     this.hasENDError = this.getENDErrorMessage() !== undefined;
     this.ENDErrorMessage = this.getENDErrorMessage();
+    this.noDecoLimit = this.getNoDecoLimit();
+    this.ceiling = this.divePlanner.getNewCeiling(this.newDepth, 0);
   }
 
   private isNewDepthDescent(): boolean {

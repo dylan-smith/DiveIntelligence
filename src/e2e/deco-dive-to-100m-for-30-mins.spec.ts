@@ -145,8 +145,8 @@ test('deco dive to 100m for 30 mins', async ({ page }) => {
   expect(await changeDepthPage.getDescentTime()).toBe('4 min 6 sec @ 20m/min');
   expect(await changeDepthPage.getNewDepthPO2()).toBe('1.10');
   expect(await changeDepthPage.getNewDepthEND()).toBe('23m');
-  expect(await changeDepthPage.getNewDepthNDL()).toBe('> 5 hours');
-  expect(await changeDepthPage.getNewDepthCeiling()).toBe('0m');
+  expect(await changeDepthPage.getNewDepthNDL()).toBe('0 sec');
+  expect(await changeDepthPage.getNewDepthCeiling()).toBe('8m');
 
   diveOverviewPage = await changeDepthPage.Save();
 
@@ -217,8 +217,7 @@ test('deco dive to 100m for 30 mins', async ({ page }) => {
   expect(await changeDepthPage.getNewDepthPO2()).toBe('0.53');
   expect(await changeDepthPage.getNewDepthEND()).toBe('6m');
   expect(await changeDepthPage.getNewDepthNDL()).toBe('0 sec');
-  expect(await changeDepthPage.getNewDepthCeiling()).toBe('35m');
-  // TODO: Why is the ceiling showing as 35m when the next segment current ceiling shows as 43m
+  expect(await changeDepthPage.getNewDepthCeiling()).toBe('43m');
 
   diveOverviewPage = await changeDepthPage.Save();
 
@@ -334,7 +333,7 @@ test('deco dive to 100m for 30 mins', async ({ page }) => {
   expect(await changeDepthPage.getNewDepthPO2()).toBe('0.96');
   expect(await changeDepthPage.getNewDepthEND()).toBe('14m');
   expect(await changeDepthPage.getNewDepthNDL()).toBe('0 sec');
-  expect(await changeDepthPage.getNewDepthCeiling()).toBe('20m');
+  expect(await changeDepthPage.getNewDepthCeiling()).toBe('22m');
 
   diveOverviewPage = await changeDepthPage.Save();
 
