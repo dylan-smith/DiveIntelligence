@@ -139,4 +139,18 @@ describe('DivePlannerService', () => {
     expect(svc.getMaxDepth()).toBe(100);
     expect(svc.getPO2Error().duration).toBe(708);
   });
+
+  it('NDL accounts for on-gassing during ascent', () => {
+    const diveSettingsService = new DiveSettingsService();
+    const mockAppInsights = jasmine.createSpyObj('ApplicationInsightsService', ['trackEvent', 'trackTrace']);
+    const diveSegmentFactory = new DiveSegmentFactoryService(new HumanDurationPipe(), diveSettingsService);
+    const chartGenerator = new ChartGeneratorService(diveSegmentFactory, diveSettingsService);
+    const svc = new DivePlannerService(diveSegmentFactory, mockAppInsights, chartGenerator, diveSettingsService);
+
+    const air = svc.getStandardGases().filter(gas => gas.oxygen === 21 && gas.helium === 0)[0];
+
+    svc.startDive(air);
+
+    expect(svc.getNoDecoLimit(105, air, 0)).toBe(0);
+  });
 });
