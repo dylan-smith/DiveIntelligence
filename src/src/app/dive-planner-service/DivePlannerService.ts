@@ -80,17 +80,6 @@ export class DivePlannerService {
     return this.diveProfile.getNoDecoLimit(newDepth, newGas, timeAtDepth);
   }
 
-  addDiveSegment(newDepth: number, newGas: BreathingGas, timeAtDepth: number): void {
-    this.diveProfile.addDiveSegment(newDepth, newGas, timeAtDepth);
-
-    this.appInsights.trackEvent('AddDiveSegment', {
-      diveID: this.diveID,
-      newDepth,
-      newGas: { description: newGas.description, oxygen: newGas.oxygen, helium: newGas.helium, nitrogen: newGas.nitrogen },
-      timeAtDepth,
-    });
-  }
-
   addChangeDepthSegment(newDepth: number): void {
     this.diveProfile.addChangeDepthSegment(newDepth);
   }

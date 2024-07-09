@@ -112,73 +112,21 @@ export class DiveProfile {
   }
 
   getNewCeiling(newDepth: number, timeAtDepth: number): number {
-    const wipProfile = this.getCurrentProfile();
-    const gas = wipProfile.getLastSegment().Gas;
-    let depth = wipProfile.getLastSegment().EndDepth;
+    const wipProfile = this.getWipProfile(newDepth, this.getPreviousSegment().Gas, timeAtDepth);
 
-    if (newDepth !== depth) {
-      wipProfile.addSegment(this.diveSegmentFactory.createDepthChangeSegment(wipProfile.getTotalTime(), depth, newDepth, gas));
-      depth = newDepth;
-    }
-
-    if (timeAtDepth > 0) {
-      wipProfile.addSegment(this.diveSegmentFactory.createMaintainDepthSegment(wipProfile.getTotalTime(), depth, timeAtDepth, gas));
-    }
-
-    wipProfile.addSegment(this.diveSegmentFactory.createEndDiveSegment(wipProfile.getTotalTime(), newDepth, gas));
+    wipProfile.addSegment(this.diveSegmentFactory.createEndDiveSegment(wipProfile.getTotalTime(), newDepth, wipProfile.getLastSegment().Gas));
 
     return wipProfile.getCurrentCeiling();
   }
 
   getNewInstantCeiling(newDepth: number, timeAtDepth: number): number {
-    const wipProfile = this.getCurrentProfile();
-
-    if (newDepth !== wipProfile.getLastSegment().EndDepth) {
-      wipProfile.addSegment(
-        this.diveSegmentFactory.createDepthChangeSegment(
-          wipProfile.getLastSegment().EndTimestamp,
-          wipProfile.getLastSegment().EndDepth,
-          newDepth,
-          wipProfile.getLastSegment().Gas
-        )
-      );
-    }
-
-    if (timeAtDepth > 0) {
-      wipProfile.addSegment(
-        this.diveSegmentFactory.createMaintainDepthSegment(
-          wipProfile.getTotalTime(),
-          wipProfile.getLastSegment().EndDepth,
-          timeAtDepth,
-          wipProfile.getLastSegment().Gas
-        )
-      );
-    }
+    const wipProfile = this.getWipProfile(newDepth, this.getPreviousSegment().Gas, timeAtDepth);
 
     return ceilingWithThreshold(wipProfile.algo.getInstantCeiling(wipProfile.getTotalTime()));
   }
 
   getNoDecoLimit(newDepth: number, newGas: BreathingGas, timeAtDepth: number): number | undefined {
-    const wipProfile = this.getCurrentProfile();
-
-    if (newDepth !== wipProfile.getLastSegment().EndDepth) {
-      wipProfile.addSegment(
-        this.diveSegmentFactory.createDepthChangeSegment(
-          wipProfile.getLastSegment().EndTimestamp,
-          wipProfile.getLastSegment().EndDepth,
-          newDepth,
-          wipProfile.getLastSegment().Gas
-        )
-      );
-    }
-
-    if (newGas !== wipProfile.getLastSegment().Gas) {
-      wipProfile.addSegment(this.diveSegmentFactory.createGasChangeSegment(wipProfile.getTotalTime(), newGas, newDepth));
-    }
-
-    if (timeAtDepth > 0) {
-      wipProfile.addSegment(this.diveSegmentFactory.createMaintainDepthSegment(wipProfile.getTotalTime(), newDepth, timeAtDepth, newGas));
-    }
+    const wipProfile = this.getWipProfile(newDepth, newGas, timeAtDepth);
 
     const ndl = wipProfile.algo.getTimeToInstantCeiling(newDepth, newGas);
 
@@ -190,6 +138,10 @@ export class DiveProfile {
 
     let minTime = 0;
     let maxTime = 200;
+
+    if (!wipProfile.canSurfaceWithoutStops()) {
+      minTime = -ndl;
+    }
 
     wipProfile.extendLastSegment(maxTime);
 
@@ -389,5 +341,28 @@ export class DiveProfile {
     }
 
     return (this.getPN2(time) / 0.79 - 1) * 10;
+  }
+
+  private getWipProfile(newDepth: number, newGas: BreathingGas, timeAtDepth: number): DiveProfile {
+    const wipProfile = this.getCurrentProfile();
+    let depth = wipProfile.getLastSegment().EndDepth;
+    let gas = wipProfile.getLastSegment().Gas;
+
+    if (newDepth !== depth) {
+      wipProfile.addSegment(this.diveSegmentFactory.createDepthChangeSegment(wipProfile.getTotalTime(), depth, newDepth, gas));
+
+      depth = newDepth;
+    }
+
+    if (newGas !== gas) {
+      wipProfile.addSegment(this.diveSegmentFactory.createGasChangeSegment(wipProfile.getTotalTime(), newGas, newDepth));
+      gas = newGas;
+    }
+
+    if (timeAtDepth > 0) {
+      wipProfile.addSegment(this.diveSegmentFactory.createMaintainDepthSegment(wipProfile.getTotalTime(), newDepth, timeAtDepth, newGas));
+    }
+
+    return wipProfile;
   }
 }
