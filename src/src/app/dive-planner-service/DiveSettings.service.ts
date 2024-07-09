@@ -11,6 +11,8 @@ export class DiveSettingsService {
   private _decoPO2Maximum = 1.6;
   private _pO2Minimum = 0.18;
   private _ENDErrorThreshold = 30;
+  private _GFHigh = 85;
+  private _GFLow = 60;
   private _subscribers: (() => void)[] = [];
 
   subscribeToChanges(callback: () => void): void {
@@ -98,5 +100,23 @@ export class DiveSettingsService {
 
   get MinDepthTooltip(): string {
     return `Minimum depth this gas can be breathed at before you experience hypoxia (PO2 < ${this.pO2Minimum})`;
+  }
+
+  get GFHigh(): number {
+    return this._GFHigh;
+  }
+
+  set GFHigh(value: number) {
+    this._GFHigh = value;
+    this.onSettingChange();
+  }
+
+  get GFLow(): number {
+    return this._GFLow;
+  }
+
+  set GFLow(value: number) {
+    this._GFLow = value;
+    this.onSettingChange();
   }
 }
