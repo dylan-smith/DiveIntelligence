@@ -139,6 +139,10 @@ export class DiveProfile {
     let minTime = 0;
     let maxTime = 200;
 
+    if (!wipProfile.canSurfaceWithoutStops()) {
+      minTime = -ndl;
+    }
+
     wipProfile.extendLastSegment(maxTime);
 
     while (wipProfile.canSurfaceWithoutStops() && maxTime <= this.MAX_NDL) {
