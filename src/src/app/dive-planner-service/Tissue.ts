@@ -1,4 +1,4 @@
-import { ceilingWithThreshold } from '../utility/utility';
+import { ceilingWithThreshold, floorWithThreshold } from '../utility/utility';
 import { BreathingGas } from './BreathingGas';
 import { DiveSegment } from './DiveSegment';
 
@@ -6,6 +6,8 @@ export class Tissue {
   private tissueByTime: Map<number, { PN2: number; PHe: number }> = new Map();
   private n2DeltaMultiplier: number = 0;
   private heDeltaMultiplier: number = 0;
+  private deepestCeiling: number = 0;
+  private deepestCeilingTime: number = 0;
 
   constructor(
     public tissueNumber: number,
@@ -14,7 +16,8 @@ export class Tissue {
     public b_n2: number,
     public heHalfLife: number,
     public a_he: number,
-    public b_he: number
+    public b_he: number,
+    private GFLow: number
   ) {
     this.tissueByTime.set(0, {
       PN2: this.ENVIRONMENT_PN2,
@@ -42,32 +45,63 @@ export class Tissue {
         PN2: prevN2 + n2Delta,
         PHe: prevHe + heDelta,
       });
+
+      const deepestCeiling = this.getInstantCeiling(t, this.GFLow);
+      if (deepestCeiling > this.deepestCeiling) {
+        this.deepestCeiling = deepestCeiling;
+        this.deepestCeilingTime = t;
+      }
     }
   }
 
   discardAfterTime(time: number) {
     this.tissueByTime = new Map(Array.from(this.tissueByTime.entries()).filter(([key]) => key <= time));
+
+    if (time <= this.deepestCeilingTime) {
+      this.RecalculateDeepestCeiling();
+    }
+  }
+
+  private RecalculateDeepestCeiling() {
+    this.deepestCeiling = 0;
+    this.deepestCeilingTime = 0;
+
+    this.tissueByTime.forEach((_, time) => {
+      const ceiling = this.getInstantCeiling(time, this.GFLow);
+      if (ceiling > this.deepestCeiling) {
+        this.deepestCeiling = ceiling;
+        this.deepestCeilingTime = time;
+      }
+    });
   }
 
   clone(): Tissue {
-    const clone = new Tissue(this.tissueNumber, this.n2HalfLife, this.a_n2, this.b_n2, this.heHalfLife, this.a_he, this.b_he);
+    const clone = new Tissue(this.tissueNumber, this.n2HalfLife, this.a_n2, this.b_n2, this.heHalfLife, this.a_he, this.b_he, this.GFLow);
     clone.tissueByTime = new Map(this.tissueByTime);
     return clone;
   }
 
-  getInstantCeiling(time: number): number {
-    const result = (this.getMValue(time) - 1) * 10;
-    return result < 0 ? 0 : result;
+  getInstantCeiling(time: number, targetGF: number): number {
+    const totalInertTissuePressure = this.getTotalInertTissuePressure(time); // GF 0
+    const mValue = this.getMValue(time); // GF 100
+    // GFLow is the deepest observed ceiling, GFHigh is the surfaced
+
+    return this.applyGradientFactors(mValue, totalInertTissuePressure, targetGF);
   }
 
-  getTimeToInstantCeiling(depth: number, gas: BreathingGas): number | undefined {
-    const ceiling = this.getInstantCeiling(this.tissueByTime.size - 1);
+  getTotalInertTissuePressure(time: number): number {
+    const tissue = this.getTissueByTime(time);
+    return tissue.PN2 + tissue.PHe;
+  }
+
+  getTimeToInstantCeiling(depth: number, gas: BreathingGas, targetGF: number): number | undefined {
+    const ceiling = this.getInstantCeiling(this.tissueByTime.size - 1, targetGF);
 
     if (ceiling > 0) {
       return 0;
     }
 
-    const minCeiling = this.getInstantCeilingByPressures(gas.getPN2(depth), gas.getPHe(depth));
+    const minCeiling = this.getInstantCeilingByPressures(gas.getPN2(depth), gas.getPHe(depth), targetGF);
 
     if (minCeiling === 0 || isNaN(minCeiling)) {
       return undefined;
@@ -76,29 +110,33 @@ export class Tissue {
     const pN2 = this.getPN2(this.tissueByTime.size - 1);
     const pHe = this.getPHe(this.tissueByTime.size - 1);
 
-    let minNDL = 0;
-    let maxNDL = this.MAX_NDL;
-    let time = (maxNDL - minNDL) / 2;
+    let minTime = 0;
+    let maxTime = this.MAX_NDL;
+    let time = (maxTime - minTime) / 2;
 
-    while (minNDL < maxNDL) {
+    while (minTime < maxTime) {
       const newPN2 = pN2 + this.getPN2DeltaByTime(pN2, gas.getPN2(depth), time);
       const newPHe = pHe + this.getPHeDeltaByTime(pHe, gas.getPHe(depth), time);
-      const newCeiling = this.getInstantCeilingByPressures(newPN2, newPHe);
+      const newCeiling = this.getInstantCeilingByPressures(newPN2, newPHe, targetGF);
 
       if (newCeiling <= 0) {
-        minNDL = time;
+        minTime = time;
       } else {
-        maxNDL = time - 1;
+        maxTime = time - 1;
       }
 
-      time = ceilingWithThreshold((maxNDL - minNDL) / 2) + minNDL;
+      time = ceilingWithThreshold((maxTime - minTime) / 2) + minTime;
     }
 
     if (time >= this.MAX_NDL) {
       return undefined;
     }
 
-    return Math.floor(time);
+    return floorWithThreshold(time);
+  }
+
+  getDeepestCeiling(): number {
+    return this.deepestCeiling;
   }
 
   getPN2(time: number): number {
@@ -109,8 +147,15 @@ export class Tissue {
     return this.getTissueByTime(time).PHe;
   }
 
-  private getInstantCeilingByPressures(pN2: number, pHe: number): number {
-    const result = (this.getMValueByPressures(pN2, pHe) - 1) * 10;
+  private getInstantCeilingByPressures(pN2: number, pHe: number, targetGF: number): number {
+    return this.applyGradientFactors(this.getMValueByPressures(pN2, pHe), pN2 + pHe, targetGF);
+  }
+
+  private applyGradientFactors(mValue: number, totalInertTissuePressure: number, targetGF: number): number {
+    // const ceilingPressure = (totalInertTissuePressure - mValue) * (targetGF / 100) + mValue;
+    const ceilingPressure = (mValue - totalInertTissuePressure) * (targetGF / 100) + totalInertTissuePressure;
+
+    const result = (ceilingPressure - 1) * 10;
     return result < 0 ? 0 : result;
   }
 

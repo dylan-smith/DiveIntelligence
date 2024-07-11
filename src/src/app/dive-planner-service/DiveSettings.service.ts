@@ -11,8 +11,8 @@ export class DiveSettingsService {
   private _decoPO2Maximum = 1.6;
   private _pO2Minimum = 0.18;
   private _ENDErrorThreshold = 30;
-  private _GFHigh = 85;
-  private _GFLow = 60;
+  private _GFHigh = 100;
+  private _GFLow = 100;
   private _subscribers: (() => void)[] = [];
 
   subscribeToChanges(callback: () => void): void {
