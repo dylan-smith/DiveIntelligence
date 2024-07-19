@@ -23,7 +23,7 @@ export class ChartGeneratorService {
     }
 
     for (const d of data) {
-      d.ceiling = diveProfile.algo.getInstantCeiling(d.time);
+      d.ceiling = diveProfile.algo.getInstantCeiling(d.time, d.depth);
     }
 
     return data;
@@ -73,13 +73,15 @@ export class ChartGeneratorService {
     for (const segment of diveProfile.segments) {
       for (let time = segment.StartTimestamp; time <= segment.EndTimestamp; time++) {
         const ceilings: number[] = [];
+        const depth = segment.getDepth(time);
+
         for (let tissue = 1; tissue <= 16; tissue++) {
-          ceilings.push(diveProfile.algo.getTissueInstantCeiling(time, tissue));
+          ceilings.push(diveProfile.algo.getTissueInstantCeiling(time, tissue, depth));
         }
 
         data.push({
           time: time,
-          depth: segment.getDepth(time),
+          depth: depth,
           tissuesCeiling: ceilings,
         });
       }
@@ -149,7 +151,7 @@ export class ChartGeneratorService {
     wipProfile.addSegment(this.diveSegmentFactory.createMaintainDepthSegment(wipProfile.getTotalTime(), newDepth, chartDuration, newGas));
 
     for (let time = startTime; time < startTime + chartDuration; time++) {
-      data.push({ time: time - startTime, ceiling: wipProfile.algo.getInstantCeiling(time) });
+      data.push({ time: time - startTime, ceiling: wipProfile.algo.getInstantCeiling(time, wipProfile.getDepth(time)) });
     }
 
     return data;
