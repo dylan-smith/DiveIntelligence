@@ -7,7 +7,7 @@ import { DiveSettingsService } from './DiveSettings.service';
 
 export class DiveProfile {
   public segments: DiveSegment[] = [];
-  public algo: BuhlmannZHL16C = new BuhlmannZHL16C();
+  public algo: BuhlmannZHL16C = new BuhlmannZHL16C(this.diveSettings);
 
   readonly MAX_NDL = 3600 * 5;
 
@@ -89,7 +89,7 @@ export class DiveProfile {
   getCurrentInstantCeiling(): number {
     const currentTime = this.getPreviousSegment().EndTimestamp;
 
-    return ceilingWithThreshold(this.algo.getInstantCeiling(currentTime));
+    return ceilingWithThreshold(this.algo.getInstantCeiling(currentTime, this.getDepth(currentTime)));
   }
 
   getCurrentCeiling(): number {
@@ -100,7 +100,7 @@ export class DiveProfile {
     }
 
     for (let t = this.getPreviousSegment().EndTimestamp; t <= this.getTotalTime(); t++) {
-      const ceiling = this.algo.getInstantCeiling(t);
+      const ceiling = this.algo.getInstantCeiling(t, this.getDepth(t));
       const depth = this.getDepth(t);
 
       if (depth < ceiling) {
@@ -122,7 +122,11 @@ export class DiveProfile {
   getNewInstantCeiling(newDepth: number, timeAtDepth: number): number {
     const wipProfile = this.getWipProfile(newDepth, this.getPreviousSegment().Gas, timeAtDepth);
 
-    return ceilingWithThreshold(wipProfile.algo.getInstantCeiling(wipProfile.getTotalTime()));
+    return ceilingWithThreshold(wipProfile.algo.getInstantCeiling(wipProfile.getTotalTime(), newDepth));
+  }
+
+  getInstantCeiling(): number {
+    return ceilingWithThreshold(this.algo.getInstantCeiling(this.getTotalTime(), this.getDepth(this.getTotalTime())));
   }
 
   getNoDecoLimit(newDepth: number, newGas: BreathingGas, timeAtDepth: number): number | undefined {
@@ -181,8 +185,8 @@ export class DiveProfile {
     let duration = 0;
 
     for (let t = 0; t < this.getTotalTime(); t++) {
-      const ceiling = this.algo.getInstantCeiling(t);
       const depth = this.getDepth(t);
+      const ceiling = this.algo.getInstantCeiling(t, depth);
 
       if (depth < ceiling) {
         amount = Math.max(amount, ceiling - depth);
@@ -284,6 +288,10 @@ export class DiveProfile {
     return this.getGas(time).getPHe(this.getDepth(time));
   }
 
+  getDepth(time: number): number {
+    return this.getSegment(time).getDepth(time);
+  }
+
   private removeLastSegment(): void {
     this.segments.pop();
     this.algo.discardAfterTime(this.getTotalTime());
@@ -329,10 +337,6 @@ export class DiveProfile {
 
   private getGas(time: number): BreathingGas {
     return this.getSegment(time).Gas;
-  }
-
-  private getDepth(time: number): number {
-    return this.getSegment(time).getDepth(time);
   }
 
   private getEND(time: number): number {
