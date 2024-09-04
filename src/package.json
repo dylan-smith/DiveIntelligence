@@ -60,7 +60,7 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "karma-junit-reporter": "^2.0.1",
     "karma-sabarivka-reporter": "^3.3.1",
-    "monocart-reporter": "^2.7.0",
+    "monocart-reporter": "^2.8.0",
     "prettier": "^3.3.3",
     "prettier-eslint": "^16.3.0",
     "typescript": "~5.5.4"
