@@ -115,7 +115,7 @@ export class Tissue {
   }
 
   private getTissueByTime(time: number): { PN2: number; PHe: number } {
-    return this.tissueByTime.get(time) ?? { PN2: 0, PHe: 0 };
+    return this.tissueByTime.get(time) ?? { PN2: this.ENVIRONMENT_PN2, PHe: this.ENVIRONMENT_PHE };
   }
 
   private getPN2Delta(tissuePN2: number, gasPN2: number): number {
