@@ -14,6 +14,8 @@ export class DiveSettingsComponent {
   decoPO2Maximum = this.divePlanner.settings.decoPO2Maximum;
   pO2Minimum = this.divePlanner.settings.pO2Minimum;
   ENDErrorThreshold = this.divePlanner.settings.ENDErrorThreshold;
+  GFLow = this.divePlanner.settings.GFLow;
+  GFHigh = this.divePlanner.settings.GFHigh;
 
   constructor(public divePlanner: DivePlannerService) {}
 
@@ -43,5 +45,13 @@ export class DiveSettingsComponent {
 
   onENDErrorThresholdInput(): void {
     this.divePlanner.settings.ENDErrorThreshold = this.ENDErrorThreshold;
+  }
+
+  onGFLowInput(): void {
+    this.divePlanner.settings.GFLow = this.GFLow;
+  }
+
+  onGFHighInput(): void {
+    this.divePlanner.settings.GFHigh = this.GFHigh;
   }
 }
