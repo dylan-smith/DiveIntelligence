@@ -22,10 +22,10 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Use Node.js 20.14.0
+    - name: Use Node.js 22.x
       uses: actions/setup-node@v4
       with:
-        node-version: 20.14.0
+        node-version: 22
 
     - run: npm ci
       working-directory: src
