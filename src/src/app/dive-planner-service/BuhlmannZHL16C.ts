@@ -62,4 +62,13 @@ export class BuhlmannZHL16C {
   getTissuePHe(time: number, tissue: number): number {
     return this.tissues[tissue - 1].getPHe(time);
   }
+
+  getTimeToFly(flyingN2Threshold: number = 0.869): number | undefined {
+    const tissueTimes = this.tissues.map(t => t.getTimeToFly(flyingN2Threshold));
+    const validTimes = tissueTimes.filter(x => x !== undefined) as number[];
+
+    if (validTimes.length === 0) return undefined;
+
+    return Math.max(...validTimes);
+  }
 }

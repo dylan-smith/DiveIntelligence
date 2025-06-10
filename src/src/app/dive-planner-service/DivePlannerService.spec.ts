@@ -42,6 +42,10 @@ describe('DivePlannerService', () => {
     expect(svc.getHypoxicError().duration).toBe(0);
     expect(svc.getMaxDepth()).toBe(0);
     expect(svc.getPO2Error().duration).toBe(0);
+
+    // Test time to fly at surface - should be 0
+    const timeToFly = svc.getTimeToFly();
+    expect(timeToFly).toBe(0);
   });
 
   it('30m for 25 mins on nitrox 32', () => {
@@ -77,6 +81,12 @@ describe('DivePlannerService', () => {
     expect(svc.getHypoxicError().duration).toBe(0);
     expect(svc.getMaxDepth()).toBe(30);
     expect(svc.getPO2Error().duration).toBe(0);
+
+    // Test time to fly - should be reasonable for a recreational dive
+    const timeToFly = svc.getTimeToFly();
+    expect(timeToFly).toBeDefined();
+    expect(timeToFly).toBeGreaterThan(0);
+    expect(timeToFly).toBeLessThan(24 * 3600); // Less than 24 hours
 
     expect(svc.getNoDecoLimit(25, air, 0)).toBe(518);
     expect(svc.getOptimalDecoGas(25).oxygen).toBe(45);
@@ -138,6 +148,11 @@ describe('DivePlannerService', () => {
     expect(svc.getHypoxicError().duration).toBe(6);
     expect(svc.getMaxDepth()).toBe(100);
     expect(svc.getPO2Error().duration).toBe(708);
+
+    // Test time to fly - should be significant after a deep technical dive
+    const timeToFly = svc.getTimeToFly();
+    expect(timeToFly).toBeDefined();
+    expect(timeToFly).toBeGreaterThan(0);
   });
 
   it('NDL accounts for on-gassing during ascent', () => {

@@ -241,6 +241,10 @@ export class DiveProfile {
     return { end: maxEND, duration };
   }
 
+  getTimeToFly(flyingN2Threshold: number = 0.869): number | undefined {
+    return this.algo.getTimeToFly(flyingN2Threshold);
+  }
+
   getMaxDepth(): number {
     return Math.max(...this.segments.map(x => x.EndDepth));
   }

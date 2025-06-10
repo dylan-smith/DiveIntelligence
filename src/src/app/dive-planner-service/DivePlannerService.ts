@@ -148,6 +148,10 @@ export class DivePlannerService {
     return this.diveProfile.getENDError();
   }
 
+  getTimeToFly(flyingN2Threshold: number = 0.869): number | undefined {
+    return this.diveProfile.getTimeToFly(flyingN2Threshold);
+  }
+
   getPO2WarningMessage(pO2: number): string | undefined {
     if (pO2 > this.settings.workingPO2Maximum && pO2 <= this.settings.decoPO2Maximum)
       return `Oxygen partial pressure should only go above ${this.settings.workingPO2Maximum} during deco stops`;
