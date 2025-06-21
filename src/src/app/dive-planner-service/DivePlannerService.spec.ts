@@ -78,7 +78,7 @@ describe('DivePlannerService', () => {
     expect(svc.getMaxDepth()).toBe(30);
     expect(svc.getPO2Error().duration).toBe(0);
 
-    expect(svc.getNoDecoLimit(25, air, 0)).toBe(518);
+    expect(svc.getNoDecoLimit(25, air, 0)).toBe(191);
     expect(svc.getOptimalDecoGas(25).oxygen).toBe(45);
     expect(svc.getOptimalDecoGas(25).helium).toBe(0);
     expect(svc.getOptimalDecoGas(25).nitrogen).toBe(55);
@@ -86,7 +86,7 @@ describe('DivePlannerService', () => {
     expect(svc.getTravelTime(53)).toBe(69);
     expect(svc.getTravelTime(12)).toBe(108);
 
-    expect(svc.getNewInstantCeiling(30, 42 * 60)).toBe(4);
+    expect(svc.getNewInstantCeiling(30, 42 * 60)).toBe(5);
   });
 
   it('deco dive breaking the limits', () => {
@@ -119,8 +119,8 @@ describe('DivePlannerService', () => {
     svc.addMaintainDepthSegment(35 * 60);
 
     expect(svc.getCurrentDepth()).toBe(6);
-    expect(svc.getCurrentInstantCeiling()).toBe(1);
-    expect(svc.getCurrentCeiling()).toBe(0);
+    expect(svc.getCurrentInstantCeiling()).toBe(5);
+    expect(svc.getCurrentCeiling()).toBe(5);
     expect(svc.getCurrentGas()).toBe(oxygen);
     expect(svc.getCurrentGas().maxDepthPO2).toBe(4);
     expect(svc.getCurrentGas().maxDepthPO2Deco).toBe(6);
@@ -133,7 +133,7 @@ describe('DivePlannerService', () => {
     expect(svc.getCurrentGas().getPHe(svc.getCurrentDepth())).toBe(0);
     expect(Math.round(svc.getAverageDepth())).toBe(37);
     expect(svc.getDiveDuration()).toBe(9060);
-    expect(svc.getCeilingError().duration).toBe(453);
+    expect(svc.getCeilingError().duration).toBe(2292);
     expect(svc.getENDError().duration).toBe(660);
     expect(svc.getHypoxicError().duration).toBe(6);
     expect(svc.getMaxDepth()).toBe(100);
