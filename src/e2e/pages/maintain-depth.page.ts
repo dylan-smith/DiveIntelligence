@@ -5,7 +5,7 @@ import { CurrentStatsComponent } from 'e2e/components/current-stats.component';
 export class MaintainDepthPage {
   constructor(private page: Page) {}
 
-  public currentStats = new CurrentStatsComponent(this.page.locator('dive-current-stats'));
+  public currentStats = new CurrentStatsComponent(this.page);
 
   async setTimeAtDepth(time: number): Promise<MaintainDepthPage> {
     await this.page.getByLabel('Time at Depth (mins)').fill(time.toString());
@@ -13,7 +13,7 @@ export class MaintainDepthPage {
   }
 
   async getTotalDiveDuration(): Promise<string> {
-    let content = await this.page.locator('dive-new-time-stats .new-time-stats .dive-stat').getByText('Total Dive Duration: ').textContent();
+    let content = await this.page.getByText('Total Dive Duration: ').textContent();
     content = content ?? '';
     return content.replace('Total Dive Duration: ', '').trim();
   }
@@ -29,13 +29,13 @@ export class MaintainDepthPage {
   }
 
   async getNewNDL(): Promise<string> {
-    let content = await this.page.locator('dive-new-time-stats .new-time-stats .dive-stat').getByText('No Deco Limit: ').textContent();
+    let content = await this.page.getByText('No Deco Limit: ').last().textContent();
     content = content ?? '';
     return content.replace('No Deco Limit: ', '').trim();
   }
 
   async getNewCeiling(): Promise<string> {
-    let content = await this.page.locator('dive-new-time-stats .new-time-stats .dive-stat').getByText('Ceiling: ').textContent();
+    let content = await this.page.getByText('Ceiling: ').last().textContent();
     content = content ?? '';
     return content.replace('Ceiling: ', '').trim();
   }

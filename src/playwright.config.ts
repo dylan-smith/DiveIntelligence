@@ -10,7 +10,6 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env['CI'],
   retries: process.env['CI'] ? 2 : 0,
-  globalSetup: require.resolve('./playwright.global-setup.ts'),
   reporter: [
     ['list'],
     ['junit', { outputFile: path.resolve(_testResultsDir, 'playwright.xml') }],
@@ -39,11 +38,11 @@ export default defineConfig({
               !url.toString().includes('@fs') &&
               url.host !== 'fonts.googleapis.com' &&
               url.host !== 'www.youtube.com' &&
-              url.toString() !== 'http://localhost:4200/styles.css'
+              !url.toString().includes('/_next/')
             );
           },
           sourceFilter: (sourcePath: string) => {
-            return sourcePath.search(/src\//u) !== -1;
+            return sourcePath.search(/app\//u) !== -1;
           },
         },
       },
@@ -52,10 +51,6 @@ export default defineConfig({
   use: {
     baseURL: process.env['PLAYWRIGHT_BASE_URL'] ?? 'http://localhost:4200',
     trace: 'retain-on-failure',
-    // headless: false,
-    // launchOptions: {
-    //   args: ['--remote-debugging-port=9222'],
-    // },
   },
   timeout: 360000,
 
@@ -75,7 +70,7 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: 'npm start',
+    command: 'npm run dev',
     url: 'http://localhost:4200',
     reuseExistingServer: !process.env['CI'],
   },

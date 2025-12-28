@@ -19,19 +19,19 @@ export class NewDivePage {
   }
 
   async getMaxDepthPO2(): Promise<string> {
-    let content = await this.page.locator('dive-start-gas-stats .gas-calculations .gas-calc').getByText('Max Depth (PO2): ').textContent();
+    let content = await this.page.getByText('Max Depth (PO2): ').textContent();
     content = content ?? '';
     return content.replace('Max Depth (PO2): ', '').trim();
   }
 
   async getMaxDepthEND(): Promise<string> {
-    let content = await this.page.locator('dive-start-gas-stats .gas-calculations .gas-calc').getByText('Max Depth (END): ').textContent();
+    let content = await this.page.getByText('Max Depth (END): ').textContent();
     content = content ?? '';
     return content.replace('Max Depth (END): ', '').trim();
   }
 
   async getMinDepthHypoxia(): Promise<string> {
-    let content = await this.page.locator('dive-start-gas-stats .gas-calculations .gas-calc').getByText('Min Depth (Hypoxia): ').textContent();
+    let content = await this.page.getByText('Min Depth (Hypoxia): ').textContent();
     content = content ?? '';
     return content.replace('Min Depth (Hypoxia): ', '').trim();
   }
