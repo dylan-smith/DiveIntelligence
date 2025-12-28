@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { Box, Button, Typography } from '@mui/material';
 import Link from 'next/link';
@@ -14,13 +14,15 @@ export default function ChangeGasPage() {
   const router = useRouter();
   const { divePlanner } = useDivePlanner();
   const addChangeGasSegment = useAddChangeGasSegment();
-  const [newGas, setNewGas] = useState<BreathingGas | null>(null);
 
-  useEffect(() => {
-    if (!newGas && divePlanner) {
-      setNewGas(divePlanner.getCurrentGas());
+  const initialGas = useMemo(() => {
+    if (divePlanner && divePlanner.getDiveSegments().length > 0) {
+      return divePlanner.getCurrentGas();
     }
-  }, [divePlanner, newGas]);
+    return null;
+  }, [divePlanner]);
+
+  const [newGas, setNewGas] = useState<BreathingGas | null>(initialGas);
 
   const handleNewGasSelected = useCallback((gas: BreathingGas) => {
     setNewGas(gas);

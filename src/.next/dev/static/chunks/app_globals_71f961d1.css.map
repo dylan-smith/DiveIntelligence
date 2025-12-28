@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["file:///home/runner/work/DiveIntelligence/DiveIntelligence/src/app/globals.css"],"sourcesContent":["html, body {\n  height: 100%;\n  margin: 0;\n  padding: 0;\n  font-family: Roboto, \"Helvetica Neue\", sans-serif;\n}\n\n.tooltip-wide .MuiTooltip-tooltip {\n  max-width: unset;\n}\n\nsup, sub {\n  vertical-align: baseline;\n  position: relative;\n  top: -0.4em;\n}\n\nsub {\n  top: 0.4em;\n}\n\n.hidden {\n  display: none !important;\n}\n"],"names":[],"mappings":"AAAA;;;;;;;AAOA;;;;AAIA;;;;;;AAMA;;;;AAIA"}}]
+}

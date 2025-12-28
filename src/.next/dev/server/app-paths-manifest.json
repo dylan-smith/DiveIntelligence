@@ -1,0 +1,6 @@
+{
+  "/change-depth/page": "app/change-depth/page.js",
+  "/dive-overview/page": "app/dive-overview/page.js",
+  "/new-dive/page": "app/new-dive/page.js",
+  "/page": "app/page.js"
+}

@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
-import { Box, Paper, Typography } from '@mui/material';
+import React from 'react';
+import { Paper, Typography } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { useDivePlanner } from '../contexts/DivePlannerContext';
 
@@ -11,7 +11,7 @@ const PRIMARY_COLOR = '#3F51B5'; // Indigo 500
 const ERROR_COLOR = 'red';
 
 export default function DepthChart() {
-  const { divePlanner, updateTrigger } = useDivePlanner();
+  const { divePlanner } = useDivePlanner();
 
   const getShowGraphs = () => {
     return divePlanner.getDiveSegments().length > 2;

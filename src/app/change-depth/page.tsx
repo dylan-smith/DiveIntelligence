@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { Box, Button, TextField, Typography, Paper } from '@mui/material';
 import Link from 'next/link';
@@ -12,15 +12,15 @@ export default function ChangeDepthPage() {
   const router = useRouter();
   const { divePlanner } = useDivePlanner();
   const addChangeDepthSegment = useAddChangeDepthSegment();
-  const [newDepth, setNewDepth] = useState<number | null>(null);
 
-  useEffect(() => {
-    if (newDepth === null && divePlanner && divePlanner.getDiveSegments().length > 0) {
-      setNewDepth(divePlanner.getCurrentDepth());
-    } else if (newDepth === null) {
-      setNewDepth(0);
+  const initialDepth = useMemo(() => {
+    if (divePlanner && divePlanner.getDiveSegments().length > 0) {
+      return divePlanner.getCurrentDepth();
     }
-  }, [divePlanner, newDepth]);
+    return 0;
+  }, [divePlanner]);
+
+  const [newDepth, setNewDepth] = useState<number>(initialDepth);
 
   const handleNewDepthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Math.max(0, parseInt(e.target.value) || 0);
@@ -28,15 +28,9 @@ export default function ChangeDepthPage() {
   };
 
   const handleSave = () => {
-    if (newDepth !== null) {
-      addChangeDepthSegment(newDepth);
-      router.push('/dive-overview');
-    }
+    addChangeDepthSegment(newDepth);
+    router.push('/dive-overview');
   };
-
-  if (newDepth === null) {
-    return <Box component="main" sx={{ p: 3 }}>Loading...</Box>;
-  }
 
   return (
     <Box component="main" sx={{ p: 3 }}>

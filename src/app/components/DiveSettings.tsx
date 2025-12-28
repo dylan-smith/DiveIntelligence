@@ -14,7 +14,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { useDivePlanner } from '../contexts/DivePlannerContext';
 
 export default function DiveSettings() {
-  const { divePlanner, forceUpdate } = useDivePlanner();
+  const { divePlanner, updateSetting } = useDivePlanner();
   const settings = divePlanner.settings;
 
   const [ascentRate, setAscentRate] = useState(settings.ascentRate);
@@ -28,50 +28,43 @@ export default function DiveSettings() {
   const handleDescentRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value) || 1;
     setDescentRate(value);
-    settings.descentRate = value;
-    forceUpdate();
+    updateSetting('descentRate', value);
   };
 
   const handleAscentRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value) || 1;
     setAscentRate(value);
-    settings.ascentRate = value;
-    forceUpdate();
+    updateSetting('ascentRate', value);
   };
 
   const handleOxygenNarcoticChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.checked;
     setIsOxygenNarcotic(value);
-    settings.isOxygenNarcotic = value;
-    forceUpdate();
+    updateSetting('isOxygenNarcotic', value);
   };
 
   const handleWorkingPO2MaximumChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value) || 1.4;
     setWorkingPO2Maximum(value);
-    settings.workingPO2Maximum = value;
-    forceUpdate();
+    updateSetting('workingPO2Maximum', value);
   };
 
   const handleDecoPO2MaximumChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value) || 1.6;
     setDecoPO2Maximum(value);
-    settings.decoPO2Maximum = value;
-    forceUpdate();
+    updateSetting('decoPO2Maximum', value);
   };
 
   const handlePO2MinimumChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value) || 0.18;
     setPO2Minimum(value);
-    settings.pO2Minimum = value;
-    forceUpdate();
+    updateSetting('pO2Minimum', value);
   };
 
   const handleENDErrorThresholdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value) || 30;
     setENDErrorThreshold(value);
-    settings.ENDErrorThreshold = value;
-    forceUpdate();
+    updateSetting('ENDErrorThreshold', value);
   };
 
   return (

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Box, Button, TextField, Typography, Paper } from '@mui/material';
 import Link from 'next/link';
@@ -14,6 +14,13 @@ export default function MaintainDepthPage() {
   const { divePlanner } = useDivePlanner();
   const addMaintainDepthSegment = useAddMaintainDepthSegment();
   const [timeAtDepth, setTimeAtDepth] = useState(0);
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    if (divePlanner && divePlanner.getDiveSegments().length > 0) {
+      setIsReady(true);
+    }
+  }, [divePlanner]);
 
   const handleTimeAtDepthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Math.max(0, parseInt(e.target.value) || 0);
@@ -24,6 +31,10 @@ export default function MaintainDepthPage() {
     addMaintainDepthSegment(timeAtDepth * 60);
     router.push('/dive-overview');
   };
+
+  if (!isReady) {
+    return <Box component="main" sx={{ p: 3 }}>Loading...</Box>;
+  }
 
   return (
     <Box component="main" sx={{ p: 3 }}>

@@ -20,7 +20,7 @@ import { useDivePlanner } from '../contexts/DivePlannerContext';
 import { colonDuration } from '../utility/formatters';
 
 export default function DivePlan() {
-  const { divePlanner, updateTrigger } = useDivePlanner();
+  const { divePlanner } = useDivePlanner();
   const planEvents = divePlanner.getDiveSegments();
 
   return (

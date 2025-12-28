@@ -1,0 +1,27 @@
+/* [project]/app/globals.css [app-client] (css) */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Roboto, Helvetica Neue, sans-serif;
+}
+
+.tooltip-wide .MuiTooltip-tooltip {
+  max-width: unset;
+}
+
+sup, sub {
+  vertical-align: baseline;
+  position: relative;
+  top: -.4em;
+}
+
+sub {
+  top: .4em;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/*# sourceMappingURL=app_globals_71f961d1.css.map*/

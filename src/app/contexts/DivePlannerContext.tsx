@@ -9,6 +9,7 @@ interface DivePlannerContextType {
   divePlanner: DivePlannerService;
   updateTrigger: number;
   forceUpdate: () => void;
+  updateSetting: (key: string, value: number | boolean) => void;
 }
 
 const DivePlannerContext = createContext<DivePlannerContextType | undefined>(undefined);
@@ -25,11 +26,40 @@ export function DivePlannerProvider({ children }: { children: ReactNode }) {
     setUpdateTrigger(prev => prev + 1);
   }, []);
 
+  const updateSetting = useCallback((key: string, value: number | boolean) => {
+    const settings = divePlanner.settings;
+    switch (key) {
+      case 'descentRate':
+        settings.descentRate = value as number;
+        break;
+      case 'ascentRate':
+        settings.ascentRate = value as number;
+        break;
+      case 'isOxygenNarcotic':
+        settings.isOxygenNarcotic = value as boolean;
+        break;
+      case 'workingPO2Maximum':
+        settings.workingPO2Maximum = value as number;
+        break;
+      case 'decoPO2Maximum':
+        settings.decoPO2Maximum = value as number;
+        break;
+      case 'pO2Minimum':
+        settings.pO2Minimum = value as number;
+        break;
+      case 'ENDErrorThreshold':
+        settings.ENDErrorThreshold = value as number;
+        break;
+    }
+    setUpdateTrigger(prev => prev + 1);
+  }, [divePlanner]);
+
   const value = useMemo(() => ({
     divePlanner,
     updateTrigger,
     forceUpdate,
-  }), [divePlanner, updateTrigger, forceUpdate]);
+    updateSetting,
+  }), [divePlanner, updateTrigger, forceUpdate, updateSetting]);
 
   return (
     <DivePlannerContext.Provider value={value}>

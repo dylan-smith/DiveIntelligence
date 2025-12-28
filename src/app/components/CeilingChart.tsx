@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useMemo } from 'react';
-import { Paper } from '@mui/material';
+import { Paper, Typography } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { useDivePlanner } from '../contexts/DivePlannerContext';
 
@@ -15,12 +15,22 @@ interface CeilingChartProps {
 }
 
 export default function CeilingChart({ timeAtDepth }: CeilingChartProps) {
-  const { divePlanner, updateTrigger } = useDivePlanner();
+  const { divePlanner } = useDivePlanner();
+
+  // Guard against accessing dive data before dive is started
+  if (!divePlanner || divePlanner.getDiveSegments().length < 2) {
+    return (
+      <Paper elevation={2} sx={{ p: 2 }}>
+        <Typography>No active dive.</Typography>
+      </Paper>
+    );
+  }
+
   const currentDepth = divePlanner.getCurrentDepth();
   const currentGas = divePlanner.getCurrentGas();
 
+  const ceilingData = divePlanner.getCeilingChartData(currentDepth, currentGas);
   const chartData = useMemo(() => {
-    const ceilingData = divePlanner.getCeilingChartData(currentDepth, currentGas);
     const x = ceilingData.map(d => new Date(1970, 1, 1, 0, 0, d.time, 0));
     const y = ceilingData.map(d => d.ceiling);
 
@@ -38,7 +48,7 @@ export default function CeilingChart({ timeAtDepth }: CeilingChartProps) {
         hovertemplate: `%{y:.0f}m`,
       },
     ];
-  }, [currentDepth, currentGas, divePlanner, updateTrigger]);
+  }, [ceilingData]);
 
   const getCeilingChartLayout = (): Partial<Plotly.Layout> => {
     return {

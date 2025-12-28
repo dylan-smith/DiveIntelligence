@@ -9,7 +9,16 @@ import { humanDuration } from '../utility/formatters';
 import { ceilingWithThreshold } from '../utility/utility';
 
 export default function CurrentStats() {
-  const { divePlanner, updateTrigger } = useDivePlanner();
+  const { divePlanner } = useDivePlanner();
+
+  // Guard against accessing dive data before dive is started
+  if (!divePlanner || divePlanner.getDiveSegments().length < 2) {
+    return (
+      <Paper elevation={2} sx={{ p: 2, mb: 2 }}>
+        <Typography>No active dive. Please start a dive first.</Typography>
+      </Paper>
+    );
+  }
 
   const currentDepth = divePlanner.getCurrentDepth();
   const currentGas = divePlanner.getCurrentGas();
