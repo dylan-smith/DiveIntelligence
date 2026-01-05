@@ -1,19 +1,15 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { Component, OnInit, inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import * as Plotly from 'plotly.js-basic-dist-min';
 
 @Component({
   selector: 'dive-graph-dialog',
   templateUrl: './graph-dialog.component.html',
-  standalone: true,
-  imports: [MatDialogModule],
   styleUrls: ['./graph-dialog.component.scss'],
 })
 export class GraphDialogComponent implements OnInit {
-  constructor(
-    public dialogRef: MatDialogRef<GraphDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: GraphDialogData
-  ) {}
+  dialogRef = inject<MatDialogRef<GraphDialogComponent>>(MatDialogRef);
+  data = inject<GraphDialogData>(MAT_DIALOG_DATA);
 
   ngOnInit(): void {
     this.data.layout.margin = { l: 65, r: 40, b: 60, t: 50, pad: 10 };

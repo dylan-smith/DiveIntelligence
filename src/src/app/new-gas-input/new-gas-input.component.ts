@@ -1,13 +1,22 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
 import { BreathingGas } from '../dive-planner-service/BreathingGas';
+import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
+import { FormsModule } from '@angular/forms';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatFormField } from '@angular/material/input';
+import { MatSelect, MatSelectTrigger, MatOption } from '@angular/material/select';
+import { CustomGasInputComponent } from '../custom-gas-input/custom-gas-input.component';
 
 @Component({
   selector: 'dive-new-gas-input',
   templateUrl: './new-gas-input.component.html',
   styleUrl: './new-gas-input.component.scss',
+  imports: [MatRadioGroup, FormsModule, MatRadioButton, MatTooltip, MatFormField, MatSelect, MatSelectTrigger, MatOption, CustomGasInputComponent],
 })
 export class NewGasInputComponent {
+  divePlanner = inject(DivePlannerService);
+
   @Output() newGasSelected = new EventEmitter<BreathingGas>();
 
   newGasSelectedOption = 'current';
@@ -19,8 +28,6 @@ export class NewGasInputComponent {
   optimalGas: BreathingGas = this.divePlanner.getOptimalDecoGas(this.divePlanner.getCurrentDepth());
   isStandardGasDisabled: boolean = this.getStandardGasDisabled();
   isCustomGasDisabled: boolean = this.getCustomGasDisabled();
-
-  constructor(public divePlanner: DivePlannerService) {}
 
   onGasTypeChange(): void {
     this.calculateNewGas();

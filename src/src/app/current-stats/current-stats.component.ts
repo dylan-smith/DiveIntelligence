@@ -1,15 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
 import { BreathingGas } from '../dive-planner-service/BreathingGas';
 import { ceilingWithThreshold } from '../utility/utility';
 import { HumanDurationPipe } from '../pipes/human-duration.pipe';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'dive-current-stats',
   templateUrl: './current-stats.component.html',
   styleUrl: './current-stats.component.scss',
+  imports: [MatTooltip, MatIcon, DecimalPipe],
 })
 export class CurrentStatsComponent {
+  divePlanner = inject(DivePlannerService);
+  private humanDurationPipe = inject(HumanDurationPipe);
+
   currentDepth: number = this.divePlanner.getCurrentDepth();
   currentGas: BreathingGas = this.divePlanner.getCurrentGas();
   noDecoLimit: string = this.getNoDecoLimit();
@@ -23,11 +30,6 @@ export class CurrentStatsComponent {
   currentEND: number = this.getEND();
   hasCurrentENDError: boolean = this.getENDErrorMessage() !== undefined;
   currentENDError: string | undefined = this.getENDErrorMessage();
-
-  constructor(
-    public divePlanner: DivePlannerService,
-    private humanDurationPipe: HumanDurationPipe
-  ) {}
 
   private getPO2(): number {
     return this.currentGas.getPO2(this.currentDepth);

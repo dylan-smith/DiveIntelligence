@@ -1,15 +1,21 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, inject } from '@angular/core';
 import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
 import { BreathingGas } from '../dive-planner-service/BreathingGas';
 import { HumanDurationPipe } from '../pipes/human-duration.pipe';
 import { ceilingWithThreshold } from '../utility/utility';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatDivider } from '@angular/material/list';
 
 @Component({
   selector: 'dive-new-time-stats',
   templateUrl: './new-time-stats.component.html',
   styleUrl: './new-time-stats.component.scss',
+  imports: [MatTooltip, MatDivider, HumanDurationPipe],
 })
 export class NewTimeStatsComponent implements OnChanges {
+  private divePlanner = inject(DivePlannerService);
+  private humanDurationPipe = inject(HumanDurationPipe);
+
   @Input() timeAtDepth: number = 0;
 
   currentDepth: number = this.divePlanner.getCurrentDepth();
@@ -20,11 +26,6 @@ export class NewTimeStatsComponent implements OnChanges {
   decoMilestones = this.getDecoMilestones(this.ceilingData);
   hasDecoMilestones = this.decoMilestones.length > 0;
   noDecoLimit = this.getNoDecoLimit();
-
-  constructor(
-    private divePlanner: DivePlannerService,
-    private humanDurationPipe: HumanDurationPipe
-  ) {}
 
   ngOnChanges(): void {
     this.totalDiveDuration = this.getTotalDiveDuration();

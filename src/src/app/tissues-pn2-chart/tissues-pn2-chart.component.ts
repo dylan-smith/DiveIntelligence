@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
 import * as Plotly from 'plotly.js-basic-dist-min';
 import { MatDialog } from '@angular/material/dialog';
@@ -10,14 +10,12 @@ import { GraphDialogComponent } from '../graph-dialog/graph-dialog.component';
   styleUrl: './tissues-pn2-chart.component.scss',
 })
 export class TissuesPN2ChartComponent implements OnInit {
+  divePlanner = inject(DivePlannerService);
+  dialog = inject(MatDialog);
+
   private readonly ERROR_COLOR = 'red';
   private readonly WARNING_COLOR = 'orange';
-  private readonly PRIMARY_COLOR = '#3F51B5'; // Indigo 500
-
-  constructor(
-    public divePlanner: DivePlannerService,
-    public dialog: MatDialog
-  ) {}
+  private readonly PRIMARY_COLOR = '#3F51B5';
 
   ngOnInit(): void {
     Plotly.newPlot('tissues-pn2-chart', this.getTissuesPN2ChartData(), this.getTissuesPN2ChartLayout(), this.getChartOptions());

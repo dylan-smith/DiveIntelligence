@@ -1,8 +1,10 @@
+@use 'sass:map';
+
 @mixin dive-summary-theme($theme) {
-  $color: map-get($theme, color);
-  $background: map-get($color, background);
+  $color: map.get($theme, color);
+  $background: map.get($color, background);
 
   .dive-stats {
-    background-color: map-get($background, card);
+    background-color: map.get($background, card);
   }
 }

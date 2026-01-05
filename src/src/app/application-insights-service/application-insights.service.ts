@@ -1,4 +1,4 @@
-import { ErrorHandler, Injectable } from '@angular/core';
+import { ErrorHandler, Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularPlugin } from '@microsoft/applicationinsights-angularplugin-js';
 import { ApplicationInsights, ICustomProperties, ITelemetryPlugin } from '@microsoft/applicationinsights-web';
@@ -6,6 +6,9 @@ import { AppConfig } from 'src/app.config';
 
 @Injectable()
 export class ApplicationInsightsService {
+  private router = inject(Router);
+  private appConfig = inject(AppConfig);
+
   private angularPlugin = new AngularPlugin();
   private appInsights = new ApplicationInsights({
     config: {
@@ -20,10 +23,7 @@ export class ApplicationInsightsService {
     },
   });
 
-  constructor(
-    private router: Router,
-    private appConfig: AppConfig
-  ) {
+  constructor() {
     this.appInsights.loadAppInsights();
   }
 

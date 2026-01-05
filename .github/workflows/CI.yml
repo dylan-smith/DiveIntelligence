@@ -20,12 +20,12 @@ jobs:
       pull-requests: write
       checks: write
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
-    - name: Use Node.js 20.14.0
-      uses: actions/setup-node@v4
+    - name: Use Node.js 24.12.0
+      uses: actions/setup-node@v6
       with:
-        node-version: 20.14.0
+        node-version: 24.12.0
 
     - run: npm ci
       working-directory: src
@@ -73,14 +73,14 @@ jobs:
         path: unit-tests-code-coverage-results.md
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
+      uses: github/codeql-action/init@v4
       with:
         languages: javascript-typescript
         build-mode: none
         config-file: ./.github/codeql/codeql-config.yml
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
+      uses: github/codeql-action/analyze@v4
       with:
         category: "/language:javascript-typescript"
 
@@ -90,7 +90,7 @@ jobs:
     # deploy PR to preview site
     - name: Find PR comment to update
       if: github.event_name == 'pull_request'
-      uses: peter-evans/find-comment@v3
+      uses: peter-evans/find-comment@v4
       id: find-comment
       with:
         issue-number: ${{ github.event.pull_request.number }}
@@ -196,7 +196,7 @@ jobs:
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
     
     - name: Find PR comment to update
-      uses: peter-evans/find-comment@v3
+      uses: peter-evans/find-comment@v4
       id: find-comment
       with:
         issue-number: ${{ github.event.pull_request.number }}
