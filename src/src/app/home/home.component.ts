@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ApplicationInsightsService } from '../application-insights-service/application-insights.service';
 
 @Component({
-  selector: 'dive-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+    selector: 'dive-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.scss'],
+    standalone: false
 })
 export class HomeComponent implements OnInit {
   ngOnInit() {

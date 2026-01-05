@@ -3,9 +3,10 @@ import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
 import { BreathingGas } from '../dive-planner-service/BreathingGas';
 
 @Component({
-  selector: 'dive-new-gas-input',
-  templateUrl: './new-gas-input.component.html',
-  styleUrl: './new-gas-input.component.scss',
+    selector: 'dive-new-gas-input',
+    templateUrl: './new-gas-input.component.html',
+    styleUrl: './new-gas-input.component.scss',
+    standalone: false
 })
 export class NewGasInputComponent {
   @Output() newGasSelected = new EventEmitter<BreathingGas>();

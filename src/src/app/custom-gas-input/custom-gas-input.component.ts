@@ -3,9 +3,10 @@ import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
 import { BreathingGas } from '../dive-planner-service/BreathingGas';
 
 @Component({
-  selector: 'dive-custom-gas-input',
-  templateUrl: './custom-gas-input.component.html',
-  styleUrl: './custom-gas-input.component.scss',
+    selector: 'dive-custom-gas-input',
+    templateUrl: './custom-gas-input.component.html',
+    styleUrl: './custom-gas-input.component.scss',
+    standalone: false
 })
 export class CustomGasInputComponent {
   @Input() disabled: boolean = false;

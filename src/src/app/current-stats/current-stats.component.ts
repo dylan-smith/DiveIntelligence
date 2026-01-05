@@ -5,9 +5,10 @@ import { ceilingWithThreshold } from '../utility/utility';
 import { HumanDurationPipe } from '../pipes/human-duration.pipe';
 
 @Component({
-  selector: 'dive-current-stats',
-  templateUrl: './current-stats.component.html',
-  styleUrl: './current-stats.component.scss',
+    selector: 'dive-current-stats',
+    templateUrl: './current-stats.component.html',
+    styleUrl: './current-stats.component.scss',
+    standalone: false
 })
 export class CurrentStatsComponent {
   currentDepth: number = this.divePlanner.getCurrentDepth();

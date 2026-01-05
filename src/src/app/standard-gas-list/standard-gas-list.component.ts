@@ -3,9 +3,10 @@ import { BreathingGas } from '../dive-planner-service/BreathingGas';
 import { MatSelectionListChange } from '@angular/material/list';
 
 @Component({
-  selector: 'dive-standard-gas-list',
-  templateUrl: './standard-gas-list.component.html',
-  styleUrl: './standard-gas-list.component.scss',
+    selector: 'dive-standard-gas-list',
+    templateUrl: './standard-gas-list.component.html',
+    styleUrl: './standard-gas-list.component.scss',
+    standalone: false
 })
 export class StandardGasListComponent {
   @Input() disabled = false;

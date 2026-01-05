@@ -3,11 +3,10 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import * as Plotly from 'plotly.js-basic-dist-min';
 
 @Component({
-  selector: 'dive-graph-dialog',
-  templateUrl: './graph-dialog.component.html',
-  standalone: true,
-  imports: [MatDialogModule],
-  styleUrls: ['./graph-dialog.component.scss'],
+    selector: 'dive-graph-dialog',
+    templateUrl: './graph-dialog.component.html',
+    imports: [MatDialogModule],
+    styleUrls: ['./graph-dialog.component.scss']
 })
 export class GraphDialogComponent implements OnInit {
   constructor(

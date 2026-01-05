@@ -5,9 +5,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { GraphDialogComponent } from '../graph-dialog/graph-dialog.component';
 
 @Component({
-  selector: 'dive-po2-chart',
-  templateUrl: './po2-chart.component.html',
-  styleUrl: './po2-chart.component.scss',
+    selector: 'dive-po2-chart',
+    templateUrl: './po2-chart.component.html',
+    styleUrl: './po2-chart.component.scss',
+    standalone: false
 })
 export class PO2ChartComponent implements OnInit {
   private readonly ERROR_COLOR = 'red';

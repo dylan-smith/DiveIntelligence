@@ -4,9 +4,10 @@ import { Router } from '@angular/router';
 import { BreathingGas } from '../dive-planner-service/BreathingGas';
 
 @Component({
-  selector: 'dive-change-gas',
-  templateUrl: './change-gas.component.html',
-  styleUrls: ['./change-gas.component.scss'],
+    selector: 'dive-change-gas',
+    templateUrl: './change-gas.component.html',
+    styleUrls: ['./change-gas.component.scss'],
+    standalone: false
 })
 export class ChangeGasComponent {
   newGas: BreathingGas = this.divePlanner.getCurrentGas();

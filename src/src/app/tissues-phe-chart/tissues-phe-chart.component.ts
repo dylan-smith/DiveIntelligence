@@ -5,9 +5,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { GraphDialogComponent } from '../graph-dialog/graph-dialog.component';
 
 @Component({
-  selector: 'dive-tissues-phe-chart',
-  templateUrl: './tissues-phe-chart.component.html',
-  styleUrl: './tissues-phe-chart.component.scss',
+    selector: 'dive-tissues-phe-chart',
+    templateUrl: './tissues-phe-chart.component.html',
+    styleUrl: './tissues-phe-chart.component.scss',
+    standalone: false
 })
 export class TissuesPHeChartComponent implements OnInit {
   private readonly PRIMARY_COLOR = '#3F51B5'; // Indigo 500

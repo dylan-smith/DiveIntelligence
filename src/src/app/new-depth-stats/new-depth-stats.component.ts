@@ -4,9 +4,10 @@ import { ceilingWithThreshold } from '../utility/utility';
 import { HumanDurationPipe } from '../pipes/human-duration.pipe';
 
 @Component({
-  selector: 'dive-new-depth-stats',
-  templateUrl: './new-depth-stats.component.html',
-  styleUrl: './new-depth-stats.component.scss',
+    selector: 'dive-new-depth-stats',
+    templateUrl: './new-depth-stats.component.html',
+    styleUrl: './new-depth-stats.component.scss',
+    standalone: false
 })
 export class NewDepthStatsComponent implements OnChanges {
   @Input() newDepth: number = 0;

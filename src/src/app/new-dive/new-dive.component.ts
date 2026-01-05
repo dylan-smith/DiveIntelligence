@@ -4,9 +4,10 @@ import { BreathingGas } from '../dive-planner-service/BreathingGas';
 import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
 
 @Component({
-  selector: 'dive-new-dive',
-  templateUrl: './new-dive.component.html',
-  styleUrls: ['./new-dive.component.scss'],
+    selector: 'dive-new-dive',
+    templateUrl: './new-dive.component.html',
+    styleUrls: ['./new-dive.component.scss'],
+    standalone: false
 })
 export class NewDiveComponent {
   constructor(
