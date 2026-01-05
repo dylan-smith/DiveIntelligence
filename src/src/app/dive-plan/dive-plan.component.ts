@@ -20,8 +20,6 @@ export class DivePlanComponent {
   planEvents: DiveSegment[];
 
   constructor() {
-    const divePlanner = this.divePlanner;
-
-    this.planEvents = divePlanner.getDiveSegments();
+    this.planEvents = this.divePlanner.getDiveSegments();
   }
 }
