@@ -101,6 +101,33 @@ export class Tissue {
     return Math.floor(time);
   }
 
+  getTimeToFly(flyingN2Threshold: number = 0.869): number | undefined {
+    const currentTime = this.tissueByTime.size - 1;
+    const currentPN2 = this.getPN2(currentTime);
+    const currentPHe = this.getPHe(currentTime);
+
+    // If we're already at safe levels, no waiting time needed
+    if (currentPN2 <= flyingN2Threshold && currentPHe <= this.ENVIRONMENT_PHE + 0.001) {
+      return 0;
+    }
+
+    // Surface gas pressures
+    const surfacePN2 = this.ENVIRONMENT_PN2;
+    const surfacePHe = this.ENVIRONMENT_PHE;
+
+    // Simple iterative approach - check every minute
+    for (let time = 1; time <= this.MAX_NDL; time++) {
+      const newPN2 = currentPN2 + this.getPN2DeltaByTime(currentPN2, surfacePN2, time);
+      const newPHe = currentPHe + this.getPHeDeltaByTime(currentPHe, surfacePHe, time);
+
+      if (newPN2 <= flyingN2Threshold && newPHe <= this.ENVIRONMENT_PHE + 0.001) {
+        return time;
+      }
+    }
+
+    return undefined; // If it takes longer than MAX_NDL
+  }
+
   getPN2(time: number): number {
     return this.getTissueByTime(time).PN2;
   }
