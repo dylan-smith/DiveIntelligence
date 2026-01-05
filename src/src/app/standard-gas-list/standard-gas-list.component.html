@@ -1,12 +1,13 @@
 <mat-selection-list [multiple]="false" hideSingleSelectionIndicator (selectionChange)="onGasChange($event)" [disabled]="disabled">
-  <mat-list-option
-    *ngFor="let gas of standardGases"
-    [value]="gas"
-    [selected]="gas === selectedGas"
-    matTooltipClass="tooltip-multiline tooltip-wide"
-    matTooltipPosition="left"
-    [matTooltip]="getGasTooltip(gas)">
-    <span matListItemTitle>{{ gas.name }}</span>
-    <span matListItemLine [innerHTML]="gas.compositionDescription"></span>
-  </mat-list-option>
+  @for (gas of standardGases; track gas) {
+    <mat-list-option
+      [value]="gas"
+      [selected]="gas === selectedGas"
+      matTooltipClass="tooltip-multiline tooltip-wide"
+      matTooltipPosition="left"
+      [matTooltip]="getGasTooltip(gas)">
+      <span matListItemTitle>{{ gas.name }}</span>
+      <span matListItemLine [innerHTML]="gas.compositionDescription"></span>
+    </mat-list-option>
+  }
 </mat-selection-list>

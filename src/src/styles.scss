@@ -1,13 +1,36 @@
 @use '@angular/material' as mat;
-@include mat.core();
+@use 'sass:map';
+@use './app/dive-plan/dive-plan.component.theme.scss' as dive-plan-theme;
+@use './app/dive-summary/dive-summary.component.theme.scss' as dive-summary-theme;
+@use './app/error-list/error-list.component.theme.scss' as error-list-theme;
+@use './app/depth-chart/depth-chart.component.theme.scss' as depth-chart-theme;
+@use './app/po2-chart/po2-chart.component.theme.scss' as po2-chart-theme;
+@use './app/end-chart/end-chart.component.theme.scss' as end-chart-theme;
+@use './app/tissues-ceiling-chart/tissues-ceiling-chart.component.theme.scss' as tissues-ceiling-chart-theme;
+@use './app/tissues-pn2-chart/tissues-pn2-chart.component.theme.scss' as tissues-pn2-chart-theme;
+@use './app/tissues-phe-chart/tissues-phe-chart.component.theme.scss' as tissues-phe-chart-theme;
+@use './app/current-stats/current-stats.component.theme.scss' as current-stats-theme;
+@use './app/new-depth-stats/new-depth-stats.component.theme.scss' as new-depth-stats-theme;
+@use './app/new-gas-input/new-gas-input.component.theme.scss' as new-gas-input-theme;
+@use './app/new-gas-stats/new-gas-stats.component.theme.scss' as new-gas-stats-theme;
+@use './app/new-time-stats/new-time-stats.component.theme.scss' as new-time-stats-theme;
+@use './app/ceiling-chart/ceiling-chart.component.theme.scss' as ceiling-chart-theme;
+@use './app/standard-gas-list/standard-gas-list.component.theme.scss' as standard-gas-list-theme;
+@use './app/dive-settings/dive-settings.component.theme.scss' as dive-settings-theme;
+@use './app/start-gas-stats/start-gas-stats.component.theme.scss' as start-gas-stats-theme;
+@use './app/change-depth/change-depth.component.theme.scss' as change-depth-theme;
+@use './app/maintain-depth/maintain-depth.component.theme.scss' as maintain-depth-theme;
+
+@include mat.elevation-classes();
+@include mat.app-background();
 
 // Define a theme.
 $primary: mat.m2-define-palette(mat.$m2-indigo-palette);
 $accent: mat.m2-define-palette(mat.$m2-purple-palette, A200, A100, A400);
 $warn: mat.m2-define-palette(mat.$m2-red-palette);
 
-$warn-icons: (error: map-get($warn, 500), warning: #FFC107);
-$warn: map-merge($warn, $warn-icons);
+$warn-icons: (error: map.get($warn, 500), warning: #FFC107);
+$warn: map.merge($warn, $warn-icons);
 
 $theme: mat.m2-define-light-theme((
   color: (
@@ -24,65 +47,26 @@ $theme: mat.m2-define-light-theme((
 
 @include mat.typography-hierarchy($theme);
 
-@import './app/dive-plan/dive-plan.component.theme.scss';
-@include dive-plan-theme($theme);
-
-@import './app/dive-summary/dive-summary.component.theme.scss';
-@include dive-summary-theme($theme);
-
-@import './app/error-list/error-list.component.theme.scss';
-@include error-list-theme($theme);
-
-@import './app/depth-chart/depth-chart.component.theme.scss';
-@include depth-chart-theme($theme);
-
-@import './app/po2-chart/po2-chart.component.theme.scss';
-@include po2-chart-theme($theme);
-
-@import './app/end-chart/end-chart.component.theme.scss';
-@include end-chart-theme($theme);
-
-@import './app/tissues-ceiling-chart/tissues-ceiling-chart.component.theme.scss';
-@include tissues-ceiling-chart-theme($theme);
-
-@import './app/tissues-pn2-chart/tissues-pn2-chart.component.theme.scss';
-@include tissues-pn2-chart-theme($theme);
-
-@import './app/tissues-phe-chart/tissues-phe-chart.component.theme.scss';
-@include tissues-phe-chart-theme($theme);
-
-@import './app/current-stats/current-stats.component.theme.scss';
-@include current-stats-theme($theme);
-
-@import './app/new-depth-stats/new-depth-stats.component.theme.scss';
-@include new-depth-stats-theme($theme);
-
-@import './app/new-gas-input/new-gas-input.component.theme.scss';
-@include new-gas-input-theme($theme);
-
-@import './app/new-gas-stats/new-gas-stats.component.theme.scss';
-@include new-gas-stats-theme($theme);
-
-@import './app/new-time-stats/new-time-stats.component.theme.scss';
-@include new-time-stats-theme($theme);
-
-@import './app/ceiling-chart/ceiling-chart.component.theme.scss';
-@include ceiling-chart-theme($theme);
-
-@import './app/standard-gas-list/standard-gas-list.component.theme.scss';
-@include standard-gas-list-theme($theme);
-
-@import './app/dive-settings/dive-settings.component.theme.scss';
-@include dive-settings-theme($theme);
-
-@import './app/start-gas-stats/start-gas-stats.component.theme.scss';
-@include start-gas-stats-theme($theme);
-
-@import './app/change-depth/change-depth.component.theme.scss';
-@include change-depth-theme($theme);
-
-@import './app/maintain-depth/maintain-depth.component.theme.scss';
-@include maintain-depth-theme($theme);
+@include dive-plan-theme.dive-plan-theme($theme);
+@include dive-summary-theme.dive-summary-theme($theme);
+@include error-list-theme.error-list-theme($theme);
+@include depth-chart-theme.depth-chart-theme($theme);
+@include po2-chart-theme.po2-chart-theme($theme);
+@include end-chart-theme.end-chart-theme($theme);
+@include tissues-ceiling-chart-theme.tissues-ceiling-chart-theme($theme);
+@include tissues-pn2-chart-theme.tissues-pn2-theme($theme);
+@include tissues-phe-chart-theme.tissues-phe-chart-theme($theme);
+@include current-stats-theme.current-stats-theme($theme);
+@include new-depth-stats-theme.new-depth-stats-theme($theme);
+@include new-gas-input-theme.new-gas-input-theme($theme);
+@include new-gas-stats-theme.new-gas-stats-theme($theme);
+@include new-time-stats-theme.new-time-stats-theme($theme);
+@include ceiling-chart-theme.ceiling-chart-theme($theme);
+@include standard-gas-list-theme.standard-gas-list-theme($theme);
+@include dive-settings-theme.dive-settings-theme($theme);
+@include start-gas-stats-theme.start-gas-stats-theme($theme);
+@include change-depth-theme.change-depth-theme($theme);
+@include maintain-depth-theme.maintain-depth-theme($theme);
 
 /* You can add global styles to this file, and also import other style files */
 

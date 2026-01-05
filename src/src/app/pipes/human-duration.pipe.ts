@@ -1,8 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({
-  name: 'humanDuration',
-})
+@Pipe({ name: 'humanDuration' })
 export class HumanDurationPipe implements PipeTransform {
   transform(value: number): string {
     const minutes = Math.floor(value / 60);

@@ -23,11 +23,15 @@
       <strong>{{ totalDiveDuration | humanDuration }}</strong>
     </span>
   </div>
-  <mat-divider *ngIf="hasDecoMilestones"></mat-divider>
-  <div class="dive-stat deco-milestone" *ngFor="let milestone of decoMilestones">
-    <span [matTooltip]="milestone.tooltip" matTooltipPosition="right">
-      <strong>{{ milestone.duration | humanDuration }}</strong>
-      : {{ milestone.gas }} &#64; {{ milestone.depth }}m
-    </span>
-  </div>
+  @if (hasDecoMilestones) {
+    <mat-divider></mat-divider>
+  }
+  @for (milestone of decoMilestones; track milestone) {
+    <div class="dive-stat deco-milestone">
+      <span [matTooltip]="milestone.tooltip" matTooltipPosition="right">
+        <strong>{{ milestone.duration | humanDuration }}</strong>
+        : {{ milestone.gas }} &#64; {{ milestone.depth }}m
+      </span>
+    </div>
+  }
 </div>

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HumanDurationPipe } from '../pipes/human-duration.pipe';
 import { DiveSegment } from './DiveSegment';
 import { BreathingGas } from './BreathingGas';
@@ -8,10 +8,8 @@ import { DiveSettingsService } from './DiveSettings.service';
   providedIn: 'root',
 })
 export class DiveSegmentFactoryService {
-  constructor(
-    private humanDurationPipe: HumanDurationPipe,
-    private settings: DiveSettingsService
-  ) {}
+  private humanDurationPipe = inject(HumanDurationPipe);
+  private settings = inject(DiveSettingsService);
 
   createEndDiveSegment(startTime: number, depth: number, gas: BreathingGas): DiveSegment {
     const ascentTime = this.getTravelTime(depth, 0);

@@ -1,13 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
+import { MatIcon } from '@angular/material/icon';
+import { DecimalPipe } from '@angular/common';
+import { HumanDurationPipe } from '../pipes/human-duration.pipe';
 
 @Component({
   selector: 'dive-error-list',
   templateUrl: './error-list.component.html',
   styleUrl: './error-list.component.scss',
+  imports: [MatIcon, DecimalPipe, HumanDurationPipe],
 })
 export class ErrorListComponent {
-  constructor(public divePlanner: DivePlannerService) {}
+  divePlanner = inject(DivePlannerService);
 
   public getCeilingErrorAmount(): number {
     return this.divePlanner.getCeilingError().amount;

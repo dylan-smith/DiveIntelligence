@@ -5,21 +5,31 @@ import { DiveSegmentFactoryService } from './DiveSegmentFactory.service';
 import { HumanDurationPipe } from '../pipes/human-duration.pipe';
 import { BreathingGas } from './BreathingGas';
 import { ChartGeneratorService } from './ChartGenerator.service';
+import { ApplicationInsightsService } from '../application-insights-service/application-insights.service';
 
 describe('DivePlannerService', () => {
-  beforeEach(() =>
+  let svc: DivePlannerService;
+  let diveSettingsService: DiveSettingsService;
+
+  beforeEach(() => {
+    const mockAppInsights = jasmine.createSpyObj('ApplicationInsightsService', ['trackEvent', 'trackTrace']);
+
     TestBed.configureTestingModule({
-      declarations: [DivePlannerService],
-    })
-  );
+      providers: [
+        DivePlannerService,
+        DiveSettingsService,
+        DiveSegmentFactoryService,
+        ChartGeneratorService,
+        HumanDurationPipe,
+        { provide: ApplicationInsightsService, useValue: mockAppInsights },
+      ],
+    });
+
+    svc = TestBed.inject(DivePlannerService);
+    diveSettingsService = TestBed.inject(DiveSettingsService);
+  });
 
   it('with no segments on air', () => {
-    const diveSettingsService = new DiveSettingsService();
-    const mockAppInsights = jasmine.createSpyObj('ApplicationInsightsService', ['trackEvent', 'trackTrace']);
-    const diveSegmentFactory = new DiveSegmentFactoryService(new HumanDurationPipe(), diveSettingsService);
-    const chartGenerator = new ChartGeneratorService(diveSegmentFactory, diveSettingsService);
-    const svc = new DivePlannerService(diveSegmentFactory, mockAppInsights, chartGenerator, diveSettingsService);
-
     const startGas = svc.getStandardGases()[0]; // Air
     svc.startDive(startGas);
 
@@ -45,12 +55,6 @@ describe('DivePlannerService', () => {
   });
 
   it('30m for 25 mins on nitrox 32', () => {
-    const diveSettingsService = new DiveSettingsService();
-    const mockAppInsights = jasmine.createSpyObj('ApplicationInsightsService', ['trackEvent', 'trackTrace']);
-    const diveSegmentFactory = new DiveSegmentFactoryService(new HumanDurationPipe(), diveSettingsService);
-    const chartGenerator = new ChartGeneratorService(diveSegmentFactory, diveSettingsService);
-    const svc = new DivePlannerService(diveSegmentFactory, mockAppInsights, chartGenerator, diveSettingsService);
-
     const nitrox32 = svc.getStandardGases().filter(gas => gas.name === 'Nitrox 32')[0];
     const air = svc.getStandardGases().filter(gas => gas.name === 'Air')[0];
 
@@ -90,12 +94,6 @@ describe('DivePlannerService', () => {
   });
 
   it('deco dive breaking the limits', () => {
-    const diveSettingsService = new DiveSettingsService();
-    const mockAppInsights = jasmine.createSpyObj('ApplicationInsightsService', ['trackEvent', 'trackTrace']);
-    const diveSegmentFactory = new DiveSegmentFactoryService(new HumanDurationPipe(), diveSettingsService);
-    const chartGenerator = new ChartGeneratorService(diveSegmentFactory, diveSettingsService);
-    const svc = new DivePlannerService(diveSegmentFactory, mockAppInsights, chartGenerator, diveSettingsService);
-
     const trimix1555 = svc.getStandardGases().filter(gas => gas.oxygen === 15 && gas.helium === 55)[0];
     const trimix1070 = svc.getStandardGases().filter(gas => gas.oxygen === 10 && gas.helium === 70)[0];
     const nitrox50 = svc.getStandardGases().filter(gas => gas.oxygen === 50 && gas.helium === 0)[0];
@@ -141,12 +139,6 @@ describe('DivePlannerService', () => {
   });
 
   it('NDL accounts for on-gassing during ascent', () => {
-    const diveSettingsService = new DiveSettingsService();
-    const mockAppInsights = jasmine.createSpyObj('ApplicationInsightsService', ['trackEvent', 'trackTrace']);
-    const diveSegmentFactory = new DiveSegmentFactoryService(new HumanDurationPipe(), diveSettingsService);
-    const chartGenerator = new ChartGeneratorService(diveSegmentFactory, diveSettingsService);
-    const svc = new DivePlannerService(diveSegmentFactory, mockAppInsights, chartGenerator, diveSettingsService);
-
     const air = svc.getStandardGases().filter(gas => gas.oxygen === 21 && gas.helium === 0)[0];
 
     svc.startDive(air);

@@ -6,15 +6,21 @@
         PO<sub>2</sub>:
         <strong>{{ newGasPO2 | number: '1.2-2' }}</strong>
       </span>
-      <mat-icon *ngIf="hasNewGasPO2Warning" class="warning-icon" [matTooltip]="newGasPO2Warning!" matTooltipPosition="right">warning</mat-icon>
-      <mat-icon *ngIf="hasNewGasPO2Error" class="error-icon" [matTooltip]="newGasPO2Error!" matTooltipPosition="right">error</mat-icon>
+      @if (hasNewGasPO2Warning) {
+        <mat-icon class="warning-icon" [matTooltip]="newGasPO2Warning!" matTooltipPosition="right">warning</mat-icon>
+      }
+      @if (hasNewGasPO2Error) {
+        <mat-icon class="error-icon" [matTooltip]="newGasPO2Error!" matTooltipPosition="right">error</mat-icon>
+      }
     </div>
     <div class="dive-stat">
       <span matTooltip="Equivalent narcotic depth of the new gas at the current depth" matTooltipPosition="above">
         END:
         <strong>{{ newGasEND }}m</strong>
       </span>
-      <mat-icon *ngIf="hasNewGasENDError" class="error-icon" [matTooltip]="newGasENDError!" matTooltipPosition="right">error</mat-icon>
+      @if (hasNewGasENDError) {
+        <mat-icon class="error-icon" [matTooltip]="newGasENDError!" matTooltipPosition="right">error</mat-icon>
+      }
     </div>
     <div class="dive-stat">
       <span

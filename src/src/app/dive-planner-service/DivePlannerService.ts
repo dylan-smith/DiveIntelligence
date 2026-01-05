@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BreathingGas } from './BreathingGas';
 import { DiveSegment } from './DiveSegment';
 import { DiveSegmentFactoryService } from './DiveSegmentFactory.service';
@@ -11,15 +11,15 @@ import { ChartGeneratorService } from './ChartGenerator.service';
   providedIn: 'root',
 })
 export class DivePlannerService {
+  private diveSegmentFactory = inject(DiveSegmentFactoryService);
+  private appInsights = inject(ApplicationInsightsService);
+  private chartGenerator = inject(ChartGeneratorService);
+  settings = inject(DiveSettingsService);
+
   private diveID = crypto.randomUUID();
   private diveProfile: DiveProfile = new DiveProfile(this.settings, this.diveSegmentFactory);
 
-  constructor(
-    private diveSegmentFactory: DiveSegmentFactoryService,
-    private appInsights: ApplicationInsightsService,
-    private chartGenerator: ChartGeneratorService,
-    public settings: DiveSettingsService
-  ) {
+  constructor() {
     BreathingGas.GenerateStandardGases(this.settings);
   }
 

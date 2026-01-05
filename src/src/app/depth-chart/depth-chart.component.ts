@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
 import { MatDialog } from '@angular/material/dialog';
 import { GraphDialogComponent } from '../graph-dialog/graph-dialog.component';
@@ -10,13 +10,11 @@ import * as Plotly from 'plotly.js-basic-dist-min';
   styleUrl: './depth-chart.component.scss',
 })
 export class DepthChartComponent implements OnInit {
-  private readonly ERROR_COLOR = 'red';
-  private readonly PRIMARY_COLOR = '#3F51B5'; // Indigo 500
+  divePlanner = inject(DivePlannerService);
+  dialog = inject(MatDialog);
 
-  constructor(
-    public divePlanner: DivePlannerService,
-    public dialog: MatDialog
-  ) {}
+  private readonly ERROR_COLOR = 'red';
+  private readonly PRIMARY_COLOR = '#3F51B5';
 
   ngOnInit(): void {
     Plotly.newPlot('depth-chart', this.getDepthChartData(), this.getDepthChartLayout(), this.getChartOptions());

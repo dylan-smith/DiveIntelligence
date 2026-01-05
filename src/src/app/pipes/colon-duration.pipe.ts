@@ -1,8 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({
-  name: 'colonDuration',
-})
+@Pipe({ name: 'colonDuration' })
 export class ColonDurationPipe implements PipeTransform {
   transform(value: number): string {
     const hours = Math.floor(value / 3600);
