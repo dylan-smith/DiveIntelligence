@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
 import * as Plotly from 'plotly.js-basic-dist-min';
 import { MatDialog } from '@angular/material/dialog';
@@ -8,15 +8,12 @@ import { GraphDialogComponent } from '../graph-dialog/graph-dialog.component';
   selector: 'dive-tissues-phe-chart',
   templateUrl: './tissues-phe-chart.component.html',
   styleUrl: './tissues-phe-chart.component.scss',
-  standalone: false,
 })
 export class TissuesPHeChartComponent implements OnInit {
-  private readonly PRIMARY_COLOR = '#3F51B5'; // Indigo 500
+  divePlanner = inject(DivePlannerService);
+  dialog = inject(MatDialog);
 
-  constructor(
-    public divePlanner: DivePlannerService,
-    public dialog: MatDialog
-  ) {}
+  private readonly PRIMARY_COLOR = '#3F51B5';
 
   ngOnInit(): void {
     Plotly.newPlot('tissues-phe-chart', this.getTissuesPHeChartData(), this.getTissuesPHeChartLayout(), this.getChartOptions());

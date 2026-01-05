@@ -1,4 +1,4 @@
-import { ErrorHandler, NgModule } from '@angular/core';
+import { ErrorHandler, NgModule, inject } from '@angular/core';
 import { ApplicationinsightsAngularpluginErrorService } from '@microsoft/applicationinsights-angularplugin-js';
 import { ApplicationInsightsService } from './application-insights-service/application-insights.service';
 
@@ -12,5 +12,5 @@ import { ApplicationInsightsService } from './application-insights-service/appli
   ],
 })
 export class ApplicationInsightsModule {
-  constructor(private applicationInsightsService: ApplicationInsightsService) {}
+  private applicationInsightsService = inject(ApplicationInsightsService);
 }

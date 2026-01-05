@@ -1,11 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ApplicationInsightsService } from '../application-insights-service/application-insights.service';
+import { MatButton } from '@angular/material/button';
+import { RouterLink } from '@angular/router';
+import { YouTubePlayer } from '@angular/youtube-player';
 
 @Component({
   selector: 'dive-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  standalone: false,
+  imports: [MatButton, RouterLink, YouTubePlayer],
 })
 export class HomeComponent implements OnInit {
   ngOnInit() {
@@ -19,7 +22,10 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  constructor(window: Window, appInsights: ApplicationInsightsService) {
+  constructor() {
+    const window = inject(Window);
+    const appInsights = inject(ApplicationInsightsService);
+
     appInsights.trackEvent('ResolutionInfo', {
       availWidth: window.screen.availWidth,
       availHeight: window.screen.availHeight,

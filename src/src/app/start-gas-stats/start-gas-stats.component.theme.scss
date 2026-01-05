@@ -1,13 +1,15 @@
+@use 'sass:map';
+
 @mixin start-gas-stats-theme($theme) {
-  $color: map-get($theme, color);
-  $warn: map-get($color, warn);
-  $background: map-get($color, background);
+  $color: map.get($theme, color);
+  $warn: map.get($color, warn);
+  $background: map.get($color, background);
 
   .gas-calculations {
-    background-color: map-get($background, card);
+    background-color: map.get($background, card);
   }
 
   .error {
-    color: map-get($warn, error);
+    color: map.get($warn, error);
   }
 }

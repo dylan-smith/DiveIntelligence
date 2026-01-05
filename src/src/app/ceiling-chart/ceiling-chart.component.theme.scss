@@ -1,8 +1,10 @@
+@use 'sass:map';
+
 @mixin ceiling-chart-theme($theme) {
-  $color: map-get($theme, color);
-  $background: map-get($color, background);
+  $color: map.get($theme, color);
+  $background: map.get($color, background);
 
   .ceiling-chart {
-    background-color: map-get($background, card);
+    background-color: map.get($background, card);
   }
 }

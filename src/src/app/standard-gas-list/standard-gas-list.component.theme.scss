@@ -1,13 +1,15 @@
+@use 'sass:map';
+
 @mixin standard-gas-list-theme($theme) {
-  $color: map-get($theme, color);
-  $primary: map-get($color, primary);
-  $background: map-get($color, background);
+  $color: map.get($theme, color);
+  $primary: map.get($color, primary);
+  $background: map.get($color, background);
 
   mat-selection-list {
-    background-color: map-get($background, card);
+    background-color: map.get($background, card);
   }
 
   mat-list-option[aria-selected="true"] {
-    background: map-get($primary, 100) !important;
+    background: map.get($primary, 100) !important;
   }
 }

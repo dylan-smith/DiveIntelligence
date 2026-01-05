@@ -1,19 +1,22 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
 import { BreathingGas } from '../dive-planner-service/BreathingGas';
+import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
   selector: 'dive-custom-gas-input',
   templateUrl: './custom-gas-input.component.html',
   styleUrl: './custom-gas-input.component.scss',
-  standalone: false,
+  imports: [MatFormField, MatLabel, MatInput, FormsModule, MatTooltip],
 })
 export class CustomGasInputComponent {
+  private divePlanner = inject(DivePlannerService);
+
   @Input() disabled: boolean = false;
   @Output() gasChanged = new EventEmitter<BreathingGas>();
   customGas: BreathingGas = BreathingGas.create(21, 0, 79, this.divePlanner.settings);
-
-  constructor(private divePlanner: DivePlannerService) {}
 
   onOxygenInput(): void {
     this.updateCustomGasNitrogen();

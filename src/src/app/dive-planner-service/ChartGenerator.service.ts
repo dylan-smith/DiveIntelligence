@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { DiveProfile } from './DiveProfile';
 import { BreathingGas } from './BreathingGas';
 import { DiveSegmentFactoryService } from './DiveSegmentFactory.service';
@@ -8,10 +8,8 @@ import { DiveSettingsService } from './DiveSettings.service';
   providedIn: 'root',
 })
 export class ChartGeneratorService {
-  constructor(
-    private diveSegmentFactory: DiveSegmentFactoryService,
-    private diveSettings: DiveSettingsService
-  ) {}
+  private diveSegmentFactory = inject(DiveSegmentFactoryService);
+  private diveSettings = inject(DiveSettingsService);
 
   getDepthChartData(diveProfile: DiveProfile): { time: number; depth: number; ceiling: number }[] {
     const data: { time: number; depth: number; ceiling: number }[] = [];

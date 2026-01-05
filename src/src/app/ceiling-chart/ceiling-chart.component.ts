@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, inject } from '@angular/core';
 import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
 import { MatDialog } from '@angular/material/dialog';
 import { BreathingGas } from '../dive-planner-service/BreathingGas';
@@ -9,9 +9,11 @@ import * as Plotly from 'plotly.js-basic-dist-min';
   selector: 'dive-ceiling-chart',
   templateUrl: './ceiling-chart.component.html',
   styleUrl: './ceiling-chart.component.scss',
-  standalone: false,
 })
 export class CeilingChartComponent implements OnChanges {
+  private divePlanner = inject(DivePlannerService);
+  private dialog = inject(MatDialog);
+
   @Input() timeAtDepth: number = 0;
 
   currentDepth: number = this.divePlanner.getCurrentDepth();
@@ -21,11 +23,6 @@ export class CeilingChartComponent implements OnChanges {
   private readonly PRIMARY_COLOR = '#3F51B5'; // Indigo 500
   private ceilingData = this.divePlanner.getCeilingChartData(this.currentDepth, this.currentGas);
   private ceilingChartData = this.getCeilingChartData(this.ceilingData);
-
-  constructor(
-    private divePlanner: DivePlannerService,
-    private dialog: MatDialog
-  ) {}
 
   ngOnChanges(): void {
     Plotly.react('ceiling-chart', this.ceilingChartData, this.getCeilingChartLayout(), this.getCeilingChartOptions());

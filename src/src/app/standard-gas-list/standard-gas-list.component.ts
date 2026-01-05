@@ -1,12 +1,13 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BreathingGas } from '../dive-planner-service/BreathingGas';
-import { MatSelectionListChange } from '@angular/material/list';
+import { MatSelectionListChange, MatSelectionList, MatListOption, MatListItemTitle, MatListItemLine } from '@angular/material/list';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
   selector: 'dive-standard-gas-list',
   templateUrl: './standard-gas-list.component.html',
   styleUrl: './standard-gas-list.component.scss',
-  standalone: false,
+  imports: [MatSelectionList, MatListOption, MatTooltip, MatListItemTitle, MatListItemLine],
 })
 export class StandardGasListComponent {
   @Input() disabled = false;

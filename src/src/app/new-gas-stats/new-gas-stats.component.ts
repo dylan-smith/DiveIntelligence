@@ -1,16 +1,22 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, inject } from '@angular/core';
 import { BreathingGas } from '../dive-planner-service/BreathingGas';
 import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
 import { HumanDurationPipe } from '../pipes/human-duration.pipe';
 import { ceilingWithThreshold } from '../utility/utility';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'dive-new-gas-stats',
   templateUrl: './new-gas-stats.component.html',
   styleUrl: './new-gas-stats.component.scss',
-  standalone: false,
+  imports: [MatTooltip, MatIcon, DecimalPipe],
 })
 export class NewGasStatsComponent implements OnChanges {
+  divePlanner = inject(DivePlannerService);
+  private humanDurationPipe = inject(HumanDurationPipe);
+
   @Input() newGas: BreathingGas = this.divePlanner.getCurrentGas();
 
   currentDepth: number = this.divePlanner.getCurrentDepth();
@@ -23,11 +29,6 @@ export class NewGasStatsComponent implements OnChanges {
   hasNewGasENDError: boolean = this.getNewGasENDErrorMessage() !== undefined;
   newGasENDError: string | undefined = this.getNewGasENDErrorMessage();
   noDecoLimit: string = this.getNoDecoLimit();
-
-  constructor(
-    public divePlanner: DivePlannerService,
-    private humanDurationPipe: HumanDurationPipe
-  ) {}
 
   ngOnChanges(): void {
     this.calculateNewGasStats();
