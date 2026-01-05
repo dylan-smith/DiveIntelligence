@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
 
 @Component({
-    selector: 'dive-dive-settings',
-    templateUrl: './dive-settings.component.html',
-    styleUrl: './dive-settings.component.scss',
-    standalone: false
+  selector: 'dive-dive-settings',
+  templateUrl: './dive-settings.component.html',
+  styleUrl: './dive-settings.component.scss',
+  standalone: false,
 })
 export class DiveSettingsComponent {
   ascentRate = this.divePlanner.settings.ascentRate;

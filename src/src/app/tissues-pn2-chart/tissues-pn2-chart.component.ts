@@ -5,10 +5,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { GraphDialogComponent } from '../graph-dialog/graph-dialog.component';
 
 @Component({
-    selector: 'dive-tissues-pn2-chart',
-    templateUrl: './tissues-pn2-chart.component.html',
-    styleUrl: './tissues-pn2-chart.component.scss',
-    standalone: false
+  selector: 'dive-tissues-pn2-chart',
+  templateUrl: './tissues-pn2-chart.component.html',
+  styleUrl: './tissues-pn2-chart.component.scss',
+  standalone: false,
 })
 export class TissuesPN2ChartComponent implements OnInit {
   private readonly ERROR_COLOR = 'red';

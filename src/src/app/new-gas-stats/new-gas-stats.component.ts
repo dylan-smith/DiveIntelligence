@@ -5,10 +5,10 @@ import { HumanDurationPipe } from '../pipes/human-duration.pipe';
 import { ceilingWithThreshold } from '../utility/utility';
 
 @Component({
-    selector: 'dive-new-gas-stats',
-    templateUrl: './new-gas-stats.component.html',
-    styleUrl: './new-gas-stats.component.scss',
-    standalone: false
+  selector: 'dive-new-gas-stats',
+  templateUrl: './new-gas-stats.component.html',
+  styleUrl: './new-gas-stats.component.scss',
+  standalone: false,
 })
 export class NewGasStatsComponent implements OnChanges {
   @Input() newGas: BreathingGas = this.divePlanner.getCurrentGas();

@@ -5,10 +5,10 @@ import { GraphDialogComponent } from '../graph-dialog/graph-dialog.component';
 import * as Plotly from 'plotly.js-basic-dist-min';
 
 @Component({
-    selector: 'dive-depth-chart',
-    templateUrl: './depth-chart.component.html',
-    styleUrl: './depth-chart.component.scss',
-    standalone: false
+  selector: 'dive-depth-chart',
+  templateUrl: './depth-chart.component.html',
+  styleUrl: './depth-chart.component.scss',
+  standalone: false,
 })
 export class DepthChartComponent implements OnInit {
   private readonly ERROR_COLOR = 'red';

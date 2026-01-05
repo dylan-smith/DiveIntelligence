@@ -5,10 +5,10 @@ import { HumanDurationPipe } from '../pipes/human-duration.pipe';
 import { ceilingWithThreshold } from '../utility/utility';
 
 @Component({
-    selector: 'dive-new-time-stats',
-    templateUrl: './new-time-stats.component.html',
-    styleUrl: './new-time-stats.component.scss',
-    standalone: false
+  selector: 'dive-new-time-stats',
+  templateUrl: './new-time-stats.component.html',
+  styleUrl: './new-time-stats.component.scss',
+  standalone: false,
 })
 export class NewTimeStatsComponent implements OnChanges {
   @Input() timeAtDepth: number = 0;

@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { DivePlannerService } from '../dive-planner-service/DivePlannerService';
 
 @Component({
-    selector: 'dive-error-list',
-    templateUrl: './error-list.component.html',
-    styleUrl: './error-list.component.scss',
-    standalone: false
+  selector: 'dive-error-list',
+  templateUrl: './error-list.component.html',
+  styleUrl: './error-list.component.scss',
+  standalone: false,
 })
 export class ErrorListComponent {
   constructor(public divePlanner: DivePlannerService) {}

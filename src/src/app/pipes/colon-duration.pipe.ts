@@ -1,8 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'colonDuration',
-    standalone: false
+  name: 'colonDuration',
+  standalone: false,
 })
 export class ColonDurationPipe implements PipeTransform {
   transform(value: number): string {
