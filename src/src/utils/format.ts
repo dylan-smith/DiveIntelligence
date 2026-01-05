@@ -7,7 +7,7 @@ export function humanDuration(value: number): string {
   result = result.trim();
 
   if (minutes + seconds === 0) {
-    result = '0 sec ';
+    result = '0 sec';
   }
 
   return result;

@@ -10,8 +10,8 @@ const Plot = dynamic(() => import('react-plotly.js'), { ssr: false });
 const PRIMARY_COLOR = '#3F51B5';
 const TISSUE_COLORS = [
   '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF',
-  '#FF9F40', '#FF6384', '#C9CBCF', '#7BC225', '#E8C3B9',
-  '#C45850', '#4D5360', '#949FB1', '#8E5EA2', '#3CBA9F', '#E8C3B9'
+  '#FF9F40', '#E74C3C', '#C9CBCF', '#7BC225', '#1ABC9C',
+  '#C45850', '#4D5360', '#949FB1', '#8E5EA2', '#3CBA9F', '#F39C12'
 ];
 
 export default function TissuesCeilingChart() {
