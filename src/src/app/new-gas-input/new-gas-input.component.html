@@ -33,10 +33,12 @@
               <div>{{ standardGas?.name }}</div>
               <div class="gas-description" [innerHTML]="standardGas?.compositionDescription"></div>
             </mat-select-trigger>
-            <mat-option *ngFor="let gas of StandardGases" [value]="gas">
-              <div>{{ gas.name }}</div>
-              <div class="gas-description" [innerHTML]="gas.compositionDescription"></div>
-            </mat-option>
+            @for (gas of StandardGases; track gas) {
+              <mat-option [value]="gas">
+                <div>{{ gas.name }}</div>
+                <div class="gas-description" [innerHTML]="gas.compositionDescription"></div>
+              </mat-option>
+            }
           </mat-select>
         </mat-form-field>
       </div>
