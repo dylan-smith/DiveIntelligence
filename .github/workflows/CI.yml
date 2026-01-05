@@ -99,7 +99,7 @@ jobs:
 
     - name: Create/update PR comment with in progress message
       if: github.event_name == 'pull_request'
-      uses: peter-evans/create-or-update-comment@v4
+      uses: peter-evans/create-or-update-comment@v5
       id: wip-comment
       with:
         issue-number: ${{ github.event.pull_request.number }}
@@ -120,7 +120,7 @@ jobs:
 
     - name: Update PR comment with link to preview site
       if: github.event_name == 'pull_request'
-      uses: peter-evans/create-or-update-comment@v4
+      uses: peter-evans/create-or-update-comment@v5
       with:
         issue-number: ${{ github.event.pull_request.number }}
         comment-id: ${{ steps.wip-comment.outputs.comment-id }}
@@ -205,7 +205,7 @@ jobs:
 
     - name: Update PR comment with being deleted message
       if: github.event_name == 'pull_request'
-      uses: peter-evans/create-or-update-comment@v4
+      uses: peter-evans/create-or-update-comment@v5
       id: deleting-comment
       with:
         issue-number: ${{ github.event.pull_request.number }}
@@ -221,7 +221,7 @@ jobs:
         inlineScript: az staticwebapp environment delete --name DiveIntelligence --environment-name "pr${{ github.event.pull_request.number }}" --resource-group DiveIntelligence --yes
 
     - name: Update PR comment to indicate site has been deleted
-      uses: peter-evans/create-or-update-comment@v4
+      uses: peter-evans/create-or-update-comment@v5
       with:
         issue-number: ${{ github.event.pull_request.number }}
         comment-id: ${{ steps.deleting-comment.outputs.comment-id }}
