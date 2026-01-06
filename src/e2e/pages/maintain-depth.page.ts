@@ -3,19 +3,20 @@ import { DiveOverviewPage } from './dive-overview.page';
 import { CurrentStatsComponent } from 'e2e/components/current-stats.component';
 
 export class MaintainDepthPage {
-  constructor(private page: Page) {}
+  public currentStats: CurrentStatsComponent;
 
-  public currentStats = new CurrentStatsComponent(this.page.locator('dive-current-stats'));
+  constructor(private page: Page) {
+    this.currentStats = new CurrentStatsComponent(page, page.locator('main').first());
+  }
 
   async setTimeAtDepth(time: number): Promise<MaintainDepthPage> {
-    await this.page.getByLabel('Time at Depth (mins)').fill(time.toString());
+    await this.page.getByLabel('Time at Depth (minutes)').fill(time.toString());
     return this;
   }
 
   async getTotalDiveDuration(): Promise<string> {
-    let content = await this.page.locator('dive-new-time-stats .new-time-stats .dive-stat').getByText('Total Dive Duration: ').textContent();
-    content = content ?? '';
-    return content.replace('Total Dive Duration: ', '').trim();
+    const content = await this.page.getByText(/^Total Dive Duration:/).textContent();
+    return (content ?? '').replace('Total Dive Duration:', '').trim();
   }
 
   async getDecoMilestones(): Promise<string[]> {
@@ -29,15 +30,13 @@ export class MaintainDepthPage {
   }
 
   async getNewNDL(): Promise<string> {
-    let content = await this.page.locator('dive-new-time-stats .new-time-stats .dive-stat').getByText('No Deco Limit: ').textContent();
-    content = content ?? '';
-    return content.replace('No Deco Limit: ', '').trim();
+    const content = await this.page.getByText(/^NDL:/).textContent();
+    return (content ?? '').replace('NDL:', '').trim();
   }
 
   async getNewCeiling(): Promise<string> {
-    let content = await this.page.locator('dive-new-time-stats .new-time-stats .dive-stat').getByText('Ceiling: ').textContent();
-    content = content ?? '';
-    return content.replace('Ceiling: ', '').trim();
+    const content = await this.page.getByText(/^Ceiling:/).textContent();
+    return (content ?? '').replace('Ceiling:', '').trim();
   }
 
   async Save(): Promise<DiveOverviewPage> {

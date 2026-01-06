@@ -405,6 +405,11 @@ yarn-error.log
 /libpeerconnection.log
 testem.log
 /typings
+test-results/
+
+# Next.js
+.next/
+out/
 
 # System files
 .DS_Store

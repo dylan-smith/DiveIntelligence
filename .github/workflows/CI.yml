@@ -85,7 +85,7 @@ jobs:
         category: "/language:javascript-typescript"
 
     - name: Copy staticwebapp.config.json
-      run: cp src/staticwebapp.config.json src/dist/dive-intelligence/browser/staticwebapp.config.json
+      run: cp src/staticwebapp.config.json src/out/staticwebapp.config.json
 
     # deploy PR to preview site
     - name: Find PR comment to update
@@ -168,13 +168,13 @@ jobs:
       if: github.ref == 'refs/heads/master'
       uses: jossef/action-set-json-field@v2.2
       with:
-        file: src/dist/dive-intelligence/browser/assets/config.json
+        file: src/out/config.json
         field: instrumentationKey
         value: ${{ vars.INSTRUMENTATION_KEY }}
 
     - name: Upload Source Maps
       if: github.ref == 'refs/heads/master'
-      run: az storage blob upload-batch --connection-string "${{ secrets.SOURCE_MAPS_CONNECTION_STRING}}" --source src/dist/dive-intelligence/browser --destination sourcemaps --overwrite true
+      run: az storage blob upload-batch --connection-string "${{ secrets.SOURCE_MAPS_CONNECTION_STRING}}" --source src/out --destination sourcemaps --overwrite true
 
     - name: Deploy to Azure Static Web Apps
       if: github.ref == 'refs/heads/master'
