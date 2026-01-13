@@ -29,17 +29,17 @@ export default defineConfig({
             ['cobertura', { file: 'cobertura/code-coverage.cobertura.xml' }],
             ['lcovonly', { file: 'lcov/code-coverage.lcov.info' }],
           ],
-          entryFilter: (entry: any) => {
-            if (!URL.canParse(entry.url as string)) {
+          entryFilter: (entry: { url: string }) => {
+            if (!URL.canParse(entry.url)) {
               return false;
             }
 
-            const url = new URL(entry.url as string);
+            const url = new URL(entry.url);
             return (
               !url.toString().includes('@fs') &&
               url.host !== 'fonts.googleapis.com' &&
               url.host !== 'www.youtube.com' &&
-              url.toString() !== 'http://localhost:4200/styles.css'
+              !url.toString().includes('_next/static')
             );
           },
           sourceFilter: (sourcePath: string) => {
@@ -52,10 +52,6 @@ export default defineConfig({
   use: {
     baseURL: process.env['PLAYWRIGHT_BASE_URL'] ?? 'http://localhost:4200',
     trace: 'retain-on-failure',
-    // headless: false,
-    // launchOptions: {
-    //   args: ['--remote-debugging-port=9222'],
-    // },
   },
   timeout: 360000,
 
