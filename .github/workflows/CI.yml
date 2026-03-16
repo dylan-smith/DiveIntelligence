@@ -65,7 +65,7 @@ jobs:
       shell: pwsh
     
     - name: Add Coverage PR Comment
-      uses: marocchino/sticky-pull-request-comment@v2
+      uses: marocchino/sticky-pull-request-comment@v3
       if: always()
       with:
         recreate: true
