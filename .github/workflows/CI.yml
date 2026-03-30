@@ -215,7 +215,7 @@ jobs:
           :construction: :construction: The preview site for this PR is being deleted. :construction: :construction:
 
     - name: Delete preview site
-      uses: azure/cli@v2
+      uses: azure/cli@v3
       with:
         azcliversion: latest
         inlineScript: az staticwebapp environment delete --name DiveIntelligence --environment-name "pr${{ github.event.pull_request.number }}" --resource-group DiveIntelligence --yes
