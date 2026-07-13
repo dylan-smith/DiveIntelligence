@@ -1,4 +1,5 @@
 import { BreathingGas } from './BreathingGas';
+import { DiveProfile } from './DiveProfile';
 import { DiveSegment } from './DiveSegment';
 import { DiveSettingsService } from './DiveSettings.service';
 import { Tissue } from './Tissue';
@@ -23,6 +24,8 @@ export class BuhlmannZHL16C {
     this.tissues.push(new Tissue(14, 390, 0.261, 0.9544, 147.42, 0.5176, 0.9171, diveSettings.GFLow));
     this.tissues.push(new Tissue(15, 498, 0.248, 0.9602, 188.24, 0.5172, 0.9217, diveSettings.GFLow));
     this.tissues.push(new Tissue(16, 635, 0.2327, 0.9653, 240.03, 0.5119, 0.9267, diveSettings.GFLow));
+
+    diveSettings.subscribeToChanges(() => this.tissues.forEach(t => t.updateGFLow(diveSettings.GFLow)));
   }
 
   // TODO: subscribe to diveSettings changes and rebuild the tissues. should probably check other classes that depend on diveSettings too
@@ -30,6 +33,36 @@ export class BuhlmannZHL16C {
   clone(): BuhlmannZHL16C {
     const result = new BuhlmannZHL16C(this.diveSettings);
     result.tissues = this.tissues.map(t => t.clone());
+    return result;
+  }
+
+  generateCSVFile(diveProfile: DiveProfile): string {
+    let result = 'TissueNum,DeepestCeiling,Time,PN2,PHe,MValue,Depth,TargetGF,InstantCeiling\n';
+    // let result: { TissueNum: number, DeepestCeiling: number, Time: number, PN2: number, PHe: number, MValue: number, Depth: number, TargetGF: number }[] = [];
+
+    const endTime = this.tissues[0].getMaxTime();
+    // const deepestCeiling = this.getDeepestCeiling();
+
+    this.tissues.forEach(tissue => {
+      for(let time = 0; time <= endTime; time++) {
+        const depth = diveProfile.getDepth(time);
+        const deepestCeiling = tissue.getDeepestCeiling();
+        const targetGF = this.calculateTargetGF(deepestCeiling, depth, this.diveSettings.GFLow, this.diveSettings.GFHigh);
+        
+        result += `${tissue.tissueNumber},${deepestCeiling},${time},${tissue.getPN2(time)},${tissue.getPHe(time)},${tissue.getMValue(time)},${depth},${targetGF},${tissue.getInstantCeiling(time, targetGF)}\n`
+        // result.push({ 
+        //   TissueNum: tissue.tissueNumber, 
+        //   DeepestCeiling: tissue.getDeepestCeiling(), 
+        //   Time: time, 
+        //   PN2: tissue.getPN2(time), 
+        //   PHe: tissue.getPHe(time), 
+        //   MValue: tissue.getMValue(time), 
+        //   Depth: diveProfile.getDepth(time), 
+        //   TargetGF: this.calculateTargetGF(deepestCeiling, diveProfile.getDepth(time), this.diveSettings.GFLow, this.diveSettings.GFHigh),
+        // });
+      }
+    });
+
     return result;
   }
 
@@ -68,7 +101,8 @@ export class BuhlmannZHL16C {
   }
 
   getTissueInstantCeiling(time: number, tissue: number, depth: number): number {
-    return this.tissues[tissue - 1].getInstantCeiling(time, depth);
+    const targetGF = this.calculateTargetGF(this.getDeepestCeiling(), depth, this.diveSettings.GFLow, this.diveSettings.GFHigh);
+    return this.tissues[tissue - 1].getInstantCeiling(time, targetGF);
   }
 
   getTissuePN2(time: number, tissue: number): number {

@@ -1,3 +1,4 @@
+import { Exception } from '@microsoft/applicationinsights-web';
 import { ceilingWithThreshold, floorWithThreshold } from '../utility/utility';
 import { BreathingGas } from './BreathingGas';
 import { DiveSegment } from './DiveSegment';
@@ -54,15 +55,20 @@ export class Tissue {
     }
   }
 
+  updateGFLow(gfLow: number): void {
+    this.GFLow = gfLow;
+    this.recalculateDeepestCeiling();
+  }
+
   discardAfterTime(time: number) {
     this.tissueByTime = new Map(Array.from(this.tissueByTime.entries()).filter(([key]) => key <= time));
 
     if (time <= this.deepestCeilingTime) {
-      this.RecalculateDeepestCeiling();
+      this.recalculateDeepestCeiling();
     }
   }
 
-  private RecalculateDeepestCeiling() {
+  private recalculateDeepestCeiling() {
     this.deepestCeiling = 0;
     this.deepestCeilingTime = 0;
 
@@ -195,11 +201,15 @@ export class Tissue {
     return (pN2 * this.b_n2 + pHe * this.b_he) / (pN2 + pHe);
   }
 
-  private getMValue(time: number): number {
+  getMValue(time: number): number {
     return this.getMValueByPressures(this.getPN2(time), this.getPHe(time));
   }
 
   private getMValueByPressures(pN2: number, pHe: number): number {
     return (pN2 + pHe - this.getAByPressures(pN2, pHe)) * this.getBByPressures(pN2, pHe);
+  }
+
+  getMaxTime(): number {
+    return this.tissueByTime.size - 1;
   }
 }

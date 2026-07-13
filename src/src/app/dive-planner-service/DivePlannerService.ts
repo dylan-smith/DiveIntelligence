@@ -6,6 +6,7 @@ import { DiveProfile } from './DiveProfile';
 import { ApplicationInsightsService } from '../application-insights-service/application-insights.service';
 import { DiveSettingsService } from './DiveSettings.service';
 import { ChartGeneratorService } from './ChartGenerator.service';
+import { saveAs } from 'file-saver';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,22 @@ export class DivePlannerService {
   ) {
     BreathingGas.GenerateStandardGases(this.settings);
   }
+
+  writeCSVFiles(): void {
+    // var blob = new Blob(["Hello, world!"], {type: "text/plain;charset=utf-8"});
+    // saveAs(blob, "hello world.txt");
+
+    var blob = new Blob([this.diveProfile.algo.generateCSVFile(this.diveProfile)], {type: 'text/plain;charset=utf-8'});
+    saveAs(blob, 'tissue-data.csv');
+  }
+
+  // private convertToCSV(arr: any[]): string {
+  //   const array = [Object.keys(arr[0])].concat(arr);
+  
+  //   return array.map(it => {
+  //     return Object.values(it).toString()
+  //   }).join('\n');
+  // }
 
   getStandardGases(): BreathingGas[] {
     return BreathingGas.StandardGases;
@@ -90,6 +107,7 @@ export class DivePlannerService {
 
   addMaintainDepthSegment(timeAtDepth: number): void {
     this.diveProfile.addMaintainDepthSegment(timeAtDepth);
+    this.writeCSVFiles();
   }
 
   getTravelTime(newDepth: number): number {
