@@ -2,8 +2,8 @@ import { ceilingWithThreshold } from '../utility/utility';
 import { BreathingGas } from './BreathingGas';
 import { BuhlmannZHL16C } from './BuhlmannZHL16C';
 import { DiveSegment } from './DiveSegment';
-import { DiveSegmentFactoryService } from './DiveSegmentFactory.service';
-import { DiveSettingsService } from './DiveSettings.service';
+import { DiveSegmentFactory } from './DiveSegmentFactory';
+import { DiveSettings } from './DiveSettings';
 
 export class DiveProfile {
   public segments: DiveSegment[] = [];
@@ -12,8 +12,8 @@ export class DiveProfile {
   readonly MAX_NDL = 3600 * 5;
 
   constructor(
-    private diveSettings: DiveSettingsService,
-    private diveSegmentFactory: DiveSegmentFactoryService
+    private diveSettings: DiveSettings,
+    private diveSegmentFactory: DiveSegmentFactory
   ) {}
 
   addDiveSegment(newDepth: number, newGas: BreathingGas, timeAtDepth: number): void {

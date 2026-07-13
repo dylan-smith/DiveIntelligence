@@ -1,0 +1,35 @@
+.change-gas-main {
+  display: flex;
+  justify-content: center;
+}
+
+.change-gas-main .main-content {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.change-gas-main .dive-current-stats,
+.change-gas-main .dive-new-gas-input,
+.change-gas-main .dive-new-gas-stats {
+  margin-top: 1rem;
+  margin-left: 1rem;
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+}
+
+.change-gas-main h1 {
+  padding-left: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 0rem;
+}
+
+.change-gas-main .actions {
+  margin-left: 1rem;
+  margin-top: 2rem;
+}
+
+.change-gas-main .actions button {
+  margin-right: 1rem;
+}

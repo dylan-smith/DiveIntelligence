@@ -1,0 +1,33 @@
+.dive-settings {
+  padding: 1.5rem;
+  background-color: #fff;
+}
+
+.dive-settings h2 .material-icons {
+  font-size: 1.4em;
+  height: auto;
+  width: auto;
+}
+
+.dive-settings .settings-input {
+  width: 200px;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.dive-settings-row {
+  display: flex;
+}
+
+.dive-settings-col {
+  margin: 1rem;
+}
+
+.dive-settings .toggle-label {
+  padding: 1rem;
+}
+
+.dive-settings .narcotic-toggle {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}

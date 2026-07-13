@@ -10,7 +10,7 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env['CI'],
   retries: process.env['CI'] ? 2 : 0,
-  globalSetup: require.resolve('./playwright.global-setup.ts'),
+  globalSetup: './playwright.global-setup.ts',
   reporter: [
     ['list'],
     ['junit', { outputFile: path.resolve(_testResultsDir, 'playwright.xml') }],
@@ -37,9 +37,10 @@ export default defineConfig({
             const url = new URL(entry.url as string);
             return (
               !url.toString().includes('@fs') &&
+              !url.pathname.startsWith('/@vite') &&
+              !url.pathname.includes('node_modules') &&
               url.host !== 'fonts.googleapis.com' &&
-              url.host !== 'www.youtube.com' &&
-              url.toString() !== 'http://localhost:4200/styles.css'
+              url.host !== 'www.youtube.com'
             );
           },
           sourceFilter: (sourcePath: string) => {
@@ -62,7 +63,8 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      // PLAYWRIGHT_CHROMIUM_CHANNEL=chrome runs against the system Chrome instead of the bundled chromium
+      use: { ...devices['Desktop Chrome'], channel: process.env['PLAYWRIGHT_CHROMIUM_CHANNEL'] },
     },
     {
       name: 'firefox',

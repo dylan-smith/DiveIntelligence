@@ -54,7 +54,7 @@ export class CurrentStatsComponent {
   async isCurrentPO2Warning(): Promise<boolean> {
     return this.host
       .locator('.current-stats div.dive-stat', { has: this.host.page().getByText(/\s*PO2:/) })
-      .locator('mat-icon')
+      .locator('.material-icons')
       .getByText('warning')
       .isVisible();
   }

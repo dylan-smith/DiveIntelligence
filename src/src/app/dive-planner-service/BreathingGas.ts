@@ -1,32 +1,16 @@
 import { ceilingWithThreshold, floorWithThreshold } from '../utility/utility';
-import { DiveSettingsService } from './DiveSettings.service';
+import { DiveSettings } from './DiveSettings';
 
 export class BreathingGas {
-  description!: string;
-  compositionDescription!: string;
-  maxDepthPO2!: number;
-  maxDepthPO2Deco!: number;
-  maxDepthEND!: number;
-  minDepth!: number;
-  maxDecoDepth!: number;
-
   private constructor(
     public name: string,
     public oxygen: number,
     public helium: number,
     public nitrogen: number,
-    private diveSettings: DiveSettingsService
-  ) {
-    this.diveSettings.subscribeToChanges(() => this.onDiveSettingsChanged());
+    private diveSettings: DiveSettings
+  ) {}
 
-    this.updateDetails();
-  }
-
-  onDiveSettingsChanged(): void {
-    this.updateDetails();
-  }
-
-  static create(oxygen: number, helium: number, nitrogen: number, settings: DiveSettingsService): BreathingGas {
+  static create(oxygen: number, helium: number, nitrogen: number, settings: DiveSettings): BreathingGas {
     const gas = new BreathingGas('Custom', oxygen, helium, nitrogen, settings);
 
     const standardGas = BreathingGas.StandardGases.find(g => g.isEquivalent(gas));
@@ -37,19 +21,9 @@ export class BreathingGas {
     return gas;
   }
 
-  updateDetails(): void {
-    this.description = this.calcDescription();
-    this.compositionDescription = this.calcCompositionDescription();
-    this.maxDepthPO2 = this.calcMaxDepthPO2();
-    this.maxDepthPO2Deco = this.calcMaxDepthPO2Deco();
-    this.maxDepthEND = this.calcMaxDepthEND();
-    this.minDepth = this.calcMinDepth();
-    this.maxDecoDepth = this.calcMaxDecoDepth();
-  }
-
   static StandardGases: BreathingGas[];
 
-  static GenerateStandardGases(settings: DiveSettingsService) {
+  static GenerateStandardGases(settings: DiveSettings) {
     this.StandardGases = [
       new BreathingGas('Air', 21, 0, 79, settings),
       new BreathingGas('Nitrox 32', 32, 0, 68, settings),
@@ -65,7 +39,7 @@ export class BreathingGas {
     ];
   }
 
-  static getOptimalDecoGas(depth: number, settings: DiveSettingsService): BreathingGas {
+  static getOptimalDecoGas(depth: number, settings: DiveSettings): BreathingGas {
     const atm = depth / 10 + 1;
     const oxygen = Math.min(100, floorWithThreshold((settings.decoPO2Maximum * 100) / atm));
 
@@ -83,23 +57,23 @@ export class BreathingGas {
     return BreathingGas.create(oxygen, helium, nitrogen, settings);
   }
 
-  private calcDescription(): string {
-    return `${this.name} (${this.calcCompositionDescription()})`;
+  get description(): string {
+    return `${this.name} (${this.compositionDescription})`;
   }
 
-  private calcCompositionDescription(): string {
+  get compositionDescription(): string {
     return `O<sub>2</sub>: ${this.oxygen}%, He: ${this.helium}%, N<sub>2</sub>: ${this.nitrogen}%`;
   }
 
-  private calcMaxDepthPO2(): number {
+  get maxDepthPO2(): number {
     return Math.floor((this.diveSettings.workingPO2Maximum * 1000) / this.oxygen - 10);
   }
 
-  private calcMaxDepthPO2Deco(): number {
+  get maxDepthPO2Deco(): number {
     return Math.floor((this.diveSettings.decoPO2Maximum * 1000) / this.oxygen - 10);
   }
 
-  private calcMaxDepthEND(): number {
+  get maxDepthEND(): number {
     if (this.diveSettings.isOxygenNarcotic) {
       return Math.floor(((this.diveSettings.ENDErrorThreshold + 10) * 100) / (this.nitrogen + this.oxygen) - 10);
     } else {
@@ -107,12 +81,12 @@ export class BreathingGas {
     }
   }
 
-  private calcMinDepth(): number {
+  get minDepth(): number {
     return Math.max(0, ceilingWithThreshold((this.diveSettings.pO2Minimum * 1000) / this.oxygen - 10));
   }
 
-  private calcMaxDecoDepth(): number {
-    return Math.min(this.calcMaxDepthPO2Deco(), this.calcMaxDepthEND());
+  get maxDecoDepth(): number {
+    return Math.min(this.maxDepthPO2Deco, this.maxDepthEND);
   }
 
   getPO2(depth: number): number {

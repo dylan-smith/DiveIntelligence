@@ -1,0 +1,55 @@
+.maintain-depth-main {
+  display: flex;
+  justify-content: center;
+}
+
+.maintain-depth-main .main-content {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.maintain-depth-main .dive-current-stats,
+.maintain-depth-main .dive-new-time-stats,
+.maintain-depth-main .dive-ceiling-chart {
+  margin-top: 1rem;
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+}
+
+.maintain-depth-main .time-at-depth-row {
+  display: flex;
+}
+
+.maintain-depth-main h1 {
+  margin-top: 2rem;
+  margin-bottom: 0rem;
+}
+
+.maintain-depth-main .input-section {
+  margin-top: 1rem;
+  margin-right: 1rem;
+  width: fit-content;
+  height: fit-content;
+  border-style: solid;
+  border-width: 4px;
+  border-color: #8c9eff;
+  background-color: #fff;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.maintain-depth-main .time-input {
+  padding-bottom: 0;
+  padding-top: 1rem;
+  width: 13rem;
+}
+
+.maintain-depth-main .actions {
+  margin-top: 2rem;
+}
+
+.maintain-depth-main .actions button {
+  margin-right: 1rem;
+}
