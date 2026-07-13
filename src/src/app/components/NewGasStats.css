@@ -1,0 +1,11 @@
+.new-gas-stats {
+  padding: 1rem;
+  display: flex;
+  width: 500px;
+  justify-content: space-between;
+  background-color: #fff;
+}
+
+.gas-calculation-chunk {
+  padding-right: 0rem;
+}

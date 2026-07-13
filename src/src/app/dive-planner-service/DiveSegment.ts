@@ -1,5 +1,5 @@
 import { BreathingGas } from './BreathingGas';
-import { DiveSettingsService } from './DiveSettings.service';
+import { DiveSettings } from './DiveSettings';
 
 export class DiveSegment {
   constructor(
@@ -11,7 +11,7 @@ export class DiveSegment {
     public EndDepth: number,
     public Gas: BreathingGas,
     public Icon: string,
-    private settings: DiveSettingsService
+    private settings: DiveSettings
   ) {}
 
   clone(): DiveSegment {

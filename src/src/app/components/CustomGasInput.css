@@ -1,0 +1,7 @@
+.custom-gas-input {
+  display: flex;
+}
+
+.custom-gas-input .MuiFormControl-root {
+  width: 8rem;
+}

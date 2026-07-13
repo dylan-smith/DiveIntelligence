@@ -1,0 +1,11 @@
+.new-time-stats {
+  padding: 1rem;
+  width: fit-content;
+  height: fit-content;
+  background-color: #fff;
+}
+
+.new-time-stats .stats-divider {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}

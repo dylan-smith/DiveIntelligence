@@ -5,10 +5,10 @@ import { CurrentStatsComponent } from 'e2e/components/current-stats.component';
 export class ChangeGasPage {
   constructor(private page: Page) {}
 
-  public currentStats = new CurrentStatsComponent(this.page.locator('dive-current-stats'));
+  public currentStats = new CurrentStatsComponent(this.page.locator('.dive-current-stats'));
 
   async getOptimalDecoGas(): Promise<string> {
-    let content = await this.page.locator('dive-new-gas-input mat-radio-button[value="optimal"] .gas-description').textContent();
+    let content = await this.page.locator('.dive-new-gas-input .gas-option-optimal .gas-description').textContent();
     content = content ?? '';
     return content.trim();
   }
@@ -20,7 +20,7 @@ export class ChangeGasPage {
 
   async selectStandardGas(gas: string): Promise<ChangeGasPage> {
     await this.page.getByLabel('Standard Gas').click();
-    await this.page.locator('div.new-gas-col .mat-mdc-form-field-type-mat-select .mat-mdc-text-field-wrapper').click();
+    await this.page.locator('div.new-gas-col .standard-gas-dropdown [role="combobox"]').click();
     await this.page.getByText(gas).click();
     return this;
   }
@@ -33,46 +33,46 @@ export class ChangeGasPage {
   }
 
   async getNewGasPO2(): Promise<string> {
-    let content = await this.page.locator('dive-new-gas-stats .new-gas-stats .gas-calculation-chunk .dive-stat').getByText('PO2: ').textContent();
+    let content = await this.page.locator('.dive-new-gas-stats .new-gas-stats .gas-calculation-chunk .dive-stat').getByText('PO2: ').textContent();
     content = content ?? '';
     return content.replace('PO2: ', '').trim();
   }
 
   async isNewGasPO2Warning(): Promise<boolean> {
     return this.page
-      .locator('dive-new-gas-stats .new-gas-stats div.dive-stat', { has: this.page.getByText(/\s*PO2:/) })
-      .locator('mat-icon')
+      .locator('.dive-new-gas-stats .new-gas-stats div.dive-stat', { has: this.page.getByText(/\s*PO2:/) })
+      .locator('.material-icons')
       .getByText('warning')
       .isVisible();
   }
 
   async getNewGasEND(): Promise<string> {
-    let content = await this.page.locator('dive-new-gas-stats .new-gas-stats .gas-calculation-chunk .dive-stat').getByText('END: ').textContent();
+    let content = await this.page.locator('.dive-new-gas-stats .new-gas-stats .gas-calculation-chunk .dive-stat').getByText('END: ').textContent();
     content = content ?? '';
     return content.replace('END: ', '').trim();
   }
 
   async getNewGasNoDecoLimit(): Promise<string> {
-    let content = await this.page.locator('dive-new-gas-stats .new-gas-stats .gas-calculation-chunk .dive-stat').getByText('No Deco Limit: ').textContent();
+    let content = await this.page.locator('.dive-new-gas-stats .new-gas-stats .gas-calculation-chunk .dive-stat').getByText('No Deco Limit: ').textContent();
     content = content ?? '';
     return content.replace('No Deco Limit: ', '').trim();
   }
 
   async getNewGasMaxDepthPO2(): Promise<string> {
-    let content = await this.page.locator('dive-new-gas-stats .new-gas-stats .gas-calculation-chunk .dive-stat').getByText('Max Depth (PO2): ').textContent();
+    let content = await this.page.locator('.dive-new-gas-stats .new-gas-stats .gas-calculation-chunk .dive-stat').getByText('Max Depth (PO2): ').textContent();
     content = content ?? '';
     return content.replace('Max Depth (PO2): ', '').trim();
   }
 
   async getNewGasMaxDepthEND(): Promise<string> {
-    let content = await this.page.locator('dive-new-gas-stats .new-gas-stats .gas-calculation-chunk .dive-stat').getByText('Max Depth (END): ').textContent();
+    let content = await this.page.locator('.dive-new-gas-stats .new-gas-stats .gas-calculation-chunk .dive-stat').getByText('Max Depth (END): ').textContent();
     content = content ?? '';
     return content.replace('Max Depth (END): ', '').trim();
   }
 
   async getNewGasMinDepthHypoxia(): Promise<string> {
     let content = await this.page
-      .locator('dive-new-gas-stats .new-gas-stats .gas-calculation-chunk .dive-stat')
+      .locator('.dive-new-gas-stats .new-gas-stats .gas-calculation-chunk .dive-stat')
       .getByText('Min Depth (Hypoxia): ')
       .textContent();
     content = content ?? '';

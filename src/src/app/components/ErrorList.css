@@ -1,0 +1,15 @@
+.errors {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+.plan-error {
+  border-width: 2px;
+  border-style: solid;
+  border-color: #f44336;
+  color: #f44336;
+  padding: 0.3rem;
+  margin-bottom: 1rem;
+  width: fit-content;
+}

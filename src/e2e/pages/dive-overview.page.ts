@@ -22,36 +22,39 @@ export class DiveOverviewPage {
   }
 
   async getDiveSegments(): Promise<{ heading: string; details: string }[]> {
-    const segments = await this.page.getByRole('listbox').locator('mat-list-item').all();
+    const listItems = this.page.getByRole('listbox').locator('li');
+    // all() does not auto-wait, so wait for the list to render first
+    await listItems.first().waitFor();
+    const segments = await listItems.all();
     const segmentDetails = [];
     for (const segment of segments) {
-      const heading = (await segment.locator('span.mat-mdc-list-item-title').textContent()) ?? '';
-      const details = (await segment.locator('span.mat-mdc-list-item-line').textContent()) ?? '';
+      const heading = (await segment.locator('.MuiListItemText-primary').textContent()) ?? '';
+      const details = (await segment.locator('.MuiListItemText-secondary').textContent()) ?? '';
       segmentDetails.push({ heading: heading.trim(), details: details.trim() });
     }
     return segmentDetails;
   }
 
   async getDiveDuration(): Promise<string> {
-    let content = await this.page.locator('dive-dive-summary .dive-stats .dive-stat').getByText('Dive Duration: ').textContent();
+    let content = await this.page.locator('.dive-dive-summary .dive-stats .dive-stat').getByText('Dive Duration: ').textContent();
     content = content ?? '';
     return content.replace('Dive Duration: ', '').trim();
   }
 
   async getMaxDepth(): Promise<string> {
-    let content = await this.page.locator('dive-dive-summary .dive-stats .dive-stat').getByText('Max Depth: ').textContent();
+    let content = await this.page.locator('.dive-dive-summary .dive-stats .dive-stat').getByText('Max Depth: ').textContent();
     content = content ?? '';
     return content.replace('Max Depth: ', '').trim();
   }
 
   async getAverageDepth(): Promise<string> {
-    let content = await this.page.locator('dive-dive-summary .dive-stats .dive-stat').getByText('Average Depth: ').textContent();
+    let content = await this.page.locator('.dive-dive-summary .dive-stats .dive-stat').getByText('Average Depth: ').textContent();
     content = content ?? '';
     return content.replace('Average Depth: ', '').trim();
   }
 
   async getDiveErrors(): Promise<string[]> {
-    const errors = await this.page.locator('dive-error-list .plan-error .error-message').all();
+    const errors = await this.page.locator('.dive-error-list .plan-error .error-message').all();
     const errorMessages = [];
     for (const error of errors) {
       const message = (await error.textContent()) ?? '';

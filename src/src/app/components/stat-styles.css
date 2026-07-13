@@ -1,0 +1,26 @@
+/* Shared styling for the dive-stat rows used across the stats panels.
+   Plain (non-module) CSS so the literal class names stay available to the
+   Playwright page objects. */
+
+.dive-stat,
+.gas-stat {
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
+  line-height: 28px;
+}
+
+.gas-stat {
+  padding-left: 2rem;
+}
+
+.warning-icon {
+  font-size: 1.4rem !important;
+  margin-left: 0.5rem;
+  color: #ffc107;
+}
+
+.error-icon {
+  font-size: 1.4rem !important;
+  margin-left: 0.5rem;
+  color: #f44336;
+}

@@ -1,0 +1,29 @@
+.dive-plan-list-section {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+}
+
+.dive-plan-list {
+  background-color: #fff;
+}
+
+.segment-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.add-segment-button {
+  align-self: flex-end;
+  margin-top: 0.3rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.segment-icon {
+  padding-right: 0.5rem;
+}
+
+.segment-description {
+  padding-left: 2.3rem;
+}
